@@ -5,9 +5,9 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author SongLingbing
- * @date 2018/11/29 12:35
+ * @date 2018/11/29 12:32
  */
 @Mapper
 @Repository
-public interface UserMapper {
+public interface EduClassMapper {
 }
