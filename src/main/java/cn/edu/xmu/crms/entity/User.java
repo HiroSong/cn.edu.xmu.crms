@@ -13,6 +13,8 @@ public class User {
     protected String email;
     protected String password;
     protected Integer noticeGap;
+    protected String role;
+    private static final String SALT = "CrmsJingLiProject";
 
     public BigInteger getId() {
         return id;
@@ -56,5 +58,17 @@ public class User {
 
     public void setNoticeGap(Integer noticeGap) {
         this.noticeGap = noticeGap;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getCredentialsSalt(){
+        return number+SALT;
     }
 }
