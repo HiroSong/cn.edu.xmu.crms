@@ -4,13 +4,13 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * @author 75
+ * @author Hongqiwu
  * @date 2018/11/29
  */
 public class Course {
     private BigInteger id;
-    private String courseName;
-    private String courseRequire;
+    private String name;
+    private String require;
     private BigDecimal presentationWeight;
     private BigDecimal questionWeight;
     private BigDecimal reportWeight;
@@ -26,19 +26,19 @@ public class Course {
     }
 
     public String getCourseName() {
-        return courseName;
+        return name;
     }
 
     public void setCourseName(String courseName) {
-        this.courseName = courseName;
+        this.name = courseName;
     }
 
     public String getCourseRequire() {
-        return courseRequire;
+        return require;
     }
 
     public void setCourseRequire(String courseRequire) {
-        this.courseRequire = courseRequire;
+        this.require = courseRequire;
     }
 
     public BigDecimal getPresentationWeight() {
