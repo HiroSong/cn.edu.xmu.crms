@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
     public  User getUserByCheck(User user){
         User userByNumber = getUserByNumber(user.getNumber());
         if (userByNumber == null) {
-            System.out.println("can't find a user");
             return null;
         }
 //        String password = new Sha256Hash(user.getPassword(),

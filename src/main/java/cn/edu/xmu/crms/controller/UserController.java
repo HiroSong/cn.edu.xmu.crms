@@ -21,7 +21,6 @@ public class UserController {
     public Map<String, Object> login(@RequestBody User user) {
         User resultUser = userService.getUserByCheck(user);
         if (resultUser==null) {
-            System.out.println("password error");
             return null;
         }
         Map<String, Object> map = new HashMap<>(3);
