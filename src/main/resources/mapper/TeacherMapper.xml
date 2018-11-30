@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.xmu.crms.dao.TeacherMapper" >
+<mapper namespace="cn.edu.xmu.crms.dao.TeacherDao" >
 
-    <!--<select id="方法名"  resultType="返回值类型" parameterType="参数类型">-->
-    <!--SELECT * FROM user WHERE username = #{name}    sql语句，用#{}引用参数-->
-    <!--</select>-->
+    <select id="selectTeacherByNumber"  resultType="Teacher" parameterType="BigInteger">
+        SELECT * FROM teacher WHERE number = #{number}
+    </select>
 
 </mapper>

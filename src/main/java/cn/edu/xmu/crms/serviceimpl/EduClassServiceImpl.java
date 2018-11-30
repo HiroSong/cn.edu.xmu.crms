@@ -1,5 +1,6 @@
-package cn.edu.xmu.crms.service;
+package cn.edu.xmu.crms.serviceimpl;
 
+import cn.edu.xmu.crms.service.EduClassService;
 import org.springframework.stereotype.Service;
 
 /**

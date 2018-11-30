@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository
-public interface EduClassMapper {
+public interface EduClassDao {
 }

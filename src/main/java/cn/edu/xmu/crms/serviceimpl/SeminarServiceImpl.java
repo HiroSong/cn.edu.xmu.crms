@@ -1,4 +1,4 @@
-package cn.edu.xmu.crms.service;
+package cn.edu.xmu.crms.serviceimpl;
 
 import org.springframework.stereotype.Service;
 
