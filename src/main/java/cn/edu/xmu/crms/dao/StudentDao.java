@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.xml.stream.events.Comment;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 /**
  * @author SongLingbing
@@ -23,4 +24,22 @@ public interface StudentDao {
       * @date 2018/11/29 22:36
       */
     Student selectStudentByNumber(BigInteger number);
+    /**
+     * 用于通过学生id获取学生信息
+     *
+     * @param id 学号
+     * @return Student 学生对象
+     * @author hongqiwu
+     * @date 2018/12/01 14:32
+     */
+    Student selectStudentByStudentId(BigInteger id);
+    /**
+     * 用于通过班级号获取学生号列表
+     *
+     * @param id 班级号
+     * @return ArrayList<> 学生号列表
+     * @author Hongqiwu
+     * @date 2018/12/01 14:32
+     */
+    ArrayList<BigInteger> selectStudentIdByClassId(BigInteger id);
 }

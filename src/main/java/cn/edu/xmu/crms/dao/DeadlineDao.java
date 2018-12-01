@@ -21,5 +21,14 @@ public interface DeadlineDao {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    Deadline selectDeadlineById(BigInteger id);
+    Deadline selectCourseDeadlineById(BigInteger id);
+    /**
+     * 用于通过时间号获取deadline_id
+     *
+     * @param id 时间号
+     * @return BigInteger  deadline_id
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    BigInteger selectDeadlineIdByCourseId(BigInteger id);
 }
