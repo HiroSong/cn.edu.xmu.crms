@@ -16,7 +16,7 @@
 // * @date 2018/11/29 22:21
 // */
 //public class ShiroConfig {
-//    @Bean(name="securityManager")
+//    @Bean
 //    public DefaultWebSecurityManager securityManager(@Qualifier("authRealm") AuthRealm authRealm) {
 //        System.err.println("--------------shiro已经加载----------------");
 //        DefaultWebSecurityManager manager=new DefaultWebSecurityManager();
@@ -24,26 +24,25 @@
 //        return manager;
 //    }
 //    //过滤器
-//    @Bean(name="shiroFilter")
+//    @Bean
 //    public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") DefaultWebSecurityManager manager) {
 //        ShiroFilterFactoryBean bean=new ShiroFilterFactoryBean();
 //        bean.setSecurityManager(manager);
 //        //配置登录的url和登录成功的url
 //        bean.setLoginUrl("/index.jsp");
 //        bean.setSuccessUrl("/home");
-//        LinkedHashMap<String, String> filterChainDefinitionMap=new LinkedHashMap<>();//必须LinkedHashMap
-//        filterChainDefinitionMap.put("/jsp/login.jsp*", "anon"); //表示可以匿名访问
-//        filterChainDefinitionMap.put("/**", "anon"); //表示可以匿名访问
+//        LinkedHashMap<String, String> filterChainDefinitionMap=new LinkedHashMap<>();
+//        filterChainDefinitionMap.put("/api/login", "anon");
 //        bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 //        return bean;
 //    }
-//    @Bean(name="authRealm")
+//    @Bean
 //    public AuthRealm authRealm(@Qualifier("credentialsMatcher") CredentialsMatcher matcher) {
 //        AuthRealm authRealm=new AuthRealm();
 //        authRealm.setCredentialsMatcher(matcher);
 //        return authRealm;
 //    }
-//    @Bean(name="credentialsMatcher")
+//    @Bean
 //    public CredentialsMatcher credentialsMatcher() {
 //        return new AuthCredential();
 //    }
