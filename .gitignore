@@ -3,6 +3,7 @@
 /src/main/resources/application.properties
 mvnw
 mvnw.cmd
+/out/
 
 ### STS ###
 .apt_generated
