@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class StudentController {
-    @GetMapping("/{studentID}")
+    @GetMapping("/students/{studentID}")
     public Teacher getBaseInfo(@PathVariable("studentID")
                                        String studentID){
         return null;
