@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.dao.TeamDao" >
 
+    <!--<select id="方法名"  resultType="返回值类型" parameterType="参数类型">-->
+    <!--SELECT * FROM user WHERE username = #{name}    sql语句，用#{}引用参数-->
+    <!--</select>-->
+    <select id="selectTeamByTeamId"  resultType="Team" parameterType="BigInteger">
+        SELECT * FROM team WHERE id = #{teamID}
+    </select>
+    <select id="selectTeamIdByCourseId"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT team_id FROM course_team WHERE course_id = #{courseID}
+    </select>
+    <select id="selectMemberIdByTeamId"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT student_id FROM team_member WHERE team_id = #{teamID}
+    </select>
+    <select id="selectTeamIdByLeaderId"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM team WHERE leader_id = #{leaderID}
+    </select>
+    <select id="selectTeamIdByMemberId"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT team_id FROM team_member WHERE student_id = #{memberID}
+    </select>
+    <select id="selectTeamIdByClassId"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT team_id FROM class_team WHERE class_id = #{classID}
+    </select>
 </mapper>

@@ -61,5 +61,4 @@ public class Team {
         this.state = state;
     }
 
-
 }
