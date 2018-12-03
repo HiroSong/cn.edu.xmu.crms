@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 /**
  * @author SongLingbing
@@ -17,9 +18,13 @@ public class SeminarServiceImpl {
     @Autowired
     SeminarDao seminarDao;
     @Override
-    public Round getRoundByCourseID(BigInteger id){
-        Round rounds=seminarDao.selectRoundByCourseID(id);
-        return Round;
+    public ArrayList<Round> getRoundByCourseID(BigInteger id){
+        ArrayList<BigInteger> roundOrder=seminarDao.selectRoundByCourseID(id);
+        ArrayList<Round> round =new ArrayList<>();
+        for(int i=0;i < roundOrder.size();i++){
+            round.add(seminarDao.selectRoundByCourseID(roundOrder.get(i)));
+        }
+        return round;
     }
 
 }
