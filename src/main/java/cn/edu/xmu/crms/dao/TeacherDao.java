@@ -30,5 +30,5 @@ public interface TeacherDao {
      * @author hongqiwu
      * @date 2018/12/01 15:09
      */
-    Teacher selectTeacherByTeacherID(BigInteger id);
+    Teacher getTeacherByTeacherID(BigInteger id);
 }

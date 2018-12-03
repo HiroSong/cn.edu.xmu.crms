@@ -31,7 +31,7 @@ public interface StudentDao {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    Student selectStudentByStudentID(BigInteger id);
+    Student getStudentByStudentID(BigInteger id);
     /**
      * 用于通过班级号获取学生号列表
      *
@@ -40,5 +40,5 @@ public interface StudentDao {
      * @author Hongqiwu
      * @date 2018/12/01 14:32
      */
-    List<BigInteger> selectStudentIDByClassID(BigInteger id);
+    List<BigInteger> listStudentIDByClassID(BigInteger id);
 }

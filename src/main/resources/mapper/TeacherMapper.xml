@@ -6,7 +6,7 @@
         SELECT * FROM teacher WHERE number = #{number}
     </select>
 
-    <select id="selectTeacherByTeacherID"  resultType="Teacher" parameterType="BigInteger">
+    <select id="getTeacherByTeacherID"  resultType="Teacher" parameterType="BigInteger">
         SELECT * FROM teacher WHERE id = #{id}
     </select>
 </mapper>

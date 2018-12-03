@@ -20,10 +20,10 @@ public class EduClassServiceImpl implements EduClassService {
     EduClassDao eduClassDao;
     @Override
     public List<EduClass> getEduClassByCourseID(BigInteger id) {
-        List<BigInteger> classId = eduClassDao.selectEduClassIDByCourseID(id);
+        List<BigInteger> classId = eduClassDao.listEduClassIDByCourseID(id);
         List<EduClass> eduClass = new ArrayList<>();
         for(int i = 0; i < classId.size(); i++) {
-            eduClass.add(eduClassDao.selectEduClassByClassID(classId.get(i)));
+            eduClass.add(eduClassDao.getEduClassByClassID(classId.get(i)));
         }
         return eduClass;
     }

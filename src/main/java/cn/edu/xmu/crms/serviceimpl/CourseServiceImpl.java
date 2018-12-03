@@ -29,8 +29,8 @@ public class CourseServiceImpl implements CourseService {
     }
     @Override
     public Deadline getCourseDeadlineByCourseID(BigInteger id) {
-        BigInteger deadlineId = deadlineDao.selectDeadlineIDByCourseID(id);
-        Deadline deadline = deadlineDao.selectCourseDeadlineByID(deadlineId);
+        BigInteger deadlineId = deadlineDao.getDeadlineIDByCourseID(id);
+        Deadline deadline = deadlineDao.getCourseDeadlineByID(deadlineId);
         return deadline;
     }
     @Override
