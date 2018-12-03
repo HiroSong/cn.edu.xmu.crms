@@ -19,6 +19,7 @@ import java.util.List;
 @Repository
 public interface SeminarDao{
     /**
+<<<<<<< HEAD
      * 用于通过讨论课id获取讨论课信息
      *
      * @param seminarID 讨论课id
@@ -111,4 +112,13 @@ public interface SeminarDao{
      * @date 2018/12/3 13:40
      */
     int deletePresentation(BigInteger presentationID,BigInteger teamID);
+    /**
+     * 用于通过班级号获取讨论课轮次
+     * @param classID 课程号
+     * @return BigInteger
+     * @auhtor Yanxuehuan
+     * @data 2018/12/3 17:29
+     */
+    List<BigInteger> selectRoundByClassID(BigInteger classID);
+
 }

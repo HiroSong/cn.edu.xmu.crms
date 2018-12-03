@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +41,6 @@ public class SeminarServiceImpl implements SeminarService {
         if(null==deadline) return null;
         return deadline;
     }
-
     @Override
     public Seminar getSeminarBySeminarIdAndClassId(BigInteger seminarID,BigInteger classID)
     {
@@ -80,5 +80,24 @@ public class SeminarServiceImpl implements SeminarService {
             return false;
         else
             return true;
+    }
+    @Override
+   public List <BigInteger> getRoundByClassID(BigInteger ClassID){
+       List<BigInteger>classes=new ArrayList<>();
+       classes=seminarDao.selectRoundByClassID(ClassID);
+        return classes;
+    }
+    @Override
+    public List<Round> getRoundByCourseID(BigInteger CourseID){
+        List<BigInteger> classes=seminarDao.selectEduClassIDByCourseID(CourseID);
+        List<Round> round =new ArrayList<>();
+        for(int i=0;i < classes.size();i++){
+            for(int j=0;j<seminarDao.selectRoundByClassID(classes.get(i)).size();j++){
+                Round r = new Round();
+                r.setRound_Order(getRoundByClassID(classes.get(i)).get(j));
+                round.add(r);
+            }
+        }
+        return round;
     }
 }

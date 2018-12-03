@@ -30,6 +30,7 @@
     <select id="selectDeadLineIdBySeminarIdAndClassId" resultType="BigInteger" parameterMap="BigInteger">
         SELECT deadline_id FROM seminar_class WHERE seminar_id=#{seminarID} AND class_id=#{classID}
     </select>
+<<<<<<< HEAD
     <select id="selectPresentationIdListBySeminarId"  resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM presentation WHERE seminar_id = #{seminarID}
     </select>
@@ -51,4 +52,7 @@
     <delete id="deletePresentation" parameterType="BigInteger">
         DELETE FROM presentation WHERE seminar_id=#{seminarID} AND team_id=#{teamID}
     </delete>
+=======
+
+>>>>>>> parent of af86499... without testing edition1.1
 </mapper>

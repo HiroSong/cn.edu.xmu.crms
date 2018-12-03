@@ -1,5 +1,5 @@
 package cn.edu.xmu.crms.service;
-import cn.edu.xmu.crms.entity.Seminar;
+import cn.edu.xmu.crms.entity.*;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -70,4 +70,22 @@ public interface SeminarService {
      * @date 2018/12/3 12:00
      */
     public boolean cancelSeminarRegit(BigInteger seminarID,BigInteger teamID);
+    /**
+     * 用于根据班级号码查找讨论课轮次
+     *
+     * @param ClassID 班级号码
+     * @return List 返回查找到的讨论课轮次ID列表，若无记录则为null
+     * @author Yanxuehuan
+     * @date 2018/12/3 12:00
+     */
+    public List <BigInteger> getRoundByClassID(BigInteger ClassID);
+    /**
+     * 用于根据课程号码查找讨论课轮次
+     *
+     * @param CourseID 课程号码
+     * @return List<round>返回查找到的讨论课轮次列表，若无记录则为null
+     * @author Yanxuehuan
+     * @date 2018/12/3 12:00
+     */
+    public List<Round> getRoundByCourseID(BigInteger CourseID);
 }
