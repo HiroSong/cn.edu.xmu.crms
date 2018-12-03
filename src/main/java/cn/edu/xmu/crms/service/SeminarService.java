@@ -17,7 +17,7 @@ public interface SeminarService {
      * @author LaiShaopeng
      * @date 2018/12/2 17:00
      */
-    public Seminar getSeminarBySeminarIdAndClassId(BigInteger seminarID,BigInteger classID);
+    public Seminar getSeminarBySeminarIDAndClassID(BigInteger seminarID,BigInteger classID);
     /**
      * 用于根据小组号码查找小组并返回小组实例
      *
@@ -26,7 +26,7 @@ public interface SeminarService {
      * @author LaiShaopeng
      * @date 2018/12/2 17:00
      */
-    public int getRoundOrderBySeminarId(BigInteger seminarID);
+    public int getRoundOrderBySeminarID(BigInteger seminarID);
     /**
      * 用于根据讨论课号码和班级号码查找截止时间并返回截止时间的开始时间和结束时间
      *
@@ -36,7 +36,7 @@ public interface SeminarService {
      * @author LaiShaopeng
      * @date 2018/12/2 17:00
      */
-    public List<String> getDeadLineBySeminarIdAndClassId(BigInteger seminarID,BigInteger classID);
+    public List<String> getDeadLineBySeminarIDAndClassID(BigInteger seminarID,BigInteger classID);
     /**
      * 用于根据讨论课号码、小组号码和讨论课展示顺序报名讨论课
      *
@@ -69,5 +69,5 @@ public interface SeminarService {
      * @author LaiShaopeng
      * @date 2018/12/3 12:00
      */
-    public boolean cancelSeminarRegit(BigInteger seminarID,BigInteger teamID);
+    public boolean cancelSeminarRegist(BigInteger seminarID,BigInteger teamID);
 }

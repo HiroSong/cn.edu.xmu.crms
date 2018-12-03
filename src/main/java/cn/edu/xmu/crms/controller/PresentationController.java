@@ -23,21 +23,19 @@ public class PresentationController {
 
     @GetMapping("/seminars/{seminarID}/classes/{classID}/presentations/teams/{teamID}")
     public Map<String, Object> registSeminar(@PathVariable("seminarID")
-                                                     String seminarID,
+                                                     BigInteger seminarID,
                                              @PathVariable("classID")
-                                                     String classID,
+                                                     BigInteger classID,
                                              @PathVariable("teamID")
-                                                     String teamID,
+                                                     BigInteger teamID,
                                              @RequestBody Integer presentationOrder){
-        BigInteger seminarId=new BigInteger(seminarID);
-        BigInteger classId=new BigInteger(classID);
-        BigInteger teamId=new BigInteger(teamID);
+
         /**
          * 获得讨论课信息
          * @author LaiShaopeng
          * @time 2018/12/3 8:25
          * */
-        Seminar seminar=seminarService.getSeminarBySeminarIdAndClassId(seminarId,classId);
+        Seminar seminar=seminarService.getSeminarBySeminarIDAndClassID(seminarID,classID);
         if(null==seminar) return null;
         /**
          * 判断是否超过讨论课报名截止时间
@@ -53,7 +51,7 @@ public class PresentationController {
          * @author LaiShaopeng
          * @time 2018/12/3 8:25
          * */
-        if(seminarService.registSeminar(seminarId,teamId,presentationOrder))
+        if(seminarService.registSeminar(seminarID,teamID,presentationOrder))
         {
             Map<String,Object> map=new HashMap<String,Object>();
             map.put("PresentationOrder",presentationOrder);
@@ -63,20 +61,18 @@ public class PresentationController {
     }
     @PostMapping("/seminars/{seminarID}/classes/{classID}/presentations/teams/{teamID}")
     public void changeRegistion(@PathVariable("seminarID")
-                                        String seminarID,
-                                @PathVariable("classID") String classID,
-                                @PathVariable("teamID") String teamID,
+                                        BigInteger seminarID,
+                                @PathVariable("classID")
+                                        BigInteger classID,
+                                @PathVariable("teamID")
+                                            BigInteger teamID,
                                 @RequestBody Integer presentationOrder){
-        BigInteger seminarId=new BigInteger(seminarID);
-        BigInteger classId=new BigInteger(classID);
-        BigInteger teamId=new BigInteger(teamID);
-
         /**
          * 获得讨论课信息
          * @author LaiShaopeng
          * @time 2018/12/3 13:00
          * */
-        Seminar seminar=seminarService.getSeminarBySeminarIdAndClassId(seminarId,classId);
+        Seminar seminar=seminarService.getSeminarBySeminarIDAndClassID(seminarID,classID);
         if(null==seminar) return;
         /**
          * 判断是否超过讨论课报名截止时间
@@ -88,19 +84,17 @@ public class PresentationController {
         if(now.compareTo(seminar.getSeminarStartTime())>=0)
             return;
 
-        seminarService.modifySeminarRegist(seminarId,teamId,presentationOrder);
+        seminarService.modifySeminarRegist(seminarID,teamID,presentationOrder);
     }
 
     @DeleteMapping("/seminars/{seminarID}/classes/{classID}" +
             "/presentations/teams/{teamID}")
     public void cancelRegistion(@PathVariable("seminarID")
-                                        String seminarID,
-                                @PathVariable("classID") String classID,
-                                @PathVariable("teamID") String teamID){
-        BigInteger seminarId=new BigInteger(seminarID);
-        BigInteger classId=new BigInteger(classID);
-        BigInteger teamId=new BigInteger(teamID);
-
-        seminarService.cancelSeminarRegit(seminarId,teamId);
+                                        BigInteger seminarID,
+                                @PathVariable("classID")
+                                        BigInteger classID,
+                                @PathVariable("teamID")
+                                        BigInteger teamID){
+        seminarService.cancelSeminarRegist(seminarID,teamID);
     }
 }

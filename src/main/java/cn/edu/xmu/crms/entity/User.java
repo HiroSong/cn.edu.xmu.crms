@@ -16,7 +16,7 @@ public class User {
     protected String role;
     private static final String SALT = "CrmsJingLiProject";
 
-    public BigInteger getId() {
+    public BigInteger getID() {
         return id;
     }
 
