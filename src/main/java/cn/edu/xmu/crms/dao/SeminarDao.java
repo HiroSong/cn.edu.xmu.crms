@@ -10,5 +10,12 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface SeminarDao{
-    List<Round> selectRoundByCourseID(BigInteger CourseID);
+    /**
+     * 用于通过课程号获取讨论课轮次
+     * @param CourseID 课程号
+     * @return round
+     * @auhtor Yanxuehuan
+     * @data 2018/12/3 10:29
+     */
+    Round selectRoundByCourseID(BigInteger CourseID);
 }
