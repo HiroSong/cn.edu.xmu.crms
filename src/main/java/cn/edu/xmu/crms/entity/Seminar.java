@@ -6,6 +6,14 @@ package cn.edu.xmu.crms.entity;
  */
 public class Seminar {
     String seminarName;
+    String seminarRequire;
+    int seminarOrder;
+    boolean seminarSeen;
+    String seminarStartTime;
+    int seminarState;
+    int teamLimit;
+    int round;
+    int registOrder;
 
     public String getSeminarName() {
         return seminarName;
@@ -79,12 +87,5 @@ public class Seminar {
         this.registOrder = registOrder;
     }
 
-    String seminarRequire;
-    int seminarOrder;
-    boolean seminarSeen;
-    String seminarStartTime;
-    int seminarState;
-    int teamLimit;
-    int round;
-    int registOrder;
+
 }

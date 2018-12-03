@@ -1,5 +1,4 @@
 package cn.edu.xmu.crms.entity;
-import java.math
 import java.math.BigInteger;
 
 /**

@@ -5,5 +5,8 @@
     <!--<select id="方法名"  resultType="返回值类型" parameterType="参数类型">-->
     <!--SELECT * FROM user WHERE username = #{name}    sql语句，用#{}引用参数-->
     <!--</select>-->
+    <select id="selectRoundByCourseID"  resultType="List<Round>" parameterType="BigInteger">
+        SELECT * FROM course_round WHERE  ID= #{courseID}
+    </select>
 
 </mapper>

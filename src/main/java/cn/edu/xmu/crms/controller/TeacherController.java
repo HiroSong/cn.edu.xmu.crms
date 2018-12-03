@@ -15,7 +15,7 @@ import javax.jws.soap.SOAPBinding;
 public class TeacherController {
     @GetMapping("/{teacherID}")
     public Teacher getBaseInfo(@PathVariable("teacherID")
-                                               String teacherID){
+                                       String teacherID){
         return null;
     }
 

@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface SeminarDao{
+    List<Round> selectRoundByCourseID(BigInteger CourseID);
 }
