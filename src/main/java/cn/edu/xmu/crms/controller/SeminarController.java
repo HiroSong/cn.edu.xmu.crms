@@ -38,7 +38,21 @@ public class SeminarController {
                                                String seminarID,
                                                @PathVariable("classID")
                                                String classID){
-        return null;
+        BigInteger seminarid=new BigInteger(seminarID);
+        BigInteger classid=new BigInteger(classID);
+        Seminar seminar = seminarService.getSeminarBySeminarIDAndClassID(seminarid,classid);
+        if(seminar == null) {
+            return null;
+        }
+        Map<String, Object> map = new HashMap<>(7);
+        map.put("roundNumber",seminar.getRound());
+        map.put("seminarNumber",seminar.getSeminarName());
+        map.put("seminarOrder",seminar.getRegistOrder());
+        map.put("seminarRequire",seminar.getSeminarRequire());
+        map.put("seminarState",seminar.getSeminarState());
+        map.put("registStartTime",seminar.getSeminarStartTime());
+        map.put("registEndTime",seminar.getTeamLimit());
+        return map;
     }
     @PutMapping("/seminars/{seminarID}/classes/{classID}")
     public void startSeminar(@PathVariable("seminarID")

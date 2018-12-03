@@ -44,5 +44,10 @@ public class SeminarServiceImpl implements SeminarService {
         seminarDao.selectRoundByClassID(ClassID);
         return  classes;
     }
+    @Override
+    public Seminar getSeminarBySeminarIDAndClassID(BigInteger seminarID,BigInteger classID){
+        Seminar seminar=seminarDao.selectSeminarBySeminarIDandClassID(seminarID,classID);
+        return seminar;
+    }
 
 }

@@ -16,10 +16,18 @@ import java.util.List;
 public interface SeminarDao{
     /**
      * 用于通过班级号获取讨论课轮次
-     * @param classID 课程号
+     * @param classID 班级号
      * @return BigInteger
      * @auhtor Yanxuehuan
      * @data 2018/12/3 17:29
      */
     List<BigInteger> selectRoundByClassID(BigInteger classID);
+    /**
+     * 用于通过班级号和讨论课号获取讨论课详情
+     * @param classID,seminarID 班级号，讨论课号
+     * @return Seminar
+     * @auhtor Yanxuehuan
+     * @data 2018/12/3 20:57
+     */
+    Seminar selectSeminarBySeminarIDandClassID(BigInteger seminarID,BigInteger classID);
 }

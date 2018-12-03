@@ -28,5 +28,13 @@ public interface SeminarService {
      * @date 2018/12/3 10:50
      */
     public List<BigInteger> getRoundByClassID(BigInteger ClassID);
-
+    /**
+     * 用于根据班级号码和讨论课号码查找该课程讨论课返回
+     *
+     * @param seminarID,classID  讨论课号，班级号
+     * @return Round[] 返回查找到的对象，若无记录则为null
+     * @author Yanxuehuan
+     * @date 2018/12/3 10:50
+     */
+    public Seminar getSeminarBySeminarIDAndClassID(BigInteger seminarID,BigInteger classID);
 }

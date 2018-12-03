@@ -8,5 +8,7 @@
     <select id="selectRoundByClassID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT round_id FROM course_round WHERE  id= #{classID}
     </select>
-
+    <select id="selectSeminarBySeminarIDAndClassID"  resultType="Seminar" parameterType="BigInteger,BigInteger">
+        SELECT * FROM seminar_class WHERE  seminar_id= #{seminarID} and class_id=#{classID}
+    </select>
 </mapper>
