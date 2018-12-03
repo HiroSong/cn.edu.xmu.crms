@@ -3,7 +3,7 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.entity.Student;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hongqiwu
@@ -27,5 +27,5 @@ public interface StudentService {
      * @author Hongqiwu
      * @date 2018/12/01 14:38
      */
-    public ArrayList<Student> getStudentByClassId(BigInteger id);
+    public List<Student> getStudentByClassId(BigInteger id);
 }

@@ -6,7 +6,7 @@
         SELECT * FROM student WHERE number = #{number}
     </select>
 
-    <select id="selectStudentIdByClassId"  resultType="ArrayList" parameterType="BigInteger">
+    <select id="selectStudentIdByClassId"  resultType="BigInteger" parameterType="BigInteger">
         SELECT student_id FROM class_student WHERE class_id = #{id}
     </select>
 

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Hongqiwu
@@ -19,13 +21,18 @@ public class StudentController {
     @Autowired
     StudentService studentService;
     @GetMapping("/students/{studentID}")
-    public Student getBaseInfo(@PathVariable("studentID")
+    public Map<String, Object> getBaseInfo(@PathVariable("studentID")
                                        String studentID){
         BigInteger id = new BigInteger(studentID);
         Student student = studentService.getStudentByStudentId(id);
         if(student == null) {
             return null;
         }
-        return student;
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("studentName",student.getName());
+        map.put("studentNumber",student.getNumber());
+        map.put("email",student.getEmail());
+        map.put("noticeGap",student.getNoticeGap());
+        return map;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,12 +25,19 @@ public class CourseController {
     public Map<String, Object> getTeacherCourse(@PathVariable("teacherID")
                                                             String teacherID) {
         BigInteger id = new BigInteger(teacherID);
-        ArrayList<Course> course = courseService.getCourseByTeacherId(id);
+        List<Course> course = courseService.getCourseByTeacherId(id);
         if(course == null) {
             return null;
         }
         Map<String, Object> map = new HashMap<>(1);
-        map.put("courseList",course);
+        List<Map<String,Object>> courseList = new ArrayList<>();
+        for(int i = 0; i < course.size(); i++) {
+            Map<String, Object> courseMap = new HashMap<>(2);
+            courseMap.put("courseID",course.get(i).getId());
+            courseMap.put("courseName",course.get(i).getCourseName());
+            courseList.add(courseMap);
+        }
+        map.put("courseList",courseList);
         return  map;
     }
     @GetMapping("/teachers/courses/{courseID}")
@@ -41,13 +49,17 @@ public class CourseController {
         if(course == null) {
             return null;
         }
-        Map<String, Object> map = new HashMap<>(8);
+        Map<String, Object> map = new HashMap<>(5);
+        Map<String, Object> scoreRule = new HashMap<>(3);
+        Map<String, Object> teamLimit = new HashMap<>(2);
+        scoreRule.put("presentationWeight",course.getPresentationWeight());
+        scoreRule.put("questionWeight",course.getQuestionWeight());
+        scoreRule.put("reportWeight",course.getReportWeight());
+        teamLimit.put("maxNumber",course.getTeamMaxLimit());
+        teamLimit.put("minNumber",course.getTeamMinLimit());
         map.put("courseRequire",course.getCourseRequire());
-        map.put("presentationWeight",course.getPresentationWeight());
-        map.put("questionWeight",course.getQuestionWeight());
-        map.put("reportWeight",course.getReportWeight());
-        map.put("maxNumber",course.getTeamMaxLimit());
-        map.put("minNumber",course.getTeamMinLimit());
+        map.put("scoreRule",scoreRule);
+        map.put("teamLimit",teamLimit);
         map.put("teamStartTime",deadline.getBeginTime());
         map.put("teamEndTime",deadline.getEndTime());
         return map;
@@ -56,12 +68,19 @@ public class CourseController {
     public Map<String, Object> getStudentCourse(@PathVariable("studentID")
                                                         String studentID) {
         BigInteger id = new BigInteger(studentID);
-        ArrayList<Course> course = courseService.getCourseByStudentId(id);
+        List<Course> course = courseService.getCourseByStudentId(id);
         if(course == null) {
             return null;
         }
         Map<String, Object> map = new HashMap<>(1);
-        map.put("courseList",course);
+        List<Map<String,Object>> courseList = new ArrayList<>();
+        for(int i = 0; i < course.size(); i++) {
+            Map<String, Object> courseMap = new HashMap<>(2);
+            courseMap.put("courseID",course.get(i).getId());
+            courseMap.put("courseName",course.get(i).getCourseName());
+            courseList.add(courseMap);
+        }
+        map.put("courseList",courseList);
         return  map;
     }
 }

@@ -6,7 +6,7 @@
         SELECT * FROM class WHERE id = #{id}
     </select>
 
-    <select id="selectEduClassIdByCourseId"  resultType="ArrayList" parameterType="BigInteger">
+    <select id="selectEduClassIdByCourseId"  resultType="BigInteger" parameterType="BigInteger">
         SELECT class_id FROM course_class WHERE course_id = #{id}
     </select>
 </mapper>

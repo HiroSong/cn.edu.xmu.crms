@@ -4,9 +4,8 @@ import cn.edu.xmu.crms.entity.Student;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import javax.xml.stream.events.Comment;
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SongLingbing
@@ -41,5 +40,5 @@ public interface StudentDao {
      * @author Hongqiwu
      * @date 2018/12/01 14:32
      */
-    ArrayList<BigInteger> selectStudentIdByClassId(BigInteger id);
+    List<BigInteger> selectStudentIdByClassId(BigInteger id);
 }

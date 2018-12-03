@@ -4,7 +4,7 @@ import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.Deadline;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SongLingbing
@@ -37,7 +37,7 @@ public interface CourseService {
      * @author Hongqiwu
      * @date 2018/11/30 19:41
      */
-    public ArrayList<Course> getCourseByTeacherId(BigInteger id);
+    public List<Course> getCourseByTeacherId(BigInteger id);
     /**
      * 用于根据学生号码号码查找课程并返回课程实例
      *
@@ -46,5 +46,5 @@ public interface CourseService {
      * @author Hongqiwu
      * @date 2018/12/1 13:41
      */
-    public ArrayList<Course> getCourseByStudentId(BigInteger id);
+    public List<Course> getCourseByStudentId(BigInteger id);
 }

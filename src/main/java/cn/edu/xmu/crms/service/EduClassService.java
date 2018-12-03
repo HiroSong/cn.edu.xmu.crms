@@ -3,7 +3,7 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.entity.EduClass;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SongLingbing
@@ -18,5 +18,5 @@ public interface EduClassService {
      * @author Hongqiwu
      * @date 2018/12/1 14:05
      */
-    public ArrayList<EduClass> getEduClassByCourseId(BigInteger id);
+    public List<EduClass> getEduClassByCourseId(BigInteger id);
 }

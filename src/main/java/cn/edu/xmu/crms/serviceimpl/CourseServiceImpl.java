@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hongqiwu
@@ -33,18 +34,18 @@ public class CourseServiceImpl implements CourseService {
         return deadline;
     }
     @Override
-    public ArrayList<Course> getCourseByTeacherId(BigInteger id) {
-        ArrayList<BigInteger> courseId = courseDao.selectCourseIdByTeacherId(id);
-        ArrayList<Course> course = new ArrayList<>();
+    public List<Course> getCourseByTeacherId(BigInteger id) {
+        List<BigInteger> courseId = courseDao.selectCourseIdByTeacherId(id);
+        List<Course> course = new ArrayList<>();
         for(int i = 0; i < courseId.size(); i++) {
             course.add(courseDao.selectCourseByCourseId(courseId.get(i)));
         }
         return course;
     }
     @Override
-    public ArrayList<Course> getCourseByStudentId(BigInteger id) {
-        ArrayList<BigInteger> courseId = courseDao.selectCourseIdByStudentId(id);
-        ArrayList<Course> course = new ArrayList<>();
+    public List<Course> getCourseByStudentId(BigInteger id) {
+        List<BigInteger> courseId = courseDao.selectCourseIdByStudentId(id);
+        List<Course> course = new ArrayList<>();
         for(int i = 0; i < courseId.size(); i++) {
             course.add(courseDao.selectCourseByCourseId(courseId.get(i)));
         }

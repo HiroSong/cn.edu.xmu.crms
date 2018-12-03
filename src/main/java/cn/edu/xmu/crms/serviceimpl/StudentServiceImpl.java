@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hongqiwu
@@ -18,12 +19,12 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     StudentDao studentDao;
     @Override
-    public ArrayList<Student> getStudentByClassId(BigInteger id) {
-        ArrayList<BigInteger> studentId = studentDao.selectStudentIdByClassId(id);
+    public List<Student> getStudentByClassId(BigInteger id) {
+        List<BigInteger> studentId = studentDao.selectStudentIdByClassId(id);
         if(studentId == null) {
             return null;
         }
-        ArrayList<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         if(students == null) {
             return null;
         }

@@ -3,7 +3,7 @@
 <mapper namespace="cn.edu.xmu.crms.dao.DeadlineDao" >
 
     <select id="selectCourseDeadlineById"  resultType="Deadline" parameterType="BigInteger">
-        SELECT * FROM deadline WHERE course_id = #{id}
+        SELECT * FROM deadline WHERE id = #{id}
     </select>
 
     <select id="selectDeadlineIdByCourseId"  resultType="BigInteger" parameterType="BigInteger">

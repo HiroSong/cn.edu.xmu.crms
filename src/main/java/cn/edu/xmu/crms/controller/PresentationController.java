@@ -19,16 +19,13 @@ public class PresentationController {
         return null;
     }
     @PostMapping("/seminars/{seminarID}/classes/{classID}/presentations/teams/{teamID}")
-    public void changeRegistion(@PathVariable("seminarID")
-                                        String seminarID,
+    public void changeRegistion(@PathVariable("seminarID") String seminarID,
                                 @PathVariable("classID") String classID,
                                 @PathVariable("teamID") String teamID,
                                 @RequestBody Integer presentationOrder){
     }
-    @DeleteMapping("/seminars/{seminarID}/classes/{classID}" +
-            "/presentations/teams/{teamID}")
-    public void cancleRegistion(@PathVariable("seminarID")
-                                        String seminarID,
+    @DeleteMapping("/seminars/{seminarID}/classes/{classID}/presentations/teams/{teamID}")
+    public void cancleRegistion(@PathVariable("seminarID") String seminarID,
                                 @PathVariable("classID") String classID,
                                 @PathVariable("teamID") String teamID){
 

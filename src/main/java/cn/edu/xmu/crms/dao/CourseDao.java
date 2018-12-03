@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Hongqiwu
@@ -31,7 +31,7 @@ public interface CourseDao {
      * @author Hongqiwu
      * @date 2018/12/1 12:40
      */
-    ArrayList<BigInteger> selectCourseIdByTeacherId(BigInteger id);
+    List<BigInteger> selectCourseIdByTeacherId(BigInteger id);
     /**
      * 用于通过学生号获取课程号
      *
@@ -40,5 +40,5 @@ public interface CourseDao {
      * @author Hongqiwu
      * @date 2018/12/1 12:40
      */
-    ArrayList<BigInteger> selectCourseIdByStudentId(BigInteger id);
+    List<BigInteger> selectCourseIdByStudentId(BigInteger id);
 }

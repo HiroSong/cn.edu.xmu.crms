@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author hongqiwu
@@ -18,9 +19,9 @@ public class EduClassServiceImpl implements EduClassService {
     @Autowired
     EduClassDao eduClassDao;
     @Override
-    public ArrayList<EduClass> getEduClassByCourseId(BigInteger id) {
-        ArrayList<BigInteger> classId = eduClassDao.selectEduClassIdByCourseId(id);
-        ArrayList<EduClass> eduClass = new ArrayList<>();
+    public List<EduClass> getEduClassByCourseId(BigInteger id) {
+        List<BigInteger> classId = eduClassDao.selectEduClassIdByCourseId(id);
+        List<EduClass> eduClass = new ArrayList<>();
         for(int i = 0; i < classId.size(); i++) {
             eduClass.add(eduClassDao.selectEduClassByClassId(classId.get(i)));
         }

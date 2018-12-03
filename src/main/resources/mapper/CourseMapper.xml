@@ -6,11 +6,11 @@
         SELECT * FROM course WHERE id = #{id}
     </select>
 
-    <select id="selectCourseIdByTeacherId"  resultType="ArrayList" parameterType="BigInteger">
+    <select id="selectCourseIdByTeacherId"  resultType="BigInteger" parameterType="BigInteger">
         SELECT course_id FROM teacher_course WHERE teacher_id = #{id}
     </select>
 
-    <select id="selectCourseIdByStudentId"  resultType="ArrayList" parameterType="BigInteger">
+    <select id="selectCourseIdByStudentId"  resultType="BigInteger" parameterType="BigInteger">
         SELECT course_id FROM student_course WHERE student_id = #{id}
     </select>
 </mapper>
