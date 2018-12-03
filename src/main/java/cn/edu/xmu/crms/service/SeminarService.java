@@ -22,7 +22,7 @@ public interface SeminarService {
      * 用于根据小组号码查找小组并返回小组实例
      *
      * @param seminarID 小组号码
-     * @return int 返回查找到的轮次序号，若无记录则为null
+     * @return Seminar 对象，若无记录则为null
      * @author LaiShaopeng
      * @date 2018/12/2 17:00
      */

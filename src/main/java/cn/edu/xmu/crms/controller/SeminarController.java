@@ -1,6 +1,10 @@
 package cn.edu.xmu.crms.controller;
 
 //import org.omg.CORBA.portable.ValueOutputStream;
+import cn.edu.xmu.crms.entity.Round;
+import cn.edu.xmu.crms.entity.Seminar;
+import cn.edu.xmu.crms.service.SeminarService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -36,7 +40,7 @@ public class SeminarController {
                                                String classID){
         BigInteger seminarid=new BigInteger(seminarID);
         BigInteger classid=new BigInteger(classID);
-        Seminar seminar = seminarService.getSeminarBySeminarIDAndClassID(seminarid,classid);
+        Seminar seminar = seminarService.getSeminarBySeminarIdAndClassId(seminarid,classid);
         if(seminar == null) {
             return null;
         }

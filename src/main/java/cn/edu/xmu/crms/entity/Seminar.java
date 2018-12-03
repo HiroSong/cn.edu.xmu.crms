@@ -34,11 +34,11 @@ public class Seminar {
         this.seminarRequire = seminarRequire;
     }
 
-    public BigInteger getSeminarOrder() {
+    public Integer getSeminarOrder() {
         return seminarOrder;
     }
 
-    public void setSeminarOrder(BigInteger seminarOrder) {
+    public void setSeminarOrder(Integer seminarOrder) {
         this.seminarOrder = seminarOrder;
     }
 
@@ -58,27 +58,27 @@ public class Seminar {
         this.seminarStartTime = seminarStartTime;
     }
 
-    public BigInteger getSeminarState() {
+    public Integer getSeminarState() {
         return seminarState;
     }
 
-    public void setSeminarState(BigInteger seminarState) {
+    public void setSeminarState(Integer seminarState) {
         this.seminarState = seminarState;
     }
 
-    public BigInteger getTeamLimit() {
+    public Integer getTeamLimit() {
         return teamLimit;
     }
 
-    public void setTeamLimit(BigInteger teamLimit) {
+    public void setTeamLimit(Integer  teamLimit) {
         this.teamLimit = teamLimit;
     }
 
-    public BigInteger getRound() {
+    public int getRound() {
         return round;
     }
 
-    public void setRound(BigInteger round) {
+    public void setRound(int round) {
         this.round = round;
     }
 
