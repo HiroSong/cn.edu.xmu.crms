@@ -19,7 +19,7 @@ public class EduClassServiceImpl implements EduClassService {
     @Autowired
     EduClassDao eduClassDao;
     @Override
-    public List<EduClass> getEduClassByCourseID(BigInteger id) {
+    public List<EduClass> listEduClassByCourseID(BigInteger id) {
         List<BigInteger> classId = eduClassDao.listEduClassIDByCourseID(id);
         List<EduClass> eduClass = new ArrayList<>();
         for(int i = 0; i < classId.size(); i++) {

@@ -31,7 +31,7 @@ public class EduClassController {
     public Map<String, Object> getClassList(@PathVariable("courseID")
                                             String courseID){
         BigInteger id = new BigInteger(courseID);
-        List<EduClass> eduClass = educlassService.getEduClassByCourseID(id);
+        List<EduClass> eduClass = educlassService.listEduClassByCourseID(id);
         if(eduClass == null) {
             return null;
         }

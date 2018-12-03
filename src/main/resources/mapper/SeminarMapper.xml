@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.dao.SeminarDao" >
 
+    <select id="updateSeminarState" parameterType="BigInteger">
+        UPDATE seminar_class SET seminar_state = 2 WHERE seminar_id = #{param1} AND class_id = #{param2}
+    </select>
+
+    <delete id="deleteSeminar" parameterType="BigInteger">
+        DELETE FROM seminar WHERE id = #{seminarID}
+    </delete>
+    <delete id="deleteSeminarClass" parameterType="BigInteger">
+        DELETE FROM seminar_class WHERE seminar_id = #{seminarID}
+    </delete>
+    <delete id="deleteSeminarRound" parameterType="BigInteger">
+        DELETE FROM seminar_round WHERE seminar_id = #{seminarID}
+    </delete>
+
+    <select id="getSeminarIDBySeminarID" resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM seminar WHERE id = #{seminarID}
+    </select>
+
+    <select id="getSeminarStateBySeminarAndClassID"  resultType="Integer" parameterType="BigInteger">
+        SELECT seminar_state FROM seminar_class WHERE seminar_id = #{param1} AND class_id = #{param2}
+    </select>
 </mapper>
