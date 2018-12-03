@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author SongLingbing
@@ -14,11 +15,11 @@ import java.util.ArrayList;
 @Repository
 public interface SeminarDao{
     /**
-     * 用于通过课程号获取讨论课轮次
-     * @param CourseID 课程号
-     * @return round
+     * 用于通过班级号获取讨论课轮次
+     * @param classID 课程号
+     * @return BigInteger
      * @auhtor Yanxuehuan
-     * @data 2018/12/3 10:29
+     * @data 2018/12/3 17:29
      */
-    ArrayList <Round> selectRoundByCourseID(BigInteger CourseID);
+    List<BigInteger> selectRoundByClassID(BigInteger classID);
 }

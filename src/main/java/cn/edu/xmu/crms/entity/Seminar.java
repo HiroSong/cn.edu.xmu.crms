@@ -1,5 +1,7 @@
 package cn.edu.xmu.crms.entity;
 
+import java.math.BigInteger;
+
 /**
  * @author SongLingbing
  * @date 2018/11/29 10:34
@@ -7,13 +9,13 @@ package cn.edu.xmu.crms.entity;
 public class Seminar {
     String seminarName;
     String seminarRequire;
-    int seminarOrder;
+    BigInteger seminarOrder;
     boolean seminarSeen;
     String seminarStartTime;
-    int seminarState;
-    int teamLimit;
-    int round;
-    int registOrder;
+    BigInteger seminarState;
+    BigInteger teamLimit;
+    BigInteger round;
+    BigInteger registOrder;
 
     public String getSeminarName() {
         return seminarName;
@@ -31,11 +33,11 @@ public class Seminar {
         this.seminarRequire = seminarRequire;
     }
 
-    public int getSeminarOrder() {
+    public BigInteger getSeminarOrder() {
         return seminarOrder;
     }
 
-    public void setSeminarOrder(int seminarOrder) {
+    public void setSeminarOrder(BigInteger seminarOrder) {
         this.seminarOrder = seminarOrder;
     }
 
@@ -55,35 +57,35 @@ public class Seminar {
         this.seminarStartTime = seminarStartTime;
     }
 
-    public int getSeminarState() {
+    public BigInteger getSeminarState() {
         return seminarState;
     }
 
-    public void setSeminarState(int seminarState) {
+    public void setSeminarState(BigInteger seminarState) {
         this.seminarState = seminarState;
     }
 
-    public int getTeamLimit() {
+    public BigInteger getTeamLimit() {
         return teamLimit;
     }
 
-    public void setTeamLimit(int teamLimit) {
+    public void setTeamLimit(BigInteger teamLimit) {
         this.teamLimit = teamLimit;
     }
 
-    public int getRound() {
+    public BigInteger getRound() {
         return round;
     }
 
-    public void setRound(int round) {
+    public void setRound(BigInteger round) {
         this.round = round;
     }
 
-    public int getRegistOrder() {
+    public BigInteger getRegistOrder() {
         return registOrder;
     }
 
-    public void setRegistOrder(int registOrder) {
+    public void setRegistOrder(BigInteger registOrder) {
         this.registOrder = registOrder;
     }
 

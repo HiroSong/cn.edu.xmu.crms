@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +25,7 @@ public class SeminarController {
     public Map<String, Object> getRoundList(@PathVariable("courseID")
                                             String courseID){
         BigInteger id=new BigInteger(courseID);
-        ArrayList<Round> round=seminarService.getRoundByCourseID(id);
+        List<Round> round=seminarService.getRoundByCourseID(id);
         if(round==null){
             return null;
         }

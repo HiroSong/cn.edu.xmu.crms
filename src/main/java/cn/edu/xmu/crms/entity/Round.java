@@ -1,13 +1,15 @@
 package cn.edu.xmu.crms.entity;
 
-public class Round {
-    int round_Order;
+import java.math.BigInteger;
 
-    public void setRound_Order(int round_Order) {
+public class Round {
+    BigInteger round_Order;
+
+    public void setRound_Order(BigInteger round_Order) {
         this.round_Order = round_Order;
     }
 
-    public int getRound_Order() {
+    public BigInteger getRound_Order() {
         return round_Order;
     }
 }
