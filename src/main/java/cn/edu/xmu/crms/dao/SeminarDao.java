@@ -1,7 +1,10 @@
 package cn.edu.xmu.crms.dao;
-
+import cn.edu.xmu.crms.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
 
 /**
  * @author SongLingbing
@@ -17,5 +20,5 @@ public interface SeminarDao{
      * @auhtor Yanxuehuan
      * @data 2018/12/3 10:29
      */
-    Round selectRoundByCourseID(BigInteger CourseID);
+    ArrayList <Round> selectRoundByCourseID(BigInteger CourseID);
 }
