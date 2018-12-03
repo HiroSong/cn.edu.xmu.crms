@@ -4,7 +4,7 @@ import cn.edu.xmu.crms.entity.Teacher;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.soap.SOAPBinding;
+//import javax.jws.soap.SOAPBinding;
 
 /**
  * @author SongLingbing

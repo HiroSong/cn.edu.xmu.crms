@@ -1,5 +1,5 @@
 package cn.edu.xmu.crms.entity;
-import java.math
+
 import java.math.BigInteger;
 
 /**
@@ -51,6 +51,5 @@ public class Team {
     public void setState(int state) {
         this.state = state;
     }
-
 
 }
