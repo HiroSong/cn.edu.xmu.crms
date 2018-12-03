@@ -1,8 +1,13 @@
 package cn.edu.xmu.crms.controller;
 
+import cn.edu.xmu.crms.entity.Round;
 import cn.edu.xmu.crms.entity.Seminar;
 import org.omg.CORBA.portable.ValueOutputStream;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,11 +17,20 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api")
-@GetMapping("/seminars/{seminarID}/classes/{classID}")
 public class SeminarController {
+    @Autowired
+    SeminarService seminarService;
+    @GetMapping("/courses/{courseID}/seminars")
     public Map<String, Object> getRoundList(@PathVariable("courseID")
                                             String courseID){
-
+        BigInteger id=new BigInteger(courseID);
+        ArrayList<Round> round=seminarService.getRoundByCourseID(id);
+        if(round==null){
+            return null;
+        }
+        Map<String, Object>map=new HashMap<>(1);
+        map.put("roundList",round);
+        return map;
     }
     @GetMapping("/seminars/{seminarID}/classes/{classID}")
     public  Map<String, Object> getSeminarInfo(@PathVariable("seminarID")
