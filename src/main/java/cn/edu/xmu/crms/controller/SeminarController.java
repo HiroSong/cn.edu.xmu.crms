@@ -1,10 +1,6 @@
 package cn.edu.xmu.crms.controller;
 
-import cn.edu.xmu.crms.entity.Round;
-import cn.edu.xmu.crms.entity.Seminar;
-import cn.edu.xmu.crms.service.SeminarService;
 //import org.omg.CORBA.portable.ValueOutputStream;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;

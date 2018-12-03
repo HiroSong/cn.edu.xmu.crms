@@ -5,9 +5,7 @@ import cn.edu.xmu.crms.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
+//import javax.jws.soap.SOAPBinding;
 
 /**
  * @author SongLingbing

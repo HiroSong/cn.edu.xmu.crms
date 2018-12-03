@@ -3,10 +3,7 @@ package cn.edu.xmu.crms.dao;
 import cn.edu.xmu.crms.entity.Course;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-
 import java.math.BigInteger;
-import java.util.List;
-
 /**
  * @author Hongqiwu
  * @date 2018/11/30 19:45
@@ -15,30 +12,12 @@ import java.util.List;
 @Repository
 public interface CourseDao {
     /**
-     * 用于通过教师教工号获取教师对象
+     * 用于通过队伍id获取队伍信息
      *
-     * @param id 教工号
-     * @return Course  课程对象
-     * @author Hongqiwu
-     * @date 2018/11/30 19:45
+     * @param number 课程id
+     * @return Course 课程对象
+     * @author LaiShaopeng
+     * @date 2018/12/2 15:21
      */
-    Course selectCourseByCourseId(BigInteger id);
-    /**
-     * 用于通过教师教工号获取课程号
-     *
-     * @param id 教工号
-     * @return ArrayList<>  课程号
-     * @author Hongqiwu
-     * @date 2018/12/1 12:40
-     */
-    List<BigInteger> selectCourseIdByTeacherId(BigInteger id);
-    /**
-     * 用于通过学生号获取课程号
-     *
-     * @param id 学生号
-     * @return ArrayList<>  课程号
-     * @author Hongqiwu
-     * @date 2018/12/1 12:40
-     */
-    List<BigInteger> selectCourseIdByStudentId(BigInteger id);
+    Course selectCourseByNumber(BigInteger number);
 }
