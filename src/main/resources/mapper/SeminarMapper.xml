@@ -5,5 +5,8 @@
     <!--<select id="方法名"  resultType="返回值类型" parameterType="参数类型">-->
     <!--SELECT * FROM user WHERE username = #{name}    sql语句，用#{}引用参数-->
     <!--</select>-->
+    <select id="selectShowingTeamId"  resultType="BigInteger">
+        SELECT team_id FROM presentation WHERE is_showing = 3
+    </select>
 
 </mapper>

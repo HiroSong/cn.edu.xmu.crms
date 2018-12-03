@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.Map;
 
 /**
@@ -29,5 +30,10 @@ public class PresentationController {
                                 @PathVariable("classID") String classID,
                                 @PathVariable("teamID") String teamID){
 
+    }
+    @GetMapping("/student/seminars/{seminarID}/classes/{classID}/presentations")
+    public Map<String, Object> getPresentationInfo(@PathVariable("seminarID") BigInteger seminarID,
+                                                   @PathVariable("classID") BigInteger classID){
+        return null;
     }
 }
