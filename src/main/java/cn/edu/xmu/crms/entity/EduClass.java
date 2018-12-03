@@ -3,14 +3,14 @@ package cn.edu.xmu.crms.entity;
 import java.math.BigInteger;
 
 /**
- * @author 75
+ * @author Hongqiwu
  * @date 2018/11/29
  */
 public class EduClass {
     private BigInteger id;
-    private Integer classNumber;
-    private String classTime;
-    private String classAddress;
+    private Integer number;
+    private String time;
+    private String address;
 
     public BigInteger getId() {
         return id;
@@ -21,26 +21,26 @@ public class EduClass {
     }
 
     public Integer getClassNumber() {
-        return classNumber;
+        return number;
     }
 
     public void setClassNumber(Integer classNumber) {
-        this.classNumber = classNumber;
+        this.number = classNumber;
     }
 
     public String getClassTime() {
-        return classTime;
+        return time;
     }
 
     public void setClassTime(String classTime) {
-        this.classTime = classTime;
+        this.time = classTime;
     }
 
     public String getClassAddress() {
-        return classAddress;
+        return address;
     }
 
     public void setClassAddress(String classAddress) {
-        this.classAddress = classAddress;
+        this.address = classAddress;
     }
 }

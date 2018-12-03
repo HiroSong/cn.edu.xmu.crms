@@ -43,10 +43,9 @@ public class UserServiceImpl implements UserService {
         if (userByNumber == null) {
             return null;
         }
-//        String password = new Sha256Hash(user.getPassword(),
-//                user.getCredentialsSalt(),
-//                1024).toBase64();
-        String password = user.getPassword();
+        String password = new Sha256Hash(user.getPassword(),
+                user.getCredentialsSalt(),
+                1024).toBase64();
         System.out.println(password);
 
         String truePassword = userByNumber.getPassword();

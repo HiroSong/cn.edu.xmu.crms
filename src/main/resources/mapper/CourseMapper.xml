@@ -2,8 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.dao.CourseDao" >
 
-    <!--<select id="方法名"  resultType="返回值类型" parameterType="参数类型">-->
-    <!--SELECT * FROM user WHERE username = #{name}    sql语句，用#{}引用参数-->
-    <!--</select>-->
+    <select id="selectCourseByCourseId"  resultType="Course" parameterType="BigInteger">
+        SELECT * FROM course WHERE id = #{id}
+    </select>
 
+    <select id="selectCourseIdByTeacherId"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT course_id FROM teacher_course WHERE teacher_id = #{id}
+    </select>
+
+    <select id="selectCourseIdByStudentId"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT course_id FROM student_course WHERE student_id = #{id}
+    </select>
 </mapper>

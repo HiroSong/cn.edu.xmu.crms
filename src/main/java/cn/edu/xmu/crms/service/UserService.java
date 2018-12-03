@@ -3,7 +3,6 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.entity.User;
 
 import java.math.BigInteger;
-import java.util.Map;
 
 /**
  * @author SongLingbing
@@ -19,6 +18,7 @@ public interface UserService {
       * @date 2018/11/30 8:43
       */
     public User getUserByNumber(BigInteger number);
+
     /**
       * 用于验证登录
       *
@@ -27,5 +27,5 @@ public interface UserService {
       * @author SongLingbing
       * @date 2018/11/30 12:37
       */
-    public  User getUserByCheck(User user);
+    public User getUserByCheck(User user);
 }

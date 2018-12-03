@@ -26,3 +26,4 @@ mvnw.cmd
 /dist/
 /nbdist/
 /.nb-gradle/
+src/main/java/cn/edu/xmu/crms/config/ShiroConfig.java
