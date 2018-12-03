@@ -1,7 +1,15 @@
 package cn.edu.xmu.crms.controller;
 
+import cn.edu.xmu.crms.dao.SeminarDao;
+import cn.edu.xmu.crms.entity.Team;
+import cn.edu.xmu.crms.service.TeamService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,5 +37,10 @@ public class PresentationController {
                                 @PathVariable("classID") String classID,
                                 @PathVariable("teamID") String teamID){
 
+    }
+    @GetMapping("/student/seminars/{seminarID}/classes/{classID}/presentations")
+    public Map<String, Object> getPresentationInfo(@PathVariable("seminarID") BigInteger seminarID,
+                                                   @PathVariable("classID") BigInteger classID){
+        return null;
     }
 }

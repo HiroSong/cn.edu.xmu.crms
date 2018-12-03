@@ -31,7 +31,7 @@ public class EduClassController {
     public Map<String, Object> getClassList(@PathVariable("courseID")
                                             String courseID){
         BigInteger id = new BigInteger(courseID);
-        List<EduClass> eduClass = educlassService.getEduClassByCourseId(id);
+        List<EduClass> eduClass = educlassService.getEduClassByCourseID(id);
         if(eduClass == null) {
             return null;
         }
@@ -42,7 +42,7 @@ public class EduClassController {
             classListMap.put("classID",eduClass.get(i).getId());
             classListMap.put("classTime",eduClass.get(i).getClassTime());
             classListMap.put("classAddress",eduClass.get(i).getClassAddress());
-            List<Student> studentList = studentService.getStudentByClassId(eduClass.get(i).getId());
+            List<Student> studentList = studentService.getStudentByClassID(eduClass.get(i).getId());
             classListMap.put("studentList",studentList);
             classList.add(classListMap);
         }

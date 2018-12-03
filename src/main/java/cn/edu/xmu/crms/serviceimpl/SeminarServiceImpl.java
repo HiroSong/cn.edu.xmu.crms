@@ -1,5 +1,6 @@
 package cn.edu.xmu.crms.serviceimpl;
 
+import cn.edu.xmu.crms.service.SeminarService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,5 +8,5 @@ import org.springframework.stereotype.Service;
  * @date 2018/11/29 15:33
  */
 @Service
-public class SeminarServiceImpl {
+public class SeminarServiceImpl implements SeminarService {
 }

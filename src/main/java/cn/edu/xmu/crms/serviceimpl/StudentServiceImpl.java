@@ -19,8 +19,8 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     StudentDao studentDao;
     @Override
-    public List<Student> getStudentByClassId(BigInteger id) {
-        List<BigInteger> studentId = studentDao.selectStudentIdByClassId(id);
+    public List<Student> getStudentByClassID(BigInteger id) {
+        List<BigInteger> studentId = studentDao.selectStudentIDByClassID(id);
         if(studentId == null) {
             return null;
         }
@@ -29,13 +29,13 @@ public class StudentServiceImpl implements StudentService {
             return null;
         }
         for(int i = 0; i < studentId.size(); i++) {
-            students.add(studentDao.selectStudentByStudentId(studentId.get(i)));
+            students.add(studentDao.selectStudentByStudentID(studentId.get(i)));
         }
         return students;
     }
     @Override
-    public Student getStudentByStudentId(BigInteger id) {
-        Student student = studentDao.selectStudentByStudentId(id);
+    public Student getStudentByStudentID(BigInteger id) {
+        Student student = studentDao.selectStudentByStudentID(id);
         if(student == null) {
             return null;
         }

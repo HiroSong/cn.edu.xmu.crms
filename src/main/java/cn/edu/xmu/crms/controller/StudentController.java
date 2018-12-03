@@ -24,7 +24,7 @@ public class StudentController {
     public Map<String, Object> getBaseInfo(@PathVariable("studentID")
                                        String studentID){
         BigInteger id = new BigInteger(studentID);
-        Student student = studentService.getStudentByStudentId(id);
+        Student student = studentService.getStudentByStudentID(id);
         if(student == null) {
             return null;
         }

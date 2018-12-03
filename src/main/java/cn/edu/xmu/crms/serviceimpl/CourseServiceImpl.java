@@ -23,31 +23,31 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     DeadlineDao deadlineDao;
     @Override
-    public Course getCourseByCourseId(BigInteger id) {
-        Course course = courseDao.selectCourseByCourseId(id);
+    public Course getCourseByCourseID(BigInteger id) {
+        Course course = courseDao.getCourseByCourseID(id);
         return course;
     }
     @Override
-    public Deadline getCourseDeadlineByCourseId(BigInteger id) {
-        BigInteger deadlineId = deadlineDao.selectDeadlineIdByCourseId(id);
-        Deadline deadline = deadlineDao.selectCourseDeadlineById(deadlineId);
+    public Deadline getCourseDeadlineByCourseID(BigInteger id) {
+        BigInteger deadlineId = deadlineDao.selectDeadlineIDByCourseID(id);
+        Deadline deadline = deadlineDao.selectCourseDeadlineByID(deadlineId);
         return deadline;
     }
     @Override
-    public List<Course> getCourseByTeacherId(BigInteger id) {
-        List<BigInteger> courseId = courseDao.selectCourseIdByTeacherId(id);
+    public List<Course> listCourseByTeacherID(BigInteger id) {
+        List<BigInteger> courseId = courseDao.listCourseIDByTeacherID(id);
         List<Course> course = new ArrayList<>();
         for(int i = 0; i < courseId.size(); i++) {
-            course.add(courseDao.selectCourseByCourseId(courseId.get(i)));
+            course.add(courseDao.getCourseByCourseID(courseId.get(i)));
         }
         return course;
     }
     @Override
-    public List<Course> getCourseByStudentId(BigInteger id) {
-        List<BigInteger> courseId = courseDao.selectCourseIdByStudentId(id);
+    public List<Course> listCourseByStudentID(BigInteger id) {
+        List<BigInteger> courseId = courseDao.listCourseIDByStudentID(id);
         List<Course> course = new ArrayList<>();
         for(int i = 0; i < courseId.size(); i++) {
-            course.add(courseDao.selectCourseByCourseId(courseId.get(i)));
+            course.add(courseDao.getCourseByCourseID(courseId.get(i)));
         }
         return course;
     }

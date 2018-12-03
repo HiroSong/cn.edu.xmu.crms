@@ -17,8 +17,8 @@ public class TeacherServiceImpl implements TeacherService {
     @Autowired
     TeacherDao teacherDao;
     @Override
-    public Teacher getTeacherByTeacherId(BigInteger id) {
-        Teacher teacher = teacherDao.selectTeacherByTeacherId(id);
+    public Teacher getTeacherByTeacherID(BigInteger id) {
+        Teacher teacher = teacherDao.selectTeacherByTeacherID(id);
         if(teacher == null) {
             return null;
         }

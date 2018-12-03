@@ -6,11 +6,11 @@
         SELECT * FROM student WHERE number = #{number}
     </select>
 
-    <select id="selectStudentIdByClassId"  resultType="BigInteger" parameterType="BigInteger">
+    <select id="selectStudentIDByClassID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT student_id FROM class_student WHERE class_id = #{id}
     </select>
 
-    <select id="selectStudentByStudentId"  resultType="Student" parameterType="BigInteger">
+    <select id="selectStudentByStudentID"  resultType="Student" parameterType="BigInteger">
         SELECT * FROM student WHERE id = #{id}
     </select>
 </mapper>

@@ -18,7 +18,7 @@ public interface StudentService {
      * @author Hongqiwu
      * @date 2018/12/01 14:55
      */
-    public Student getStudentByStudentId(BigInteger id);
+    public Student getStudentByStudentID(BigInteger id);
     /**
      * 用于根据班级号码查找学生并返回学生实例
      *
@@ -27,5 +27,5 @@ public interface StudentService {
      * @author Hongqiwu
      * @date 2018/12/01 14:38
      */
-    public List<Student> getStudentByClassId(BigInteger id);
+    public List<Student> getStudentByClassID(BigInteger id);
 }

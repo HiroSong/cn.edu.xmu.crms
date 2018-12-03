@@ -24,8 +24,8 @@ public class CourseController {
     @GetMapping("/teachers/{teacherID}/courses")
     public Map<String, Object> getTeacherCourse(@PathVariable("teacherID")
                                                             String teacherID) {
-        BigInteger id = new BigInteger(teacherID);
-        List<Course> course = courseService.getCourseByTeacherId(id);
+        BigInteger ID = new BigInteger(teacherID);
+        List<Course> course = courseService.listCourseByTeacherID(ID);
         if(course == null) {
             return null;
         }
@@ -44,8 +44,8 @@ public class CourseController {
     public Map<String, Object> getCourseInfo(@PathVariable("courseID")
                                              String courseID) {
         BigInteger id = new BigInteger(courseID);
-        Course course = courseService.getCourseByCourseId(id);
-        Deadline deadline = courseService.getCourseDeadlineByCourseId(id);
+        Course course = courseService.getCourseByCourseID(id);
+        Deadline deadline = courseService.getCourseDeadlineByCourseID(id);
         if(course == null) {
             return null;
         }
@@ -68,7 +68,7 @@ public class CourseController {
     public Map<String, Object> getStudentCourse(@PathVariable("studentID")
                                                         String studentID) {
         BigInteger id = new BigInteger(studentID);
-        List<Course> course = courseService.getCourseByStudentId(id);
+        List<Course> course = courseService.listCourseByStudentID(id);
         if(course == null) {
             return null;
         }

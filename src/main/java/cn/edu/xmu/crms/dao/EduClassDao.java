@@ -22,7 +22,7 @@ public interface EduClassDao {
      * @author Hongqiwu
      * @date 2018/12/1 14:01
      */
-    EduClass selectEduClassByClassId(BigInteger id);
+    EduClass selectEduClassByClassID(BigInteger id);
     /**
      * 用于通过课程号获取班级号
      *
@@ -31,5 +31,5 @@ public interface EduClassDao {
      * @author Hongqiwu
      * @date 2018/12/1 14:11
      */
-    List<BigInteger> selectEduClassIdByCourseId(BigInteger id);
+    List<BigInteger> selectEduClassIDByCourseID(BigInteger id);
 }

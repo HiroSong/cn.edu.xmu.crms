@@ -19,11 +19,11 @@ public class EduClassServiceImpl implements EduClassService {
     @Autowired
     EduClassDao eduClassDao;
     @Override
-    public List<EduClass> getEduClassByCourseId(BigInteger id) {
-        List<BigInteger> classId = eduClassDao.selectEduClassIdByCourseId(id);
+    public List<EduClass> getEduClassByCourseID(BigInteger id) {
+        List<BigInteger> classId = eduClassDao.selectEduClassIDByCourseID(id);
         List<EduClass> eduClass = new ArrayList<>();
         for(int i = 0; i < classId.size(); i++) {
-            eduClass.add(eduClassDao.selectEduClassByClassId(classId.get(i)));
+            eduClass.add(eduClassDao.selectEduClassByClassID(classId.get(i)));
         }
         return eduClass;
     }

@@ -22,7 +22,7 @@ public interface CourseDao {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    Course selectCourseByCourseId(BigInteger id);
+    Course getCourseByCourseID(BigInteger id);
     /**
      * 用于通过教师教工号获取课程号
      *
@@ -31,7 +31,7 @@ public interface CourseDao {
      * @author Hongqiwu
      * @date 2018/12/1 12:40
      */
-    List<BigInteger> selectCourseIdByTeacherId(BigInteger id);
+    List<BigInteger> listCourseIDByTeacherID(BigInteger id);
     /**
      * 用于通过学生号获取课程号
      *
@@ -40,5 +40,5 @@ public interface CourseDao {
      * @author Hongqiwu
      * @date 2018/12/1 12:40
      */
-    List<BigInteger> selectCourseIdByStudentId(BigInteger id);
+    List<BigInteger> listCourseIDByStudentID(BigInteger id);
 }

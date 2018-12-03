@@ -22,7 +22,7 @@ public class TeacherController {
     public Map<String, Object> getBaseInfo(@PathVariable("teacherID")
                                                String teacherID){
         BigInteger id = new BigInteger(teacherID);
-        Teacher teacher = teacherService.getTeacherByTeacherId(id);
+        Teacher teacher = teacherService.getTeacherByTeacherID(id);
         if(teacher == null) {
             return null;
         }

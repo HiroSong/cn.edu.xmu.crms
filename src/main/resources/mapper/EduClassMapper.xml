@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.dao.EduClassDao" >
 
-    <select id="selectEduClassByClassId"  resultType="EduClass" parameterType="BigInteger">
+    <select id="selectEduClassByClassID"  resultType="EduClass" parameterType="BigInteger">
         SELECT * FROM class WHERE id = #{id}
     </select>
 
-    <select id="selectEduClassIdByCourseId"  resultType="BigInteger" parameterType="BigInteger">
+    <select id="selectEduClassIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT class_id FROM course_class WHERE course_id = #{id}
     </select>
 </mapper>

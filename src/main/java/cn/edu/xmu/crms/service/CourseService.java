@@ -19,7 +19,7 @@ public interface CourseService {
      * @author Hongqiwu
      * @date 2018/11/30 19:41
      */
-    public Course getCourseByCourseId(BigInteger id);
+    public Course getCourseByCourseID(BigInteger id);
     /**
      * 用于根据时间号码查找课程并返回时间实例
      *
@@ -28,7 +28,7 @@ public interface CourseService {
      * @author Hongqiwu
      * @date 2018/11/30 19:41
      */
-    public Deadline getCourseDeadlineByCourseId(BigInteger id);
+    public Deadline getCourseDeadlineByCourseID(BigInteger id);
     /**
      * 用于根据教师号码号码查找课程并返回课程实例
      *
@@ -37,7 +37,7 @@ public interface CourseService {
      * @author Hongqiwu
      * @date 2018/11/30 19:41
      */
-    public List<Course> getCourseByTeacherId(BigInteger id);
+    public List<Course> listCourseByTeacherID(BigInteger id);
     /**
      * 用于根据学生号码号码查找课程并返回课程实例
      *
@@ -46,5 +46,5 @@ public interface CourseService {
      * @author Hongqiwu
      * @date 2018/12/1 13:41
      */
-    public List<Course> getCourseByStudentId(BigInteger id);
+    public List<Course> listCourseByStudentID(BigInteger id);
 }
