@@ -22,33 +22,38 @@ public class CourseServiceImpl implements CourseService {
     CourseDao courseDao;
     @Autowired
     DeadlineDao deadlineDao;
+
     @Override
     public Course getCourseByCourseID(BigInteger id) {
         Course course = courseDao.getCourseByCourseID(id);
         return course;
     }
+
     @Override
     public Deadline getCourseDeadlineByCourseID(BigInteger id) {
         BigInteger deadlineId = deadlineDao.getDeadlineIDByCourseID(id);
         Deadline deadline = deadlineDao.getCourseDeadlineByID(deadlineId);
         return deadline;
     }
+
+    @Override
+    public List<Course> getListByCourseID(List<BigInteger> courseId){
+        List<Course> courseList = new ArrayList<>();
+        for (int i = 0; i < courseId.size(); i++) {
+            courseList.add(courseDao.getCourseByCourseID(courseId.get(i)));
+        }
+        return courseList;
+    }
+
     @Override
     public List<Course> listCourseByTeacherID(BigInteger id) {
         List<BigInteger> courseId = courseDao.listCourseIDByTeacherID(id);
-        List<Course> course = new ArrayList<>();
-        for(int i = 0; i < courseId.size(); i++) {
-            course.add(courseDao.getCourseByCourseID(courseId.get(i)));
-        }
-        return course;
+        return getListByCourseID(courseId);
     }
+
     @Override
     public List<Course> listCourseByStudentID(BigInteger id) {
         List<BigInteger> courseId = courseDao.listCourseIDByStudentID(id);
-        List<Course> course = new ArrayList<>();
-        for(int i = 0; i < courseId.size(); i++) {
-            course.add(courseDao.getCourseByCourseID(courseId.get(i)));
-        }
-        return course;
+        return getListByCourseID(courseId);
     }
 }
