@@ -5,5 +5,8 @@
     <select id="selectStudentByNumber"  resultType="Student" parameterType="BigInteger">
         SELECT * FROM student WHERE number = #{number}
     </select>
+    <select id="selectStudentByID"  resultType="Student" parameterType="BigInteger">
+        SELECT * FROM student WHERE id = #{student_id}
+    </select>
 
 </mapper>

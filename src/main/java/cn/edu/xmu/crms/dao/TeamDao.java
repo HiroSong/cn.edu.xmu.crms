@@ -20,7 +20,7 @@ public interface TeamDao {
      * @author LaiShaopeng
      * @date 2018/12/2 15:21
      */
-    Team selectTeamByTeamId(BigInteger teamID);
+    Team selectTeamByTeamID(BigInteger teamID);
 
     /**
      * 用于通过课程id获取队伍id
@@ -30,7 +30,7 @@ public interface TeamDao {
      * @author LaiShaopeng
      * @date 2018/12/2 15:21
      */
-    List<BigInteger> selectTeamIdByCourseId(BigInteger courseID);
+    List<BigInteger> selectTeamIDListByCourseID(BigInteger courseID);
 
     /**
      * 用于通过小组id获取成员id
@@ -40,7 +40,7 @@ public interface TeamDao {
      * @author LaiShaopeng
      * @date 2018/12/2 15:21
      */
-    List<BigInteger> selectMemberIdByTeamId(BigInteger teamID);
+    List<BigInteger> selectMemberIDListByTeamID(BigInteger teamID);
 
     /**
      * 用于通过小组成员的id获取小组id
@@ -50,7 +50,7 @@ public interface TeamDao {
      * @author LaiShaopeng
      * @date 2018/12/2 15:21
      */
-    List<BigInteger> selectTeamIdByMemberId(BigInteger memberID);
+    List<BigInteger> selectTeamIDListByMemberID(BigInteger memberID);
 
     /**
      * 用于通过组长的id获取小组id
@@ -60,7 +60,7 @@ public interface TeamDao {
      * @author LaiShaopeng
      * @date 2018/12/2 15:21
      */
-    List<BigInteger> selectTeamIdByLeaderId(BigInteger leaderID);
+    List<BigInteger> selectTeamIDListByLeaderID(BigInteger leaderID);
 
     /**
      * 用于通过班级的id获取小组id
@@ -70,5 +70,5 @@ public interface TeamDao {
      * @author LaiShaopeng
      * @date 2018/12/3 15:30
      */
-    List<BigInteger> selectTeamIdByClassId(BigInteger classID);
+    List<BigInteger> selectTeamIDListByClassID(BigInteger classID);
 }
