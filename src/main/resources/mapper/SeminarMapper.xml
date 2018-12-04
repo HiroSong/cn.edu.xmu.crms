@@ -14,38 +14,38 @@
     <!--<select id="方法名"  resultType="返回值类型" parameterType="参数类型">-->
     <!--SELECT * FROM user WHERE username = #{name}    sql语句，用#{}引用参数-->
     <!--</select>-->
-    <select id="selectSeminarBySeminarID"  resultMap="SeminarMapper" parameterType="BigInteger">
+    <select id="selectSeminarBySeminarId"  resultMap="SeminarMapper" parameterType="BigInteger">
         SELECT * FROM seminar WHERE seminar_id = #{seminarID}
     </select>
-    <select id="selectSeminarBySeminarIDAndClassID"  resultMap="SeminarMapper" parameterType="BigInteger">
+    <select id="selectSeminarBySeminarIdAndClassId"  resultMap="SeminarMapper" parameterType="BigInteger">
         SELECT * FROM seminar_class WHERE seminar_id = #{seminarID} AND class_id=#{classID}
     </select>
 
-    <select id="selectRoundIDBySeminarID"  resultType="BigInteger" parameterType="BigInteger">
+    <select id="selectRoundIdBySeminarId"  resultType="BigInteger" parameterType="BigInteger">
         SELECT round_id FROM seminar_round WHERE seminar_id = #{seminarID}
     </select>
-    <select id="selectRoundOrderByRoundID"  resultType="int" parameterType="BigInteger">
+    <select id="selectRoundOrderByRoundId"  resultType="int" parameterType="BigInteger">
         SELECT sequence FROM round WHERE id = #{roundID}
     </select>
-    <select id="selectDeadLineIDBySeminarIDAndClassID" resultType="BigInteger" parameterMap="BigInteger">
+    <select id="selectDeadLineIdBySeminarIdAndClassId" resultType="BigInteger" parameterMap="BigInteger">
         SELECT deadline_id FROM seminar_class WHERE seminar_id=#{seminarID} AND class_id=#{classID}
     </select>
-    <select id="selectPresentationIDListBySeminarID"  resultType="BigInteger" parameterType="BigInteger">
+    <select id="selectPresentationIdListBySeminarId"  resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM presentation WHERE seminar_id = #{seminarID}
     </select>
-    <select id="selectPresentationIDListByTeamID"  resultType="BigInteger" parameterType="BigInteger">
+    <select id="selectPresentationIdListByTeamId"  resultType="BigInteger" parameterType="BigInteger">
         SELECT presentation_id FROM presentation_team WHERE team_id_id = #{teamID}
     </select>
-    <select id="selectTeamIDBySeminarID"  resultType="BigInteger" parameterType="BigInteger">
+    <select id="selectTeamIdBySeminarId"  resultType="BigInteger" parameterType="BigInteger">
         SELECT team_id FROM presentation WHERE seminar_id = #{seminarID}
     </select>
 
-    <select id="selectDeadLineByDeadLineID" resultType="String" parameterMap="BigInteger">
+    <select id="selectDeadLineByDeadLineId" resultType="String" parameterMap="BigInteger">
         SELECT * FROM deadline WHERE id=#{DeadlineID}
     </select>
 
     <insert id="insertPresentation" parameterType="BigInteger" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO presentation(team_id,seminar_id,sequence,ppt_name,ppt,is_showing)
+        INSERT INTO presentation(team_id,seminar_id,order,ppt_name,ppt,is_showing)
         VALUES (#{teamID},#{seminarID},#{order},,,1)
     </insert>
     <delete id="deletePresentation" parameterType="BigInteger">

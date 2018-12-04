@@ -28,97 +28,112 @@ public class TeamServiceImpl implements TeamService {
     StudentDao studentDao;
     @Autowired
     SeminarDao seminarDao;
-
     @Override
-    public List<Student> listMemberByTeamID(BigInteger teamID)
+    public Team getTeamByNumber(BigInteger teamID)
     {
-        List<Student> members=new ArrayList<Student>();
-        List<BigInteger>studentIDList=teamDao.selectMemberIDListByTeamID(teamID);
-        for(int i=0;i<studentIDList.size();i++)
+        Team team=teamDao.selectTeamByTeamId(teamID);
+        if(null==team)
+            return null;
+        else
+            return team;
+    }
+    @Override
+    public List<Student> getStudentsByTeamId(BigInteger teamID)
+    {
+        List<Student> students=new ArrayList<Student>();
+        List<BigInteger>studentIdList=teamDao.selectMemberIdByTeamId(teamID);
+        for(int i=0;i<studentIdList.size();i++)
         {
-            Student student=studentDao.selectStudentByNumber(studentIDList.get(i));
+            Student student=studentDao.selectStudentByNumber(studentIdList.get(i));
             if(null==student)
                 return null;
             else
-                members.add(student);
+                students.add(student);
         }
-        return members;
+        return students;
     }
-
     @Override
-    public List<Team> listTeamByCourseID(BigInteger courseID)
+    public Map<String,Object> getTeamListByCourseId(BigInteger courseID)
     {
-        List<Team> teams=new ArrayList<Team>();
-        List<BigInteger> teamIDList=teamDao.selectTeamIDListByCourseID(courseID);
-        for(int i=0;i<teamIDList.size();i++)
+        Map<String,Object> teamInfo=new HashMap<String,Object>();
+        List<BigInteger> teamIdList=teamDao.selectTeamIdByCourseId(courseID);
+        for(int i=0;i<teamIdList.size();i++)
         {
-            Team team=teamDao.selectTeamByTeamID(teamIDList.get(i));
+            Team team=teamDao.selectTeamByTeamId(teamIdList.get(i));
             if(null==team)
                 return null;
             else
-                teams.add(team);
-        }
-        return teams;
-    }
-
-    @Override
-    public Map<BigInteger,List<Student>> listMemberByCourseID(BigInteger courseID)
-    {
-        Map<BigInteger,List<Student>> listMember=new HashMap<BigInteger, List<Student>>();
-        List<BigInteger> teamIDList=teamDao.selectTeamIDListByCourseID(courseID);
-        for(int i=0;i<teamIDList.size();i++)
-        {
-            Team team=teamDao.selectTeamByTeamID(teamIDList.get(i));
-            List<BigInteger> studentIDList=teamDao.selectMemberIDListByTeamID(teamIDList.get(i));
-            List<Student> students= new ArrayList<Student>();
-            for(int j=0;j<studentIDList.size();j++)
             {
-                Student student=studentDao.selectStudentByID(studentIDList.get(j));
-                students.add(student);
-            }
-            listMember.put(team.getID(),students);
-        }
-        return listMember;
-    }
+                teamInfo.put(team.getTeamNumber()+team.getTeamName(),team);
 
+                List<BigInteger> memberIdList=new ArrayList<BigInteger>();
+                memberIdList=teamDao.selectMemberIdByTeamId(teamIdList.get(i));
+
+                Student leader=studentDao.selectStudentByNumber(team.getTeamLeader());
+                List<Student> members=new ArrayList<Student>();
+                members.add(leader);
+                for(int j=0;j<memberIdList.size();j++) {
+                    Student student = studentDao.selectStudentByNumber(memberIdList.get(j));
+                    members.add(student);
+                }
+                teamInfo.put(team.getTeamNumber()+"成员列表",members);
+            }
+        }
+        return teamInfo;
+    }
     @Override
-    public Team getTeamByCourseIDAndStudentID(BigInteger courseID,BigInteger studentID)
+    public Map<String,Object> getTeamByCourseIdAndStudentId(BigInteger courseID,BigInteger studentID)
     {
         Team team;
+        Map<String,Object> teamInfo=new HashMap<String,Object>();
         Student leader;
-        List<Student> memberIDList;
-        List<BigInteger> teamIDListOfCourse=teamDao.selectTeamIDListByCourseID(courseID);
-        List<BigInteger> teamIDListOfLeader=teamDao.selectTeamIDListByLeaderID(studentID);
-        List<BigInteger> teamIDListOfMember=teamDao.selectTeamIDListByMemberID(studentID);
+        List<Student> memberIdList;
+        List<BigInteger> teamIdListOfCourse=teamDao.selectTeamIdByCourseId(courseID);
+        List<BigInteger> teamIdListOfLeader=teamDao.selectTeamIdByLeaderId(studentID);
+        List<BigInteger> teamIdListOfMember=teamDao.selectTeamIdByMemberId(studentID);
 
-        teamIDListOfLeader.retainAll(teamIDListOfCourse);
-        teamIDListOfMember.retainAll(teamIDListOfCourse);
-        if(teamIDListOfLeader.isEmpty())
+        teamIdListOfLeader.retainAll(teamIdListOfCourse);
+        teamIdListOfMember.retainAll(teamIdListOfCourse);
+        if(teamIdListOfLeader.isEmpty())
         {
-            if (teamIDListOfMember.isEmpty())
+            if (teamIdListOfMember.isEmpty())
                 return null;
-            team=teamDao.selectTeamByTeamID(teamIDListOfMember.get(0));
+            team=teamDao.selectTeamByTeamId(teamIdListOfMember.get(0));
+            memberIdList=this.getStudentsByTeamId(teamIdListOfMember.get(0));
         }
         else
         {
-            team=teamDao.selectTeamByTeamID(teamIDListOfLeader.get(0));
+            team=teamDao.selectTeamByTeamId(teamIdListOfLeader.get(0));
+            memberIdList=this.getStudentsByTeamId(teamIdListOfMember.get(0));
         }
-        return team;
+
+        leader=studentDao.selectStudentByNumber(team.getTeamLeader());
+
+        teamInfo.put(team.getTeamNumber(),team.getTeamNumber());
+        teamInfo.put(team.getTeamName(),team.getTeamName());
+        teamInfo.put("组长",leader.getName());
+        teamInfo.put("组长学号",leader.getNumber());
+        for(int i=0;i<memberIdList.size();i++)
+        {
+            teamInfo.put("成员"+i,memberIdList.get(i).getName());
+            teamInfo.put("成员"+i+"学号",memberIdList.get(i).getNumber());
+        }
+        return teamInfo;
     }
 
     @Override
-    public List<Team> listPresentationTeamBySeminarIDAndClassID(BigInteger seminarID,BigInteger classID)
+    public List<Team> getPresentationTeamListBySeminarIdAndClassId(BigInteger seminarID,BigInteger classID)
     {
-        List<BigInteger> teamIDListBySeminar=seminarDao.selectTeamIDBySeminarID(seminarID);
-        List<BigInteger> teamIDListByClass=teamDao.selectTeamIDListByClassID(classID);
+        List<BigInteger> teamIdListBySeminar=seminarDao.selectTeamIdBySeminarId(seminarID);
+        List<BigInteger> teamIdListByClass=teamDao.selectTeamIdByClassId(classID);
 
-        teamIDListByClass.retainAll(teamIDListBySeminar);
-        if(teamIDListByClass.isEmpty())
+        teamIdListByClass.retainAll(teamIdListBySeminar);
+        if(teamIdListByClass.isEmpty())
             return null;
         List<Team> teams=new ArrayList<Team>();
-        for(int i=0;i<teamIDListByClass.size();i++)
+        for(int i=0;i<teamIdListByClass.size();i++)
         {
-            Team team=teamDao.selectTeamByTeamID(teamIDListByClass.get(i));
+            Team team=teamDao.selectTeamByTeamId(teamIdListByClass.get(i));
             teams.add(team);
         }
         return teams;

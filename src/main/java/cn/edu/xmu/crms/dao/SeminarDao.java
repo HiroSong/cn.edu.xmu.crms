@@ -22,7 +22,7 @@ public interface SeminarDao{
      * @author LaiShaopeng
      * @date 2018/12/2 21:30
      */
-    Seminar selectSeminarBySeminarID(BigInteger seminarID);
+    Seminar selectSeminarBySeminarId(BigInteger seminarID);
 
     /**
      * 用于通过讨论课id获取轮次信息
@@ -32,7 +32,7 @@ public interface SeminarDao{
      * @author LaiShaopeng
      * @date 2018/12/3 8:25
      */
-    BigInteger selectRoundIDBySeminarID(BigInteger seminarID);
+    BigInteger selectRoundIdBySeminarId(BigInteger seminarID);
 
     /**
      * 用于通过讨论课id获取参与展示小组的信息
@@ -42,7 +42,7 @@ public interface SeminarDao{
      * @author LaiShaopeng
      * @date 2018/12/3 8:25
      */
-    List<BigInteger> selectTeamIDBySeminarID(BigInteger seminarID);
+    List<BigInteger> selectTeamIdBySeminarId(BigInteger seminarID);
 
     /**
      * 用于通过轮次id获取轮次信息
@@ -52,7 +52,7 @@ public interface SeminarDao{
      * @author LaiShaopeng
      * @date 2018/12/3 8:25
      */
-    int selectRoundOrderByRoundID(BigInteger roundID);
+    int selectRoundOrderByRoundId(BigInteger roundID);
 
     /**
      * 用于通过讨论课id和班级id获取截止日期id
@@ -63,7 +63,7 @@ public interface SeminarDao{
      * @author LaiShaopeng
      * @date 2018/12/3 8:45
      */
-    BigInteger selectDeadLineIDBySeminarIDAndClassID(BigInteger seminarID,BigInteger classID);
+    BigInteger selectDeadLineIdBySeminarIdAndClassId(BigInteger seminarID,BigInteger classID);
 
     /**
      * 用于通过截止日期id获取截止日期的时间
@@ -73,7 +73,7 @@ public interface SeminarDao{
      * @author LaiShaopeng
      * @date 2018/12/3 8:25
      */
-    List<String> selectDeadLineByDeadLineID(BigInteger DeadlineID);
+    List<String> selectDeadLineByDeadLineId(BigInteger DeadlineID);
 
     /**
      * 用于通过讨论课id和班级id获取讨论课信息
@@ -84,7 +84,7 @@ public interface SeminarDao{
      * @author LaiShaopeng
      * @date 2018/12/3 8:25
      */
-    Seminar selectSeminarBySeminarIDAndClassID(BigInteger seminarID,BigInteger classID);
+    Seminar selectSeminarBySeminarIdAndClassId(BigInteger seminarID,BigInteger classID);
 
     /**
      * 用于向presentation表插入记录

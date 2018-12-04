@@ -11,4 +11,13 @@ import java.math.BigInteger;
 @Mapper
 @Repository
 public interface CourseDao {
+    /**
+     * 用于通过队伍id获取队伍信息
+     *
+     * @param number 课程id
+     * @return Course 课程对象
+     * @author LaiShaopeng
+     * @date 2018/12/2 15:21
+     */
+    Course selectCourseByNumber(BigInteger number);
 }

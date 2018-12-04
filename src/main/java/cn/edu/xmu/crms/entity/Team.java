@@ -7,19 +7,11 @@ import java.math.BigInteger;
  * @date 2018/11/29 10:34
  */
 public class Team {
-
-
-    BigInteger id;
     String teamName;
     String teamNumber;
     BigInteger teamLeader;
     String teamPPTName;
     int state;
-
-    public BigInteger getID() { return id; }
-
-    public void setID(BigInteger id) { this.id = id; }
-
     public String getTeamName() {
         return teamName;
     }

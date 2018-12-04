@@ -20,34 +20,34 @@ public class SeminarServiceImpl implements SeminarService {
     SeminarDao seminarDao;
 
     @Override
-    public int getRoundOrderBySeminarID(BigInteger seminarID)
+    public int getRoundOrderBySeminarId(BigInteger seminarID)
     {
-        BigInteger roundID=seminarDao.selectRoundIDBySeminarID(seminarID);
-        if(null==roundID)
+        BigInteger roundId=seminarDao.selectRoundIdBySeminarId(seminarID);
+        if(null==roundId)
             return -1;
-        else return seminarDao.selectRoundOrderByRoundID(roundID);
+        else return seminarDao.selectRoundOrderByRoundId(roundId);
     }
     @Override
-    public List<String> getDeadLineBySeminarIDAndClassID(BigInteger seminarID, BigInteger classID)
+    public List<String> getDeadLineBySeminarIdAndClassId(BigInteger seminarID, BigInteger classID)
     {
-        BigInteger DDLID=seminarDao.selectDeadLineIDBySeminarIDAndClassID(seminarID,classID);
+        BigInteger DDLID=seminarDao.selectDeadLineIdBySeminarIdAndClassId(seminarID,classID);
         if(null==DDLID) return null;
-        List<String> deadline=seminarDao.selectDeadLineByDeadLineID(DDLID);
+        List<String> deadline=seminarDao.selectDeadLineByDeadLineId(DDLID);
         if(null==deadline) return null;
         return deadline;
     }
 
     @Override
-    public Seminar getSeminarBySeminarIDAndClassID(BigInteger seminarID,BigInteger classID)
+    public Seminar getSeminarBySeminarIdAndClassId(BigInteger seminarID,BigInteger classID)
     {
-        Seminar seminar=seminarDao.selectSeminarBySeminarID(seminarID);
+        Seminar seminar=seminarDao.selectSeminarBySeminarId(seminarID);
         if(null==seminar)
             return null;
-        seminar=seminarDao.selectSeminarBySeminarIDAndClassID(seminarID,classID);
+        seminar=seminarDao.selectSeminarBySeminarIdAndClassId(seminarID,classID);
         if(null==seminar)
             return null;
-        seminar.setRound(this.getRoundOrderBySeminarID(seminarID));
-        seminar.setSeminarStartTime(this.getDeadLineBySeminarIDAndClassID(seminarID,classID).get(0));
+        seminar.setRound(this.getRoundOrderBySeminarId(seminarID));
+        seminar.setSeminarStartTime(this.getDeadLineBySeminarIdAndClassId(seminarID,classID).get(0));
 
         return seminar;
     }
@@ -63,13 +63,13 @@ public class SeminarServiceImpl implements SeminarService {
     @Override
     public boolean modifySeminarRegist(BigInteger seminarID,BigInteger teamID,Integer presentationOrder)
     {
-        if(cancelSeminarRegist(seminarID,teamID))
+        if(cancelSeminarRegit(seminarID,teamID))
             if(registSeminar(seminarID,teamID,presentationOrder))
                 return true;
         return true;
     }
     @Override
-    public boolean cancelSeminarRegist(BigInteger seminarID,BigInteger teamID)
+    public boolean cancelSeminarRegit(BigInteger seminarID,BigInteger teamID)
     {
         int num=seminarDao.deletePresentation(seminarID,teamID);
         if(num<=0)
