@@ -54,7 +54,6 @@ public class UserServiceImpl implements UserService {
         }
         String password = encodeString(user.getPassword()+user.getCredentialsSalt());
         String truePassword = userByNumber.getPassword();
-        System.out.println(password+" "+truePassword);
         if(truePassword.equals(password)){
             String token = encodeString(userByNumber.getCredentialsSalt());
             writeSession(token);
