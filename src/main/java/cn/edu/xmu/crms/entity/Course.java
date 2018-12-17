@@ -1,98 +1,111 @@
 package cn.edu.xmu.crms.entity;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 
 /**
- * @author Hongqiwu
- * @date 2018/11/29
- */
-public class Course implements Serializable {
+ * @ClassName Course
+ * @Author Hongqiwu
+ * @Description 课程
+ **/
+public class Course {
     private BigInteger id;
-    private String name;
-    private String require;
-    private BigDecimal presentationWeight;
-    private BigDecimal questionWeight;
-    private BigDecimal reportWeight;
-    private Integer teamMaxLimit;
-    private Integer teamMinLimit;
+    private BigInteger teacherID;
+    private String courseName;
+    private String introduction;
+    private Integer presentationPercentage;
+    private Integer questionPercentage;
+    private Integer reportPercentage;
+    private Timestamp teamStartTime;
+    private Timestamp teamEndTime;
+    private BigInteger teamMainCourseID;
+    private BigInteger seminarMainCourseID;
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", name=" + name +
-                ", require=" + require +
-                ", presentationWeight=" + presentationWeight +
-                ", questionWeight=" + questionWeight +
-                ", reportWeight=" + reportWeight +
-                ", teamMaxLimit=" + teamMaxLimit +
-                ", teamMinLimit=" + teamMinLimit +
-                '}';
-    }
-
-    public BigInteger getId() {
+    public BigInteger getID() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setID(BigInteger id) {
         this.id = id;
     }
 
+    public BigInteger getTeacherID() {
+        return teacherID;
+    }
+
+    public void setTeacherID(BigInteger teacherID) {
+        this.teacherID = teacherID;
+    }
+
     public String getCourseName() {
-        return name;
+        return courseName;
     }
 
     public void setCourseName(String courseName) {
-        this.name = courseName;
+        this.courseName = courseName;
     }
 
-    public String getCourseRequire() {
-        return require;
+    public String getIntroduction() {
+        return introduction;
     }
 
-    public void setCourseRequire(String courseRequire) {
-        this.require = courseRequire;
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 
-    public BigDecimal getPresentationWeight() {
-        return presentationWeight;
+    public Integer getPresentationPercentage() {
+        return presentationPercentage;
     }
 
-    public void setPresentationWeight(BigDecimal presentationWeight) {
-        this.presentationWeight = presentationWeight;
+    public void setPresentationPercentage(Integer presentationPercentage) {
+        this.presentationPercentage = presentationPercentage;
     }
 
-    public BigDecimal getQuestionWeight() {
-        return questionWeight;
+    public Integer getQuestionPercentage() {
+        return questionPercentage;
     }
 
-    public void setQuestionWeight(BigDecimal questionWeight) {
-        this.questionWeight = questionWeight;
+    public void setQuestionPercentage(Integer questionPercentage) {
+        this.questionPercentage = questionPercentage;
     }
 
-    public BigDecimal getReportWeight() {
-        return reportWeight;
+    public Integer getReportPercentage() {
+        return reportPercentage;
     }
 
-    public void setReportWeight(BigDecimal reportWeight) {
-        this.reportWeight = reportWeight;
+    public void setReportPercentage(Integer reportPercentage) {
+        this.reportPercentage = reportPercentage;
     }
 
-    public Integer getTeamMaxLimit() {
-        return teamMaxLimit;
+    public Timestamp getTeamStartTime() {
+        return teamStartTime;
     }
 
-    public void setTeamMaxLimit(Integer teamMaxLimit) {
-        this.teamMaxLimit = teamMaxLimit;
+    public void setTeamStartTime(Timestamp teamStartTime) {
+        this.teamStartTime = teamStartTime;
     }
 
-    public Integer getTeamMinLimit() {
-        return teamMinLimit;
+    public Timestamp getTeamEndTime() {
+        return teamEndTime;
     }
 
-    public void setTeamMinLimit(Integer teamMinLimit) {
-        this.teamMinLimit = teamMinLimit;
+    public void setTeamEndTime(Timestamp teamEndTime) {
+        this.teamEndTime = teamEndTime;
+    }
+
+    public BigInteger getTeamMainCourseID() {
+        return teamMainCourseID;
+    }
+
+    public void setTeamMainCourseID(BigInteger teamMainCourseID) {
+        this.teamMainCourseID = teamMainCourseID;
+    }
+
+    public BigInteger getSeminarMainCourseID() {
+        return seminarMainCourseID;
+    }
+
+    public void setSeminarMainCourseID(BigInteger seminarMainCourseID) {
+        this.seminarMainCourseID = seminarMainCourseID;
     }
 }
