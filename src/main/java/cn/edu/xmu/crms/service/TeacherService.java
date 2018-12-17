@@ -16,5 +16,5 @@ public interface TeacherService {
      * @author Hongqiwu
      * @date 2018/12/01 15:07
      */
-    public Teacher getTeacherByTeacherID(BigInteger id);
+    Teacher getTeacherByTeacherID(BigInteger id);
 }

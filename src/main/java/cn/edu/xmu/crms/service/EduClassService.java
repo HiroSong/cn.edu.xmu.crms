@@ -18,5 +18,5 @@ public interface EduClassService {
      * @author Hongqiwu
      * @date 2018/12/1 14:05
      */
-    public List<EduClass> listEduClassByCourseID(BigInteger id);
+    List<EduClass> listEduClassByCourseID(BigInteger id);
 }
