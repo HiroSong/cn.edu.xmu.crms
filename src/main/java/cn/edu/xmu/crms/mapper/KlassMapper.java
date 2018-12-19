@@ -42,4 +42,13 @@ public interface KlassMapper {
      * @date 2018/11/30 19:45
      */
     List<BigInteger> listKlassIDByCourseID(BigInteger courseID);
+    /**
+     * 向klass表插入klass对象
+     *
+     * @param klass 课程对象
+     * @return BigInteger 班级ID
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    BigInteger insertKlassByKlass(Klass klass);
 }

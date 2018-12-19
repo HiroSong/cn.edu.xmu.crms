@@ -7,6 +7,11 @@
         SELECT course_id FROM klass_student WHERE student_id = #{studentID}
     </select>
 
+    <!--根据teacherID获取courseID列表-->
+    <select id="listCourseIDByTeacherID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM course WHERE teacher_id = #{teacherID}
+    </select>
+
     <!--根据courseID获取course对象-->
     <select id="getCourseByCourseID"  resultType="Course" parameterType="BigInteger">
         SELECT * FROM course WHERE id = #{courseID}
@@ -42,7 +47,7 @@
         insert into course(teacher_id,course_name,introduction,presentation_percentage,question_percentage,
         report_percentage,team_start_time,team_end_time) VALUE (teacherID,courseName,introduction,
         presentationPercentage,questionPercentage,reportPercentage,teamStartTime,teamEndTime)
-        <selectKey resultType="java.lang.BigInteger" keyProperty="id" >
+        <selectKey resultType="BigInteger" keyProperty="id" >
             SELECT @@IDENTITY AS ID
         </selectKey>
     </insert>

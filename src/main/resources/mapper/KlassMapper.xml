@@ -16,4 +16,14 @@
     <select id="listKlassIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM klass WHERE course_id = #{courseID}
     </select>
+
+    <!--用klass对象插入klass表-->
+    <insert id="insertKlassByKlass" parameterType="Klass">
+        insert into klass(course_id,grade,klass_serial,klass_time,klass_location)
+        VALUE (courseID,grade,klassSerial,klassTime,klassLocation)
+        <selectKey resultType="BigInteger" keyProperty="id" >
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+
 </mapper>

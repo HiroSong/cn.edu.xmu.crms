@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.entity;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @ClassName Course
@@ -20,6 +21,9 @@ public class Course {
     private Timestamp teamEndTime;
     private BigInteger teamMainCourseID;
     private BigInteger seminarMainCourseID;
+    private Integer minMemberNumber;
+    private Integer maxMemberNumber;
+    private List<ConflictCourse> conflictCourses;
 
     public BigInteger getID() {
         return id;
@@ -107,5 +111,29 @@ public class Course {
 
     public void setSeminarMainCourseID(BigInteger seminarMainCourseID) {
         this.seminarMainCourseID = seminarMainCourseID;
+    }
+
+    public Integer getMinMember() {
+        return minMemberNumber;
+    }
+
+    public void setMinMember(Integer minMemberNumber) {
+        this.minMemberNumber = minMemberNumber;
+    }
+
+    public Integer getMaxMember() {
+        return maxMemberNumber;
+    }
+
+    public void setMaxMember(Integer maxMemberNumber) {
+        this.maxMemberNumber = maxMemberNumber;
+    }
+
+    public List<ConflictCourse> getConflictCourses() {
+        return conflictCourses;
+    }
+
+    public void setConflictCourses(List<ConflictCourse> conflictCourses) {
+        this.conflictCourses = conflictCourses;
     }
 }

@@ -6,4 +6,9 @@
     <select id="getTeacherByTeacherID"  resultType="Teacher" parameterType="BigInteger">
         SELECT * FROM teacher WHERE id = #{teacherID}
     </select>
+
+    <!--根据courseID获取teacherID-->
+    <select id="getTeacherIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT teacher_id FROM course WHERE id = #{courseID}
+    </select>
 </mapper>

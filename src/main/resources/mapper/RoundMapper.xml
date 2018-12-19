@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.xmu.crms.mapper.RoundMapper" >
+
+    <!--根据courseID获取roundID列表-->
+    <select id="listRoundIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM round WHERE course_id = #{courseID}
+    </select>
+
+    <!--根据roundID获取round对象-->
+    <select id="getRoundByRoundID"  resultType="Round" parameterType="BigInteger">
+        SELECT * FROM round WHERE id = #{roundID}
+    </select>
+
+</mapper>

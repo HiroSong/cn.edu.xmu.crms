@@ -23,4 +23,12 @@ public interface TeacherMapper {
      * @date 2018/12/01 15:09
      */
     Teacher getTeacherByTeacherID(BigInteger teacherID);
+    /**
+     * 用于通过课程ID获取教师ID
+     * @param courseID 教师id号
+     * @return BigInteger teacherID
+     * @author hongqiwu
+     * @date 2018/12/01 15:09
+     */
+    BigInteger getTeacherIDByCourseID(BigInteger courseID);
 }

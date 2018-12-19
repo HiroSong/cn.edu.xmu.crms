@@ -27,12 +27,25 @@ public class CourseDao {
 
     public List<Course> listCoursesByStudentID(BigInteger studentID) {
         List<Course> courses = new ArrayList<>();
-        List<BigInteger> allCourseID = courseMapper.listCourseIDByStudentID(studentID);
-        if(allCourseID == null) {
+        List<BigInteger> allCoursesID = courseMapper.listCourseIDByStudentID(studentID);
+        if(allCoursesID == null) {
             return null;
         }
-        for(int i = 0; i < allCourseID.size(); i++) {
-            Course course = courseMapper.getCourseByCourseID(allCourseID.get(i));
+        for(int i = 0; i < allCoursesID.size(); i++) {
+            Course course = courseMapper.getCourseByCourseID(allCoursesID.get(i));
+            courses.add(course);
+        }
+        return courses;
+    }
+
+    public List<Course> listCoursesByTeacherID(BigInteger teacherID) {
+        List<Course> courses = new ArrayList<>();
+        List<BigInteger> allCoursesID = courseMapper.listCourseIDByTeacherID(teacherID);
+        if(allCoursesID == null) {
+            return null;
+        }
+        for(int i = 0; i < allCoursesID.size(); i++) {
+            Course course = courseMapper.getCourseByCourseID(allCoursesID.get(i));
             courses.add(course);
         }
         return courses;
