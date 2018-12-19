@@ -3,6 +3,7 @@
 /src/main/resources/application.properties
 mvnw
 mvnw.cmd
+/out/
 
 ### STS ###
 .apt_generated
@@ -26,3 +27,4 @@ mvnw.cmd
 /dist/
 /nbdist/
 /.nb-gradle/
+src/main/java/cn/edu/xmu/crms/config/ShiroConfig.java

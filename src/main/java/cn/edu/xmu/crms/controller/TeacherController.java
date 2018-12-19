@@ -1,10 +1,13 @@
 package cn.edu.xmu.crms.controller;
 
 import cn.edu.xmu.crms.entity.Teacher;
-import org.springframework.data.repository.query.Param;
+import cn.edu.xmu.crms.service.TeacherService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-//import javax.jws.soap.SOAPBinding;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author SongLingbing
@@ -13,10 +16,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/teachers")
 public class TeacherController {
+    @Autowired
+    TeacherService teacherService;
     @GetMapping("/{teacherID}")
-    public Teacher getBaseInfo(@PathVariable("teacherID")
+    public Map<String, Object> getBaseInfo(@PathVariable("teacherID")
                                                String teacherID){
-        return null;
+        BigInteger id = new BigInteger(teacherID);
+        Teacher teacher = teacherService.getTeacherByTeacherID(id);
+        if(teacher == null) {
+            return null;
+        }
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("teacherName",teacher.getName());
+        map.put("teacherNumber",teacher.getNumber());
+        map.put("email",teacher.getEmail());
+        map.put("noticeGap",teacher.getNoticeGap());
+        return map;
     }
 
 }

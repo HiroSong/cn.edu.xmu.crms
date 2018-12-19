@@ -1,5 +1,4 @@
 package cn.edu.xmu.crms.entity;
-
 import java.math.BigInteger;
 
 /**
@@ -7,18 +6,20 @@ import java.math.BigInteger;
  * @date 2018/11/29 10:34
  */
 public class Team {
-
-
-    BigInteger id;
+    BigInteger teamID;
     String teamName;
     String teamNumber;
     BigInteger teamLeader;
     String teamPPTName;
     int state;
 
-    public BigInteger getID() { return id; }
+    public BigInteger getTeamID() {
+        return teamID;
+    }
 
-    public void setID(BigInteger id) { this.id = id; }
+    public void setTeamID(BigInteger teamID) {
+        this.teamID = teamID;
+    }
 
     public String getTeamName() {
         return teamName;

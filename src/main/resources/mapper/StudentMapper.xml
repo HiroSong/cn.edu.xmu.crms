@@ -9,4 +9,11 @@
         SELECT * FROM student WHERE id = #{student_id}
     </select>
 
+    <select id="listStudentIDByClassID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT student_id FROM class_student WHERE class_id = #{id}
+    </select>
+
+    <select id="getStudentByStudentID"  resultType="Student" parameterType="BigInteger">
+        SELECT * FROM student WHERE id = #{id}
+    </select>
 </mapper>
