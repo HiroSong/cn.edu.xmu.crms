@@ -1,44 +1,46 @@
 package cn.edu.xmu.crms.dao;
 
+
 import cn.edu.xmu.crms.entity.Student;
-import org.apache.ibatis.annotations.Mapper;
+import cn.edu.xmu.crms.mapper.StudentMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * @author SongLingbing
- * @date 2018/11/29 12:35
- */
-@Mapper
+ * @ClassName StudentDao
+ * @Author Hongqiwu
+ **/
+
 @Repository
-public interface StudentDao {
-    /**
-      * 用于通过学生学号获取学生信息
-      *
-      * @param number 学号
-      * @return Student 学生对象
-      * @author SongLingbing
-      * @date 2018/11/29 22:36
-      */
-    Student selectStudentByNumber(BigInteger number);
-    /**
-     * 用于通过学生id获取学生信息
-     *
-     * @param id 学号
-     * @return Student 学生对象
-     * @author hongqiwu
-     * @date 2018/12/01 14:32
-     */
-    Student getStudentByStudentID(BigInteger id);
-    /**
-     * 用于通过班级号获取学生号列表
-     *
-     * @param id 班级号
-     * @return ArrayList<> 学生号列表
-     * @author Hongqiwu
-     * @date 2018/12/01 14:32
-     */
-    List<BigInteger> listStudentIDByClassID(BigInteger id);
+public class StudentDao {
+    @Autowired
+    StudentMapper studentMapper;
+
+    public Student getStudentByStudentID(BigInteger studentID) {
+        return studentMapper.getStudentByStudentID(studentID);
+    }
+
+    public List<Student> listStudentsByCourseAndTeamID(BigInteger courseID, BigInteger teamID) {
+        List<Student> students = new ArrayList<>();
+        List<BigInteger> studentsID = studentMapper.listStudentsIDByCourseAndTeamID(courseID, teamID);
+        for(int i = 0; i < studentsID.size(); i++) {
+            students.add(studentMapper.getStudentByStudentID(studentsID.get(i)));
+        }
+        return students;
+    }
+
+    public List<Student> listNoTeamStudentsByCourseID(BigInteger courseID) {
+        List<Student> students = new ArrayList<>();
+        List<BigInteger> noTeamStudentsID = studentMapper.listNoTeamStudentsIDByCourseID(courseID);
+        for(int i = 0; i < noTeamStudentsID.size(); i++) {
+            Student noTeamStudent = studentMapper.getStudentByStudentID(noTeamStudentsID.get(i));
+            students.add(noTeamStudent);
+        }
+        return students;
+    }
 }

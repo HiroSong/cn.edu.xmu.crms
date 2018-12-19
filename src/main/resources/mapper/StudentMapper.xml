@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.xmu.crms.dao.StudentDao" >
+<mapper namespace="cn.edu.xmu.crms.mapper.StudentMapper" >
 
-    <select id="selectStudentByNumber"  resultType="Student" parameterType="BigInteger">
-        SELECT * FROM student WHERE number = #{number}
-    </select>
-
-    <select id="listStudentIDByClassID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT student_id FROM class_student WHERE class_id = #{id}
-    </select>
-
+    <!--根据studentID获取student对象-->
     <select id="getStudentByStudentID"  resultType="Student" parameterType="BigInteger">
-        SELECT * FROM student WHERE id = #{id}
+        SELECT * FROM student WHERE id = #{studentID}
+    </select>
+
+    <!--根据courseID和teamID获取studentID列表-->
+    <select id="listStudentsIDByCourseAndTeamID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT student_id FROM klass_student WHERE course_id = #{param1} AND team_id = #{param2}
+    </select>
+
+    <!--根据courseID获取未组队学生ID列表-->
+    <select id="listNoTeamStudentsIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT student_id FROM klass_student WHERE course_id = #{courseID} AND team_id = NULL
     </select>
 </mapper>
