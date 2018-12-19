@@ -14,24 +14,5 @@ import java.util.Map;
  * @date 2018/11/29 10:17
  */
 @RestController
-@RequestMapping("/api/teachers")
 public class TeacherController {
-    @Autowired
-    TeacherService teacherService;
-    @GetMapping("/{teacherID}")
-    public Map<String, Object> getBaseInfo(@PathVariable("teacherID")
-                                               String teacherID){
-        BigInteger id = new BigInteger(teacherID);
-        Teacher teacher = teacherService.getTeacherByTeacherID(id);
-        if(teacher == null) {
-            return null;
-        }
-        Map<String, Object> map = new HashMap<>(4);
-        map.put("teacherName",teacher.getName());
-        map.put("teacherNumber",teacher.getNumber());
-        map.put("email",teacher.getEmail());
-        map.put("noticeGap",teacher.getNoticeGap());
-        return map;
-    }
-
 }

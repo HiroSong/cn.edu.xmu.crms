@@ -2,23 +2,49 @@ package cn.edu.xmu.crms.entity;
 import java.math.BigInteger;
 
 /**
- * @author SongLingbing
- * @date 2018/11/29 10:34
- */
+ * @ClassName Team
+ * @Author Hongqiwu
+ * @Description 组队
+ **/
 public class Team {
-    BigInteger teamID;
-    String teamName;
-    String teamNumber;
-    BigInteger teamLeader;
-    String teamPPTName;
-    int state;
+    private BigInteger id;
+    private BigInteger klassID;
+    private BigInteger courseID;
+    private BigInteger leaderID;
+    private String teamName;
+    private Integer teamSerial;
+    private Integer status;
 
-    public BigInteger getTeamID() {
-        return teamID;
+    public BigInteger getID() {
+        return id;
     }
 
-    public void setTeamID(BigInteger teamID) {
-        this.teamID = teamID;
+    public void setID(BigInteger id) {
+        this.id = id;
+    }
+
+    public BigInteger getKlassID() {
+        return klassID;
+    }
+
+    public void setKlassID(BigInteger klassID) {
+        this.klassID = klassID;
+    }
+
+    public BigInteger getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(BigInteger courseID) {
+        this.courseID = courseID;
+    }
+
+    public BigInteger getLeaderID() {
+        return leaderID;
+    }
+
+    public void setLeaderID(BigInteger leaderID) {
+        this.leaderID = leaderID;
     }
 
     public String getTeamName() {
@@ -29,36 +55,19 @@ public class Team {
         this.teamName = teamName;
     }
 
-    public String getTeamNumber() {
-        return teamNumber;
+    public Integer getTeamSerial() {
+        return teamSerial;
     }
 
-    public void setTeamNumber(String teamNumber) {
-        this.teamNumber = teamNumber;
+    public void setTeamSerial(Integer teamSerial) {
+        this.teamSerial = teamSerial;
     }
 
-    public BigInteger getTeamLeader() {
-        return teamLeader;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setTeamLeader(BigInteger teamLeader) {
-        this.teamLeader = teamLeader;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
-
-    public String getTeamPPTName() {
-        return teamPPTName;
-    }
-
-    public void setTeamPPTName(String teamPPTName) {
-        this.teamPPTName = teamPPTName;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
 }

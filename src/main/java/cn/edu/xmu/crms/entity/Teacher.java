@@ -6,4 +6,5 @@ package cn.edu.xmu.crms.entity;
  */
 public class Teacher extends User {
     private String role = "teacher";
+    private String teacherName = name;
 }

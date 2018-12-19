@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.xmu.crms.mapper.KlassMapper" >
+
+    <!--根据studentID和courseID获取klassID-->
+    <select id="getKlassIDByStudentAndCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT klass_id FROM klass_student WHERE studentid = #{param1} AND course_id = #{param2}
+    </select>
+
+    <!--根据klassID获取Klass对象-->
+    <select id="getKlassByKlassID"  resultType="Klass" parameterType="BigInteger">
+        SELECT * FROM klass WHERE id = #{klassID}
+    </select>
+
+    <!--根据courseID获取KlassID列表-->
+    <select id="listKlassIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM klass WHERE course_id = #{courseID}
+    </select>
+</mapper>

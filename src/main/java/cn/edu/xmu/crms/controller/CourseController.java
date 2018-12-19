@@ -1,15 +1,14 @@
 package cn.edu.xmu.crms.controller;
 
-import cn.edu.xmu.crms.entity.Course;
-import cn.edu.xmu.crms.entity.Deadline;
-import cn.edu.xmu.crms.service.CourseService;
+import cn.edu.xmu.crms.dao.CourseDao;
+import cn.edu.xmu.crms.entity.*;
+import cn.edu.xmu.crms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,70 +16,96 @@ import java.util.Map;
  * @date 2018/11/30 20:09
  */
 @RestController
-@RequestMapping("/api")
 public class CourseController {
     @Autowired
     CourseService courseService;
-    @GetMapping("/teachers/{teacherID}/courses")
-    public Map<String, Object> getTeacherCourse(@PathVariable("teacherID")
-                                                            String teacherID) {
-        BigInteger ID = new BigInteger(teacherID);
-        List<Course> course = courseService.listCourseByTeacherID(ID);
-        if(course == null) {
-            return null;
-        }
-        Map<String, Object> map = new HashMap<>(1);
-        List<Map<String,Object>> courseList = new ArrayList<>();
-        for(int i = 0; i < course.size(); i++) {
-            Map<String, Object> courseMap = new HashMap<>(2);
-            courseMap.put("courseID",course.get(i).getId());
-            courseMap.put("courseName",course.get(i).getCourseName());
-            courseList.add(courseMap);
-        }
-        map.put("courseList",courseList);
-        return  map;
+    @Autowired
+    CourseDao courseDao;
+    @Autowired
+    TeamService teamService;
+    @Autowired
+    KlassService klassService;
+    @Autowired
+    SeminarService seminarService;
+
+    @GetMapping("/course")
+    public List<Map<String, Object>> listCoursesInfo() {
+        BigInteger studentID = new BigInteger("0");
+        //studentID是用jwt获取
+        return courseService.listCoursesInfoByStudentID(studentID);
     }
-    @GetMapping("/teachers/courses/{courseID}")
-    public Map<String, Object> getCourseInfo(@PathVariable("courseID")
-                                             String courseID) {
-        BigInteger id = new BigInteger(courseID);
-        Course course = courseService.getCourseByCourseID(id);
-        Deadline deadline = courseService.getCourseDeadlineByCourseID(id);
-        if(course == null) {
-            return null;
-        }
-        Map<String, Object> map = new HashMap<>(5);
-        Map<String, Object> scoreRule = new HashMap<>(3);
-        Map<String, Object> teamLimit = new HashMap<>(2);
-        scoreRule.put("presentationWeight",course.getPresentationWeight());
-        scoreRule.put("questionWeight",course.getQuestionWeight());
-        scoreRule.put("reportWeight",course.getReportWeight());
-        teamLimit.put("maxNumber",course.getTeamMaxLimit());
-        teamLimit.put("minNumber",course.getTeamMinLimit());
-        map.put("courseRequire",course.getCourseRequire());
-        map.put("scoreRule",scoreRule);
-        map.put("teamLimit",teamLimit);
-        map.put("teamStartTime",deadline.getBeginTime());
-        map.put("teamEndTime",deadline.getEndTime());
-        return map;
+
+    @GetMapping("/course/{courseID}")
+    public Map<String, Object> getCourseInfoByCourseID(@PathVariable("courseID")
+                                                       BigInteger courseID) {
+       return courseService.getCourseInfoByCourseID(courseID);
     }
-    @GetMapping("/students/{studentID}/courses")
-    public Map<String, Object> getStudentCourse(@PathVariable("studentID")
-                                                        String studentID) {
-        BigInteger id = new BigInteger(studentID);
-        List<Course> course = courseService.listCourseByStudentID(id);
-        if(course == null) {
-            return null;
-        }
-        Map<String, Object> map = new HashMap<>(1);
-        List<Map<String,Object>> courseList = new ArrayList<>();
-        for(int i = 0; i < course.size(); i++) {
-            Map<String, Object> courseMap = new HashMap<>(2);
-            courseMap.put("courseID",course.get(i).getId());
-            courseMap.put("courseName",course.get(i).getCourseName());
-            courseList.add(courseMap);
-        }
-        map.put("courseList",courseList);
-        return  map;
+
+    @DeleteMapping("/course/{courseID}")
+    public void deleteCourseByCourseID(@PathVariable("courseID")
+                                                   BigInteger courseID) {
+        courseDao.deleteCourseInfoByCourseID(courseID);
+    }
+
+    @PostMapping("/course")
+    public BigInteger createNewCourse() {
+        //teacherID等是用jwt获取
+        //还缺少插入conflictCourses
+        BigInteger teacherID = new BigInteger("0");
+        String courseName = "";
+        String introduction = "";
+        Timestamp teamStartTime = new Timestamp(0);
+        Timestamp teamEndTime = new Timestamp(0);
+        Integer presentationPercentage = 0;
+        Integer questionPercentage = 0;
+        Integer reportPercentage = 0;
+        Course newCourse = new Course();
+
+        newCourse.setTeacherID(teacherID);
+        newCourse.setCourseName(courseName);
+        newCourse.setTeamStartTime(teamStartTime);
+        newCourse.setTeamEndTime(teamEndTime);
+        newCourse.setPresentationPercentage(presentationPercentage);
+        newCourse.setQuestionPercentage(questionPercentage);
+        newCourse.setReportPercentage(reportPercentage);
+        BigInteger courseID = courseDao.insertCourseByCourse(newCourse);
+        return courseID;
+    }
+
+    @GetMapping("/course/{courseID}/team")
+    public List<Map<String, Object>> listTeamsInfoByCourseID(@PathVariable("courseID")
+                                                               BigInteger courseID) {
+        return teamService.listTeamsInfoByCourseID(courseID);
+    }
+
+    @GetMapping("/course/{courseID}/myTeam")
+    public Map<String, Object> getMyTeamInfoByCourseAndStudentID(@PathVariable("courseID")
+                                                                     BigInteger courseID) {
+        BigInteger studentID = new BigInteger("0");
+        return teamService.getTeamInfoByCourseAndStudentID(courseID, studentID);
+    }
+
+    @GetMapping("/course/{courseID}/noTeam")
+    public List<Map<String, Object>> listNoTeamStudentsInfoByCourseID(@PathVariable("courseID")
+                                                                         BigInteger courseID) {
+        return teamService.listNoTeamStudentsInfoByCourseID(courseID);
+    }
+
+    @GetMapping("/course/{courseID}/class")
+    public List<Map<String, Object>> listKlassInfoByCourseID(@PathVariable("courseID")
+                                                                              BigInteger courseID) {
+        return klassService.listKlassInfoByCourseID(courseID);
+    }
+
+    @GetMapping("/course/{courseID}/teamshare")
+    public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID")
+                                                                     BigInteger courseID) {
+        return courseService.listMainAndSubCoursesInfoByCourseID(courseID);
+    }
+
+    @GetMapping("/course/{courseID}/seminarshare")
+    public List<Map<String, Object>> listAllSeminarShareByCourseID(@PathVariable("courseID")
+                                                                        BigInteger courseID) {
+        return seminarService.listMainAndSubCoursesInfoByCourseID(courseID);
     }
 }

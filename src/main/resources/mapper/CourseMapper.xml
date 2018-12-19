@@ -1,16 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.xmu.crms.dao.CourseDao" >
+<mapper namespace="cn.edu.xmu.crms.mapper.CourseMapper" >
 
-    <select id="getCourseByCourseID"  resultType="Course" parameterType="BigInteger">
-        SELECT * FROM course WHERE id = #{id}
-    </select>
-
-    <select id="listCourseIDByTeacherID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT course_id FROM teacher_course WHERE teacher_id = #{id}
-    </select>
-
+    <!--根据studentID获取courseID列表-->
     <select id="listCourseIDByStudentID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT course_id FROM student_course WHERE student_id = #{id}
+        SELECT course_id FROM klass_student WHERE student_id = #{studentID}
     </select>
+
+    <!--根据courseID获取course对象-->
+    <select id="getCourseByCourseID"  resultType="Course" parameterType="BigInteger">
+        SELECT * FROM course WHERE id = #{courseID}
+    </select>
+
+    <!--根据courseID获取course最少人数限制-->
+    <select id="getCourseMinMemberByCourseID"  resultType="Integer" parameterType="BigInteger">
+        SELECT min_member FROM course_member_limit_strategy WHERE course_id = #{courseID}
+    </select>
+
+    <!--根据courseID获取course最多人数限制-->
+    <select id="getCourseMaxMemberByCourseID"  resultType="Integer" parameterType="BigInteger">
+        SELECT max_member FROM course_member_limit_strategy WHERE course_id = #{courseID}
+    </select>
+
+    <!--根据courseID在共享组队表获取subCourseID-->
+    <select id="listSubCoursesIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT sub_course_id FROM share_team_application WHERE main_course_id = #{courseID} AND status = 1
+    </select>
+
+    <!--根据courseID在共享组队表获取mainCourseID-->
+    <select id="listMainCoursesIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT main_course_id FROM share_team_application WHERE sub_course_id = #{courseID} AND status = 1
+    </select>
+
+    <!--根据main和subCourseID在共享组队表获取shareID-->
+    <select id="getTeamShareIDByMainAndSubCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM share_team_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
+    </select>
+
+    <!--用course对象插入course表-->
+    <insert id="insertCourseByCourse" parameterType="Course">
+        insert into course(teacher_id,course_name,introduction,presentation_percentage,question_percentage,
+        report_percentage,team_start_time,team_end_time) VALUE (teacherID,courseName,introduction,
+        presentationPercentage,questionPercentage,reportPercentage,teamStartTime,teamEndTime)
+        <selectKey resultType="java.lang.BigInteger" keyProperty="id" >
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+
+    <!--根据courseID删除course表内信息-->
+    <delete id="deleteCourseByCourseID" parameterType="BigInteger">
+        DELETE FROM course WHERE id = #{courseID}
+    </delete>
+
+    <!--根据courseID删除与course有关表的信息-->
+    <delete id="deleteConflictCourseStrategyByCourseID" parameterType="BigInteger">
+        DELETE FROM conflict_course_strategy WHERE course_1_id = #{courseID} OR course_2_id = #{courseID}
+    </delete>
+    <delete id="deleteCourseInKlassByCourseID" parameterType="BigInteger">
+        DELETE FROM klass WHERE course_id = #{courseID}
+    </delete>
+    <delete id="deleteCourseInKlassStudentByCourseID" parameterType="BigInteger">
+        DELETE FROM klass_student WHERE course_id = #{courseID}
+    </delete>
+    <delete id="deleteCourseInRoundByCourseID" parameterType="BigInteger">
+        DELETE FROM round WHERE course_id = #{courseID}
+    </delete>
+    <delete id="deleteCourseInSeminarByCourseID" parameterType="BigInteger">
+        DELETE FROM seminar WHERE course_id = #{courseID}
+    </delete>
+    <delete id="deleteCourseInTeamByCourseID" parameterType="BigInteger">
+        DELETE FROM team WHERE course_id = #{courseID}
+    </delete>
+    <delete id="deleteCourseInTeamStrategyByCourseID" parameterType="BigInteger">
+        DELETE FROM team_strategy WHERE course_id = #{courseID}
+    </delete>
+    <delete id="deleteCourseMemberLimitStrategyByCourseID" parameterType="BigInteger">
+        DELETE FROM course_member_limit_strategy WHERE course_id = #{courseID}
+    </delete>
 </mapper>

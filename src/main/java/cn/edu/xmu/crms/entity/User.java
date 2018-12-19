@@ -8,24 +8,43 @@ import java.math.BigInteger;
  */
 public class User {
     protected BigInteger id;
-    protected BigInteger number;
+    protected String account;
+    protected String password;
+    protected Integer beActive;
     protected String name;
     protected String email;
-    protected String password;
-    protected Integer noticeGap;
     protected String role;
-    private static final String SALT = "CrmsJingLiProject";
 
     public BigInteger getID() {
         return id;
     }
 
-    public BigInteger getNumber() {
-        return number;
+    public void setID(BigInteger id) {
+        this.id = id;
     }
 
-    public void setNumber(BigInteger number) {
-        this.number = number;
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getBeActive() {
+        return beActive;
+    }
+
+    public void setBeActive(Integer beActive) {
+        this.beActive = beActive;
     }
 
     public String getName() {
@@ -44,31 +63,11 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Integer getNoticeGap() {
-        return noticeGap;
-    }
-
-    public void setNoticeGap(Integer noticeGap) {
-        this.noticeGap = noticeGap;
-    }
-
     public String getRole() {
         return role;
     }
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public String getCredentialsSalt(){
-        return number+SALT;
     }
 }
