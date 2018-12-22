@@ -32,6 +32,11 @@
         SELECT sub_course_id FROM share_team_application WHERE main_course_id = #{courseID} AND status = 1
     </select>
 
+    <!--根据teamID查询courseID-->
+    <select id="getCourseIDByTeamID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT course_id FROM team WHERE id = #{teamID}
+    </select>
+
     <!--根据courseID在共享组队表获取mainCourseID-->
     <select id="listMainCoursesIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT main_course_id FROM share_team_application WHERE sub_course_id = #{courseID} AND status = 1

@@ -16,4 +16,41 @@
     <select id="listTeamsIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM team WHERE course_id = #{courseID}
     </select>
+
+    <!--添加新成员进入队伍-->
+    <insert id="insertStudentIntoTeamBy4ID" parameterType="BigInteger">
+        INSERT INTO klass_student(klass_id,student_id,course_id,team_id)
+        VALUE(#{param1},#{param2},#{param3},#{param4})
+    </insert>
+
+    <!--发起额外组队申请-->
+    <insert id="insertApplicationByTeamValid" parameterType="TeamValidApplication">
+        INSERT INTO team_valid_application(team_id,teacher_id,reason,status)
+        VALUE (#{teamID},#{teacherID},#{reason},null)
+    </insert>
+
+    <!--根据TeamID删除小组-->
+    <delete id="deleteTeamByTeamID" parameterType="BigInteger">
+        DELETE FROM team WHERE id = #{teamID}
+    </delete>
+
+    <!--根据teamID和studentID在队伍中删除成员-->
+    <delete id="deleteStudentFromTeamByTeamAndStudentID" parameterType="BigInteger">
+        DELETE FROM klass_student WHERE team_id = #{param1} AND student_id = #{param2}
+    </delete>
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
+    </select>
+
+    <!--根据teamID查询applicationID-->
+    <select id="getApplicationIDByTeamID" parameterType="BigInteger" resultType="BigInteger">
+        SELECT id FROM  team_valid_application WHERE team_id = #{teamID} AND status = null
+    </select>
+
+    <!--教师同意小组合法申请-->
+    <update id="updateValidApplicationByTeamID" parameterType="BigInteger">
+        UPDATE team_valid_application SET status = 1 WHERE team_id = #{teamID} AND status = null
+    </update>
 </mapper>

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -30,5 +32,15 @@ public class TeacherDao {
     public BigInteger insertTeacherByTeacher(Teacher teacher) {
         teacherMapper.insertTeacherByTeacher(teacher);
         return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getAccount(), teacher.getPassword());
+    }
+
+    public List<Teacher> listAllTeachers() {
+        List<BigInteger> allTeachersID = teacherMapper.listAllTeachersID();
+        List<Teacher> teachers = new ArrayList<>();
+        for(int i = 0 ;i < allTeachersID.size(); i++) {
+            Teacher teacher = teacherMapper.getTeacherByTeacherID(allTeachersID.get(i));
+            teachers.add(teacher);
+        }
+        return teachers;
     }
 }

@@ -14,7 +14,42 @@ public class TeamValidApplication {
     private BigInteger teacherID;
     private String reason;
     private Integer status;
+    private String requestType;
+    private BigInteger courseID;
+    private BigInteger klassID;
+    private BigInteger leaderID;
 
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
+
+    public BigInteger getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(BigInteger courseID) {
+        this.courseID = courseID;
+    }
+
+    public BigInteger getKlassID() {
+        return klassID;
+    }
+
+    public void setKlassID(BigInteger klassID) {
+        this.klassID = klassID;
+    }
+
+    public BigInteger getLeaderID() {
+        return leaderID;
+    }
+
+    public void setLeaderID(BigInteger leaderID) {
+        this.leaderID = leaderID;
+    }
 
     public BigInteger getID() {
         return id;

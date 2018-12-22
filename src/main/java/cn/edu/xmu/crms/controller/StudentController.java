@@ -55,6 +55,6 @@ public class StudentController {
 
     @PutMapping("/student/active")
     public Map<String, Object> activateStudent(@RequestBody Student student) {
-        return studentService.updateStudentActiveByStudentAccount(student);
+        return studentService.updateStudentActiveByStudentID(student);
     }
 }

@@ -46,8 +46,8 @@ public class StudentService {
 
     public Map<String, Object> resetStudentPasswordByStudentID(BigInteger studentID) {
         Map<String, Object> map = new HashMap<>(4);
-        Student student = studentMapper.getStudentByStudentID(studentID);
         studentMapper.resetStudentPasswordByStudentID(studentID);
+        Student student = studentMapper.getStudentByStudentID(studentID);
         map.put("id",student.getID());
         map.put("account",student.getAccount());
         map.put("name",student.getStudentName());
@@ -59,7 +59,7 @@ public class StudentService {
         studentMapper.deleteStudentByStudentID(studentID);
     }
 
-    public Map<String, Object> updateStudentActiveByStudentAccount(Student student) {
+    public Map<String, Object> updateStudentActiveByStudentID(Student student) {
         studentMapper.updateStudentActiveByStudentID(student);
         Map<String, Object> map = new HashMap<>(3);
         map.put("id",student.getID());
