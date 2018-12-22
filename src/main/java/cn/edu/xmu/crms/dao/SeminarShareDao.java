@@ -23,6 +23,8 @@ public class SeminarShareDao {
     }
 
     public BigInteger insertSeminarShareByTeamShare(ShareSeminarApplication seminarShare) {
-        return seminarShareMapper.insertSeminarShareBySeminarShare(seminarShare);
+        seminarShareMapper.insertSeminarShareBySeminarShare(seminarShare);
+        return seminarShareMapper.getTeamShareIDByMainAndSubCourseID(seminarShare.getMainCourseID(),
+                seminarShare.getSubCourseID());
     }
 }

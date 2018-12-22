@@ -25,9 +25,18 @@ public interface TeamShareMapper {
      * 向teamShare表插入teamShare对象
      *
      * @param teamShare 共享组队对象
-     * @return BigInteger 共享组队ID
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    BigInteger insertTeamShareByTeamShare(ShareTeamApplication teamShare);
+    void insertTeamShareByTeamShare(ShareTeamApplication teamShare);
+    /**
+     * 通过主课程和从课程ID查找共享课程ID
+     *
+     * @param mainCourseID 主课程ID
+     * @param subCourseID 从课程ID
+     * @return BigInteger 共享课程ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    BigInteger getTeamShareIDByMainAndSubCourseID(BigInteger mainCourseID, BigInteger subCourseID);
 }

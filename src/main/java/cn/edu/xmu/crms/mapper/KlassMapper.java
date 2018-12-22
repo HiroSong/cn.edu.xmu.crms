@@ -51,4 +51,44 @@ public interface KlassMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger insertKlassByKlass(Klass klass);
+    /**
+     * 通过klassID删除klass表信息
+     *
+     * @param klassID 班级ID
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    void deleteKlassByKlassID(BigInteger klassID);
+    /**
+     * 通过klassID删除其他有关klass的表信息
+     *
+     * @param klassID 班级ID
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    void deleteKlassRoundByKlassID(BigInteger klassID);
+    /**
+     * 通过klassID删除其他有关klass的表信息
+     *
+     * @param klassID 班级ID
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    void deleteKlassSeminarByKlassID(BigInteger klassID);
+    /**
+     * 通过klassID删除其他有关klass的表信息
+     *
+     * @param klassID 班级ID
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    void deleteKlassStudentByKlassID(BigInteger klassID);
+    /**
+     * 通过klassID删除其他有关klass的表信息
+     *
+     * @param klassID 班级ID
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    void deleteKlassInTeamByKlassID(BigInteger klassID);
 }

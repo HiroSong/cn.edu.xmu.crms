@@ -63,10 +63,10 @@ public class TeamShareService {
             Map<String, Object> receiveMap = new HashMap<>(3);
             masterMap.put("masterCourseID",mainCourse.getID());
             masterMap.put("masterCourseName",mainCourse.getCourseName());
-            masterMap.put("teacherName",mainTeacher.getName());
+            masterMap.put("teacherName",mainTeacher.getTeacherName());
             receiveMap.put("receiveCourseID",courseID);
             receiveMap.put("receiveCourseName",course.getCourseName());
-            receiveMap.put("teacherName",teacher.getName());
+            receiveMap.put("teacherName",teacher.getTeacherName());
             BigInteger shareID = courseMapper.getTeamShareIDByMainAndSubCourseID(mainCourse.getID(), courseID);
             mainCourseMap.put("teamShareID",shareID);
             mainCourseMap.put("masterCourse",masterMap);
@@ -81,10 +81,10 @@ public class TeamShareService {
             Map<String, Object> receiveMap = new HashMap<>(3);
             masterMap.put("masterCourseID",courseID);
             masterMap.put("masterCourseName",course.getCourseName());
-            masterMap.put("teacherName",teacher.getName());
+            masterMap.put("teacherName",teacher.getTeacherName());
             receiveMap.put("receiveCourseID",subCourse.getID());
             receiveMap.put("receiveCourseName",subCourse.getCourseName());
-            receiveMap.put("teacherName",subTeacher.getName());
+            receiveMap.put("teacherName",subTeacher.getTeacherName());
             BigInteger shareID = courseMapper.getTeamShareIDByMainAndSubCourseID(courseID, subCourse.getID());
             subCourseMap.put("teamShareID",shareID);
             subCourseMap.put("masterCourse",masterMap);

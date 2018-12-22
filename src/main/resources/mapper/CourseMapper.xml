@@ -45,11 +45,8 @@
     <!--用course对象插入course表-->
     <insert id="insertCourseByCourse" parameterType="Course">
         insert into course(teacher_id,course_name,introduction,presentation_percentage,question_percentage,
-        report_percentage,team_start_time,team_end_time) VALUE (teacherID,courseName,introduction,
-        presentationPercentage,questionPercentage,reportPercentage,teamStartTime,teamEndTime)
-        <selectKey resultType="BigInteger" keyProperty="id" >
-            SELECT @@IDENTITY AS ID
-        </selectKey>
+        report_percentage,team_start_time,team_end_time) VALUE (#{teacherID},#{courseName},#{introduction},
+        #{presentationPercentage},#{questionPercentage},#{reportPercentage},#{teamStartTime},#{teamEndTime})
     </insert>
 
     <!--根据courseID删除course表内信息-->

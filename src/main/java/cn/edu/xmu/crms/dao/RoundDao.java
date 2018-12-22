@@ -1,6 +1,7 @@
 package cn.edu.xmu.crms.dao;
 
 import cn.edu.xmu.crms.entity.Round;
+import cn.edu.xmu.crms.entity.RoundScore;
 import cn.edu.xmu.crms.mapper.RoundMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,5 +29,15 @@ public class RoundDao {
             rounds.add(round);
         }
         return rounds;
+    }
+
+    public List<RoundScore> listRoundScoreByRoundID(BigInteger roundID) {
+        List<BigInteger> teamsID = roundMapper.listTeamIDByRoundID(roundID);
+        List<RoundScore> roundScores = new ArrayList<>();
+        for(int i = 0; i < teamsID.size(); i++) {
+            RoundScore roundScore = roundMapper.getRoundScoreByRoundAndTeamID(roundID,teamsID.get(i));
+            roundScores.add(roundScore);
+        }
+        return roundScores;
     }
 }

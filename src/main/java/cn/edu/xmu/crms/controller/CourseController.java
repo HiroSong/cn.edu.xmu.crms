@@ -118,14 +118,14 @@ public class CourseController {
 
     @PostMapping("/course/{courseID}/teamsharerequest")
     public BigInteger createTeamShareRequestByCourseID(@PathVariable("courseID") BigInteger mainCourseID,
-                                                       @RequestBody BigInteger subCourseID) {
-        return teamShareService.createTeamShareRequestByCourseID(mainCourseID, subCourseID);
+                                                       @RequestBody Map<String, BigInteger> subCourseID) {
+        return teamShareService.createTeamShareRequestByCourseID(mainCourseID, subCourseID.get("subCourseID"));
     }
 
     @PostMapping("/course/{courseID}/seminarsharerequest")
     public BigInteger createSeminarShareRequestByCourseID(@PathVariable("courseID") BigInteger mainCourseID,
-                                                       @RequestBody BigInteger subCourseID) {
-        return seminarShareService.createSeminarShareRequestByCourseID(mainCourseID, subCourseID);
+                                                       @RequestBody Map<String, BigInteger> subCourseID) {
+        return seminarShareService.createSeminarShareRequestByCourseID(mainCourseID,subCourseID.get("subCourseID"));
     }
 
     @PostMapping("/course/{courseID}/class ")

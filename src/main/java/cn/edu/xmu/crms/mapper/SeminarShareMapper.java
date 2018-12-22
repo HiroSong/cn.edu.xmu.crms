@@ -25,9 +25,18 @@ public interface SeminarShareMapper {
      * 向seminarShare表插入seminarShare对象
      *
      * @param seminarShare 共享讨论课对象
-     * @return BigInteger 共享讨论课ID
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    BigInteger insertSeminarShareBySeminarShare(ShareSeminarApplication seminarShare);
+    void insertSeminarShareBySeminarShare(ShareSeminarApplication seminarShare);
+    /**
+     * 通过主课程和从课程ID查找共享课程ID
+     *
+     * @param mainCourseID 主课程ID
+     * @param subCourseID 从课程ID
+     * @return BigInteger 共享课程ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    BigInteger getTeamShareIDByMainAndSubCourseID(BigInteger mainCourseID, BigInteger subCourseID);
 }

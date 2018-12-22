@@ -33,7 +33,7 @@ public class TeamService {
             Map<String, Object> teamLeaderMap = new HashMap<>(3);
             teamLeaderMap.put("id",teamLeader.getID());
             teamLeaderMap.put("account",teamLeader.getAccount());
-            teamLeaderMap.put("name",teamLeader.getName());
+            teamLeaderMap.put("name",teamLeader.getStudentName());
             List<Student> teamMembers = studentDao.listStudentsByCourseAndTeamID(team.getCourseID(),team.getID());
             List<Map<String, Object>> teamMembersList = new ArrayList<>();
             for(int j = 0; j < teamMembers.size(); j++) {
@@ -41,7 +41,7 @@ public class TeamService {
                 Map<String, Object> oneMemberMap = new HashMap<>(3);
                 oneMemberMap.put("id",teamMember.getID());
                 oneMemberMap.put("account",teamMember.getAccount());
-                oneMemberMap.put("name",teamMember.getName());
+                oneMemberMap.put("name",teamMember.getStudentName());
                 teamMembersList.add(oneMemberMap);
             }
             Map<String, Object> oneTeamInfo = new HashMap<>(4);
@@ -61,7 +61,7 @@ public class TeamService {
         Student teamLeader = studentDao.getStudentByStudentID(team.getLeaderID());
         teamLeaderMap.put("id",teamLeader.getID());
         teamLeaderMap.put("account",teamLeader.getAccount());
-        teamLeaderMap.put("name",teamLeader.getName());
+        teamLeaderMap.put("name",teamLeader.getStudentName());
         List<Student> teamMembers = studentDao.listStudentsByCourseAndTeamID(team.getCourseID(),team.getID());
         List<Map<String, Object>> teamMembersList = new ArrayList<>();
         for(int i = 0; i < teamMembers.size(); i++) {
@@ -69,7 +69,7 @@ public class TeamService {
             Map<String, Object> oneMemberMap = new HashMap<>(3);
             oneMemberMap.put("id",teamMember.getID());
             oneMemberMap.put("account",teamMember.getAccount());
-            oneMemberMap.put("name",teamMember.getName());
+            oneMemberMap.put("name",teamMember.getStudentName());
             teamMembersList.add(oneMemberMap);
         }
         teamInfoMap.put("id",team.getID());
@@ -88,7 +88,7 @@ public class TeamService {
             Map<String, Object> noTeamStudentMap = new HashMap<>(3);
             noTeamStudentMap.put("id",noTeamStudent.getID());
             noTeamStudentMap.put("account",noTeamStudent.getAccount());
-            noTeamStudentMap.put("name",noTeamStudent.getName());
+            noTeamStudentMap.put("name",noTeamStudent.getStudentName());
             noTeamStudentsMap.add(noTeamStudentMap);
         }
         return noTeamStudentsMap;

@@ -26,4 +26,9 @@ public class TeacherDao {
         BigInteger teacherID = teacherMapper.getTeacherIDByCourseID(courseID);
         return teacherMapper.getTeacherByTeacherID(teacherID);
     }
+
+    public BigInteger insertTeacherByTeacher(Teacher teacher) {
+        teacherMapper.insertTeacherByTeacher(teacher);
+        return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getAccount(), teacher.getPassword());
+    }
 }

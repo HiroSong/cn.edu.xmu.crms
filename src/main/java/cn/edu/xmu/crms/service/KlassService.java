@@ -53,4 +53,5 @@ public class KlassService {
     public BigInteger createNewKlass(Klass klass) {
         return klassMapper.insertKlassByKlass(klass);
     }
+
 }

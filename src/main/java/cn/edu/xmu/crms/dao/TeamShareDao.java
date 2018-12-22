@@ -23,6 +23,8 @@ public class TeamShareDao {
     }
 
     public BigInteger insertTeamShareByTeamShare(ShareTeamApplication teamShare) {
-        return teamShareMapper.insertTeamShareByTeamShare(teamShare);
+        teamShareMapper.insertTeamShareByTeamShare(teamShare);
+        return teamShareMapper.getTeamShareIDByMainAndSubCourseID(teamShare.getMainCourseID(),
+                teamShare.getSubCourseID());
     }
 }

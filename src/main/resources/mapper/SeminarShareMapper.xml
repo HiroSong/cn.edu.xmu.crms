@@ -10,9 +10,11 @@
     <!--seminarShare插入share_seminar_application表-->
     <insert id="insertSeminarShareBySeminarShare" parameterType="ShareSeminarApplication">
         insert into share_seminar_application(main_course_id,sub_course_id,sub_course_teacher_id,status) VALUE
-        (subCourseID,subCourseTeacherID,status)
-        <selectKey resultType="BigInteger" keyProperty="id" >
-            SELECT @@IDENTITY AS ID
-        </selectKey>
+        (#{mainCourseID},#{subCourseID},#{subCourseTeacherID},#{status})
     </insert>
+
+    <!--根据teamShareID查询teamShare对象-->
+    <select id="getTeamShareIDByMainAndSubCourseID" resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM share_seminar_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
+    </select>
 </mapper>

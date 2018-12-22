@@ -11,9 +11,18 @@ public class User {
     protected String account;
     protected String password;
     protected Integer beActive;
-    protected String name;
     protected String email;
     protected String role;
+    protected String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public BigInteger getID() {
         return id;
@@ -45,14 +54,6 @@ public class User {
 
     public void setBeActive(Integer beActive) {
         this.beActive = beActive;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {

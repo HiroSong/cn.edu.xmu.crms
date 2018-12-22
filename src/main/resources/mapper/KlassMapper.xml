@@ -20,10 +20,26 @@
     <!--用klass对象插入klass表-->
     <insert id="insertKlassByKlass" parameterType="Klass">
         insert into klass(course_id,grade,klass_serial,klass_time,klass_location)
-        VALUE (courseID,grade,klassSerial,klassTime,klassLocation)
-        <selectKey resultType="BigInteger" keyProperty="id" >
-            SELECT @@IDENTITY AS ID
-        </selectKey>
+        VALUE (#{courseID},#{grade},#{klassSerial},#{klassTime},#{klassLocation})
     </insert>
+
+    <!--根据klassID删除klass表内信息-->
+    <delete id="deleteKlassByKlassID" parameterType="BigInteger">
+        DELETE FROM klass WHERE id = #{klassID}
+    </delete>
+
+    <!--根据klassID删除与klass有关表的信息-->
+    <delete id="deleteKlassRoundByKlassID" parameterType="BigInteger">
+        DELETE FROM klass_round WHERE klass_id = #{klassID}
+    </delete>
+    <delete id="deleteKlassSeminarByKlassID" parameterType="BigInteger">
+        DELETE FROM klass_seminar WHERE klass_id = #{klassID}
+    </delete>
+    <delete id="deleteKlassStudentByKlassID" parameterType="BigInteger">
+        DELETE FROM klass_student WHERE klass_id = #{klassID}
+    </delete>
+    <delete id="deleteKlassInTeamByKlassID" parameterType="BigInteger">
+        DELETE FROM team WHERE klass_id = #{klassID}
+    </delete>
 
 </mapper>

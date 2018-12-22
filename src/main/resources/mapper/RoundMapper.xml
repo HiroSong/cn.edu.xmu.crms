@@ -12,4 +12,27 @@
         SELECT * FROM round WHERE id = #{roundID}
     </select>
 
+    <!--根据round修改round计算规则-->
+    <update id="updateRuleByRound" parameterType="Round">
+        UPDATE round SET presentation_score_method = #{presentationScoreMethod},
+        report_score_method = #{reportScoreMethod}, question_score_method = #{questionScoreMethod}
+        WHERE  id = #{id};
+    </update>
+
+    <!--根据roundID和teamID获取roundScore对象-->
+    <select id="getRoundScoreByRoundAndTeamID"  resultType="RoundScore" parameterType="BigInteger">
+        SELECT * FROM round_score WHERE round_id = #{param1} AND team_id = #{param2}
+    </select>
+
+    <!--根据roundID获取teamID列表-->
+    <select id="listTeamIDByRoundID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT team_id FROM round_score WHERE round_id = #{roundID}
+    </select>
+
+    <!--根据roundScore修改round_score表-->
+    <update id="updateRoundScoreByRoundScore" parameterType="RoundScore">
+        UPDATE round_score SET presentation_score = #{presentationScore},
+        report_score = #{reportScore}, question_score = #{questionScore}
+        WHERE  round_id = #{roundID} AND team_id = #{teamID};
+    </update>
 </mapper>

@@ -27,4 +27,9 @@
         SELECT id FROM share_seminar_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
     </select>
 
+    <!--根据roundID获取seminarID列表-->
+    <select id="listSeminarsIDByRoundID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM seminar WHERE round_id = #{roundID}
+    </select>
+
 </mapper>

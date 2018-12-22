@@ -11,4 +11,15 @@
     <select id="getTeacherIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT teacher_id FROM course WHERE id = #{courseID}
     </select>
+
+    <!--插入一个Teacher信息-->
+    <insert id="insertTeacherByTeacher" parameterType="Teacher">
+        INSERT INTO teacher(account,password,teacher_name,email)
+        VALUE (#{account,#{password},#{teacherName},#{email})
+    </insert>
+
+    <!--根据Teacher的账号密码查找ID-->
+    <select id="getTeacherIDByAccountAndPassword" parameterType="String" resultType="BigInteger">
+        SELECT id FROM teacher WHERE account = #{param1} AND password = #{param2}
+    </select>
 </mapper>
