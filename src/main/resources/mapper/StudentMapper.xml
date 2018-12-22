@@ -4,7 +4,8 @@
 
     <!--根据studentID获取student对象-->
     <select id="getStudentByStudentID"  resultType="Student" parameterType="BigInteger">
-        SELECT * FROM student WHERE id = #{studentID}
+        SELECT id id,account account,password password,is_active beActive,student_name studentName,email email
+        FROM student WHERE id = #{studentID}
     </select>
     <select id="selectStudentByID"  resultType="Student" parameterType="BigInteger">
         SELECT * FROM student WHERE id = #{student_id}
@@ -19,4 +20,30 @@
     <select id="listNoTeamStudentsIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT student_id FROM klass_student WHERE course_id = #{courseID} AND team_id = NULL
     </select>
+
+    <!--获取所有学生ID-->
+    <select id="listAllStudentsID" resultType="BigInteger">
+        SELECT id FROM student
+    </select>
+
+    <!--修改某个学生的信息（除了密码）-->
+    <update id="updateStudentInfoByStudent" parameterType="Student">
+        UPDATE student SET account = #{account}, email = #{email}, student_name = #{name}
+        WHERE  id = #{id}
+    </update>
+
+    <!--修改某个学生的密码-->
+    <update id="resetStudentPasswordByStudentID" parameterType="BigInteger">
+        UPDATE student SET password = 123456 WHERE  id = #{studentID}
+    </update>
+
+    <!--根据studentID删除student表内信息-->
+    <delete id="deleteStudentByStudentID" parameterType="BigInteger">
+        DELETE FROM student WHERE id = #{studentID}
+    </delete>
+
+    <!--激活某个学生的账号-->
+    <update id="updateStudentActiveByStudentID" parameterType="Student">
+        UPDATE student SET is_acctive = 1,password = #{password},email = #{email} WHERE  id = #{studentID}
+    </update>
 </mapper>

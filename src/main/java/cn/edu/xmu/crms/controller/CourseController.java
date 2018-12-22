@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +26,24 @@ public class CourseController {
     KlassService klassService;
     @Autowired
     SeminarService seminarService;
+    @Autowired
+    TeamShareService teamShareService;
+    @Autowired
+    SeminarShareService seminarShareService;
+    @Autowired
+    RoundService roundService;
 
     @GetMapping("/course")
     public List<Map<String, Object>> listCoursesInfo() {
-        BigInteger studentID = new BigInteger("0");
-        //studentID是用jwt获取
-        return courseService.listCoursesInfoByStudentID(studentID);
+        BigInteger id = new BigInteger("0");
+        //jwt获取id
+        return courseService.listCoursesInfoByStudentOrTeacherID(id);
+    }
+
+    @GetMapping("/course/{courseID}/round")
+    public List<Map<String, Object>> listRoundsInfoByCourseID(@PathVariable("courseID")
+                                                              BigInteger courseID) {
+        return roundService.listRoundsInfoByCourseID(courseID);
     }
 
     @GetMapping("/course/{courseID}")
@@ -48,28 +59,12 @@ public class CourseController {
     }
 
     @PostMapping("/course")
-    public BigInteger createNewCourse() {
+    public BigInteger createNewCourse(@RequestBody Course course) {
         //teacherID等是用jwt获取
         //还缺少插入conflictCourses
         BigInteger teacherID = new BigInteger("0");
-        String courseName = "";
-        String introduction = "";
-        Timestamp teamStartTime = new Timestamp(0);
-        Timestamp teamEndTime = new Timestamp(0);
-        Integer presentationPercentage = 0;
-        Integer questionPercentage = 0;
-        Integer reportPercentage = 0;
-        Course newCourse = new Course();
-
-        newCourse.setTeacherID(teacherID);
-        newCourse.setCourseName(courseName);
-        newCourse.setTeamStartTime(teamStartTime);
-        newCourse.setTeamEndTime(teamEndTime);
-        newCourse.setPresentationPercentage(presentationPercentage);
-        newCourse.setQuestionPercentage(questionPercentage);
-        newCourse.setReportPercentage(reportPercentage);
-        BigInteger courseID = courseDao.insertCourseByCourse(newCourse);
-        return courseID;
+        course.setTeacherID(teacherID);
+        return courseService.createNewCourse(course);
     }
 
     @GetMapping("/course/{courseID}/team")
@@ -100,12 +95,43 @@ public class CourseController {
     @GetMapping("/course/{courseID}/teamshare")
     public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID")
                                                                      BigInteger courseID) {
-        return courseService.listMainAndSubCoursesInfoByCourseID(courseID);
+        return teamShareService.listMainAndSubCoursesInfoByCourseID(courseID);
     }
 
     @GetMapping("/course/{courseID}/seminarshare")
     public List<Map<String, Object>> listAllSeminarShareByCourseID(@PathVariable("courseID")
                                                                         BigInteger courseID) {
-        return seminarService.listMainAndSubCoursesInfoByCourseID(courseID);
+        return seminarShareService.listMainAndSubCoursesInfoByCourseID(courseID);
+    }
+
+    @DeleteMapping("/course/teamshare/{teamShareID}")
+    public void deleteTeamShareByTeamShareID(@PathVariable("teamShareID")
+                                               BigInteger teamShareID) {
+        teamShareService.deleteTeamShareByTeamShareID(teamShareID);
+    }
+
+    @DeleteMapping("/course/seminarshare/{seminarShareID}")
+    public void deleteSeminarShareBySeminarShareID(@PathVariable("seminarShareID")
+                                                     BigInteger seminarShareID) {
+        seminarShareService.deleteSeminarShareBySeminarShareID(seminarShareID);
+    }
+
+    @PostMapping("/course/{courseID}/teamsharerequest")
+    public BigInteger createTeamShareRequestByCourseID(@PathVariable("courseID") BigInteger mainCourseID,
+                                                       @RequestBody Map<String, BigInteger> subCourseID) {
+        return teamShareService.createTeamShareRequestByCourseID(mainCourseID, subCourseID.get("subCourseID"));
+    }
+
+    @PostMapping("/course/{courseID}/seminarsharerequest")
+    public BigInteger createSeminarShareRequestByCourseID(@PathVariable("courseID") BigInteger mainCourseID,
+                                                       @RequestBody Map<String, BigInteger> subCourseID) {
+        return seminarShareService.createSeminarShareRequestByCourseID(mainCourseID,subCourseID.get("subCourseID"));
+    }
+
+    @PostMapping("/course/{courseID}/class ")
+    public BigInteger createNewKlass(@PathVariable("courseID") BigInteger courseID,
+                                                          @RequestBody Klass klass) {
+        klass.setCourseID(courseID);
+        return klassService.createNewKlass(klass);
     }
 }

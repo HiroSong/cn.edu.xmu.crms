@@ -1,20 +1,37 @@
 package cn.edu.xmu.crms.service;
 
+import cn.edu.xmu.crms.dao.StudentDao;
+import cn.edu.xmu.crms.dao.TeacherDao;
+import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Teacher;
+import cn.edu.xmu.crms.mapper.StudentMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * @author SongLingbing
- * @date 2018/11/29 15:07
- */
-public interface TeacherService {
-    /**
-     * 用于根据教师id号码查找教师并返回教师实例
-     *
-     * @param id 教师号码
-     * @return Teacher 返回查找到的对象，若无记录则为null
-     * @author Hongqiwu
-     * @date 2018/12/01 15:07
-     */
-    Teacher getTeacherByTeacherID(BigInteger id);
+ * @ClassName TeacherService
+ * @Description TODO
+ * @Author Hongqiwu
+ * @Date 2018/12/20 4:05
+ **/
+@Service
+public class TeacherService {
+    @Autowired
+    TeacherDao teacherDao;
+
+    public Map<String, Object> createTeacher(Teacher teacher) {
+        BigInteger teacherID = teacherDao.insertTeacherByTeacher(teacher);
+        Map<String,Object> map = new HashMap<>(4);
+        map.put("id",teacherID);
+        map.put("account",teacher.getAccount());
+        map.put("name",teacher.getName());
+        map.put("email",teacher.getEmail());
+        return map;
+    }
 }

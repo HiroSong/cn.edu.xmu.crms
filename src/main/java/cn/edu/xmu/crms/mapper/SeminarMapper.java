@@ -60,4 +60,13 @@ public interface SeminarMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger getSeminarShareIDByMainAndSubCourseID(BigInteger mainCourseID, BigInteger subCourseID);
+    /**
+     * 通过roundID获取讨论课ID列表
+     *
+     * @param roundID 轮次ID
+     * @return BigInteger 讨论课ID列表
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    List<BigInteger> listSeminarsIDByRoundID(BigInteger roundID);
 }

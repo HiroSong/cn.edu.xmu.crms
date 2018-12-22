@@ -3,7 +3,7 @@ import java.math.BigInteger;
 
 /**
  * @ClassName Team
- * @Author Hongqiwu
+ * @author Hongqiwu
  * @Description 组队
  **/
 public class Team {

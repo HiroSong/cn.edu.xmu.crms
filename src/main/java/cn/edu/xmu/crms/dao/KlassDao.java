@@ -39,4 +39,12 @@ public class KlassDao {
         }
         return klassList;
     }
+
+    public void deleteKlassInfoByKlassID(BigInteger klassID) {
+        klassMapper.deleteKlassByKlassID(klassID);
+        klassMapper.deleteKlassRoundByKlassID(klassID);
+        klassMapper.deleteKlassSeminarByKlassID(klassID);
+        klassMapper.deleteKlassStudentByKlassID(klassID);
+        klassMapper.deleteKlassInTeamByKlassID(klassID);
+    }
 }

@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.KlassDao;
 import cn.edu.xmu.crms.entity.Klass;
+import cn.edu.xmu.crms.mapper.KlassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.lang.String;
@@ -19,6 +20,8 @@ import java.util.Map;
 public class KlassService {
     @Autowired
     KlassDao klassDao;
+    @Autowired
+    KlassMapper klassMapper;
 
     /**
      * 用courseID查找班级信息列表
@@ -46,4 +49,9 @@ public class KlassService {
         }
         return klassMapList;
     }
+
+    public BigInteger createNewKlass(Klass klass) {
+        return klassMapper.insertKlassByKlass(klass);
+    }
+
 }

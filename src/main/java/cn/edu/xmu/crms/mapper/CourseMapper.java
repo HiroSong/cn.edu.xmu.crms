@@ -25,6 +25,15 @@ public interface CourseMapper {
      */
     List<BigInteger> listCourseIDByStudentID(BigInteger studentID);
     /**
+     * 通过teacherID获取courseID列表
+     *
+     * @param teacherID 教师ID
+     * @return List<BigInteger>  课程ID列表
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    List<BigInteger> listCourseIDByTeacherID(BigInteger teacherID);
+    /**
      * 通过klassID获取Klass对象
      *
      * @param courseID 课程ID

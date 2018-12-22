@@ -21,4 +21,14 @@ public class TeacherDao {
     public Teacher getTeacherByTeacherID(BigInteger teacherID) {
         return teacherMapper.getTeacherByTeacherID(teacherID);
     }
+
+    public Teacher getTeacherByCourseID(BigInteger courseID) {
+        BigInteger teacherID = teacherMapper.getTeacherIDByCourseID(courseID);
+        return teacherMapper.getTeacherByTeacherID(teacherID);
+    }
+
+    public BigInteger insertTeacherByTeacher(Teacher teacher) {
+        teacherMapper.insertTeacherByTeacher(teacher);
+        return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getAccount(), teacher.getPassword());
+    }
 }

@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.dao;
 
 
 import cn.edu.xmu.crms.entity.Course;
+import cn.edu.xmu.crms.entity.Seminar;
 import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.mapper.SeminarMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,15 @@ public class SeminarDao{
             courses.add(course);
         }
         return courses;
+    }
+
+    public List<Seminar> listSeminarsByRoundID(BigInteger roundID) {
+        List<Seminar> seminars = new ArrayList<>();
+        List<BigInteger> seminarsID = seminarMapper.listSeminarsIDByRoundID(roundID);
+        for(int i = 0; i < seminarsID.size(); i++) {
+            Seminar seminar = seminarMapper.getSeminarBySeminarID(seminarsID.get(i));
+            seminars.add(seminar);
+        }
+        return seminars;
     }
 }
