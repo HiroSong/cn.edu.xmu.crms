@@ -8,6 +8,5 @@ import org.springframework.web.bind.annotation.*;
  * @date 2018/11/29 15:32
  */
 @RestController
-@RequestMapping("/api")
 public class SeminarController {
 }

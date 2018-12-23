@@ -11,13 +11,12 @@ import java.util.Map;
  * @date 2018/11/30 14:56
  */
 @RestController
-@RequestMapping("/api")
 public class PresentationController {
     @Autowired
     SeminarService seminarService;
 
     @GetMapping("/seminars/{seminarID}/classes/{classID}/presentations/teams/{teamID}")
-    public Map<String, Object> registSeminar(@PathVariable("seminarID")
+    public Map<String, Object> registerSeminar(@PathVariable("seminarID")
                                                      String seminarID,
                                              @PathVariable("classID")
                                                      String classID,
@@ -27,7 +26,7 @@ public class PresentationController {
         return null;
     }
     @PostMapping("/seminars/{seminarID}/classes/{classID}/presentations/teams/{teamID}")
-    public void changeRegistion(@PathVariable("seminarID") String seminarID,
+    public void changeRegister(@PathVariable("seminarID") String seminarID,
                                 @PathVariable("classID") String classID,
                                 @PathVariable("teamID") String teamID,
                                 @RequestBody Integer presentationOrder){
@@ -35,7 +34,7 @@ public class PresentationController {
 
     @DeleteMapping("/seminars/{seminarID}/classes/{classID}" +
             "/presentations/teams/{teamID}")
-    public void cancelRegistion(@PathVariable("seminarID")
+    public void cancelRegister(@PathVariable("seminarID")
                                         String seminarID,
                                 @PathVariable("classID") String classID,
                                 @PathVariable("teamID") String teamID){
