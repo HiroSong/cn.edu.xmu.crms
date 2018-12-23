@@ -17,6 +17,11 @@
         SELECT id FROM klass WHERE course_id = #{courseID}
     </select>
 
+    <!--根据teamID查询klassID-->
+    <select id="getKlassIDByTeamID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT klass_id FROM team WHERE id = #{teamID}
+    </select>
+
     <!--用klass对象插入klass表-->
     <insert id="insertKlassByKlass" parameterType="Klass">
         insert into klass(course_id,grade,klass_serial,klass_time,klass_location)

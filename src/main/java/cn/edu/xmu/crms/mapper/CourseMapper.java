@@ -169,5 +169,14 @@ public interface CourseMapper {
      * @date 2018/11/30 19:45
      */
     void deleteCourseMemberLimitStrategyByCourseID(BigInteger courseID);
+    /**
+     * 通过teamID获得courseID
+     *
+     * @param teamID 队伍ID
+     * @return BigInteger courseID
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    BigInteger getCourseIDByTeamID(BigInteger teamID);
 }
 
