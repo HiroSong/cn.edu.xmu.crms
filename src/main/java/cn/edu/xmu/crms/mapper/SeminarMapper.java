@@ -69,4 +69,33 @@ public interface SeminarMapper {
      * @date 2018/11/30 19:45
      */
     List<BigInteger> listSeminarsIDByRoundID(BigInteger roundID);
+    /**
+     * 通过seminarID和klassID获取具体班级下的讨论课的ID
+     *
+     * @param seminarID 讨论课ID
+     * @param klassID 班级ID
+     * @return BigInteger 具体班级下的讨论课的ID
+     * @author LaiShaopeng
+     * @date 2018/12/24 15:06:00
+     */
+    BigInteger getKlassSeminarIDBySeminarIDAndClassID(BigInteger seminarID, BigInteger klassID);
+    /**
+     * 通过courseID获取课程下所有讨论课的ID的列表
+     *
+     * @param courseID 课程ID
+     * @return BigInteger 课程下的讨论课的ID
+     * @author LaiShaopeng
+     * @date 2018/12/24 21:13:00
+     */
+    List<BigInteger> getSeminarIDByCourseID(BigInteger courseID);
+    /**
+     * 通过seminarID和klassID获取正在进行的讨论课的ID
+     *
+     * @param seminarID 讨论课ID
+     * @param klassID 班级ID
+     * @return BigInteger 正在进行的讨论课的ID，找不到返回null
+     * @author LaiShaopeng
+     * @date 2018/12/24 21:20:00
+     */
+    BigInteger checkIfSeminarInProgressBySeminarIDAndKlassID(BigInteger seminarID,BigInteger klassID);
 }

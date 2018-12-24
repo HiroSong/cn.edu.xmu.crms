@@ -1,13 +1,7 @@
 package cn.edu.xmu.crms.dao;
 
-import cn.edu.xmu.crms.entity.Course;
-import cn.edu.xmu.crms.entity.Klass;
-import cn.edu.xmu.crms.entity.Student;
-import cn.edu.xmu.crms.entity.Team;
-import cn.edu.xmu.crms.mapper.CourseMapper;
-import cn.edu.xmu.crms.mapper.KlassMapper;
-import cn.edu.xmu.crms.mapper.StudentMapper;
-import cn.edu.xmu.crms.mapper.TeamMapper;
+import cn.edu.xmu.crms.entity.*;
+import cn.edu.xmu.crms.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -68,5 +62,47 @@ public class TeamDao {
         BigInteger courseID = courseMapper.getCourseIDByTeamID(teamID);
         BigInteger klassID = klassMapper.getKlassIDByTeamID(teamID);
         teamMapper.insertStudentIntoTeamBy4ID(klassID,studentID,courseID,teamID);
+    }
+    /**
+     * @author LaiShaopeng
+     * @date 2018/12/24 15:07
+     */
+    public List<Attendance> listAttendancesByKlassSeminarID(BigInteger klass_seminarID){
+        List<BigInteger> attendanceIDList=teamMapper.listAttendancesIDByKlassSeminarID(klass_seminarID);
+        List<Attendance> attendances=new ArrayList<>();
+        for(int i=0;i<attendanceIDList.size();i++)
+        {
+            Attendance attendance=teamMapper.getAttendanceByAttendanceID(attendanceIDList.get(i));
+            attendances.add(attendance);
+        }
+        return attendances;
+    }
+    /**
+     * @author LaiShaopeng
+     * @date 2018/12/24 15:33
+     */
+    public String getTeamNumberByTeamID(BigInteger teamID){
+        Team team=teamMapper.getTeamByTeamID(teamID);
+        Klass klass=klassMapper.getKlassByKlassID(team.getKlassID());
+        String teamNumber=klass.getKlassSerial().toString();
+        teamNumber+='-';
+        teamNumber+=team.getTeamSerial().toString();
+        return teamNumber;
+    }
+    /**
+     * @author LaiShaopeng
+     * @date 2018/12/24 18:10
+     */
+    public Attendance createAnAttendance(BigInteger klass_seminarID,BigInteger teamID,Integer teamOrder)
+    {
+        Attendance attendance=new Attendance();
+        attendance.setKlassSeminarID(klass_seminarID);
+        attendance.setTeamID(teamID);
+        attendance.setTeamOrder(teamOrder);
+        return attendance;
+    }
+    public void deleteAttendance(BigInteger attendanceID)
+    {
+        teamMapper.deleteAttendance(attendanceID);
     }
 }

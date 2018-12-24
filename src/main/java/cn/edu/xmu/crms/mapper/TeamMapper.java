@@ -1,5 +1,6 @@
 package cn.edu.xmu.crms.mapper;
 
+import cn.edu.xmu.crms.entity.Attendance;
 import cn.edu.xmu.crms.entity.Team;
 import cn.edu.xmu.crms.entity.TeamValidApplication;
 import org.apache.ibatis.annotations.Mapper;
@@ -104,4 +105,40 @@ public interface TeamMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getApplicationIDByTeamID(BigInteger teamID);
+
+    /**
+     * 获得参与展示小组的ID列表
+     *
+     * @param klass_seminarID 具体班级下的讨论课的ID
+     * @return BigInteger 参与展示小组的ID列表
+     * @author LaiShaopeng
+     * @date 2018/12/24 15:22
+     */
+    List<BigInteger> listAttendancesIDByKlassSeminarID(BigInteger klass_seminarID);
+    /**
+     * 根据参与展示小组的ID获得参与展示小组的对象
+     *
+     * @param attendanceID 参与展示小组的ID
+     * @return Attendance 参与展示小组的对象
+     * @author LaiShaopeng
+     * @date 2018/12/24 15:28
+     */
+    Attendance getAttendanceByAttendanceID(BigInteger attendanceID);
+    /**
+     * 新建参与展示的小组
+     *
+     * @param attendance 要报名参与展示的小组的实例
+     * @author LaiShaopeng
+     * @date 2018/12/24 15:28
+     */
+    void insertAttendance(Attendance attendance);
+    /**
+     * 新建参与展示的小组
+     *
+     * @param attendanceID 参与展示的小组的ID
+     * @author LaiShaopeng
+     * @date 2018/12/24 20:07
+     */
+    void deleteAttendance(BigInteger attendanceID);
+
 }
