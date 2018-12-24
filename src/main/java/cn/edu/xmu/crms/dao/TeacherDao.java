@@ -1,34 +1,46 @@
 package cn.edu.xmu.crms.dao;
 
 import cn.edu.xmu.crms.entity.Teacher;
-import org.apache.ibatis.annotations.Mapper;
+import cn.edu.xmu.crms.mapper.TeacherMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
- * @author SongLingbing
- * @date 2018/11/29 14:44
+ * @author Hongqiwu
+ * @date 2018/11/30 19:45
  */
-@Mapper
-@Repository
-public interface TeacherDao {
-    /**
-     * 用于通过教师教工号获取教师对象
-     *
-     * @param number 教工号
-     * @return Teacher  教师对象
-     * @author SongLingbing
-     * @date 2018/11/29 22:40
-     */
-    Teacher selectTeacherByNumber(BigInteger number);
 
-    /**
-     * 用于通过教师id获取教师信息
-     * @param id 教师id号
-     * @return Teacher 教师对象
-     * @author hongqiwu
-     * @date 2018/12/01 15:09
-     */
-    Teacher selectTeacherByTeacherId(BigInteger id);
+@Repository
+public class TeacherDao {
+    @Autowired
+    TeacherMapper teacherMapper;
+
+    public Teacher getTeacherByTeacherID(BigInteger teacherID) {
+        return teacherMapper.getTeacherByTeacherID(teacherID);
+    }
+
+    public Teacher getTeacherByCourseID(BigInteger courseID) {
+        BigInteger teacherID = teacherMapper.getTeacherIDByCourseID(courseID);
+        return teacherMapper.getTeacherByTeacherID(teacherID);
+    }
+
+    public BigInteger insertTeacherByTeacher(Teacher teacher) {
+        teacherMapper.insertTeacherByTeacher(teacher);
+        return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getAccount(), teacher.getPassword());
+    }
+
+    public List<Teacher> listAllTeachers() {
+        List<BigInteger> allTeachersID = teacherMapper.listAllTeachersID();
+        List<Teacher> teachers = new ArrayList<>();
+        for(int i = 0 ;i < allTeachersID.size(); i++) {
+            Teacher teacher = teacherMapper.getTeacherByTeacherID(allTeachersID.get(i));
+            teachers.add(teacher);
+        }
+        return teachers;
+    }
 }

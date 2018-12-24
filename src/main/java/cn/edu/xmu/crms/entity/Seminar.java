@@ -1,21 +1,48 @@
 package cn.edu.xmu.crms.entity;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 
 /**
- * @author SongLingbing
- * @date 2018/11/29 10:34
- */
+ * @ClassName Seminar
+ * @Description 讨论课
+ * @Author Hongqiwu
+ * @Date 2018/12/17 15:02
+ **/
 public class Seminar {
-    BigInteger id;
+    private BigInteger id;
+    private BigInteger courseID;
+    private BigInteger roundID;
+    private String seminarName;
+    private String introduction;
+    private Integer maxTeam;
+    private Integer beVisible;
+    private Integer seminarSerial;
+    private Timestamp enrollStartTime;
+    private Timestamp enrollEndTime;
 
-    String seminarName;
-    public BigInteger getId() {
+    public BigInteger getID() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setID(BigInteger id) {
         this.id = id;
+    }
+
+    public BigInteger getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(BigInteger courseID) {
+        this.courseID = courseID;
+    }
+
+    public BigInteger getRoundID() {
+        return roundID;
+    }
+
+    public void setRoundID(BigInteger roundID) {
+        this.roundID = roundID;
     }
 
     public String getSeminarName() {
@@ -26,74 +53,51 @@ public class Seminar {
         this.seminarName = seminarName;
     }
 
-    public String getSeminarRequire() {
-        return seminarRequire;
+    public String getIntroduction() {
+        return introduction;
     }
 
-    public void setSeminarRequire(String seminarRequire) {
-        this.seminarRequire = seminarRequire;
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 
-    public Integer getSeminarOrder() {
-        return seminarOrder;
+    public Integer getMaxTeam() {
+        return maxTeam;
     }
 
-    public void setSeminarOrder(Integer seminarOrder) {
-        this.seminarOrder = seminarOrder;
+    public void setMaxTeam(Integer maxTeam) {
+        this.maxTeam = maxTeam;
     }
 
-    public boolean isSeminarSeen() {
-        return seminarSeen;
+    public Integer getBeVisible() {
+        return beVisible;
     }
 
-    public void setSeminarSeen(boolean seminarSeen) {
-        this.seminarSeen = seminarSeen;
+    public void setBeVisible(Integer beVisible) {
+        this.beVisible = beVisible;
     }
 
-    public String getSeminarStartTime() {
-        return seminarStartTime;
+    public Integer getSeminarSerial() {
+        return seminarSerial;
     }
 
-    public void setSeminarStartTime(String seminarStartTime) {
-        this.seminarStartTime = seminarStartTime;
+    public void setSeminarSerial(Integer seminarSerial) {
+        this.seminarSerial = seminarSerial;
     }
 
-    public Integer getSeminarState() {
-        return seminarState;
+    public Timestamp getEnrollStartTime() {
+        return enrollStartTime;
     }
 
-    public void setSeminarState(Integer seminarState) {
-        this.seminarState = seminarState;
+    public void setEnrollStartTime(Timestamp enrollStartTime) {
+        this.enrollStartTime = enrollStartTime;
     }
 
-    public Integer getTeamLimit() {
-        return teamLimit;
+    public Timestamp getEnrollEndTime() {
+        return enrollEndTime;
     }
 
-    public void setTeamLimit(Integer  teamLimit) {
-        this.teamLimit = teamLimit;
+    public void setEnrollEndTime(Timestamp enrollEndTime) {
+        this.enrollEndTime = enrollEndTime;
     }
-
-    public int getRound() {
-        return round;
-    }
-
-    public void setRound(int round) {
-        this.round = round;
-    }
-
-    public boolean getRegistOrder() { return registOrder; }
-
-    public void setRegistOrder(boolean registOrder) {
-        this.registOrder = registOrder;
-    }
-
-    String seminarRequire;
-    Integer seminarOrder;
-    boolean seminarSeen;
-    String seminarStartTime;
-    Integer seminarState;   //讨论课未开始/进行中/结束状态
-    Integer teamLimit;
-    Integer round;
-    boolean registOrder; //是否可以自定讨论课报名顺序
 }

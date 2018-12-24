@@ -1,35 +1,57 @@
 package cn.edu.xmu.crms.controller;
 
+import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Teacher;
+import cn.edu.xmu.crms.service.StudentService;
 import cn.edu.xmu.crms.service.TeacherService;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-//import javax.jws.soap.SOAPBinding;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
- * @author SongLingbing
- * @date 2018/11/29 10:17
+ * @author Hongqiwu
+ * @date 2018/12/01 15:02
  */
 @RestController
-@RequestMapping("/api/teachers")
 public class TeacherController {
     @Autowired
     TeacherService teacherService;
-    @GetMapping("/{teacherID}")
-    public Map<String, Object> getBaseInfo(@PathVariable("teacherID")
-                                               String teacherID){
-        BigInteger id = new BigInteger(teacherID);
-        Teacher teacher = teacherService.getTeacherByTeacherId(id);
-        if(teacher == null) {
-            return null;
-        }
-        Map<String, Object> map = new HashMap<>(4);
-        map.put("teacherName",teacher.getName());
-        map.put("teacherNumber",teacher.getNumber());
-        map.put("email",teacher.getEmail());
-        map.put("noticeGap",teacher.getNoticeGap());
-        return map;
+
+    @PostMapping("/teacher")
+    public Map<String, Object> createTeacher(@RequestBody Teacher teacher) {
+        return teacherService.createTeacher(teacher);
     }
 
+    @GetMapping("/teacher")
+    public List<Map<String, Object>> listAllTeachersInfo() {
+        return teacherService.listAllTeachersInfo();
+    }
+
+    @PutMapping("/teacher/{teacherID}/information")
+    public Map<String, Object> modifyTeacherInfo(@PathVariable("teacherID") BigInteger teacherID,
+                                                 @RequestBody Teacher teacher) {
+        teacher.setID(teacherID);
+        return teacherService.updateTeacherInfoByTeacherID(teacher);
+    }
+
+    @PutMapping("/teacher/{teacherID}/password")
+    public Map<String, Object> resetTeacherPassword(@PathVariable("teacherID") BigInteger teacherID) {
+        return teacherService.resetTeacherPasswordByTeacherID(teacherID);
+    }
+
+    @DeleteMapping("/teacher/{teacherID}")
+    public void deleteTeacher(@PathVariable("teacherID") BigInteger teacherID) {
+        teacherService.deleteTeacherByTeacherID(teacherID);
+    }
+
+    @PutMapping("/teacher/active")
+    public Map<String, Object> activateStudent(@RequestBody Teacher teacher) {
+        return teacherService.updateTeacherActiveByTeacherID(teacher);
+    }
 }

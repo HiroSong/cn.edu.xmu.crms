@@ -1,10 +1,15 @@
 package cn.edu.xmu.crms.dao;
 
+
+import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.Seminar;
-import org.apache.ibatis.annotations.Mapper;
+import cn.edu.xmu.crms.mapper.CourseMapper;
+import cn.edu.xmu.crms.mapper.SeminarMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import javax.xml.stream.events.Comment;
+
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import java.math.BigInteger;
@@ -12,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+
  * @author SongLingbing
  * @date 2018/11/29 15:30
  */
@@ -19,106 +25,52 @@ import java.util.List;
 @Repository
 public interface SeminarDao{
     /**
-<<<<<<< HEAD
-     * 用于通过讨论课id获取讨论课信息
-     *
-     * @param seminarID 讨论课id
-     * @return Seminar 讨论课对象
-     * @author LaiShaopeng
-     * @date 2018/12/2 21:30
-     */
-    Seminar selectSeminarBySeminarId(BigInteger seminarID);
+ * @ClassName StudentDao
+ * @Author Hongqiwu
+ **/
 
-    /**
-     * 用于通过讨论课id获取轮次信息
-     *
-     * @param seminarID 讨论课id
-     * @return BigInteger 轮次id
-     * @author LaiShaopeng
-     * @date 2018/12/3 8:25
-     */
-    BigInteger selectRoundIdBySeminarId(BigInteger seminarID);
+@Repository
+public class SeminarDao{
+    @Autowired
+    SeminarMapper seminarMapper;
+    @Autowired
+    CourseMapper courseMapper;
 
-    /**
-     * 用于通过讨论课id获取参与展示小组的信息
-     *
-     * @param seminarID 讨论课id
-     * @return List<BigInteger> 小组id列表
-     * @author LaiShaopeng
-     * @date 2018/12/3 8:25
-     */
-    List<BigInteger> selectTeamIdBySeminarId(BigInteger seminarID);
+    public List<Course> listMainCoursesByCourseID(BigInteger courseID) {
+        List<BigInteger> mainCoursesIDList = seminarMapper.listMainCoursesIDByCourseID(courseID);
+        List<Course> courses = new ArrayList<>();
+        if(mainCoursesIDList == null) {
+            return null;
+        }
+        for(int i = 0; i < mainCoursesIDList.size(); i++) {
+            BigInteger mainCourseID = mainCoursesIDList.get(i);
+            Course course = courseMapper.getCourseByCourseID(mainCourseID);
+            courses.add(course);
+        }
+        return courses;
+    }
 
-    /**
-     * 用于通过轮次id获取轮次信息
-     *
-     * @param roundID 讨论课id
-     * @return int 轮次序号
-     * @author LaiShaopeng
-     * @date 2018/12/3 8:25
-     */
-    int selectRoundOrderByRoundId(BigInteger roundID);
+    public List<Course> listSubCoursesByCourseID(BigInteger courseID) {
+        List<BigInteger> subCoursesIDList = seminarMapper.listSubCoursesIDByCourseID(courseID);
+        List<Course> courses = new ArrayList<>();
+        if(subCoursesIDList == null) {
+            return null;
+        }
+        for(int i = 0; i < subCoursesIDList.size(); i++) {
+            BigInteger subCourseID = subCoursesIDList.get(i);
+            Course course = courseMapper.getCourseByCourseID(subCourseID);
+            courses.add(course);
+        }
+        return courses;
+    }
 
-    /**
-     * 用于通过讨论课id和班级id获取截止日期id
-     *
-     * @param seminarID 讨论课id
-     * @param classID 班级id
-     * @return BigInteger 截止日期id
-     * @author LaiShaopeng
-     * @date 2018/12/3 8:45
-     */
-    BigInteger selectDeadLineIdBySeminarIdAndClassId(BigInteger seminarID,BigInteger classID);
-
-    /**
-     * 用于通过截止日期id获取截止日期的时间
-     *
-     * @param DeadlineID 讨论课id
-     * @return String 轮次序号
-     * @author LaiShaopeng
-     * @date 2018/12/3 8:25
-     */
-    List<String> selectDeadLineByDeadLineId(BigInteger DeadlineID);
-
-    /**
-     * 用于通过讨论课id和班级id获取讨论课信息
-     *
-     * @param seminarID 讨论课id
-     * @param classID 班级id
-     * @return Seminar 讨论课对象
-     * @author LaiShaopeng
-     * @date 2018/12/3 8:25
-     */
-    Seminar selectSeminarBySeminarIdAndClassId(BigInteger seminarID,BigInteger classID);
-
-    /**
-     * 用于向presentation表插入记录
-     *
-     * @param seminarID 讨论课id
-     * @param teamID 小组id
-     * @param order 展示顺序
-     * @return BigInteger 插入的记录id
-     * @author LaiShaopeng
-     * @date 2018/12/3 8:25
-     */
-    int insertPresentation(BigInteger seminarID,BigInteger teamID,Integer order);
-
-    /**
-     * 用于向presentation表删除记录
-     *
-     * @param presentationID 展示id
-     * @param teamID 小组id
-     * @author LaiShaopeng
-     * @date 2018/12/3 13:40
-     */
-    int deletePresentation(BigInteger presentationID,BigInteger teamID);
-    /**
-     * 用于通过班级号获取讨论课轮次
-     * @param classID 课程号
-     * @return BigInteger
-     * @auhtor Yanxuehuan
-     * @data 2018/12/3 17:29
-     */
-    List<BigInteger> selectRoundByClassID(BigInteger classID);
-
+    public List<Seminar> listSeminarsByRoundID(BigInteger roundID) {
+        List<Seminar> seminars = new ArrayList<>();
+        List<BigInteger> seminarsID = seminarMapper.listSeminarsIDByRoundID(roundID);
+        for(int i = 0; i < seminarsID.size(); i++) {
+            Seminar seminar = seminarMapper.getSeminarBySeminarID(seminarsID.get(i));
+            seminars.add(seminar);
+        }
+        return seminars;
+    }
 }

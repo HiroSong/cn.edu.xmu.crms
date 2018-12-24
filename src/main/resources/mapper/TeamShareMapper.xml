@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.xmu.crms.mapper.TeamShareMapper" >
+
+    <!--根据teamShareID查询teamShare对象-->
+    <select id="getTeamShareIDByMainAndSubCourseID" resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM share_team_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
+    </select>
+
+    <!--根据teamShareID删除共享组队表中的信息-->
+    <delete id="deleteTeamShareByTeamShareID"  parameterType="BigInteger">
+        DELETE FROM share_team_application WHERE  id = #{teamShareID}
+    </delete>
+
+    <!--teamShare插入share_team_application表-->
+    <insert id="insertTeamShareByTeamShare" parameterType="ShareTeamApplication" >
+        insert into share_team_application(main_course_id,sub_course_id,sub_course_teacher_id,status) VALUE
+        (#{mainCourseID},#{subCourseID},#{subCourseTeacherID},#{status})
+    </insert>
+
+</mapper>

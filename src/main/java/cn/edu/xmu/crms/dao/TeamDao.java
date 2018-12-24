@@ -1,74 +1,72 @@
 package cn.edu.xmu.crms.dao;
+
+import cn.edu.xmu.crms.entity.Course;
+import cn.edu.xmu.crms.entity.Klass;
+import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Team;
-import org.apache.ibatis.annotations.Mapper;
+import cn.edu.xmu.crms.mapper.CourseMapper;
+import cn.edu.xmu.crms.mapper.KlassMapper;
+import cn.edu.xmu.crms.mapper.StudentMapper;
+import cn.edu.xmu.crms.mapper.TeamMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author SongLingbing
- * @date 2018/11/29 14:45
+ * @author Hongqiwu
+ * @date 2018/11/30 19:45
  */
-@Mapper
+
 @Repository
-public interface TeamDao {
-    /**
-     * 用于通过队伍id获取队伍信息
-     *
-     * @param teamID 队伍id
-     * @return Team 队伍对象
-     * @author LaiShaopeng
-     * @date 2018/12/2 15:21
-     */
-    Team selectTeamByTeamId(BigInteger teamID);
+public class TeamDao {
+    @Autowired
+    TeamMapper teamMapper;
+    @Autowired
+    CourseMapper courseMapper;
+    @Autowired
+    KlassMapper klassMapper;
+    @Autowired
+    StudentMapper studentMapper;
+    @Autowired
+    StudentDao studentDao;
 
-    /**
-     * 用于通过课程id获取队伍id
-     *
-     * @param courseID 课程id
-     * @return List 队伍id列表
-     * @author LaiShaopeng
-     * @date 2018/12/2 15:21
-     */
-    List<BigInteger> selectTeamIdByCourseId(BigInteger courseID);
+    public Team getTeamByTeamID(BigInteger teamID) {
+        Team team = teamMapper.getTeamByTeamID(teamID);
+        BigInteger courseID = courseMapper.getCourseIDByTeamID(teamID);
+        BigInteger klassID = klassMapper.getKlassIDByTeamID(teamID);
+        BigInteger leaderID = studentMapper.getLeaderIDByTeamID(teamID);
+        Course course = courseMapper.getCourseByCourseID(courseID);
+        Klass klass = klassMapper.getKlassByKlassID(klassID);
+        Student leader = studentMapper.getStudentByStudentID(leaderID);
+        List<Student> members = studentDao.listStudentsByCourseAndTeamID(courseID,teamID);
+        team.setCourse(course);
+        team.setKlass(klass);
+        team.setLeader(leader);
+        team.setMembers(members);
+        return team;
+    }
 
-    /**
-     * 用于通过小组id获取成员id
-     *
-     * @param teamID 小组id
-     * @return List 队伍id列表
-     * @author LaiShaopeng
-     * @date 2018/12/2 15:21
-     */
-    List<BigInteger> selectMemberIdByTeamId(BigInteger teamID);
+    public Team getTeamByCourseAndStudentID(BigInteger courseID, BigInteger studentID) {
+        BigInteger teamID = teamMapper.getTeamIDByStudentAndCourseID(studentID, courseID);
+        Team team = teamMapper.getTeamByTeamID(teamID);
+        return team;
+    }
 
-    /**
-     * 用于通过小组成员的id获取小组id
-     *
-     * @param memberID 学生id
-     * @return List 队伍id列表
-     * @author LaiShaopeng
-     * @date 2018/12/2 15:21
-     */
-    List<BigInteger> selectTeamIdByMemberId(BigInteger memberID);
+    public List<Team> listTeamsByCourseID(BigInteger courseID) {
+        List<Team> teams = new ArrayList<>();
+        List<BigInteger> teamsID = teamMapper.listTeamsIDByCourseID(courseID);
+        for(int i = 0; i < teamsID.size(); i++) {
+            teams.add(teamMapper.getTeamByTeamID(teamsID.get(i)));
+        }
+        return teams;
+    }
 
-    /**
-     * 用于通过组长的id获取小组id
-     *
-     * @param leaderID 学生id
-     * @return List 队伍id列表
-     * @author LaiShaopeng
-     * @date 2018/12/2 15:21
-     */
-    List<BigInteger> selectTeamIdByLeaderId(BigInteger leaderID);
-
-    /**
-     * 用于通过班级的id获取小组id
-     *
-     * @param classID 班级id
-     * @return List 队伍id列表
-     * @author LaiShaopeng
-     * @date 2018/12/3 15:30
-     */
-    List<BigInteger> selectTeamIdByClassId(BigInteger classID);
+    public void insertStudentByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
+        BigInteger courseID = courseMapper.getCourseIDByTeamID(teamID);
+        BigInteger klassID = klassMapper.getKlassIDByTeamID(teamID);
+        teamMapper.insertStudentIntoTeamBy4ID(klassID,studentID,courseID,teamID);
+    }
 }

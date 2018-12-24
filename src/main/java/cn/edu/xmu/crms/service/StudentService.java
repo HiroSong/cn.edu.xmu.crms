@@ -1,31 +1,70 @@
 package cn.edu.xmu.crms.service;
 
+import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.entity.Student;
+import cn.edu.xmu.crms.mapper.StudentMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * @author Hongqiwu
- * @date 2018/12/01 14:37
- */
-public interface StudentService {
-    /**
-     * 用于根据学生号码查找学生并返回学生实例
-     *
-     * @param id 学生号码
-     * @return Student 返回查找到的对象，若无记录则为null
-     * @author Hongqiwu
-     * @date 2018/12/01 14:55
-     */
-    public Student getStudentByStudentId(BigInteger id);
-    /**
-     * 用于根据班级号码查找学生并返回学生实例
-     *
-     * @param id 课程号码
-     * @return ArrayList<> 返回查找到的对象，若无记录则为null
-     * @author Hongqiwu
-     * @date 2018/12/01 14:38
-     */
-    public List<Student> getStudentByClassId(BigInteger id);
+ * @ClassName StudentService
+ * @Description TODO
+ * @Author Hongqiwu
+ * @Date 2018/12/20 4:05
+ **/
+@Service
+public class StudentService {
+    @Autowired
+    StudentDao studentDao;
+    @Autowired
+    StudentMapper studentMapper;
+
+    public List<Map<String, Object>> listAllStudentsInfo() {
+        List<Map<String, Object>> studentsInfoList = new ArrayList<>();
+        List<Student> students = studentDao.listAllStudents();
+        for(int i = 0; i < students.size(); i++) {
+            Map<String, Object> map = new HashMap<>(4);
+            Student student = students.get(i);
+            map.put("id",student.getID());
+            map.put("account",student.getAccount());
+            map.put("name",student.getStudentName());
+            map.put("email",student.getEmail());
+            studentsInfoList.add(map);
+        }
+        return studentsInfoList;
+    }
+
+    public void updateStudentInfoByStudent(Student student) {
+        studentMapper.updateStudentInfoByStudent(student);
+    }
+
+    public Map<String, Object> resetStudentPasswordByStudentID(BigInteger studentID) {
+        Map<String, Object> map = new HashMap<>(4);
+        studentMapper.resetStudentPasswordByStudentID(studentID);
+        Student student = studentMapper.getStudentByStudentID(studentID);
+        map.put("id",student.getID());
+        map.put("account",student.getAccount());
+        map.put("name",student.getStudentName());
+        map.put("email",student.getEmail());
+        return map;
+    }
+
+    public void deleteStudentByStudentID(BigInteger studentID) {
+        studentMapper.deleteStudentByStudentID(studentID);
+    }
+
+    public Map<String, Object> updateStudentActiveByStudentID(Student student) {
+        studentMapper.updateStudentActiveByStudentID(student);
+        Map<String, Object> map = new HashMap<>(3);
+        map.put("id",student.getID());
+        map.put("account",student.getID());
+        map.put("name",student.getStudentName());
+        return map;
+    }
 }
