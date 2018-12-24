@@ -15,7 +15,7 @@
 
     <!--根据courseID获取未组队学生ID列表-->
     <select id="listNoTeamStudentsIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT student_id FROM klass_student WHERE course_id = #{courseID} AND team_id = NULL
+        SELECT student_id FROM klass_student WHERE course_id = #{courseID} AND team_id IS NULL
     </select>
 
     <!--获取所有学生ID-->

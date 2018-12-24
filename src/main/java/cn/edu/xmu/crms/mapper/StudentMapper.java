@@ -2,9 +2,11 @@ package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.Student;
 import org.apache.ibatis.annotations.Mapper;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -37,7 +39,7 @@ public interface StudentMapper {
     /**
      * 用于通过courseID获取未组队学生ID列表
      *
-     * @param courseID 课程号
+     * @param courseID 课程ID
      * @return 未组队学生ID列表
      * @author hongqiwu
      * @date 2018/12/01 14:32

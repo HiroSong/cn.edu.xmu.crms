@@ -35,7 +35,8 @@ public class CourseController {
 
     @GetMapping("/course")
     public List<Map<String, Object>> listCoursesInfo() {
-        BigInteger id = new BigInteger("0");
+        BigInteger id = new BigInteger("1");
+        System.out.println(id);
         //jwt获取id
         return courseService.listCoursesInfoByStudentOrTeacherID(id);
     }
@@ -76,7 +77,7 @@ public class CourseController {
     @GetMapping("/course/{courseID}/myTeam")
     public Map<String, Object> getMyTeamInfoByCourseAndStudentID(@PathVariable("courseID")
                                                                      BigInteger courseID) {
-        BigInteger studentID = new BigInteger("0");
+        BigInteger studentID = new BigInteger("1");
         return teamService.getTeamInfoByCourseAndStudentID(courseID, studentID);
     }
 
