@@ -1,10 +1,13 @@
 package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.Student;
+import cn.edu.xmu.crms.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -37,7 +40,7 @@ public interface StudentMapper {
     /**
      * 用于通过courseID获取未组队学生ID列表
      *
-     * @param courseID 课程号
+     * @param courseID 课程ID
      * @return 未组队学生ID列表
      * @author hongqiwu
      * @date 2018/12/01 14:32
@@ -92,4 +95,23 @@ public interface StudentMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger getLeaderIDByTeamID(BigInteger teamID);
+    /**
+      *  通过学号获得学生对象
+      *
+      * @param username 学号
+      * @return Student student
+      * @author SongLingbing
+      * @date 2018/12/23 21:53
+      */
+    Student getStudentByStudentAccount(String username);
+
+    /**
+      * 创建用户
+      *
+      * @param user 用户信息
+      * @return void
+      * @author SongLingbing
+      * @date 2018/12/24 10:58
+      */
+    void insertStudent(User user);
 }

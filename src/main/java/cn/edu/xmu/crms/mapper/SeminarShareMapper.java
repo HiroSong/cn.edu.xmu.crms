@@ -4,6 +4,8 @@ import cn.edu.xmu.crms.entity.ShareSeminarApplication;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName SeminarShareMapper
@@ -39,4 +41,36 @@ public interface SeminarShareMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getTeamShareIDByMainAndSubCourseID(BigInteger mainCourseID, BigInteger subCourseID);
+    /**
+     * 获得所有申请的ID
+     * @return List<BigInteger> 共享讨论课ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    List<BigInteger> listApplicationID();
+    /**
+     * 通过主课程和从课程ID查找共享讨论课ID
+     *
+     * @param id 主课程ID
+     * @return ShareTeamApplication 申请对象
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    Map<String, Object> getApplicationByID(BigInteger id);
+    /**
+     * 修改申请状态
+     *
+     * @param shareSeminarApplication 共享讨论课
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    void updateStatusBySeminarShareID(ShareSeminarApplication shareSeminarApplication);
+    /**
+     * 获得上一次插入语句的ID
+     *
+     * @return BigInteger 上一条插入语句的ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    BigInteger getLastInsertID();
 }

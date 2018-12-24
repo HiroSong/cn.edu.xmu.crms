@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName TeamMapper
@@ -34,7 +35,7 @@ public interface TeamMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:35
      */
-    Team getTeamByTeamID(BigInteger teamID);
+    Map<String,Object> getTeamByTeamID(BigInteger teamID);
     /**
      * 通过courseID获取teamID列表
      *
@@ -141,4 +142,23 @@ public interface TeamMapper {
      */
     void deleteAttendance(BigInteger attendanceID);
 
+    /**
+     * 插入新队伍信息
+     *
+     * @param team 队伍对象
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    void insertTeam(Team team);
+    /**
+     * 更新学生组队情况
+     *
+     * @param klassID 班级ID
+     * @param studentID 学生ID
+     * @param courseID 课程ID
+     * @param teamID 队伍ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    void updateTeamIDBy4ID(BigInteger klassID,BigInteger studentID,BigInteger courseID,BigInteger teamID);
 }

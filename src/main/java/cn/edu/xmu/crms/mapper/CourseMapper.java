@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hongqiwu
@@ -178,5 +179,14 @@ public interface CourseMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger getCourseIDByTeamID(BigInteger teamID);
+    /**
+     * 获取某课程成绩权重
+     *
+     * @param courseID 课程
+     * @return Map 成绩权重
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    Map<String, Object> getScoreWeightByCourseID(BigInteger courseID);
 }
 

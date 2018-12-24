@@ -42,7 +42,7 @@ public class CourseService {
    public List<Map<String, Object>> listCoursesInfoByStudentOrTeacherID(BigInteger id) {
        List<Map<String, Object>> listCoursesInfo = new ArrayList<>();
        //如果是studentID
-       if(id.equals(0)) {
+       if(id.equals(BigInteger.valueOf(1))) {
            List<Course> courses = courseDao.listCoursesByStudentID(id);
            if(courses == null) {
                return null;

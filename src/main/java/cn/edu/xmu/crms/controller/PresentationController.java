@@ -16,7 +16,6 @@ import java.util.Map;
  * @date 2018/12/24 17:36
  */
 @RestController
-@RequestMapping("/api")
 public class PresentationController {
     @Autowired
     SeminarService seminarService;

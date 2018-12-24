@@ -19,12 +19,12 @@
 
     <!--根据courseID获取course最少人数限制-->
     <select id="getCourseMinMemberByCourseID"  resultType="Integer" parameterType="BigInteger">
-        SELECT min_member FROM course_member_limit_strategy WHERE course_id = #{courseID}
+        SELECT min_member FROM member_limit_strategy WHERE id = #{courseID}
     </select>
 
     <!--根据courseID获取course最多人数限制-->
     <select id="getCourseMaxMemberByCourseID"  resultType="Integer" parameterType="BigInteger">
-        SELECT max_member FROM course_member_limit_strategy WHERE course_id = #{courseID}
+        SELECT max_member FROM member_limit_strategy WHERE id = #{courseID}
     </select>
 
     <!--根据courseID在共享组队表获取subCourseID-->
@@ -47,9 +47,15 @@
         SELECT id FROM share_team_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
     </select>
 
+    <!--根据课程ID获得计算成绩的权值-->
+    <select id="getScoreWeightByCourseID" parameterType="BigInteger" resultType="HashMap">
+        SELECT presentation_percentage presentationPercentage,question_percentage questionPercentage,
+        report_percentage reportPercentage FROM course WHERE id = #{courseID}
+    </select>
+
     <!--用course对象插入course表-->
     <insert id="insertCourseByCourse" parameterType="Course">
-        insert into course(teacher_id,course_name,introduction,presentation_percentage,question_percentage,
+        INSERT INTO course(teacher_id,course_name,introduction,presentation_percentage,question_percentage,
         report_percentage,team_start_time,team_end_time) VALUE (#{teacherID},#{courseName},#{introduction},
         #{presentationPercentage},#{questionPercentage},#{reportPercentage},#{teamStartTime},#{teamEndTime})
     </insert>

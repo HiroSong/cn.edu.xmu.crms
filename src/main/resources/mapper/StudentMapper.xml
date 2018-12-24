@@ -4,7 +4,7 @@
 
     <!--根据studentID获取student对象-->
     <select id="getStudentByStudentID"  resultType="Student" parameterType="BigInteger">
-        SELECT id id,account account,password password,is_active beActive,student_name studentName,email email
+        SELECT id id,account username,password password,is_active beActive,student_name name,email email
         FROM student WHERE id = #{studentID}
     </select>
     <select id="selectStudentByID"  resultType="Student" parameterType="BigInteger">
@@ -18,7 +18,7 @@
 
     <!--根据courseID获取未组队学生ID列表-->
     <select id="listNoTeamStudentsIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT student_id FROM klass_student WHERE course_id = #{courseID} AND team_id = NULL
+        SELECT student_id FROM klass_student WHERE course_id = #{courseID} AND team_id IS NULL
     </select>
 
     <!--获取所有学生ID-->
@@ -28,7 +28,7 @@
 
     <!--修改某个学生的信息（除了密码）-->
     <update id="updateStudentInfoByStudent" parameterType="Student">
-        UPDATE student SET account = #{account}, email = #{email}, student_name = #{name}
+        UPDATE student SET account = #{username}, email = #{email}, student_name = #{name}
         WHERE  id = #{id}
     </update>
 
@@ -51,4 +51,15 @@
     <select id="getLeaderIDByTeamID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT leader_id FROM team WHERE id = #{teamID}
     </select>
+
+    <!--根据学号获取学生对象-->
+    <select id="getStudentByStudentAccount" parameterType="String" resultType="Student">
+        SELECT id id, account username, password password FROM student WHERE account = #{username}
+    </select>
+
+    <!--插入一个Student信息-->
+    <insert id="insertStudent" parameterType="User">
+        INSERT INTO student(account,password,student_name,email,is_active)
+            VALUE (#{username},#{password},#{name},"",0)
+    </insert>
 </mapper>
