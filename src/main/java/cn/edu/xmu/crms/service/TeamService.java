@@ -39,16 +39,16 @@ public class TeamService {
             Student teamLeader = studentDao.getStudentByStudentID(team.getLeaderID());
             Map<String, Object> teamLeaderMap = new HashMap<>(3);
             teamLeaderMap.put("id",teamLeader.getID());
-            teamLeaderMap.put("account",teamLeader.getAccount());
-            teamLeaderMap.put("name",teamLeader.getStudentName());
+            teamLeaderMap.put("account",teamLeader.getUsername());
+            teamLeaderMap.put("name",teamLeader.getName());
             List<Student> teamMembers = studentDao.listStudentsByCourseAndTeamID(team.getCourseID(),team.getID());
             List<Map<String, Object>> teamMembersList = new ArrayList<>();
             for(int j = 0; j < teamMembers.size(); j++) {
                 Student teamMember = teamMembers.get(j);
                 Map<String, Object> oneMemberMap = new HashMap<>(3);
                 oneMemberMap.put("id",teamMember.getID());
-                oneMemberMap.put("account",teamMember.getAccount());
-                oneMemberMap.put("name",teamMember.getStudentName());
+                oneMemberMap.put("account",teamMember.getUsername());
+                oneMemberMap.put("name",teamMember.getName());
                 teamMembersList.add(oneMemberMap);
             }
             Map<String, Object> oneTeamInfo = new HashMap<>(4);
@@ -67,16 +67,16 @@ public class TeamService {
         Map<String, Object> teamLeaderMap = new HashMap<>(3);
         Student teamLeader = studentDao.getStudentByStudentID(team.getLeaderID());
         teamLeaderMap.put("id",teamLeader.getID());
-        teamLeaderMap.put("account",teamLeader.getAccount());
-        teamLeaderMap.put("name",teamLeader.getStudentName());
+        teamLeaderMap.put("account",teamLeader.getUsername());
+        teamLeaderMap.put("name",teamLeader.getName());
         List<Student> teamMembers = studentDao.listStudentsByCourseAndTeamID(team.getCourseID(),team.getID());
         List<Map<String, Object>> teamMembersList = new ArrayList<>();
         for(int i = 0; i < teamMembers.size(); i++) {
             Student teamMember = teamMembers.get(i);
             Map<String, Object> oneMemberMap = new HashMap<>(3);
             oneMemberMap.put("id",teamMember.getID());
-            oneMemberMap.put("account",teamMember.getAccount());
-            oneMemberMap.put("name",teamMember.getStudentName());
+            oneMemberMap.put("account",teamMember.getUsername());
+            oneMemberMap.put("name",teamMember.getName());
             teamMembersList.add(oneMemberMap);
         }
         teamInfoMap.put("id",team.getID());
@@ -94,8 +94,8 @@ public class TeamService {
             Student noTeamStudent = noTeamStudents.get(i);
             Map<String, Object> noTeamStudentMap = new HashMap<>(3);
             noTeamStudentMap.put("id",noTeamStudent.getID());
-            noTeamStudentMap.put("account",noTeamStudent.getAccount());
-            noTeamStudentMap.put("name",noTeamStudent.getStudentName());
+            noTeamStudentMap.put("account",noTeamStudent.getUsername());
+            noTeamStudentMap.put("name",noTeamStudent.getName());
             noTeamStudentsMap.add(noTeamStudentMap);
         }
         return noTeamStudentsMap;
@@ -112,15 +112,15 @@ public class TeamService {
         klassInfo.put("name",team.getKlass().getGrade().toString()+team.getKlass().getKlassSerial().toString());
         Map<String, Object> leaderInfo = new HashMap<>(2);
         leaderInfo.put("id",team.getLeader().getID());
-        leaderInfo.put("account",team.getLeader().getAccount());
-        leaderInfo.put("name",team.getLeader().getStudentName());
+        leaderInfo.put("account",team.getLeader().getUsername());
+        leaderInfo.put("name",team.getLeader().getName());
         List<Map<String, Object>> membersInfo = new ArrayList<>();
         for(int i = 0; i < team.getMembers().size(); i++) {
             Student student = team.getMembers().get(i);
             Map<String, Object> memberInfo = new HashMap<>(3);
             memberInfo.put("id",student.getID());
-            memberInfo.put("account",student.getAccount());
-            memberInfo.put("name",student.getStudentName());
+            memberInfo.put("account",student.getUsername());
+            memberInfo.put("name",student.getName());
             membersInfo.add(memberInfo);
         }
         teamInfo.put("id",team.getID());

@@ -1,6 +1,7 @@
 package cn.edu.xmu.crms.entity;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * @author SongLingbing
@@ -8,12 +9,28 @@ import java.math.BigInteger;
  */
 public class User {
     protected BigInteger id;
-    protected String account;
+    protected String username;
     protected String password;
     protected Integer beActive;
     protected String email;
-    protected String role;
+    private List<String> roles;
     protected String name;
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
 
     public String getName() {
         return name;
@@ -23,7 +40,6 @@ public class User {
         this.name = name;
     }
 
-
     public BigInteger getID() {
         return id;
     }
@@ -32,16 +48,8 @@ public class User {
         this.id = id;
     }
 
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getPassword() {
-        return password;
+    public  void setUsername(String username){
+        this.username = username;
     }
 
     public void setPassword(String password) {
@@ -64,11 +72,4 @@ public class User {
         this.email = email;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 }

@@ -1,6 +1,7 @@
 package cn.edu.xmu.crms.dao;
 
 import cn.edu.xmu.crms.entity.Teacher;
+import cn.edu.xmu.crms.entity.User;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -29,9 +30,9 @@ public class TeacherDao {
         return teacherMapper.getTeacherByTeacherID(teacherID);
     }
 
-    public BigInteger insertTeacherByTeacher(Teacher teacher) {
-        teacherMapper.insertTeacherByTeacher(teacher);
-        return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getAccount(), teacher.getPassword());
+    public BigInteger insertTeacher(User teacher) {
+        teacherMapper.insertTeacher(teacher);
+        return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getUsername(), teacher.getPassword());
     }
 
     public List<Teacher> listAllTeachers() {

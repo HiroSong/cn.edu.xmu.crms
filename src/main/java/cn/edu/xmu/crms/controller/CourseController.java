@@ -4,6 +4,8 @@ import cn.edu.xmu.crms.dao.CourseDao;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -33,6 +35,7 @@ public class CourseController {
     @Autowired
     RoundService roundService;
 
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/course")
     public List<Map<String, Object>> listCoursesInfo() {
         BigInteger id = new BigInteger("0");
@@ -46,12 +49,14 @@ public class CourseController {
         return roundService.listRoundsInfoByCourseID(courseID);
     }
 
+    @PreAuthorize("hasAuthority('student')")
     @GetMapping("/course/{courseID}")
     public Map<String, Object> getCourseInfoByCourseID(@PathVariable("courseID")
                                                        BigInteger courseID) {
        return courseService.getCourseInfoByCourseID(courseID);
     }
 
+    @PreAuthorize("hasAuthority('teacher')")
     @DeleteMapping("/course/{courseID}")
     public void deleteCourseByCourseID(@PathVariable("courseID")
                                                    BigInteger courseID) {

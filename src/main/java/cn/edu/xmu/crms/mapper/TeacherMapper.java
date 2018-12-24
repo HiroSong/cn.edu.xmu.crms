@@ -1,6 +1,8 @@
 package cn.edu.xmu.crms.mapper;
 
+import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Teacher;
+import cn.edu.xmu.crms.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -33,12 +35,13 @@ public interface TeacherMapper {
      */
     BigInteger getTeacherIDByCourseID(BigInteger courseID);
     /**
-     * 插入一个老师信息
-     * @param teacher 教师对象
+     * 创建教师用户
+     *
+     * @param user 用户
      * @author hongqiwu
      * @date 2018/12/01 15:09
      */
-    void insertTeacherByTeacher(Teacher teacher);
+    void insertTeacher(User user);
     /**
      * 通过教师账号和密码查询教师ID
      * @param account 教师账号
@@ -87,4 +90,13 @@ public interface TeacherMapper {
      * @date 2018/12/01 14:32
      */
     void updateTeacherActiveByTeacherID(Teacher teacher);
+    /**
+     *  通过教工号获得教师对象
+     *
+     * @param username 教工号
+     * @return Teacher teacher
+     * @author SongLingbing
+     * @date 2018/12/23 21:53
+     */
+    Teacher getTeacherByTeacherAccount(String username);
 }
