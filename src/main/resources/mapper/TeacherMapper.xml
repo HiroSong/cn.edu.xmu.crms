@@ -13,9 +13,9 @@
     </select>
 
     <!--插入一个Teacher信息-->
-    <insert id="insertTeacherByTeacher" parameterType="Teacher">
+    <insert id="insertTeacher" parameterType="User">
         INSERT INTO teacher(account,password,teacher_name,email,is_active)
-        VALUE (#{account},#{password},#{name},#{email},0)
+        VALUE (#{username},#{password},#{name},#{email},0)
     </insert>
 
     <!--根据Teacher的账号密码查找ID-->
@@ -30,7 +30,7 @@
 
     <!--根据ID修改某教师信息-->
     <update id="updateTeacherInfoByTeacherID" parameterType="Teacher">
-        UPDATE teacher SET account = #{account},teacher_name = #{name},email = #{email}
+        UPDATE teacher SET account = #{username},teacher_name = #{name},email = #{email}
         WHERE id = #{id}
     </update>
 
@@ -48,4 +48,9 @@
     <update id="updateTeacherActiveByTeacherID" parameterType="Teacher">
         UPDATE teacher SET is_acctive = 1,password = #{password},email = #{email} WHERE  id = #{id}
     </update>
+
+    <!--根据教工号获取教师对象-->
+    <select id="getTeacherByTeacherAccount" parameterType="String" resultType="Teacher">
+        SELECT id id, account username, password password FROM teacher WHERE account = #{username}
+    </select>
 </mapper>

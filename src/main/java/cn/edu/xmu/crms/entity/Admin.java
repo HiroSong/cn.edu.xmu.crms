@@ -7,7 +7,6 @@ import java.math.BigInteger;
  * @Author Hongqiwu
  * @Description 管理员
  **/
-
 public class Admin {
     private BigInteger id;
     private String account;

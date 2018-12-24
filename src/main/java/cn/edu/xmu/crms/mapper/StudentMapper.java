@@ -1,6 +1,7 @@
 package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.Student;
+import cn.edu.xmu.crms.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
@@ -92,4 +93,23 @@ public interface StudentMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger getLeaderIDByTeamID(BigInteger teamID);
+    /**
+      *  通过学号获得学生对象
+      *
+      * @param username 学号
+      * @return Student student
+      * @author SongLingbing
+      * @date 2018/12/23 21:53
+      */
+    Student getStudentByStudentAccount(String username);
+
+    /**
+      * 创建用户
+      *
+      * @param user 用户信息
+      * @return void
+      * @author SongLingbing
+      * @date 2018/12/24 10:58
+      */
+    void insertStudent(User user);
 }
