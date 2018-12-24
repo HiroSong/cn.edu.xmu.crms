@@ -3,11 +3,13 @@ package cn.edu.xmu.crms.controller;
 import cn.edu.xmu.crms.dao.CourseDao;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.service.*;
+import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -34,12 +36,14 @@ public class CourseController {
     SeminarShareService seminarShareService;
     @Autowired
     RoundService roundService;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
     @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/course")
-    public List<Map<String, Object>> listCoursesInfo() {
-        BigInteger id = new BigInteger("0");
-        //jwt获取id
+    public List<Map<String, Object>> listCoursesInfo(HttpServletRequest request) {
+        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
+        System.out.println(jwtTokenUtil.getRolesFromRequest(request));
         return courseService.listCoursesInfoByStudentOrTeacherID(id);
     }
 
@@ -64,10 +68,8 @@ public class CourseController {
     }
 
     @PostMapping("/course")
-    public BigInteger createNewCourse(@RequestBody Course course) {
-        //teacherID等是用jwt获取
-        //还缺少插入conflictCourses
-        BigInteger teacherID = new BigInteger("0");
+    public BigInteger createNewCourse(HttpServletRequest request, @RequestBody Course course) {
+        BigInteger teacherID = jwtTokenUtil.getIDFromRequest(request);
         course.setTeacherID(teacherID);
         return courseService.createNewCourse(course);
     }
