@@ -1,12 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.xmu.crms.dao.TeacherDao" >
+<mapper namespace="cn.edu.xmu.crms.mapper.TeacherMapper" >
 
-    <select id="selectTeacherByNumber"  resultType="Teacher" parameterType="BigInteger">
-        SELECT * FROM teacher WHERE number = #{number}
-    </select>
-
+    <!--根据teacherID获取Teacher对象-->
     <select id="getTeacherByTeacherID"  resultType="Teacher" parameterType="BigInteger">
-        SELECT * FROM teacher WHERE id = #{id}
+        SELECT * FROM teacher WHERE id = #{teacherID}
     </select>
+
+    <!--根据courseID获取teacherID-->
+    <select id="getTeacherIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT teacher_id FROM course WHERE id = #{courseID}
+    </select>
+
+    <!--插入一个Teacher信息-->
+    <insert id="insertTeacherByTeacher" parameterType="Teacher">
+        INSERT INTO teacher(account,password,teacher_name,email,is_active)
+        VALUE (#{account},#{password},#{name},#{email},0)
+    </insert>
+
+    <!--根据Teacher的账号密码查找ID-->
+    <select id="getTeacherIDByAccountAndPassword" parameterType="String" resultType="BigInteger">
+        SELECT id FROM teacher WHERE account = #{param1} AND password = #{param2}
+    </select>
+
+    <!--获取所有教师ID-->
+    <select id="listAllTeachersID" resultType="BigInteger">
+        SELECT id FROM teacher
+    </select>
+
+    <!--根据ID修改某教师信息-->
+    <update id="updateTeacherInfoByTeacherID" parameterType="Teacher">
+        UPDATE teacher SET account = #{account},teacher_name = #{name},email = #{email}
+        WHERE id = #{id}
+    </update>
+
+    <!--重置某个教师的密码-->
+    <update id="resetTeacherPasswordByTeacherID" parameterType="BigInteger">
+        UPDATE teacher SET password = 123456 WHERE  id = #{teacherID}
+    </update>
+
+    <!--根据teacherID删除teacher表内信息-->
+    <delete id="deleteTeacherByTeacherID" parameterType="BigInteger">
+        DELETE FROM teacher WHERE id = #{teacherID}
+    </delete>
+
+    <!--激活某个教师的账号-->
+    <update id="updateTeacherActiveByTeacherID" parameterType="Teacher">
+        UPDATE teacher SET is_acctive = 1,password = #{password},email = #{email} WHERE  id = #{id}
+    </update>
 </mapper>

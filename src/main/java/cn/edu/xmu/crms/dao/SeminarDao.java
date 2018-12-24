@@ -1,63 +1,64 @@
 package cn.edu.xmu.crms.dao;
 
 
-import org.apache.ibatis.annotations.Mapper;
+import cn.edu.xmu.crms.entity.Course;
+import cn.edu.xmu.crms.entity.Seminar;
+import cn.edu.xmu.crms.mapper.CourseMapper;
+import cn.edu.xmu.crms.mapper.SeminarMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author SongLingbing
- * @date 2018/11/29 15:30
- */
-@Mapper
+ * @ClassName StudentDao
+ * @Author Hongqiwu
+ **/
+
 @Repository
-public interface SeminarDao{
-    /**
-     * 用于修改讨论课当前状态
-     * @param seminarID 讨论课号
-     * @param classID 班级号
-     * @return Boolean  是否修改成功
-     * @author Hongqiwu
-     * @date 2018/12/03 21:21
-     */
-    void updateSeminarState(BigInteger seminarID, BigInteger classID);
-    /**
-     * 用于删除讨论课
-     * @param seminarID 讨论课号
-     * @author Hongqiwu
-     * @date 2018/12/03 21:21
-     */
-    void deleteSeminar(BigInteger seminarID);
-    /**
-     * 用于删除讨论课的关系表
-     * @param seminarID 讨论课号
-     * @author Hongqiwu
-     * @date 2018/12/03 21:21
-     */
-    void deleteSeminarClass(BigInteger seminarID);
-    /**
-     * 用于删除讨论课的关系表
-     * @param seminarID 讨论课号
-     * @author Hongqiwu
-     * @date 2018/12/03 21:21
-     */
-    void deleteSeminarRound(BigInteger seminarID);
-    /**
-     * 用于判断是否有存在讨论课
-     * @param seminarID 讨论课号
-     * @return BigInteger  是否修改成功
-     * @author Hongqiwu
-     * @date 2018/12/03 22:59
-     */
-    BigInteger getSeminarIDBySeminarID(BigInteger seminarID);
-    /**
-     * 用于判断是否有存在讨论课
-     * @param seminarID 讨论课号
-     * @return BigInteger  是否修改成功
-     * @author Hongqiwu
-     * @date 2018/12/03 22:59
-     */
-    Integer getSeminarStateBySeminarAndClassID(BigInteger seminarID, BigInteger classID);
+public class SeminarDao{
+    @Autowired
+    SeminarMapper seminarMapper;
+    @Autowired
+    CourseMapper courseMapper;
+
+    public List<Course> listMainCoursesByCourseID(BigInteger courseID) {
+        List<BigInteger> mainCoursesIDList = seminarMapper.listMainCoursesIDByCourseID(courseID);
+        List<Course> courses = new ArrayList<>();
+        if(mainCoursesIDList == null) {
+            return null;
+        }
+        for(int i = 0; i < mainCoursesIDList.size(); i++) {
+            BigInteger mainCourseID = mainCoursesIDList.get(i);
+            Course course = courseMapper.getCourseByCourseID(mainCourseID);
+            courses.add(course);
+        }
+        return courses;
+    }
+
+    public List<Course> listSubCoursesByCourseID(BigInteger courseID) {
+        List<BigInteger> subCoursesIDList = seminarMapper.listSubCoursesIDByCourseID(courseID);
+        List<Course> courses = new ArrayList<>();
+        if(subCoursesIDList == null) {
+            return null;
+        }
+        for(int i = 0; i < subCoursesIDList.size(); i++) {
+            BigInteger subCourseID = subCoursesIDList.get(i);
+            Course course = courseMapper.getCourseByCourseID(subCourseID);
+            courses.add(course);
+        }
+        return courses;
+    }
+
+    public List<Seminar> listSeminarsByRoundID(BigInteger roundID) {
+        List<Seminar> seminars = new ArrayList<>();
+        List<BigInteger> seminarsID = seminarMapper.listSeminarsIDByRoundID(roundID);
+        for(int i = 0; i < seminarsID.size(); i++) {
+            Seminar seminar = seminarMapper.getSeminarBySeminarID(seminarsID.get(i));
+            seminars.add(seminar);
+        }
+        return seminars;
+    }
 }

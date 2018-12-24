@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.xmu.crms.mapper.SeminarShareMapper" >
+
+    <!--根据seminarShareID删除共享讨论课表中的信息-->
+    <delete id="deleteSeminarShareBySeminarShareID"  parameterType="BigInteger">
+        DELETE FROM share_seminar_application WHERE  id = #{seminarShareID}
+    </delete>
+
+    <!--seminarShare插入share_seminar_application表-->
+    <insert id="insertSeminarShareBySeminarShare" parameterType="ShareSeminarApplication">
+        insert into share_seminar_application(main_course_id,sub_course_id,sub_course_teacher_id,status) VALUE
+        (#{mainCourseID},#{subCourseID},#{subCourseTeacherID},#{status})
+    </insert>
+
+    <!--根据teamShareID查询teamShare对象-->
+    <select id="getTeamShareIDByMainAndSubCourseID" resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM share_seminar_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
+    </select>
+</mapper>

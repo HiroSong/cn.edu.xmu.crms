@@ -8,25 +8,12 @@ import java.math.BigInteger;
  */
 public class User {
     protected BigInteger id;
-    protected BigInteger number;
-    protected String name;
-    protected String email;
+    protected String account;
     protected String password;
-    protected Integer noticeGap;
+    protected Integer beActive;
+    protected String email;
     protected String role;
-    private static final String SALT = "CrmsJingLiProject";
-
-    public BigInteger getId() {
-        return id;
-    }
-
-    public BigInteger getNumber() {
-        return number;
-    }
-
-    public void setNumber(BigInteger number) {
-        this.number = number;
-    }
+    protected String name;
 
     public String getName() {
         return name;
@@ -36,12 +23,21 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+
+    public BigInteger getID() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setID(BigInteger id) {
+        this.id = id;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {
@@ -52,12 +48,20 @@ public class User {
         this.password = password;
     }
 
-    public Integer getNoticeGap() {
-        return noticeGap;
+    public Integer getBeActive() {
+        return beActive;
     }
 
-    public void setNoticeGap(Integer noticeGap) {
-        this.noticeGap = noticeGap;
+    public void setBeActive(Integer beActive) {
+        this.beActive = beActive;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getRole() {
@@ -66,9 +70,5 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public String getCredentialsSalt(){
-        return number+SALT;
     }
 }

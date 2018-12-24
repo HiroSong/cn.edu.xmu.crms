@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.xmu.crms.dao.SeminarDao" >
+<mapper namespace="cn.edu.xmu.crms.mapper.SeminarMapper" >
 
-    <select id="updateSeminarState" parameterType="BigInteger">
-        UPDATE seminar_class SET seminar_state = 2 WHERE seminar_id = #{param1} AND class_id = #{param2}
+    <!--根据klassID获取seminarID列表-->
+    <select id="listSeminarsIDByKlassID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT seminar_id FROM klass_seminar WHERE klass_id = #{klassID}
     </select>
 
-    <delete id="deleteSeminar" parameterType="BigInteger">
-        DELETE FROM seminar WHERE id = #{seminarID}
-    </delete>
-    <delete id="deleteSeminarClass" parameterType="BigInteger">
-        DELETE FROM seminar_class WHERE seminar_id = #{seminarID}
-    </delete>
-    <delete id="deleteSeminarRound" parameterType="BigInteger">
-        DELETE FROM seminar_round WHERE seminar_id = #{seminarID}
-    </delete>
-
-    <select id="getSeminarIDBySeminarID" resultType="BigInteger" parameterType="BigInteger">
-        SELECT id FROM seminar WHERE id = #{seminarID}
+    <!--根据seminarID获取seminar对象-->
+    <select id="getSeminarBySeminarID"  resultType="Seminar" parameterType="BigInteger">
+        SELECT * FROM seminar WHERE id = #{seminarID}
     </select>
 
-    <select id="getSeminarStateBySeminarAndClassID"  resultType="Integer" parameterType="BigInteger">
-        SELECT seminar_state FROM seminar_class WHERE seminar_id = #{param1} AND class_id = #{param2}
+    <!--根据courseID在共享讨论课获取subCourseID-->
+    <select id="listSubCoursesIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT sub_course_id FROM share_seminar_application WHERE main_course_id = #{courseID} AND status = 1
     </select>
+
+    <!--根据courseID在共享讨论课获取mainCourseID-->
+    <select id="listMainCoursesIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT main_course_id FROM share_seminar_application WHERE sub_course_id = #{courseID} AND status = 1
+    </select>
+
+    <!--根据main和subCourseID在共享讨论课获取shareID-->
+    <select id="getSeminarShareIDByMainAndSubCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM share_seminar_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
+    </select>
+
+    <!--根据roundID获取seminarID列表-->
+    <select id="listSeminarsIDByRoundID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM seminar WHERE round_id = #{roundID}
+    </select>
+
 </mapper>

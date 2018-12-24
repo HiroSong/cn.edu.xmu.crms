@@ -1,9 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.xmu.crms.dao.TeamDao" >
+<mapper namespace="cn.edu.xmu.crms.mapper.TeamMapper" >
 
-    <!--<select id="方法名"  resultType="返回值类型" parameterType="参数类型">-->
-    <!--SELECT * FROM user WHERE username = #{name}    sql语句，用#{}引用参数-->
-    <!--</select>-->
+    <!--根据studentID和courseID获取TeamID-->
+    <select id="getTeamIDByStudentAndCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT team_id FROM klass_student WHERE student_id = #{param1} AND course_id = #{param2}
+    </select>
 
+    <!--根据teamID获取Team对象-->
+    <select id="getTeamByTeamID"  resultType="Team" parameterType="BigInteger">
+        SELECT * FROM team WHERE id = #{teamID}
+    </select>
+
+    <!--根据courseID获取teamID列表-->
+    <select id="listTeamsIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM team WHERE course_id = #{courseID}
+    </select>
+
+    <!--添加新成员进入队伍-->
+    <insert id="insertStudentIntoTeamBy4ID" parameterType="BigInteger">
+        INSERT INTO klass_student(klass_id,student_id,course_id,team_id)
+        VALUE(#{param1},#{param2},#{param3},#{param4})
+    </insert>
+
+    <!--发起额外组队申请-->
+    <insert id="insertApplicationByTeamValid" parameterType="TeamValidApplication">
+        INSERT INTO team_valid_application(team_id,teacher_id,reason,status)
+        VALUE (#{teamID},#{teacherID},#{reason},null)
+    </insert>
+
+    <!--根据TeamID删除小组-->
+    <delete id="deleteTeamByTeamID" parameterType="BigInteger">
+        DELETE FROM team WHERE id = #{teamID}
+    </delete>
+
+    <!--根据teamID和studentID在队伍中删除成员-->
+    <delete id="deleteStudentFromTeamByTeamAndStudentID" parameterType="BigInteger">
+        DELETE FROM klass_student WHERE team_id = #{param1} AND student_id = #{param2}
+    </delete>
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
+    </select>
+
+    <!--根据teamID查询applicationID-->
+    <select id="getApplicationIDByTeamID" parameterType="BigInteger" resultType="BigInteger">
+        SELECT id FROM  team_valid_application WHERE team_id = #{teamID} AND status = null
+    </select>
+
+    <!--教师同意小组合法申请-->
+    <update id="updateValidApplicationByTeamID" parameterType="BigInteger">
+        UPDATE team_valid_application SET status = 1 WHERE team_id = #{teamID} AND status = null
+    </update>
 </mapper>
