@@ -45,18 +45,18 @@ public class TeamService {
         List<Team> teams = teamDao.listTeamsByCourseID(courseID);
         for(int i = 0; i < teams.size(); i++) {
             Team team = teams.get(i);
-            Student teamLeader = studentDao.getStudentByStudentID(team.getLeaderID());
+            Student teamLeader = team.getLeader();
             Map<String, Object> teamLeaderMap = new HashMap<>(3);
             teamLeaderMap.put("id",teamLeader.getID());
-            teamLeaderMap.put("account",teamLeader.getAccount());
+            teamLeaderMap.put("account",teamLeader.getUsername());
             teamLeaderMap.put("name",teamLeader.getName());
-            List<Student> teamMembers = studentDao.listStudentsByCourseAndTeamID(team.getCourseID(),team.getID());
+            List<Student> teamMembers = team.getMembers();
             List<Map<String, Object>> teamMembersList = new ArrayList<>();
             for(int j = 0; j < teamMembers.size(); j++) {
                 Student teamMember = teamMembers.get(j);
                 Map<String, Object> oneMemberMap = new HashMap<>(3);
                 oneMemberMap.put("id",teamMember.getID());
-                oneMemberMap.put("account",teamMember.getAccount());
+                oneMemberMap.put("account",teamMember.getUsername());
                 oneMemberMap.put("name",teamMember.getName());
                 teamMembersList.add(oneMemberMap);
             }
@@ -74,17 +74,17 @@ public class TeamService {
         Team team = teamDao.getTeamByCourseAndStudentID(courseID, studentID);
         Map<String,Object> teamInfoMap = new HashMap<>(5);
         Map<String, Object> teamLeaderMap = new HashMap<>(3);
-        Student teamLeader = studentDao.getStudentByStudentID(team.getLeaderID());
+        Student teamLeader = team.getLeader();
         teamLeaderMap.put("id",teamLeader.getID());
-        teamLeaderMap.put("account",teamLeader.getAccount());
+        teamLeaderMap.put("account",teamLeader.getUsername());
         teamLeaderMap.put("name",teamLeader.getName());
-        List<Student> teamMembers = studentDao.listStudentsByCourseAndTeamID(team.getCourseID(),team.getID());
+        List<Student> teamMembers = team.getMembers();
         List<Map<String, Object>> teamMembersList = new ArrayList<>();
         for(int i = 0; i < teamMembers.size(); i++) {
             Student teamMember = teamMembers.get(i);
             Map<String, Object> oneMemberMap = new HashMap<>(3);
             oneMemberMap.put("id",teamMember.getID());
-            oneMemberMap.put("account",teamMember.getAccount());
+            oneMemberMap.put("account",teamMember.getUsername());
             oneMemberMap.put("name",teamMember.getName());
             teamMembersList.add(oneMemberMap);
         }
@@ -103,7 +103,7 @@ public class TeamService {
             Student noTeamStudent = noTeamStudents.get(i);
             Map<String, Object> noTeamStudentMap = new HashMap<>(3);
             noTeamStudentMap.put("id",noTeamStudent.getID());
-            noTeamStudentMap.put("account",noTeamStudent.getAccount());
+            noTeamStudentMap.put("account",noTeamStudent.getUsername());
             noTeamStudentMap.put("name",noTeamStudent.getName());
             noTeamStudentsMap.add(noTeamStudentMap);
         }
@@ -121,14 +121,14 @@ public class TeamService {
         klassInfo.put("name",team.getKlass().getGrade().toString()+team.getKlass().getKlassSerial().toString());
         Map<String, Object> leaderInfo = new HashMap<>(2);
         leaderInfo.put("id",team.getLeader().getID());
-        leaderInfo.put("account",team.getLeader().getAccount());
+        leaderInfo.put("account",team.getLeader().getUsername());
         leaderInfo.put("name",team.getLeader().getName());
         List<Map<String, Object>> membersInfo = new ArrayList<>();
         for(int i = 0; i < team.getMembers().size(); i++) {
             Student student = team.getMembers().get(i);
             Map<String, Object> memberInfo = new HashMap<>(3);
             memberInfo.put("id",student.getID());
-            memberInfo.put("account",student.getAccount());
+            memberInfo.put("account",student.getUsername());
             memberInfo.put("name",student.getName());
             membersInfo.add(memberInfo);
         }
@@ -175,6 +175,9 @@ public class TeamService {
 
     public Map<String, Object> createNewTeam(Team team) {
         Course course = courseDao.getCourseByCourseID(team.getCourse().getID());
+        if(course == null) {
+            return null;
+        }
         Student leader = studentMapper.getStudentByStudentID(team.getLeader().getID());
         Klass klass = klassMapper.getKlassByKlassID(team.getKlass().getID());
         for(int i = 0; i < team.getMembers().size(); i++) {

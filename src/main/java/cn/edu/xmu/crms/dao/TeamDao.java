@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hongqiwu
@@ -34,7 +35,12 @@ public class TeamDao {
     StudentDao studentDao;
 
     public Team getTeamByTeamID(BigInteger teamID) {
-        Team team = teamMapper.getTeamByTeamID(teamID);
+        Map<String, Object> map = teamMapper.getTeamByTeamID(teamID);
+        Team team = new Team();
+        team.setID(new BigInteger(map.get("id").toString()));
+        team.setStatus(Integer.parseInt(map.get("status").toString()));
+        team.setTeamName(map.get("teamName").toString());
+        team.setTeamSerial(Integer.parseInt(map.get("teamSerial").toString()));
         BigInteger courseID = courseMapper.getCourseIDByTeamID(teamID);
         BigInteger klassID = klassMapper.getKlassIDByTeamID(teamID);
         BigInteger leaderID = studentMapper.getLeaderIDByTeamID(teamID);
@@ -51,7 +57,7 @@ public class TeamDao {
 
     public Team getTeamByCourseAndStudentID(BigInteger courseID, BigInteger studentID) {
         BigInteger teamID = teamMapper.getTeamIDByStudentAndCourseID(studentID, courseID);
-        Team team = teamMapper.getTeamByTeamID(teamID);
+        Team team = this.getTeamByTeamID(teamID);
         return team;
     }
 
@@ -59,7 +65,7 @@ public class TeamDao {
         List<Team> teams = new ArrayList<>();
         List<BigInteger> teamsID = teamMapper.listTeamsIDByCourseID(courseID);
         for(int i = 0; i < teamsID.size(); i++) {
-            teams.add(teamMapper.getTeamByTeamID(teamsID.get(i)));
+            teams.add(this.getTeamByTeamID(teamsID.get(i)));
         }
         return teams;
     }

@@ -31,7 +31,7 @@ public class TeacherDao {
 
     public BigInteger insertTeacherByTeacher(Teacher teacher) {
         teacherMapper.insertTeacherByTeacher(teacher);
-        return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getAccount(), teacher.getPassword());
+        return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getUsername(), teacher.getPassword());
     }
 
     public List<Teacher> listAllTeachers() {

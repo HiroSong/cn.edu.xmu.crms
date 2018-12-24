@@ -32,7 +32,7 @@ public class TeacherService {
         BigInteger teacherID = teacherDao.insertTeacherByTeacher(teacher);
         Map<String,Object> map = new HashMap<>(4);
         map.put("id",teacherID);
-        map.put("account",teacher.getAccount());
+        map.put("account",teacher.getUsername());
         map.put("name",teacher.getName());
         map.put("email",teacher.getEmail());
         return map;
@@ -45,7 +45,7 @@ public class TeacherService {
             Teacher teacher = teachers.get(i);
             Map<String, Object> map = new HashMap<>(4);
             map.put("id",teacher.getID());
-            map.put("account",teacher.getAccount());
+            map.put("account",teacher.getUsername());
             map.put("name",teacher.getName());
             map.put("email",teacher.getEmail());
             teacherInfoList.add(map);
@@ -57,7 +57,7 @@ public class TeacherService {
         teacherMapper.updateTeacherInfoByTeacherID(teacher);
         Map<String, Object> map = new HashMap<>(4);
         map.put("id",teacher.getID());
-        map.put("account",teacher.getAccount());
+        map.put("account",teacher.getUsername());
         map.put("name",teacher.getName());
         map.put("email",teacher.getEmail());
         return map;
@@ -68,7 +68,7 @@ public class TeacherService {
         teacherMapper.resetTeacherPasswordByTeacherID(teacherID);
         Teacher teacher = teacherMapper.getTeacherByTeacherID(teacherID);
         map.put("id",teacher.getID());
-        map.put("account",teacher.getAccount());
+        map.put("account",teacher.getUsername());
         map.put("name",teacher.getName());
         map.put("email",teacher.getEmail());
         return map;

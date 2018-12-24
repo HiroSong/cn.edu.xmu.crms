@@ -10,9 +10,6 @@ import java.math.BigInteger;
  **/
 public class ShareTeamApplication {
     private BigInteger id;
-    private BigInteger mainCourseID;
-    private BigInteger subCourseID;
-    private BigInteger subCourseTeacherID;
     private Integer status;
     private Course mainCourse;
     private Course subCourse;
@@ -25,30 +22,6 @@ public class ShareTeamApplication {
 
     public void setID(BigInteger id) {
         this.id = id;
-    }
-
-    public BigInteger getMainCourseID() {
-        return mainCourseID;
-    }
-
-    public void setMainCourseID(BigInteger mainCourseID) {
-        this.mainCourseID = mainCourseID;
-    }
-
-    public BigInteger getSubCourseID() {
-        return subCourseID;
-    }
-
-    public void setSubCourseID(BigInteger subCourseID) {
-        this.subCourseID = subCourseID;
-    }
-
-    public BigInteger getSubCourseTeacherID() {
-        return subCourseTeacherID;
-    }
-
-    public void setSubCourseTeacherID(BigInteger subCourseTeacherID) {
-        this.subCourseTeacherID = subCourseTeacherID;
     }
 
     public Integer getStatus() {

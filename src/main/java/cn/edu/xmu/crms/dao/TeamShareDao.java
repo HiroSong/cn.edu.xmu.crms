@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,30 @@ public class TeamShareDao {
     CourseMapper courseMapper;
     @Autowired
     TeacherDao teacherDao;
+    @Autowired
+    CourseDao courseDao;
+
+    public ShareTeamApplication getTeamShareApplicationByID(BigInteger id) {
+        Map<String, Object> map = teamShareMapper.getApplicationByID(id);
+        ShareTeamApplication application = new ShareTeamApplication();
+        application.setID(id);
+        Object statusObject = map.get("status");
+        if(statusObject == null) {
+            application.setStatus(null);
+        }
+        else {
+            application.setStatus(Integer.parseInt(map.get("status").toString()));
+        }
+        Course mainCourse = courseDao.getCourseByCourseID(new BigInteger(map.get("mainCourseID").toString()));
+        application.setMainCourse(mainCourse);
+        Course subCourse = courseDao.getCourseByCourseID(new BigInteger(map.get("subCourseID").toString()));
+        application.setSubCourse(subCourse);
+        Teacher mainTeacher = teacherDao.getTeacherByCourseID(new BigInteger(map.get("mainCourseID").toString()));
+        application.setMainCourseTeacher(mainTeacher);
+        Teacher subTeacher = teacherDao.getTeacherByCourseID(new BigInteger(map.get("subCourseID").toString()));
+        application.setSubCourseTeacher(subTeacher);
+        return application;
+    }
 
     public void deleteTeamShareByTeamShareID(BigInteger teamShareID) {
         teamShareMapper.deleteTeamShareByTeamShareID(teamShareID);
@@ -44,23 +69,7 @@ public class TeamShareDao {
         List<BigInteger> allID = teamShareMapper.listApplicationID();
         List<ShareTeamApplication> allApplications = new ArrayList<>();
         for(int i = 0; i < allID.size(); i++) {
-            Map<String,Object> map = teamShareMapper.getApplicationByID(allID.get(i));
-            ShareTeamApplication application = new ShareTeamApplication();
-            Course mainCourse = courseMapper.getCourseByCourseID(new BigInteger(map.get("mainCourseID").toString()));
-            Course subCourse = courseMapper.getCourseByCourseID(new BigInteger(map.get("subCourseID").toString()));
-            Teacher mainTeacher = teacherDao.getTeacherByCourseID(new BigInteger(map.get("mainCourseID").toString()));
-            Teacher subTeacher = teacherDao.getTeacherByCourseID(new BigInteger(map.get("subCourseID").toString()));
-            application.setMainCourse(mainCourse);
-            application.setSubCourse(subCourse);
-            application.setMainCourseTeacher(mainTeacher);
-            application.setSubCourseTeacher(subTeacher);
-            Object status = map.get("status");
-            if(status == null) {
-                application.setStatus(null);
-            }
-            else {
-                application.setStatus(Integer.parseInt(map.get("status").toString()));
-            }
+            ShareTeamApplication application = this.getTeamShareApplicationByID(allID.get(i));
             allApplications.add(application);
         }
         return allApplications;

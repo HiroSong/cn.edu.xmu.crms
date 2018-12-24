@@ -28,6 +28,9 @@ public class CourseDao {
 
     public Course getCourseByCourseID(BigInteger courseID) {
         Course course = courseMapper.getCourseByCourseID(courseID);
+        if(course == null) {
+            return null;
+        }
         course.setMinMember(courseMapper.getCourseMinMemberByCourseID(courseID));
         course.setMaxMember(courseMapper.getCourseMaxMemberByCourseID(courseID));
         Teacher teacher = teacherDao.getTeacherByCourseID(courseID);

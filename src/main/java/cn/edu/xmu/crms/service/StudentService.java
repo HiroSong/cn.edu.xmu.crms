@@ -32,7 +32,7 @@ public class StudentService {
             Map<String, Object> map = new HashMap<>(4);
             Student student = students.get(i);
             map.put("id",student.getID());
-            map.put("account",student.getAccount());
+            map.put("account",student.getUsername());
             map.put("name",student.getName());
             map.put("email",student.getEmail());
             studentsInfoList.add(map);
@@ -49,7 +49,7 @@ public class StudentService {
         studentMapper.resetStudentPasswordByStudentID(studentID);
         Student student = studentMapper.getStudentByStudentID(studentID);
         map.put("id",student.getID());
-        map.put("account",student.getAccount());
+        map.put("account",student.getUsername());
         map.put("name",student.getName());
         map.put("email",student.getEmail());
         return map;

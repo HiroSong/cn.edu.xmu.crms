@@ -8,7 +8,7 @@ import java.math.BigInteger;
  */
 public class User {
     protected BigInteger id;
-    protected String account;
+    protected String username;
     protected String password;
     protected Integer beActive;
     protected String email;
@@ -32,12 +32,12 @@ public class User {
         this.id = id;
     }
 
-    public String getAccount() {
-        return account;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

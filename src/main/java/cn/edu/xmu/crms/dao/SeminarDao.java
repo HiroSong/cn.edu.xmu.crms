@@ -34,6 +34,8 @@ public class SeminarDao{
     KlassMapper klassMapper;
     @Autowired
     CourseDao courseDao;
+    @Autowired
+    TeamDao teamDao;
 
     public List<Course> listMainCoursesByCourseID(BigInteger courseID) {
         List<BigInteger> mainCoursesIDList = seminarMapper.listMainCoursesIDByCourseID(courseID);
@@ -81,7 +83,7 @@ public class SeminarDao{
     public Map<String,Object> getSeminarScoreBySeminarAndTeamID(BigInteger seminarID, BigInteger teamID) {
         Map<String,Object> map = new HashMap<>(5);
         Map<String,Object> teamMap = new HashMap<>(2);
-        Team team = teamMapper.getTeamByTeamID(teamID);
+        Team team = teamDao.getTeamByTeamID(teamID);
         BigInteger klassID = klassMapper.getKlassIDByTeamID(teamID);
         BigInteger klassSeminarID = seminarMapper.getKlassSeminarIDByKlassAndSeminarID(klassID,seminarID);
         Map<String,Object> scoreMap = seminarMapper.getTeamSeminarScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
@@ -98,7 +100,7 @@ public class SeminarDao{
     public Map<String, Object> updateSeminarScoreBySeminarAndTeamID(BigInteger seminarID, BigInteger teamID,
                                                                     Map<String, Object> scoreMap) {
         Map<String,Object> teamMap = new HashMap<>(2);
-        Team team = teamMapper.getTeamByTeamID(teamID);
+        Team team = teamDao.getTeamByTeamID(teamID);
         teamMap.put("id",teamID);
         teamMap.put("name",team.getTeamName());
         BigInteger klassID = klassMapper.getKlassIDByTeamID(teamID);

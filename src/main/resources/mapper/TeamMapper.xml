@@ -8,8 +8,9 @@
     </select>
 
     <!--根据teamID获取Team对象-->
-    <select id="getTeamByTeamID"  resultType="Team" parameterType="BigInteger">
-        SELECT * FROM team WHERE id = #{teamID}
+    <select id="getTeamByTeamID"  resultType="HashMap" parameterType="BigInteger">
+        SELECT id id,klass_id klassID,course_id courseID,leader_id leaderID,team_name teamName,team_serial teamSerial,
+        status status FROM team WHERE id = #{teamID}
     </select>
 
     <!--根据courseID获取teamID列表-->
