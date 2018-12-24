@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.xmu.crms.mapper.TeamValidMapper" >
+
+    <!--根据id获得application对象-->
+    <select id="getApplicationByID" parameterType="BigInteger" resultType="HashMap">
+        SELECT id id,team_id teamID,teacher_id teacherID,reason reason,status status FROM team_valid_application
+        WHERE id = #{id}
+    </select>
+
+    <!--获得申请的所有ID-->
+    <select id="listAllApplicationID" resultType="BigInteger">
+        SELECT id FROM team_valid_application
+    </select>
+
+    <!--更新额外申请的状态-->
+    <update id="updateStatusByID" parameterType="TeamValidApplication">
+        UPDATE team_valid_application SET status = #{status} WHERE id = #{id}
+    </update>
+</mapper>

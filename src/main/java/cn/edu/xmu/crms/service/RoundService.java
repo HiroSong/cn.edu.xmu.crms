@@ -1,6 +1,7 @@
 package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.RoundDao;
+import cn.edu.xmu.crms.dao.TeamDao;
 import cn.edu.xmu.crms.entity.Round;
 import cn.edu.xmu.crms.entity.RoundScore;
 import cn.edu.xmu.crms.entity.Team;
@@ -30,6 +31,8 @@ public class RoundService {
     RoundMapper roundMapper;
     @Autowired
     TeamMapper teamMapper;
+    @Autowired
+    TeamDao teamDao;
 
     public List<Map<String, Object>> listRoundsInfoByCourseID(BigInteger courseID) {
         List<Map<String, Object>> roundInfoList = new ArrayList<>();
@@ -65,7 +68,7 @@ public class RoundService {
             Map<String, Object> teamInfo = new HashMap<>(2);
             Map<String, Object> map = new HashMap<>(4);
             RoundScore roundScore = roundScores.get(i);
-            Team team = teamMapper.getTeamByTeamID(roundScore.getTeamID());
+            Team team = teamDao.getTeamByTeamID(roundScore.getTeamID());
             teamInfo.put("id",team.getID());
             teamInfo.put("name",team.getTeamName());
             map.put("team",teamInfo);
@@ -81,7 +84,7 @@ public class RoundService {
         RoundScore roundScore = roundMapper.getRoundScoreByRoundAndTeamID(roundID, teamID);
         Map<String, Object> roundScoreMap = new HashMap<>(5);
         Map<String, Object> teamMap = new HashMap<>(2);
-        Team team = teamMapper.getTeamByTeamID(roundScore.getTeamID());
+        Team team = teamDao.getTeamByTeamID(roundScore.getTeamID());
         teamMap.put("id",team.getID());
         teamMap.put("name",team.getTeamName());
         Map<String, Object> roundMap = new HashMap<>(5);

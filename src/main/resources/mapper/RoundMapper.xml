@@ -35,4 +35,9 @@
         report_score = #{reportScore}, question_score = #{questionScore}
         WHERE  round_id = #{roundID} AND team_id = #{teamID};
     </update>
+
+    <!--根据courseID和roundSerial获得roundID-->
+    <select id="getRoundIDByCourseIDAndRoundSerial" parameterType="Seminar" resultType="BigInteger">
+        SELECT id FROM round WHERE course_id = #{courseID} AND round_serial = #{roundOrder}
+    </select>
 </mapper>

@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.dao;
 
 import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.mapper.KlassMapper;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIGlobalBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
@@ -46,5 +47,15 @@ public class KlassDao {
         klassMapper.deleteKlassSeminarByKlassID(klassID);
         klassMapper.deleteKlassStudentByKlassID(klassID);
         klassMapper.deleteKlassInTeamByKlassID(klassID);
+    }
+
+    public List<Klass> listKlassBySeminarID(BigInteger seminarID) {
+        List<BigInteger> klassesID = klassMapper.listKlassIDBySeminarID(seminarID);
+        List<Klass> klasses = new ArrayList<>();
+        for(int i = 0; i < klassesID.size(); i++) {
+            Klass klass = klassMapper.getKlassByKlassID(klassesID.get(i));
+            klasses.add(klass);
+        }
+        return klasses;
     }
 }

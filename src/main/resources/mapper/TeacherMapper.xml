@@ -4,7 +4,8 @@
 
     <!--根据teacherID获取Teacher对象-->
     <select id="getTeacherByTeacherID"  resultType="Teacher" parameterType="BigInteger">
-        SELECT * FROM teacher WHERE id = #{teacherID}
+        SELECT id id,account username,password password,teacher_name name, is_active beActive, email email
+        FROM teacher WHERE id = #{teacherID}
     </select>
 
     <!--根据courseID获取teacherID-->

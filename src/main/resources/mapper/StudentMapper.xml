@@ -4,7 +4,7 @@
 
     <!--根据studentID获取student对象-->
     <select id="getStudentByStudentID"  resultType="Student" parameterType="BigInteger">
-        SELECT id id,account account,password password,is_active beActive,student_name studentName,email email
+        SELECT id id,account username,password password,is_active beActive,student_name name,email email
         FROM student WHERE id = #{studentID}
     </select>
 
@@ -15,7 +15,7 @@
 
     <!--根据courseID获取未组队学生ID列表-->
     <select id="listNoTeamStudentsIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT student_id FROM klass_student WHERE course_id = #{courseID} AND team_id = NULL
+        SELECT student_id FROM klass_student WHERE course_id = #{courseID} AND team_id IS NULL
     </select>
 
     <!--获取所有学生ID-->

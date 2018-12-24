@@ -1,5 +1,6 @@
 package cn.edu.xmu.crms.entity;
 
+
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
@@ -18,9 +19,17 @@ public class Seminar {
     private Integer maxTeam;
     private Integer beVisible;
     private Integer seminarSerial;
+    private Integer roundOrder;
     private Timestamp enrollStartTime;
     private Timestamp enrollEndTime;
 
+    public Integer getRoundOrder() {
+        return roundOrder;
+    }
+
+    public void setRoundOrder(Integer roundOrder) {
+        this.roundOrder = roundOrder;
+    }
     public BigInteger getID() {
         return id;
     }

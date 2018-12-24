@@ -4,6 +4,8 @@ import cn.edu.xmu.crms.entity.ShareTeamApplication;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName TeamShareMapper
@@ -39,4 +41,36 @@ public interface TeamShareMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getTeamShareIDByMainAndSubCourseID(BigInteger mainCourseID, BigInteger subCourseID);
+    /**
+     * 获得所有申请的ID
+     * @return List<BigInteger> 共享组队课程ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    List<BigInteger> listApplicationID();
+    /**
+     * 通过主课程和从课程ID查找共享课程ID
+     *
+     * @param id 共享组队ID
+     * @return ShareTeamApplication 申请对象
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    Map<String, Object> getApplicationByID(BigInteger id);
+    /**
+     * 修改申请状态
+     *
+     * @param shareTeamApplication 共享组队
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    void updateStatusByTeamShareID(ShareTeamApplication shareTeamApplication);
+    /**
+     * 获得上一次插入语句的ID
+     *
+     * @return BigInteger 上一条插入语句的ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    BigInteger getLastInsertID();
 }
