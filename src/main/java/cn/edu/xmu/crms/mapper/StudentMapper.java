@@ -83,4 +83,13 @@ public interface StudentMapper {
      * @date 2018/12/01 14:32
      */
     void updateStudentActiveByStudentID(Student student);
+    /**
+     * 通过teamID获得leaderID
+     *
+     * @param teamID 队伍ID
+     * @return BigInteger leaderID
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    BigInteger getLeaderIDByTeamID(BigInteger teamID);
 }

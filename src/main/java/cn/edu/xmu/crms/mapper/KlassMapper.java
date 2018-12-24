@@ -91,4 +91,13 @@ public interface KlassMapper {
      * @date 2018/11/30 19:45
      */
     void deleteKlassInTeamByKlassID(BigInteger klassID);
+    /**
+     * 通过teamID获得klassID
+     *
+     * @param teamID 队伍ID
+     * @return BigInteger klassID
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    BigInteger getKlassIDByTeamID(BigInteger teamID);
 }

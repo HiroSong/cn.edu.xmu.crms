@@ -32,7 +32,7 @@
         WHERE  id = #{id}
     </update>
 
-    <!--修改某个学生的密码-->
+    <!--重置某个学生的密码-->
     <update id="resetStudentPasswordByStudentID" parameterType="BigInteger">
         UPDATE student SET password = 123456 WHERE  id = #{studentID}
     </update>
@@ -44,6 +44,11 @@
 
     <!--激活某个学生的账号-->
     <update id="updateStudentActiveByStudentID" parameterType="Student">
-        UPDATE student SET is_acctive = 1,password = #{password},email = #{email} WHERE  id = #{studentID}
+        UPDATE student SET is_acctive = 1,password = #{password},email = #{email} WHERE  id = #{id}
     </update>
+
+    <!--根据teamID查询leaderID-->
+    <select id="getLeaderIDByTeamID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT leader_id FROM team WHERE id = #{teamID}
+    </select>
 </mapper>

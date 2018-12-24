@@ -14,12 +14,38 @@
 
     <!--插入一个Teacher信息-->
     <insert id="insertTeacherByTeacher" parameterType="Teacher">
-        INSERT INTO teacher(account,password,teacher_name,email)
-        VALUE (#{account,#{password},#{teacherName},#{email})
+        INSERT INTO teacher(account,password,teacher_name,email,is_active)
+        VALUE (#{account},#{password},#{name},#{email},0)
     </insert>
 
     <!--根据Teacher的账号密码查找ID-->
     <select id="getTeacherIDByAccountAndPassword" parameterType="String" resultType="BigInteger">
         SELECT id FROM teacher WHERE account = #{param1} AND password = #{param2}
     </select>
+
+    <!--获取所有教师ID-->
+    <select id="listAllTeachersID" resultType="BigInteger">
+        SELECT id FROM teacher
+    </select>
+
+    <!--根据ID修改某教师信息-->
+    <update id="updateTeacherInfoByTeacherID" parameterType="Teacher">
+        UPDATE teacher SET account = #{account},teacher_name = #{name},email = #{email}
+        WHERE id = #{id}
+    </update>
+
+    <!--重置某个教师的密码-->
+    <update id="resetTeacherPasswordByTeacherID" parameterType="BigInteger">
+        UPDATE teacher SET password = 123456 WHERE  id = #{teacherID}
+    </update>
+
+    <!--根据teacherID删除teacher表内信息-->
+    <delete id="deleteTeacherByTeacherID" parameterType="BigInteger">
+        DELETE FROM teacher WHERE id = #{teacherID}
+    </delete>
+
+    <!--激活某个教师的账号-->
+    <update id="updateTeacherActiveByTeacherID" parameterType="Teacher">
+        UPDATE teacher SET is_acctive = 1,password = #{password},email = #{email} WHERE  id = #{id}
+    </update>
 </mapper>
