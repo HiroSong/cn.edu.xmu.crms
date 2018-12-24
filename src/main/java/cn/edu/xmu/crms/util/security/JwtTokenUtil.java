@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.*;
@@ -64,7 +65,7 @@ public class JwtTokenUtil implements Serializable {
         Map<String, Object> claims = new HashMap<>(3);
         claims.put("sub", user.getUsername());
         claims.put("id", user.getID());
-        claims.put("scope", JSON.toJSON(user.getRoles()));
+        claims.put("roles", JSON.toJSON(user.getRoles()));
         claims.put("created", new Date());
         return generateToken(claims);
     }
@@ -96,12 +97,30 @@ public class JwtTokenUtil implements Serializable {
         BigInteger id;
         try {
             Claims claims = getClaimsFromToken(token);
-            id = (BigInteger) claims.get("id");
+            id = new BigInteger(claims.get("id").toString());
         } catch (Exception e) {
             id = null;
         }
         return id;
     }
+
+    /**
+     * 从令牌中获取roles
+     *
+     * @param token 令牌
+     * @return 用户角色
+     */
+    public List<String> getRolesFromToken(String token) {
+        List<String> roles;
+        try {
+            Claims claims = getClaimsFromToken(token);
+            roles = (ArrayList<String>) claims.get("roles");
+        } catch (Exception e) {
+            roles = null;
+        }
+        return roles;
+    }
+
 
     /**
      * 判断令牌是否过期
@@ -147,5 +166,25 @@ public class JwtTokenUtil implements Serializable {
     public Boolean validateToken(String token, UserDetails userDetails) {
         String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public BigInteger getIDFromRequest(HttpServletRequest request){
+        String authHeader = request.getHeader("Authorization");
+        String tokenHead = "Bearer ";
+        if (authHeader != null && authHeader.startsWith(tokenHead)) {
+            String authToken = authHeader.substring(tokenHead.length());
+            return this.getIDFromToken(authToken);
+        }
+        return null;
+    }
+
+    public String getRolesFromRequest(HttpServletRequest request){
+        String authHeader = request.getHeader("Authorization");
+        String tokenHead = "Bearer ";
+        if (authHeader != null && authHeader.startsWith(tokenHead)) {
+            String authToken = authHeader.substring(tokenHead.length());
+            return this.getRolesFromToken(authToken).get(0);
+        }
+        return null;
     }
 }

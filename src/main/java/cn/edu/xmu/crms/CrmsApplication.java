@@ -16,9 +16,4 @@ public class CrmsApplication {
     public static void main(String[] args) {
         SpringApplication.run(CrmsApplication.class, args);
     }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
