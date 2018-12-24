@@ -33,7 +33,7 @@ public class StudentService {
             Student student = students.get(i);
             map.put("id",student.getID());
             map.put("account",student.getAccount());
-            map.put("name",student.getStudentName());
+            map.put("name",student.getName());
             map.put("email",student.getEmail());
             studentsInfoList.add(map);
         }
@@ -50,7 +50,7 @@ public class StudentService {
         Student student = studentMapper.getStudentByStudentID(studentID);
         map.put("id",student.getID());
         map.put("account",student.getAccount());
-        map.put("name",student.getStudentName());
+        map.put("name",student.getName());
         map.put("email",student.getEmail());
         return map;
     }
@@ -64,7 +64,7 @@ public class StudentService {
         Map<String, Object> map = new HashMap<>(3);
         map.put("id",student.getID());
         map.put("account",student.getID());
-        map.put("name",student.getStudentName());
+        map.put("name",student.getName());
         return map;
     }
 }

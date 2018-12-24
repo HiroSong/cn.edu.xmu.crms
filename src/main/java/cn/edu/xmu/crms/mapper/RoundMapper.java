@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.Round;
 import cn.edu.xmu.crms.entity.RoundScore;
+import cn.edu.xmu.crms.entity.Seminar;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
@@ -67,4 +68,13 @@ public interface RoundMapper {
      * @date 2018/11/30 19:45
      */
     void updateRoundScoreByRoundScore(RoundScore roundScore);
+    /**
+     * 根据轮次顺序和课程号获得roundID
+     *
+     * @return BigInteger roundID
+     * @param seminar 讨论课对象
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    BigInteger getRoundIDByCourseIDAndRoundSerial(Seminar seminar);
 }

@@ -87,14 +87,12 @@ public class CourseController {
     }
 
     @GetMapping("/course/{courseID}/class")
-    public List<Map<String, Object>> listKlassInfoByCourseID(@PathVariable("courseID")
-                                                                              BigInteger courseID) {
+    public List<Map<String, Object>> listKlassInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
         return klassService.listKlassInfoByCourseID(courseID);
     }
 
     @GetMapping("/course/{courseID}/teamshare")
-    public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID")
-                                                                     BigInteger courseID) {
+    public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
         return teamShareService.listMainAndSubCoursesInfoByCourseID(courseID);
     }
 
@@ -116,22 +114,20 @@ public class CourseController {
         seminarShareService.deleteSeminarShareBySeminarShareID(seminarShareID);
     }
 
-    @PostMapping("/course/{courseID}/teamsharerequest")
-    public BigInteger createTeamShareRequestByCourseID(@PathVariable("courseID") BigInteger mainCourseID,
-                                                       @RequestBody Map<String, BigInteger> subCourseID) {
-        return teamShareService.createTeamShareRequestByCourseID(mainCourseID, subCourseID.get("subCourseID"));
-    }
-
-    @PostMapping("/course/{courseID}/seminarsharerequest")
-    public BigInteger createSeminarShareRequestByCourseID(@PathVariable("courseID") BigInteger mainCourseID,
-                                                       @RequestBody Map<String, BigInteger> subCourseID) {
-        return seminarShareService.createSeminarShareRequestByCourseID(mainCourseID,subCourseID.get("subCourseID"));
-    }
-
     @PostMapping("/course/{courseID}/class ")
     public BigInteger createNewKlass(@PathVariable("courseID") BigInteger courseID,
                                                           @RequestBody Klass klass) {
         klass.setCourseID(courseID);
         return klassService.createNewKlass(klass);
+    }
+
+    //创建队伍 三个不合法条件（还缺一个条件，选某门课程最少最多人数）
+    @PostMapping("/course/{courseID}/team")
+    public Map<String, Object> createNewTeam(@PathVariable("courseID") BigInteger courseID,
+                                    @RequestBody Team team) {
+        Course course = new Course();
+        course.setID(courseID);
+        team.setCourse(course);
+        return teamService.createNewTeam(team);
     }
 }

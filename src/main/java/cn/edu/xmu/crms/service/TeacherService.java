@@ -46,7 +46,7 @@ public class TeacherService {
             Map<String, Object> map = new HashMap<>(4);
             map.put("id",teacher.getID());
             map.put("account",teacher.getAccount());
-            map.put("name",teacher.getTeacherName());
+            map.put("name",teacher.getName());
             map.put("email",teacher.getEmail());
             teacherInfoList.add(map);
         }
@@ -69,7 +69,7 @@ public class TeacherService {
         Teacher teacher = teacherMapper.getTeacherByTeacherID(teacherID);
         map.put("id",teacher.getID());
         map.put("account",teacher.getAccount());
-        map.put("name",teacher.getTeacherName());
+        map.put("name",teacher.getName());
         map.put("email",teacher.getEmail());
         return map;
     }

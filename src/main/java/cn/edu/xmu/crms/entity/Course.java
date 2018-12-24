@@ -24,6 +24,16 @@ public class Course {
     private Integer minMemberNumber;
     private Integer maxMemberNumber;
     private List<ConflictCourse> conflictCourses;
+    private Teacher teacher;
+
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 
     public BigInteger getID() {
         return id;

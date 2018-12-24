@@ -66,7 +66,36 @@ public class TeamDao {
 
     public void insertStudentByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
         BigInteger courseID = courseMapper.getCourseIDByTeamID(teamID);
-        BigInteger klassID = klassMapper.getKlassIDByTeamID(teamID);
-        teamMapper.insertStudentIntoTeamBy4ID(klassID,studentID,courseID,teamID);
+        BigInteger klassID = klassMapper.getKlassIDByStudentAndCourseID(studentID, courseID);
+        teamMapper.updateTeamIDBy4ID(klassID,studentID,courseID,teamID);
+    }
+
+    public Team insertTeam(Team team) {
+        team.setStatus(1);
+        if(team.getMembers().size() + 1 > team.getCourse().getMaxMember()||
+                team.getMembers().size() + 1 < team.getCourse().getMinMember()) {
+            team.setStatus(0);
+        }
+        //判断是否有学生不同班级
+        for(int i = 0; i < team.getMembers().size() - 1; i++) {
+            BigInteger klassID1 = klassMapper.getKlassIDByStudentAndCourseID(team.getMembers().get(i).getID(),
+                    team.getCourse().getID());
+            BigInteger klassID2 = klassMapper.getKlassIDByStudentAndCourseID(team.getMembers().get(i + 1).getID(),
+                    team.getCourse().getID());
+            if(!klassID1.equals(klassID2)||!klassID1.equals(team.getKlass().getID())) {
+                team.setStatus(0);
+                break;
+            }
+        }
+        teamMapper.insertTeam(team);
+        team.setID(teamMapper.getLastInsertID());
+        BigInteger courseID = team.getCourse().getID();
+        BigInteger teamID = team.getID();
+        for(int i = 0; i < team.getMembers().size(); i++) {
+            BigInteger klassID = klassMapper.getKlassIDByStudentAndCourseID(team.getMembers().get(i).getID(),courseID);
+            BigInteger studentID = team.getMembers().get(i).getID();
+            teamMapper.updateTeamIDBy4ID(klassID,studentID,courseID,teamID);
+        }
+        return team;
     }
 }

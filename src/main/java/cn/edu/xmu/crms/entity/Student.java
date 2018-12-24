@@ -6,13 +6,4 @@ package cn.edu.xmu.crms.entity;
  */
 public class Student extends User {
     private String role = "student";
-    private String studentName;
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
 }
