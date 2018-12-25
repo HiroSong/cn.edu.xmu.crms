@@ -55,26 +55,6 @@
         UPDATE team_valid_application SET status = 1 WHERE team_id = #{teamID} AND status = null
     </update>
 
-    <!--获得展示小组的ID列表-->
-    <select id="listAttendancesIDByKlassSeminarID" parameterType="BigInteger" resultType="BigInteger">
-        SELECT id FROM attendance WHERE klass_seminar_id = #{klass_seminarID}
-    </select>
-    <!--根据参与展示小组的ID获得参与展示小组的对象-->
-    <select id="getAttendanceByAttendanceID"  resultType="Attendance" parameterType="BigInteger">
-        SELECT * FROM attendance WHERE id = #{attendanceID}
-    </select>
-    <!--新建参与展示的小组-->
-    <insert id="insertAttendance" parameterType="Attendance" >
-        INSERT INTO attendance(klass_seminar_id,team_id,team_order,is_present)
-        VALUES (#{klassSeminarID},#{teamID},#{teamOrder},0)
-    </insert>
-
-    <!--删除报名参与展示的小组-->
-    <delete id="deleteAttendance" parameterType="BigInteger">
-        DELETE FROM attendance WHERE id=#{attendanceID}
-    </delete>
-
-
     <!--插入一个新的队伍信息-->
     <insert id="insertTeam" parameterType="Team">
         INSERT INTO team(klass_id,course_id,leader_id,team_name,team_serial,status)

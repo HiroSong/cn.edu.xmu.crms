@@ -33,20 +33,7 @@
     <select id="listSeminarsIDByRoundID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM seminar WHERE round_id = #{roundID}
     </select>
-    <!--根据seminarID和klassID获取klass_seminarID-->
-    <select id="getKlassSeminarIDBySeminarIDAndClassID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT id FROM klass_seminar WHERE seminar_id = #{param1} AND klass_id = #{param2}
-    </select>
 
-    <!--通过courseID获取课程下所有讨论课的ID的列表-->
-    <select id="getSeminarIDByCourseID" parameterType="BigInteger" resultType="BigInteger">
-        SELECT id FROM seminar WHERE course_id=#{courseID}
-    </select>
-
-    <!--根据seminarID和klassID获取正在进行的讨论课的ID-->
-    <select id="checkIfSeminarInProgressBySeminarIDAndKlassID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT seminar_id FROM klass_seminar WHERE seminar_id = #{param1} AND klass_id = #{param2} AND status=1
-    </select>
     <!--插入新的讨论课信息-->
     <insert id="insertSeminarBySeminar" parameterType="Seminar">
         INSERT INTO seminar(course_id,round_id,seminar_name,introduction,max_team,is_visible,

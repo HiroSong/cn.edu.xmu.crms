@@ -20,22 +20,6 @@ import java.util.TimeZone;
  **/
 @RestController
 public class SeminarController {
-
-    @Autowired
-    SeminarService seminarService;
-
-    @GetMapping("/course/{courseID}/class/{classID}/seminar")
-    public Map<String, Object> getSeminarInProgress(@PathVariable("courseID") BigInteger courseID,
-                                                    @PathVariable("classID") BigInteger classID) {
-        return seminarService.getSeminarInProgressByCourseIDAndClassID(courseID,classID);
-    }
-
-    @GetMapping("/seminar/{seminarID}/team/{teamID}/attendance")
-    public Map<String, Object> checkIfAttendance(@PathVariable("seminarID") BigInteger seminarID,
-                                                    @PathVariable("teamID") BigInteger teamID) {
-        return seminarService.checkIfAttendanceBySeminarIDAndTeamID(seminarID,teamID);
-    }
-
     @Autowired
     SeminarService seminarService;
 

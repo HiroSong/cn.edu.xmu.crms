@@ -75,15 +75,6 @@ public class SeminarDao{
         return seminars;
     }
 
-    public Seminar getSeminarInProgressByCourseIDAndClassID(BigInteger courseID,BigInteger klassID){
-        List<BigInteger> seminarIDList=seminarMapper.getSeminarIDByCourseID(courseID);
-        for(int i=0;i<seminarIDList.size();i++)
-        {
-            BigInteger resultID=seminarMapper.checkIfSeminarInProgressBySeminarIDAndKlassID(seminarIDList.get(i),klassID);
-            if(resultID!=null)
-                return seminarMapper.getSeminarBySeminarID(resultID);
-        }
-        return null;
     public void deleteSeminarBySeminarID(BigInteger seminarID) {
         seminarMapper.deleteSeminarBySeminarID(seminarID);
         seminarMapper.deleteKlassSeminarBySeminarID(seminarID);

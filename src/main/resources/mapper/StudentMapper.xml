@@ -7,9 +7,6 @@
         SELECT id id,account username,password password,is_active beActive,student_name name,email email
         FROM student WHERE id = #{studentID}
     </select>
-    <select id="selectStudentByID"  resultType="Student" parameterType="BigInteger">
-        SELECT * FROM student WHERE id = #{student_id}
-    </select>
 
     <!--根据courseID和teamID获取studentID列表-->
     <select id="listStudentsIDByCourseAndTeamID"  resultType="BigInteger" parameterType="BigInteger">
