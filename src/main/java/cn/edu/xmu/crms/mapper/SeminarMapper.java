@@ -186,4 +186,16 @@ public interface SeminarMapper {
      * @date 2018/11/30 19:45
      */
     void updateSeminarScoreByKlassSeminarAndTeamID(Map<String,Object> map);
+
+    /**
+     * 通过seminarID和klassID获取具体班级下的讨论课的ID
+     *
+     * @param seminarID 讨论课ID
+     * @param klassID 班级ID
+     * @return BigInteger 具体班级下的讨论课的ID
+     * @author LaiShaopeng
+     * @date 2018/12/24 15:06:00
+     */
+    BigInteger getKlassSeminarIDBySeminarIDAndClassID(BigInteger seminarID, BigInteger klassID);
+
 }
