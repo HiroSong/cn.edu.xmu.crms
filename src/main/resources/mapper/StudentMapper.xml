@@ -56,7 +56,7 @@
 
     <!--插入一个Student信息-->
     <insert id="insertStudent" parameterType="User">
-        INSERT INTO student(account,password,student_name,email,is_active)
-            VALUE (#{username},#{password},#{name},"",0)
+        INSERT INTO student(account,password,student_name,is_active)
+            VALUE (#{username},#{password},#{name},0)
     </insert>
 </mapper>
