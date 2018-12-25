@@ -4,6 +4,7 @@ import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
@@ -16,7 +17,7 @@ import java.util.List;
  * @Date 2018/12/18 17:37
  **/
 @Mapper
-@Repository
+@Component
 public interface TeacherMapper {
     /**
      * 用于通过教师id获取教师信息

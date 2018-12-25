@@ -3,7 +3,8 @@ package cn.edu.xmu.crms.mapper;
 import cn.edu.xmu.crms.entity.Klass;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
+
 import java.math.BigInteger;
 import java.util.List;
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * @Author Hongqiwu
  **/
 @Mapper
-@Repository
+@Component
 public interface KlassMapper {
     /**
      * 通过studentID和courseID获取klassID

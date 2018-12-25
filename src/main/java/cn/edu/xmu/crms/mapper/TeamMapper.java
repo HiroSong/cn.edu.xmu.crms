@@ -3,6 +3,7 @@ package cn.edu.xmu.crms.mapper;
 import cn.edu.xmu.crms.entity.Team;
 import cn.edu.xmu.crms.entity.TeamValidApplication;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @Author Hongqiwu
  **/
 @Mapper
-@Repository
+@Component
 public interface TeamMapper {
     /**
      * 通过学生和课程ID获取队伍ID
