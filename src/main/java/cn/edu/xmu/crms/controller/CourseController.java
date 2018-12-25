@@ -5,7 +5,6 @@ import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.service.*;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +19,7 @@ import java.util.Map;
  */
 @RestController
 public class CourseController {
+
     @Autowired
     CourseService courseService;
     @Autowired
@@ -43,8 +43,10 @@ public class CourseController {
     @GetMapping("/course")
     public List<Map<String, Object>> listCoursesInfo(HttpServletRequest request) {
         BigInteger id = jwtTokenUtil.getIDFromRequest(request);
+        String role = jwtTokenUtil.getRolesFromRequest(request);
         System.out.println(jwtTokenUtil.getRolesFromRequest(request));
-        return courseService.listCoursesInfoByStudentOrTeacherID(id);
+        System.out.println(id);
+        return courseService.listCoursesInfoByStudentOrTeacherID(id, role);
     }
 
     @GetMapping("/course/{courseID}/round")
@@ -74,16 +76,10 @@ public class CourseController {
         return courseService.createNewCourse(course);
     }
 
-    @GetMapping("/course/{courseID}/team")
-    public List<Map<String, Object>> listTeamsInfoByCourseID(@PathVariable("courseID")
-                                                               BigInteger courseID) {
-        return teamService.listTeamsInfoByCourseID(courseID);
-    }
-
     @GetMapping("/course/{courseID}/myTeam")
     public Map<String, Object> getMyTeamInfoByCourseAndStudentID(@PathVariable("courseID")
                                                                      BigInteger courseID) {
-        BigInteger studentID = new BigInteger("1");
+        BigInteger studentID = new BigInteger("24320162202835");
         return teamService.getTeamInfoByCourseAndStudentID(courseID, studentID);
     }
 

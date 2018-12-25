@@ -1,6 +1,5 @@
 package cn.edu.xmu.crms.dao;
 
-
 import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.mapper.StudentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,32 @@ import java.util.Map;
 
 @Repository
 public class StudentDao {
+
     @Autowired
     StudentMapper studentMapper;
 
     public Student getStudentByStudentID(BigInteger studentID) {
         return studentMapper.getStudentByStudentID(studentID);
+    }
+
+    public Integer updateStudentInfo(Student student) {
+        return studentMapper.updateStudentInfoByStudent(student);
+    }
+
+    public Integer resetStudentPassword(BigInteger studentID) {
+        return studentMapper.resetStudentPasswordByStudentID(studentID);
+    }
+
+    public Integer deleteStudentByStudentID(BigInteger studentID) {
+        return studentMapper.deleteStudentByStudentID(studentID);
+    }
+
+    public Integer updateStudentActiveByStudent(Student student) {
+        return studentMapper.updateStudentActiveByStudent(student);
+    }
+
+    public List<Student> listAllStudents() {
+        return studentMapper.listAllStudents();
     }
 
     public List<Student> listStudentsByCourseAndTeamID(BigInteger courseID, BigInteger teamID) {
@@ -46,13 +66,4 @@ public class StudentDao {
         return students;
     }
 
-    public List<Student> listAllStudents() {
-        List<BigInteger> studentsID = studentMapper.listAllStudentsID();
-        List<Student> students = new ArrayList<>();
-        for(int i = 0; i < studentsID.size(); i++) {
-            Student student = studentMapper.getStudentByStudentID(studentsID.get(i));
-            students.add(student);
-        }
-        return students;
-    }
 }

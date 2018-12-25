@@ -8,6 +8,9 @@ import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import java.util.Map;
  * @ClassName TeamService
  * @Author Hongqiwu
  **/
+@RestController
 @Service
 public class TeamService {
     @Autowired
@@ -40,7 +44,8 @@ public class TeamService {
     @Autowired
     TeamValidMapper teamValidMapper;
 
-    public List<Map<String, Object>> listTeamsInfoByCourseID(BigInteger courseID) {
+    @GetMapping("/course/{courseID}/team")
+    public List<Map<String, Object>> listTeamsInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> teamsInfoList = new ArrayList<>();
         List<Team> teams = teamDao.listTeamsByCourseID(courseID);
         for(int i = 0; i < teams.size(); i++) {

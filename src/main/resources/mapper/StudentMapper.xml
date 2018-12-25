@@ -18,15 +18,15 @@
         SELECT student_id FROM klass_student WHERE course_id = #{courseID} AND team_id IS NULL
     </select>
 
-    <!--获取所有学生ID-->
-    <select id="listAllStudentsID" resultType="BigInteger">
-        SELECT id FROM student
+    <!--获取所有学生对象√-->
+    <select id="listAllStudents" resultType="Student">
+        SELECT id id,account username,password password,is_active beActive,student_name name,email email
+        FROM student
     </select>
 
-    <!--修改某个学生的信息（除了密码）-->
+    <!--修改某个学生的信息（邮箱）-->
     <update id="updateStudentInfoByStudent" parameterType="Student">
-        UPDATE student SET account = #{username}, email = #{email}, student_name = #{name}
-        WHERE  id = #{id}
+        UPDATE student SET email = #{email} WHERE  id = #{id}
     </update>
 
     <!--重置某个学生的密码-->
@@ -40,8 +40,8 @@
     </delete>
 
     <!--激活某个学生的账号-->
-    <update id="updateStudentActiveByStudentID" parameterType="Student">
-        UPDATE student SET is_acctive = 1,password = #{password},email = #{email} WHERE  id = #{id}
+    <update id="updateStudentActiveByStudent" parameterType="Student">
+        UPDATE student SET is_active = 1, password = #{password}, email = #{email} WHERE  id = #{id}
     </update>
 
     <!--根据teamID查询leaderID-->
@@ -59,4 +59,5 @@
         INSERT INTO student(account,password,student_name,email,is_active)
             VALUE (#{username},#{password},#{name},"",0)
     </insert>
+
 </mapper>
