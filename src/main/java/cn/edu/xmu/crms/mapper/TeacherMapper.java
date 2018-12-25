@@ -35,6 +35,7 @@ public interface TeacherMapper {
      * @date 2018/12/01 15:09
      */
     BigInteger getTeacherIDByCourseID(BigInteger courseID);
+
     /**
      * 创建教师用户
      *
@@ -42,31 +43,25 @@ public interface TeacherMapper {
      * @author hongqiwu
      * @date 2018/12/01 15:09
      */
-    void insertTeacher(User user);
+    Integer insertTeacher(User user);
+
     /**
-     * 通过教师账号和密码查询教师ID
-     * @param account 教师账号
-     * @param password 教师密码
-     * @return BigInteger teacherID
-     * @author hongqiwu
-     * @date 2018/12/01 15:09
-     */
-    BigInteger getTeacherIDByAccountAndPassword(String account, String password);
-    /**
-     * 用于获取所有教师的ID列表
+     * 获取所有教师
      *
-     * @return 所有教师ID列表
+     * @return 所有教师对象
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    List<BigInteger> listAllTeachersID();
+    List<Teacher> listAllTeachers();
+
     /**
      * 修改教师信息
      * @param teacher 教师对象
      * @author hongqiwu
      * @date 2018/12/01 15:09
      */
-    void updateTeacherInfoByTeacherID(Teacher teacher);
+    Integer updateTeacherInfoByTeacher(Teacher teacher);
+
     /**
      * 用于重置教师密码为123456
      *
@@ -74,7 +69,8 @@ public interface TeacherMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void resetTeacherPasswordByTeacherID(BigInteger teacherID);
+    Integer resetTeacherPasswordByTeacherID(BigInteger teacherID);
+
     /**
      * 用于删除单个教师
      *
@@ -82,7 +78,8 @@ public interface TeacherMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void deleteTeacherByTeacherID(BigInteger teacherID);
+    Integer deleteTeacherByTeacherID(BigInteger teacherID);
+
     /**
      * 用于激活某个教师账号
      *
@@ -90,7 +87,8 @@ public interface TeacherMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void updateTeacherActiveByTeacherID(Teacher teacher);
+    Integer updateTeacherActiveByTeacher(Teacher teacher);
+
     /**
      *  通过教工号获得教师对象
      *
@@ -100,4 +98,22 @@ public interface TeacherMapper {
      * @date 2018/12/23 21:53
      */
     Teacher getTeacherByTeacherAccount(String username);
+
+    /**
+     * 获得上一次插入语句的ID
+     *
+     * @return BigInteger 上一条插入语句的ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    BigInteger getLastInsertID();
+
+    /**
+     * 获取所有邮箱号
+     *
+     * @return 所有邮箱
+     * @author hongqiwu
+     * @date 2018/12/01 14:32
+     */
+    List<String> listAllEmails();
 }
