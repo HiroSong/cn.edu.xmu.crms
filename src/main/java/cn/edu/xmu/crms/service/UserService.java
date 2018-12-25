@@ -3,16 +3,12 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.UserDao;
 import cn.edu.xmu.crms.entity.User;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
-import cn.edu.xmu.crms.util.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,7 +49,8 @@ public class UserService {
         String token = jwtTokenUtil.generateToken(userInDatabase);
         Map<String, Object> map = new HashMap<>(3);
         map.put("token", token);
-        map.put("role", userInDatabase.getRoles());
+        map.put("role", userInDatabase.getRoles().get(0));
+        map.put("beActive", userInDatabase.getBeActive());
         return map;
     }
 
@@ -76,17 +73,4 @@ public class UserService {
         return "success";
     }
 
-    /**
-     * 刷新密钥
-     *
-     * @param oldToken 原密钥
-     * @return String 新密钥
-     */
-    public String refreshToken(String oldToken) {
-        String token = oldToken.substring("Bearer ".length());
-        if (!jwtTokenUtil.isTokenExpired(token)) {
-            return jwtTokenUtil.refreshToken(token);
-        }
-        return "error";
-    }
 }

@@ -39,10 +39,9 @@ public class CourseService {
      * @author Hongqiwu
      * @date 2018/11/30 19:41
      */
-   public List<Map<String, Object>> listCoursesInfoByStudentOrTeacherID(BigInteger id) {
+   public List<Map<String, Object>> listCoursesInfoByStudentOrTeacherID(BigInteger id, String role) {
        List<Map<String, Object>> listCoursesInfo = new ArrayList<>();
-       //如果是studentID
-       if(id.equals(BigInteger.valueOf(1))) {
+       if(role.equals("student")) {
            List<Course> courses = courseDao.listCoursesByStudentID(id);
            if(courses == null) {
                return null;

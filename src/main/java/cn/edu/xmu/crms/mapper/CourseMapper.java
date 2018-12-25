@@ -2,7 +2,7 @@ package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.Course;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.Map;
  * @date 2018/11/30 19:45
  */
 @Mapper
-@Repository
+@Component
 public interface CourseMapper {
     /**
      * 通过studentID获取courseID列表
@@ -188,5 +188,15 @@ public interface CourseMapper {
      * @date 2018/11/30 19:45
      */
     Map<String, Object> getScoreWeightByCourseID(BigInteger courseID);
+
+    /**
+      * 根据班级id获取课程id
+      *
+      * @param id 班级id
+      * @return courseID
+      * @author SongLingbing
+      * @date 2018/12/26 2:54
+      */
+    BigInteger getCourseIDByKlassID(BigInteger id);
 }
 

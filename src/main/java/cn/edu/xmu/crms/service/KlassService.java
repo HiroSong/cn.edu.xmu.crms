@@ -1,10 +1,18 @@
 package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.KlassDao;
+import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.mapper.KlassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.lang.String;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -16,12 +24,15 @@ import java.util.Map;
  * @ClassName KlassService
  * @Author Hongqiwu
  **/
+@RestController
 @Service
 public class KlassService {
     @Autowired
     KlassDao klassDao;
     @Autowired
     KlassMapper klassMapper;
+    @Autowired
+    StudentDao studentDao;
 
     /**
      * 用courseID查找班级信息列表
@@ -54,4 +65,11 @@ public class KlassService {
         return klassMapper.insertKlassByKlass(klass);
     }
 
+    @PostMapping("/class/{classID}/student")
+    public Map<String, Object> importStudentByExcel(@PathVariable("classID")BigInteger klassID, @RequestParam("file") MultipartFile file) throws IOException {
+        Map<String, Object> map = new HashMap<>(1);
+        String status = studentDao.insertStudentList(klassID, file);
+        map.put("message", status);
+        return map;
+    }
 }
