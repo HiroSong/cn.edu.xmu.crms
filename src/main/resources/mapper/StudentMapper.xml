@@ -51,7 +51,7 @@
 
     <!--根据学号获取学生对象-->
     <select id="getStudentByStudentAccount" parameterType="String" resultType="Student">
-        SELECT id id, account username, password password FROM student WHERE account = #{username}
+        SELECT id id, account username, password password, is_active beActive, email email FROM student WHERE account = #{username}
     </select>
 
     <!--插入一个Student信息-->
