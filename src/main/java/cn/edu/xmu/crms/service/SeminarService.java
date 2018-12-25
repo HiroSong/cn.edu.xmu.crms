@@ -6,7 +6,9 @@ import cn.edu.xmu.crms.dao.SeminarDao;
 import cn.edu.xmu.crms.dao.TeacherDao;
 import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.entity.Seminar;
+import cn.edu.xmu.crms.entity.Team;
 import cn.edu.xmu.crms.mapper.*;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIGlobalBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
