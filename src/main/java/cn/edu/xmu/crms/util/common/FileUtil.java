@@ -38,7 +38,7 @@ public class FileUtil {
         return url;
     }
 
-    public String downloadFile(HttpServletResponse response,String fileType,  String fileName) {
+    public void downloadFile(HttpServletResponse response,String fileType,  String fileName) {
         if (fileName != null) {
             File file = new File(UPLOADED_FOLDER  + fileType + fileName);
             if (file.exists()) {
@@ -56,7 +56,6 @@ public class FileUtil {
                         os.write(buffer, 0, i);
                         i = bis.read(buffer);
                     }
-                    return "下载成功";
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -77,7 +76,6 @@ public class FileUtil {
                 }
             }
         }
-        return "下载失败";
     }
 
     private String saveUploadedFile(String fileType, MultipartFile file) throws IOException {

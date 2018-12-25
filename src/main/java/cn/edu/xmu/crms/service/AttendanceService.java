@@ -47,12 +47,12 @@ public class AttendanceService {
     }
 
     @RequestMapping("/attendance/report/{reportName}")
-    public String downloadReport(HttpServletResponse response, @PathVariable("reportName")String reportName){
-        return fileUtil.downloadFile(response, "//report//" ,reportName);
+    public void downloadReport(HttpServletResponse response, @PathVariable("reportName")String reportName){
+        fileUtil.downloadFile(response, "//report//" ,reportName);
     }
 
     @RequestMapping("/attendance/ppt/{pptName}")
-    public String downloadPPT(HttpServletResponse response, @PathVariable("pptName")String pptName){
-        return fileUtil.downloadFile(response, "//ppt//" ,pptName);
+    public void downloadPPT(HttpServletResponse response, @PathVariable("pptName")String pptName){
+        fileUtil.downloadFile(response, "//ppt//" ,pptName);
     }
 }
