@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
+
 /**
  * @ClassName KlassMapper
  * @Description 有关数据库中班级信息的操作
@@ -110,4 +112,13 @@ public interface KlassMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger getKlassIDByTeamID(BigInteger teamID);
+
+    /**
+     * 建立学生与班级的关联
+     *
+     * @param map
+     * @author SongLingbing
+     * @date 2018/12/26 2:18
+     */
+    void insertStudentKlass(Map<String, Object> map);
 }

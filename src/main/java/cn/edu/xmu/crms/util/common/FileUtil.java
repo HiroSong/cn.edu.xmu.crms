@@ -25,13 +25,17 @@ import java.util.Map;
 public class FileUtil {
     private static String UPLOADED_FOLDER = "L://temp";
 
-    public String uploadFile(String fileType, MultipartFile uploadfile){
+    public static String getUploadedFolder() {
+        return UPLOADED_FOLDER;
+    }
+
+    public String uploadFile(String fileType, MultipartFile uploadFile){
         String url;
-        if (uploadfile.isEmpty()) {
+        if (uploadFile.isEmpty()) {
             return null;
         }
         try {
-            url = this.saveUploadedFile(fileType, uploadfile);
+            url = this.saveUploadedFile(fileType, uploadFile);
         } catch (IOException e) {
             return null;
         }

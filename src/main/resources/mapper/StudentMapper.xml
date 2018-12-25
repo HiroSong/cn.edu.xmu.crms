@@ -60,4 +60,20 @@
             VALUE (#{username},#{password},#{name},0)
     </insert>
 
+    <!--插入学生列表-->
+    <insert id="insertStudentList" parameterType="java.util.List">
+        INSERT IGNORE INTO student(account, password, is_active, student_name)
+        VALUES
+        <foreach collection ="list" item="student" index= "index" separator=",">
+                (#{student.username}, #{student.password}, #{student.beActive}, #{student.name})
+        </foreach >
+    </insert>
+
+    <!--根据学号列表获取id列表-->
+    <select id="listStudentID" parameterType="java.util.List" resultType="BigInteger">
+        SELECT id FROM student WHERE account in
+            <foreach collection="list" item="student" index="index" open="(" separator="," close=")">
+                #{student.username}
+            </foreach>
+    </select>
 </mapper>

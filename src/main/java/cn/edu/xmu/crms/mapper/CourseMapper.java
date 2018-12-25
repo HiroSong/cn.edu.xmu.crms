@@ -188,5 +188,15 @@ public interface CourseMapper {
      * @date 2018/11/30 19:45
      */
     Map<String, Object> getScoreWeightByCourseID(BigInteger courseID);
+
+    /**
+      * 根据班级id获取课程id
+      *
+      * @param id 班级id
+      * @return courseID
+      * @author SongLingbing
+      * @date 2018/12/26 2:54
+      */
+    BigInteger getCourseIDByKlassID(BigInteger id);
 }
 

@@ -442,7 +442,7 @@ public class ExcelUtil {
      * @Title: getCellValue
      * @param cell
      */
-    private String getCellValue(Cell cell) {
+    public String getCellValue(Cell cell) {
         Object result = "";
         if (cell != null) {
             switch (cell.getCellTypeEnum()) {
@@ -495,23 +495,11 @@ public class ExcelUtil {
 
             int lastRowNum = sheet.getLastRowNum();
 
-            if (lastRowNum > 0) {
-                out("\n开始读取名为【" + sheet.getSheetName() + "】的内容：");
-            }
-
             Row row = null;
             for (int i = startReadPos; i <= lastRowNum + endReadPos; i++) {
                 row = sheet.getRow(i);
                 if (row != null) {
                     rowList.add(row);
-                    out("第" + (i + 1) + "行：", false);
-                    for (int j = 0; j < row.getLastCellNum(); j++) {
-                        String value = getCellValue(row.getCell(j));
-                        if (!value.equals("")) {
-                            out(value + " | ", false);
-                        }
-                    }
-                    out("");
                 }
             }
         }
