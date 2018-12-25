@@ -2,7 +2,6 @@ package cn.edu.xmu.crms.dao;
 
 import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.mapper.KlassMapper;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIGlobalBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;

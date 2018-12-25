@@ -4,7 +4,6 @@ import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.service.StudentService;
 import cn.edu.xmu.crms.service.TeacherService;
-import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

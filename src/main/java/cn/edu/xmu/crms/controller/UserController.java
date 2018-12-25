@@ -1,7 +1,5 @@
 package cn.edu.xmu.crms.controller;
 
-import cn.edu.xmu.crms.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
