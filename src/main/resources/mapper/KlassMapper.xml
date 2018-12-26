@@ -2,9 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.KlassMapper" >
 
-    <!--根据studentID和courseID获取klassID-->
-    <select id="getKlassIDByStudentAndCourseID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT klass_id FROM klass_student WHERE student_id = #{param1} AND course_id = #{param2}
+    <!--返回的klassMap-->
+    <resultMap id="klassMap" type="Klass">
+        <id property="id" column="id"/>
+        <result property="grade" column="grade"/>
+        <result property="klassSerial" column="klass_serial"/>
+        <result property="klassTime" column="klass_time"/>
+        <result property="klassLocation" column="klass_location"/>
+        <association property="course" javaType="Course">
+            <id property="id" column="course_id"/>
+            <result property="courseName" column="course_name"/>
+            <result property="introduction" column="introduction"/>
+        </association>
+    </resultMap>
+
+    <!--根据studentID和courseID获取klass对象-->
+    <select id="getKlassByStudentAndCourseID"  resultMap="klassMap" parameterType="BigInteger">
+        SELECT * FROM klass,course,klass_student
+        WHERE klass_student.klass_id = klass.id
+        AND klass_student.student_id = #{param1}
+        AND klass_student.course_id = #{param2}
+        AND course.id = #{param2}
     </select>
 
     <!--根据klassID获取Klass对象-->
@@ -17,9 +35,10 @@
         SELECT id FROM klass WHERE course_id = #{courseID}
     </select>
 
-    <!--根据seminarID获取KlassID列表-->
-    <select id="listKlassIDBySeminarID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT klass_id FROM klass WHERE seminar_id = #{seminarID}
+    <!--根据seminarID获取Klass列表-->
+    <select id="listKlassesBySeminarID"  resultMap="klassMap" parameterType="BigInteger">
+        SELECT * FROM klass,klass_seminar WHERE klass.id = klass_seminar.klass_id
+        AND klass_seminar.seminar_id = #{seminarID}
     </select>
 
     <!--根据teamID查询klassID-->

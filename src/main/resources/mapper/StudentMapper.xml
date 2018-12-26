@@ -15,7 +15,22 @@
 
     <!--根据courseID获取未组队学生ID列表-->
     <select id="listNoTeamStudentsIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT student_id FROM klass_student WHERE course_id = #{courseID} AND team_id IS NULL
+        SELECT DISTINCT student_id FROM klass_student WHERE student_id NOT IN (
+        SELECT team_student.student_id FROM team_student,klass_team WHERE
+        klass_team.team_id = team_student.team_id AND klass_team.klass_id IN (
+        SELECT klass_student.klass_id FROM klass_student,klass_team WHERE klass_student.klass_id =klass_team.klass_id
+        AND klass_student.course_id = #{courseID} )
+        )
+    </select>
+
+    <!--根据courseID获取未组队学生列表-->
+    <select id="listNoTeamStudentsByCourseID" resultType="Student" parameterType="BigInteger">
+        SELECT id id,account username,student_name name FROM student WHERE id IN (
+        SELECT DISTINCT student_id FROM klass_student WHERE student_id NOT IN (
+        SELECT team_student.student_id FROM team_student,klass_team WHERE
+        klass_team.team_id = team_student.team_id AND klass_team.klass_id IN (
+        SELECT klass_student.klass_id FROM klass_student,klass_team WHERE klass_student.klass_id =klass_team.klass_id
+        AND klass_student.course_id = #{courseID} )))
     </select>
 
     <!--获取所有学生对象√-->
@@ -76,4 +91,11 @@
                 #{student.username}
             </foreach>
     </select>
+    
+    <!--获取一个小组的所有成员-->
+    <select id="listMembersByTeamID" resultType="Student" parameterType="BigInteger">
+        SELECT id id,account username,password password,is_active beActive,student_name name,email email FROM student,
+        team_student WHERE student.id = team_student.student_id AND team_student.team_id = #{teamID}
+    </select>
+
 </mapper>

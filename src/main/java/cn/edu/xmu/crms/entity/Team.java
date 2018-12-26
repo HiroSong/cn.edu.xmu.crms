@@ -17,6 +17,15 @@ public class Team {
     private Klass klass;
     private Student leader;
     private List<Student> members;
+    private Integer klassSerial;
+
+    public Integer getKlassSerial() {
+        return klassSerial;
+    }
+
+    public void setKlassSerial(Integer klassSerial) {
+        this.klassSerial = klassSerial;
+    }
 
     public Course getCourse() {
         return course;

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import java.lang.String;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -34,15 +36,8 @@ public class KlassService {
     @Autowired
     StudentDao studentDao;
 
-    /**
-     * 用courseID查找班级信息列表
-     *
-     * @param courseID 课程号码
-     * @return List<Map<String, Object>> 返回查找到的列表，若无记录则为null
-     * @author Hongqiwu
-     * @date 2018/11/30 19:41
-     */
-    public List<Map<String, Object>> listKlassInfoByCourseID(BigInteger courseID) {
+    @GetMapping("/course/{courseID}/class")
+    public List<Map<String, Object>> listKlassInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Klass> klassList = klassDao.listKlassByCourseID(courseID);
         if(klassList == null) {
             return null;

@@ -4,13 +4,20 @@
 
     <!--根据studentID和courseID获取TeamID-->
     <select id="getTeamIDByStudentAndCourseID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT team_id FROM klass_student WHERE student_id = #{param1} AND course_id = #{param2}
+        SELECT team_id FROM team_student WHERE student_id = #{param1} AND team_id IN (
+        SELECT klass_team.team_id FROM klass_team,team_student WHERE
+        klass_team.team_id = team_student.team_id AND klass_team.klass_id IN (
+        SELECT klass_student.klass_id FROM klass_student,klass_team WHERE klass_student.klass_id = klass_team.klass_id
+        AND klass_student.course_id = #{param2}))
     </select>
 
     <!--根据teamID获取Team对象-->
-    <select id="getTeamByTeamID"  resultType="HashMap" parameterType="BigInteger">
-        SELECT id id,klass_id klassID,course_id courseID,leader_id leaderID,team_name teamName,team_serial teamSerial,
-        status status FROM team WHERE id = #{teamID}
+    <select id="getTeamByTeamID" resultMap="teamMap" parameterType="BigInteger">
+        SELECT * FROM team,course,klass,student,team_student
+        WHERE team.id = #{teamID} AND team.course_id = course.id
+        AND team.klass_id = klass.id
+        AND  team.leader_id = student.id
+        AND team_student.team_id = #{teamID}
     </select>
 
     <!--根据courseID获取teamID列表-->
@@ -107,6 +114,41 @@
     <select id="getAttendanceIDByKlass_SeminarIDAndTeamID" parameterType="BigInteger" resultType="BigInteger">
         SELECT id FROM attendance WHERE klass_seminar_id = #{param1} AND team_id=#{param2}
     </select>
+
+
+    <!--根据course查找teamList-->
+    <select id="listTeamsByCourseID" resultMap="teamMap" parameterType="BigInteger">
+        SELECT * FROM team,course,klass,student,klass_team
+        WHERE team.id = klass_team.team_id
+        AND team.course_id = #{courseID}
+        AND course.id = #{courseID}
+        AND klass.course_id = #{courseID}
+        AND team.leader_id = student.id
+        AND klass.id = klass_team.klass_id
+    </select>
+
+    <resultMap id="teamMap" type="Team">
+        <id property="id" column="id"/>
+        <result property="teamName" column="team_name"/>
+        <result property="teamSerial" column="team_serial"/>
+        <result property="klassSerial" column="klass_serial"/>
+        <result property="status" column="status"/>
+        <association property="course" javaType="Course">
+            <id property="id" column="course_id"/>
+            <result property="courseName" column="course_name"/>
+            <result property="introduction" column="introduction"/>
+        </association>
+        <association property="klass" javaType="Klass">
+            <id property="id" column="klass_id"/>
+            <result property="grade" column="grade"/>
+            <result property="klassSerial" column="klass_serial"/>
+        </association>
+        <association property="leader" javaType="Student">
+            <id property="id" column="leader_id"/>
+            <result property="username" column="account"/>
+            <result property="name" column="student_name"/>
+        </association>
+    </resultMap>
 
 
 </mapper>

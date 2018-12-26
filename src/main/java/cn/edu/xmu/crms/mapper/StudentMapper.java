@@ -48,6 +48,7 @@ public interface StudentMapper {
      */
     List<BigInteger> listNoTeamStudentsIDByCourseID(BigInteger courseID);
 
+
     /**
      * 获取所有学生对象
      *
@@ -140,4 +141,15 @@ public interface StudentMapper {
       * @date 2018/12/26 3:11
       */
     List<BigInteger> listStudentID(List<Student> studentList);
+    List<Student> listMembersByTeamID(BigInteger teamID);
+
+    /**
+     * 用于通过courseID获取未组队学生列表
+     *
+     * @param courseID 课程ID
+     * @return 未组队学生列表
+     * @author hongqiwu
+     * @date 2018/12/01 14:32
+     */
+    List<Student> listNoTeamStudentsByCourseID(BigInteger courseID);
 }

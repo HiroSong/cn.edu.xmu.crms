@@ -27,6 +27,7 @@ public interface SeminarMapper {
      * @date 2018/11/30 19:40
      */
     List<BigInteger> listSeminarsIDByKlassID(BigInteger klassID);
+
     /**
      * 通过seminarID获取Seminar对象
      *
@@ -130,6 +131,7 @@ public interface SeminarMapper {
      * @date 2018/12/18 19:35
      */
     void updateSeminarReportDDLByKlassAndSeminarID(Map<String, Object> map);
+
     /**
      * 获取讨论课状态
      *
@@ -140,6 +142,7 @@ public interface SeminarMapper {
      * @date 2018/12/18 19:35
      */
     Integer getStatusBySeminarAndKlassID(BigInteger seminarID, BigInteger klassID);
+
     /**
      * 获取报告截止时间
      *
@@ -150,6 +153,7 @@ public interface SeminarMapper {
      * @date 2018/12/18 19:35
      */
     String getReportDDLBySeminarAndKlassID(BigInteger seminarID, BigInteger klassID);
+
     /**
      * 开始讨论课
      *

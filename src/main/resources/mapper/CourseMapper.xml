@@ -2,29 +2,61 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.CourseMapper" >
 
-    <!--根据studentID获取courseID列表-->
-    <select id="listCourseIDByStudentID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT course_id FROM klass_student WHERE student_id = #{studentID}
+    <resultMap id="courseMap" type="Course">
+        <id property="id" column="id"/>
+        <result property="courseName" column="course_name"/>
+        <result property="introduction" column="introduction"/>
+        <result property="presentationPercentage" column="presentation_percentage"/>
+        <result property="questionPercentage" column="question_percentage"/>
+        <result property="reportPercentage" column="report_percentage"/>
+        <result property="teamStartTime" column="team_start_time"/>
+        <result property="teamEndTime" column="team_end_time"/>
+        <result property="teamMainCourseID" column="team_main_course_id"/>
+        <result property="seminarMainCourseID" column="seminar_main_course_id"/>
+        <association property="teacher" javaType="Teacher">
+            <id property="id" column="teacher_id"/>
+            <result property="username" column="account"/>
+            <result property="name" column="teacher_name"/>
+        </association>
+    </resultMap>
+
+    <!--根据studentID获取course对象列表-->
+    <select id="listCoursesByStudentID"  resultMap="courseMap" parameterType="BigInteger">
+        SELECT * FROM klass_student,course
+        WHERE course.id = klass_student.course_id
+        AND klass_student.student_id = #{studentID}
     </select>
 
-    <!--根据teacherID获取courseID列表-->
-    <select id="listCourseIDByTeacherID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT id FROM course WHERE teacher_id = #{teacherID}
+    <!--根据teacherID获取course对象列表-->
+    <select id="listCoursesByTeacherID"  resultMap="courseMap" parameterType="BigInteger">
+        SELECT * FROM course,teacher
+        WHERE teacher.id = #{teacherID}
+        AND course.teacher_id = #{teacherID}
     </select>
 
     <!--根据courseID获取course对象-->
-    <select id="getCourseByCourseID"  resultType="Course" parameterType="BigInteger">
-        SELECT * FROM course WHERE id = #{courseID}
+    <select id="getCourseByCourseID"  resultMap="courseMap" parameterType="BigInteger">
+        SELECT * FROM course,teacher WHERE course.id = #{courseID} AND course.teacher_id = teacher.id
     </select>
 
     <!--根据courseID获取course最少人数限制-->
     <select id="getCourseMinMemberByCourseID"  resultType="Integer" parameterType="BigInteger">
-        SELECT min_member FROM member_limit_strategy WHERE id = #{courseID}
+        SELECT min_member FROM member_limit_strategy,team_strategy,team_and_strategy
+        WHERE team_strategy.course_id = #{courseID}
+        AND team_strategy.strategy_name = 'TeamAndStrategy'
+        AND team_strategy.strategy_id = team_and_strategy.id
+        AND team_and_strategy.strategy_name = 'MemberLimitStrategy'
+        AND team_and_strategy.strategy_id = member_limit_strategy.id;
     </select>
 
     <!--根据courseID获取course最多人数限制-->
     <select id="getCourseMaxMemberByCourseID"  resultType="Integer" parameterType="BigInteger">
-        SELECT max_member FROM member_limit_strategy WHERE id = #{courseID}
+        SELECT max_member FROM member_limit_strategy,team_strategy,team_and_strategy
+        WHERE team_strategy.course_id = #{courseID}
+        AND team_strategy.strategy_name = 'TeamAndStrategy'
+        AND team_strategy.strategy_id = team_and_strategy.id
+        AND team_and_strategy.strategy_name = 'MemberLimitStrategy'
+        AND team_and_strategy.strategy_id = member_limit_strategy.id;
     </select>
 
     <!--根据courseID在共享组队表获取subCourseID-->
@@ -54,9 +86,9 @@
     </select>
 
     <!--用course对象插入course表-->
-    <insert id="insertCourseByCourse" parameterType="Course">
+    <insert id="insertCourse" parameterType="Course">
         INSERT INTO course(teacher_id,course_name,introduction,presentation_percentage,question_percentage,
-        report_percentage,team_start_time,team_end_time) VALUE (#{teacherID},#{courseName},#{introduction},
+        report_percentage,team_start_time,team_end_time) VALUE (#{teacher.id},#{courseName},#{introduction},
         #{presentationPercentage},#{questionPercentage},#{reportPercentage},#{teamStartTime},#{teamEndTime})
     </insert>
 
@@ -95,4 +127,9 @@
     <delete id="deleteCourseMemberLimitStrategyByCourseID" parameterType="BigInteger">
         DELETE FROM course_member_limit_strategy WHERE course_id = #{courseID}
     </delete>
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
+    </select>
 </mapper>

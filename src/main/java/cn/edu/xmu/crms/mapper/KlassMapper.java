@@ -18,7 +18,7 @@ import java.util.Map;
 @Component
 public interface KlassMapper {
     /**
-     * 通过studentID和courseID获取klassID
+     * 通过studentID和courseID获取klass对象
      *
      * @param studentID 学生ID
      * @param courseID 课程ID
@@ -26,7 +26,7 @@ public interface KlassMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    BigInteger getKlassIDByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
+    Klass getKlassByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
     /**
      * 通过klassID获取Klass对象
      *
@@ -45,15 +45,16 @@ public interface KlassMapper {
      * @date 2018/11/30 19:45
      */
     List<BigInteger> listKlassIDByCourseID(BigInteger courseID);
+
     /**
-     * 通过讨论课ID获取班级ID列表
+     * 通过讨论课ID获取班级列表
      *
      * @param seminarID 讨论课ID
-     * @return List<BigInteger>班级ID列表
+     * @return 班级列表
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    List<BigInteger> listKlassIDBySeminarID(BigInteger seminarID);
+    List<Klass> listKlassesBySeminarID(BigInteger seminarID);
     /**
      * 向klass表插入klass对象
      *

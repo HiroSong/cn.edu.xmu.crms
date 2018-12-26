@@ -75,4 +75,18 @@ public class StudentService {
         return false;
     }
 
+    @GetMapping("/course/{courseID}/noTeam")//获得一个课程下每没有组队的学生列表
+    public List<Map<String, Object>> listNoTeamStudentsInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
+        List<Map<String, Object>> noTeamStudentsMap = new ArrayList<>();
+        List<Student> noTeamStudents = studentDao.listNoTeamStudentsByCourseID(courseID);
+        for(int i = 0; i < noTeamStudents.size(); i++) {
+            Student noTeamStudent = noTeamStudents.get(i);
+            Map<String, Object> noTeamStudentMap = new HashMap<>(3);
+            noTeamStudentMap.put("id",noTeamStudent.getID());
+            noTeamStudentMap.put("account",noTeamStudent.getUsername());
+            noTeamStudentMap.put("name",noTeamStudent.getName());
+            noTeamStudentsMap.add(noTeamStudentMap);
+        }
+        return noTeamStudentsMap;
+    }
 }
