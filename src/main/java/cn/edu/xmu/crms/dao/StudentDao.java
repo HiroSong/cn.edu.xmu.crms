@@ -57,13 +57,7 @@ public class StudentDao {
     }
 
     public List<Student> listNoTeamStudentsByCourseID(BigInteger courseID) {
-        List<Student> students = new ArrayList<>();
-        List<BigInteger> noTeamStudentsID = studentMapper.listNoTeamStudentsIDByCourseID(courseID);
-        for(int i = 0; i < noTeamStudentsID.size(); i++) {
-            Student noTeamStudent = studentMapper.getStudentByStudentID(noTeamStudentsID.get(i));
-            students.add(noTeamStudent);
-        }
-        return students;
+        return studentMapper.listNoTeamStudentsByCourseID(courseID);
     }
 
 }

@@ -34,7 +34,7 @@ public interface TeamMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:35
      */
-    Map<String,Object> getTeamByTeamID(BigInteger teamID);
+   Team getTeamByTeamID(BigInteger teamID);
     /**
      * 通过courseID获取teamID列表
      *
@@ -124,4 +124,7 @@ public interface TeamMapper {
      * @date 2018/12/18 19:35
      */
     void updateTeamIDBy4ID(BigInteger klassID,BigInteger studentID,BigInteger courseID,BigInteger teamID);
+
+
+    List<Team> listTeamsByCourseID(BigInteger courseID);
 }

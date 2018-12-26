@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -39,28 +38,12 @@ public class CourseController {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
-    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
-    @GetMapping("/course")
-    public List<Map<String, Object>> listCoursesInfo(HttpServletRequest request) {
-        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
-        String role = jwtTokenUtil.getRolesFromRequest(request);
-        System.out.println(jwtTokenUtil.getRolesFromRequest(request));
-        System.out.println(id);
-        return courseService.listCoursesInfoByStudentOrTeacherID(id, role);
-    }
-
     @GetMapping("/course/{courseID}/round")
     public List<Map<String, Object>> listRoundsInfoByCourseID(@PathVariable("courseID")
                                                               BigInteger courseID) {
         return roundService.listRoundsInfoByCourseID(courseID);
     }
 
-    @PreAuthorize("hasAuthority('student')")
-    @GetMapping("/course/{courseID}")
-    public Map<String, Object> getCourseInfoByCourseID(@PathVariable("courseID")
-                                                       BigInteger courseID) {
-       return courseService.getCourseInfoByCourseID(courseID);
-    }
 
     @PreAuthorize("hasAuthority('teacher')")
     @DeleteMapping("/course/{courseID}")
@@ -69,30 +52,7 @@ public class CourseController {
         courseDao.deleteCourseInfoByCourseID(courseID);
     }
 
-    @PostMapping("/course")
-    public BigInteger createNewCourse(HttpServletRequest request, @RequestBody Course course) {
-        BigInteger teacherID = jwtTokenUtil.getIDFromRequest(request);
-        course.setTeacherID(teacherID);
-        return courseService.createNewCourse(course);
-    }
 
-    @GetMapping("/course/{courseID}/myTeam")
-    public Map<String, Object> getMyTeamInfoByCourseAndStudentID(@PathVariable("courseID")
-                                                                     BigInteger courseID) {
-        BigInteger studentID = new BigInteger("24320162202835");
-        return teamService.getTeamInfoByCourseAndStudentID(courseID, studentID);
-    }
-
-    @GetMapping("/course/{courseID}/noTeam")
-    public List<Map<String, Object>> listNoTeamStudentsInfoByCourseID(@PathVariable("courseID")
-                                                                         BigInteger courseID) {
-        return teamService.listNoTeamStudentsInfoByCourseID(courseID);
-    }
-
-    @GetMapping("/course/{courseID}/class")
-    public List<Map<String, Object>> listKlassInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
-        return klassService.listKlassInfoByCourseID(courseID);
-    }
 
     @GetMapping("/course/{courseID}/teamshare")
     public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
@@ -120,7 +80,9 @@ public class CourseController {
     @PostMapping("/course/{courseID}/class ")
     public BigInteger createNewKlass(@PathVariable("courseID") BigInteger courseID,
                                                           @RequestBody Klass klass) {
-        klass.setCourseID(courseID);
+        Course course = new Course();
+        course.setID(courseID);
+        klass.setCourse(course);
         return klassService.createNewKlass(klass);
     }
 

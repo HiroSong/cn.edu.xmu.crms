@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface KlassMapper {
     /**
-     * 通过studentID和courseID获取klassID
+     * 通过studentID和courseID获取klass对象
      *
      * @param studentID 学生ID
      * @param courseID 课程ID
@@ -23,7 +23,7 @@ public interface KlassMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    BigInteger getKlassIDByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
+    Klass getKlassByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
     /**
      * 通过klassID获取Klass对象
      *

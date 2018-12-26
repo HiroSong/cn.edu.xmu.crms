@@ -24,11 +24,7 @@ public class KlassDao {
     }
 
     public Klass getKlassByStudentAndCourseID(BigInteger studentID, BigInteger courseID) {
-        BigInteger klassID = klassMapper.getKlassIDByStudentAndCourseID(studentID, courseID);
-        if(klassID == null) {
-            return null;
-        }
-        return klassMapper.getKlassByKlassID(klassID);
+        return klassMapper.getKlassByStudentAndCourseID(studentID,courseID);
     }
 
     public List<Klass> listKlassByCourseID(BigInteger courseID) {

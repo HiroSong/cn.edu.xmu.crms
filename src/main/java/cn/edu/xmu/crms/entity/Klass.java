@@ -9,11 +9,19 @@ import java.math.BigInteger;
  **/
 public class Klass {
     private BigInteger id;
-    private BigInteger courseID;
     private Integer grade;
     private Integer klassSerial;
     private String klassTime;
     private String klassLocation;
+    private Course course;
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
     public BigInteger getID() {
         return id;
@@ -21,14 +29,6 @@ public class Klass {
 
     public void setID(BigInteger id) {
         this.id = id;
-    }
-
-    public BigInteger getCourseID() {
-        return courseID;
-    }
-
-    public void setCourseID(BigInteger courseID) {
-        this.courseID = courseID;
     }
 
     public Integer getGrade() {

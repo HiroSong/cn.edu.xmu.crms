@@ -31,37 +31,15 @@ public class CourseDao {
         if(course == null) {
             return null;
         }
-        course.setMinMember(courseMapper.getCourseMinMemberByCourseID(courseID));
-        course.setMaxMember(courseMapper.getCourseMaxMemberByCourseID(courseID));
-        Teacher teacher = teacherDao.getTeacherByCourseID(courseID);
-        course.setTeacher(teacher);
         return course;
     }
 
     public List<Course> listCoursesByStudentID(BigInteger studentID) {
-        List<Course> courses = new ArrayList<>();
-        List<BigInteger> allCoursesID = courseMapper.listCourseIDByStudentID(studentID);
-        if(allCoursesID == null) {
-            return null;
-        }
-        for(int i = 0; i < allCoursesID.size(); i++) {
-            Course course = this.getCourseByCourseID(allCoursesID.get(i));
-            courses.add(course);
-        }
-        return courses;
+        return courseMapper.listCoursesByStudentID(studentID);
     }
 
     public List<Course> listCoursesByTeacherID(BigInteger teacherID) {
-        List<Course> courses = new ArrayList<>();
-        List<BigInteger> allCoursesID = courseMapper.listCourseIDByTeacherID(teacherID);
-        if(allCoursesID == null) {
-            return null;
-        }
-        for(int i = 0; i < allCoursesID.size(); i++) {
-            Course course = this.getCourseByCourseID(allCoursesID.get(i));
-            courses.add(course);
-        }
-        return courses;
+        return courseMapper.listCoursesByTeacherID(teacherID);
     }
 
     public void deleteCourseInfoByCourseID(BigInteger courseID) {
@@ -76,8 +54,9 @@ public class CourseDao {
         courseMapper.deleteCourseMemberLimitStrategyByCourseID(courseID);
     }
 
-    public BigInteger insertCourseByCourse(Course course) {
-        return courseMapper.insertCourseByCourse(course);
+    public BigInteger insertCourse(Course course) {
+        courseMapper.insertCourse(course);
+        return courseMapper.getLastInsertID();
     }
 
     public List<Course> listMainCoursesByCourseID(BigInteger courseID) {

@@ -1,12 +1,18 @@
 package cn.edu.xmu.crms.controller;
 
 import cn.edu.xmu.crms.entity.Student;
+import cn.edu.xmu.crms.entity.Team;
 import cn.edu.xmu.crms.entity.TeamValidApplication;
+import cn.edu.xmu.crms.mapper.StudentMapper;
+import cn.edu.xmu.crms.mapper.TeamMapper;
 import cn.edu.xmu.crms.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,11 +23,10 @@ import java.util.Map;
 public class TeamController {
     @Autowired
     TeamService teamService;
-
-    @GetMapping("/team/{teamID}")
-    public Map<String, Object> getTeamInfoByTeamID(@PathVariable("teamID") BigInteger teamID) {
-        return teamService.getTeamInfoByTeamID(teamID);
-    }
+    @Autowired
+    TeamMapper teamMapper;
+    @Autowired
+    StudentMapper studentMapper;
 
     //队长解散小组
     @DeleteMapping("/team/{teamID}")
