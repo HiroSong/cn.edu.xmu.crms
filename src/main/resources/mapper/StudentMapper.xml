@@ -66,15 +66,32 @@
 
     <!--根据学号获取学生对象-->
     <select id="getStudentByStudentAccount" parameterType="String" resultType="Student">
-        SELECT id id, account username, password password FROM student WHERE account = #{username}
+        SELECT id id, account username, password password, is_active beActive, email email FROM student WHERE account = #{username}
     </select>
 
     <!--插入一个Student信息-->
     <insert id="insertStudent" parameterType="User">
-        INSERT INTO student(account,password,student_name,email,is_active)
-            VALUE (#{username},#{password},#{name},"",0)
+        INSERT INTO student(account,password,student_name,is_active)
+            VALUE (#{username},#{password},#{name},0)
     </insert>
 
+    <!--插入学生列表-->
+    <insert id="insertStudentList" parameterType="java.util.List">
+        INSERT IGNORE INTO student(account, password, is_active, student_name)
+        VALUES
+        <foreach collection ="list" item="student" index= "index" separator=",">
+                (#{student.username}, #{student.password}, #{student.beActive}, #{student.name})
+        </foreach >
+    </insert>
+
+    <!--根据学号列表获取id列表-->
+    <select id="listStudentID" parameterType="java.util.List" resultType="BigInteger">
+        SELECT id FROM student WHERE account in
+            <foreach collection="list" item="student" index="index" open="(" separator="," close=")">
+                #{student.username}
+            </foreach>
+    </select>
+    
     <!--获取一个小组的所有成员-->
     <select id="listMembersByTeamID" resultType="Student" parameterType="BigInteger">
         SELECT id id,account username,password password,is_active beActive,student_name name,email email FROM student,

@@ -46,7 +46,8 @@ public class TeacherService {
         return teacherInfoList;
     }
 
-    @PutMapping("/teacher/{teacherID}/information")//修改教师信息(邮箱)
+    //修改教师信息(邮箱)
+    @PutMapping("/teacher/{teacherID}/information")
     public Teacher modifyTeacherInfo(@PathVariable("teacherID") BigInteger teacherID,
                                      @RequestBody Teacher teacher) {
         teacher.setID(teacherID);
@@ -56,7 +57,8 @@ public class TeacherService {
         return null;
     }
 
-    @PutMapping("/teacher/{teacherID}/password")//重置教师密码
+    //重置教师密码
+    @PutMapping("/teacher/{teacherID}/password")
     public Boolean resetTeacherPassword(@PathVariable("teacherID") BigInteger teacherID) {
         if(teacherDao.resetTeacherPasswordByTeacherID(teacherID) == 1) {
             return true;
@@ -64,7 +66,8 @@ public class TeacherService {
         return false;
     }
 
-    @DeleteMapping("/teacher/{teacherID}")//删除教师
+    //删除教师
+    @DeleteMapping("/teacher/{teacherID}")
     public Boolean deleteTeacher(@PathVariable("teacherID") BigInteger teacherID) {
         if(teacherDao.deleteTeacherByTeacherID(teacherID) == 1) {
             return true;
@@ -72,7 +75,8 @@ public class TeacherService {
         return false;
     }
 
-    @PutMapping("/teacher/active")//激活教师账号
+    //激活教师账号
+    @PutMapping("/teacher/active")
     public Boolean activeTeacher(@RequestBody Teacher teacher) {
         if(teacherDao.updateTeacherActiveByTeacher(teacher) == 1) {
             return true;

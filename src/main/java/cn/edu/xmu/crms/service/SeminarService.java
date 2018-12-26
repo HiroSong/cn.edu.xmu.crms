@@ -1,15 +1,12 @@
 package cn.edu.xmu.crms.service;
 
-import cn.edu.xmu.crms.dao.CourseDao;
-import cn.edu.xmu.crms.dao.KlassDao;
-import cn.edu.xmu.crms.dao.SeminarDao;
-import cn.edu.xmu.crms.dao.TeacherDao;
+import cn.edu.xmu.crms.dao.*;
+import cn.edu.xmu.crms.entity.Attendance;
 import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.entity.Round;
 import cn.edu.xmu.crms.entity.Seminar;
 import cn.edu.xmu.crms.entity.Team;
 import cn.edu.xmu.crms.mapper.*;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIGlobalBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +39,12 @@ public class SeminarService {
     KlassDao klassDao;
     @Autowired
     KlassMapper klassMapper;
+    @Autowired
+    TeamMapper teamMapper;
+    @Autowired
+    CourseMapper courseMapper;
+    @Autowired
+    TeamDao teamDao;
 
 
 
@@ -190,5 +193,39 @@ public class SeminarService {
         Map<String, Object> scoreMap = seminarDao.getSeminarScoreBySeminarAndTeamID(seminarID,teamID);
         scoreMap.replace("reportScore",reportScore);
         return seminarDao.updateSeminarScoreBySeminarAndTeamID(seminarID,teamID,scoreMap);
+    }
+
+    public Map<String,Object> createNewAttendance(BigInteger seminarID,BigInteger classID,BigInteger teamID,Integer teamOrder) {
+        BigInteger klass_seminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
+        Attendance attendance=teamDao.createAnAttendance(klass_seminarID,teamID,teamOrder);
+        teamMapper.insertAttendance(attendance);
+        BigInteger attendanceID=teamMapper.getLastInsertID();
+        Map<String,Object> map=new HashMap<>();
+        map.put("id",attendanceID);
+        map.put("teamNumber",attendance.getTeam().getTeamNumber());
+        return map;
+    }
+
+    public Map<String,String> cancelRegistion(BigInteger attendanceID){
+        Map<String,String> map=new HashMap<>();
+        if(teamDao.deleteAttendance(attendanceID)==0)
+            map.put("reslut","failue");
+        else
+            map.put("result","success");
+        return map;
+    }
+
+    public Map<String,Object> checkIfAttendanceBySeminarIDAndTeamID(BigInteger seminarID,BigInteger teamID){
+        BigInteger klassID=klassMapper.getKlassIDByTeamID(teamID);
+        System.out.print(klassID);
+        BigInteger klass_seminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
+        System.out.print(klass_seminarID);
+        Attendance attendance=teamDao.getAttendanceByKlass_SeminarIDAndTeamID(klass_seminarID,teamID);
+        Map<String,Object> map=new HashMap<>();
+        if(attendance==null)
+            map.put("查询结果","未报名");
+        else
+            map.put("查询结果","已报名");
+        return map;
     }
 }

@@ -97,6 +97,11 @@
         DELETE FROM course WHERE id = #{courseID}
     </delete>
 
+    <!--根据klassID获取courseID-->
+    <select id="getCourseIDByKlassID" resultType="BigInteger" parameterType="BigInteger">
+        SELECT course_id FROM klass WHERE id=#{id};
+    </select>
+
     <!--根据courseID删除与course有关表的信息-->
     <delete id="deleteConflictCourseStrategyByCourseID" parameterType="BigInteger">
         DELETE FROM conflict_course_strategy WHERE course_1_id = #{courseID} OR course_2_id = #{courseID}

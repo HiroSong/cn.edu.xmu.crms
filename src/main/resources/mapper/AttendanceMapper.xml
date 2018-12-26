@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.xmu.crms.mapper.AttendanceMapper" >
+
+    <update id="updateReport" parameterType="Attendance">
+        UPDATE  attendance SET report_name = #{reportName}, report_url = #{reportUrl}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updatePPT" parameterType="Attendance">
+        UPDATE  attendance SET ppt_name = #{pptName}, ppt_url = #{pptUrl}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getReport" parameterType="BigInteger" resultType="Attendance">
+        SELECT id id, report_name reportName, report_url reportUrl FROM attendance WHERE id = #{id}
+    </select>
+
+    <select id="getPPT" parameterType="BigInteger" resultType="Attendance">
+        SELECT id id, ppt_name pptName, ppt_url pptUrl FROM attendance WHERE id = #{id}
+    </select>
+</mapper>
