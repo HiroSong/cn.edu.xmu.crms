@@ -41,12 +41,22 @@
 
     <!--根据courseID获取course最少人数限制-->
     <select id="getCourseMinMemberByCourseID"  resultType="Integer" parameterType="BigInteger">
-        SELECT min_member FROM member_limit_strategy WHERE id = #{courseID}
+        SELECT min_member FROM member_limit_strategy,team_strategy,team_and_strategy
+        WHERE team_strategy.course_id = #{courseID}
+        AND team_strategy.strategy_name = 'TeamAndStrategy'
+        AND team_strategy.strategy_id = team_and_strategy.id
+        AND team_and_strategy.strategy_name = 'MemberLimitStrategy'
+        AND team_and_strategy.strategy_id = member_limit_strategy.id;
     </select>
 
     <!--根据courseID获取course最多人数限制-->
     <select id="getCourseMaxMemberByCourseID"  resultType="Integer" parameterType="BigInteger">
-        SELECT max_member FROM member_limit_strategy WHERE id = #{courseID}
+        SELECT max_member FROM member_limit_strategy,team_strategy,team_and_strategy
+        WHERE team_strategy.course_id = #{courseID}
+        AND team_strategy.strategy_name = 'TeamAndStrategy'
+        AND team_strategy.strategy_id = team_and_strategy.id
+        AND team_and_strategy.strategy_name = 'MemberLimitStrategy'
+        AND team_and_strategy.strategy_id = member_limit_strategy.id;
     </select>
 
     <!--根据courseID在共享组队表获取subCourseID-->

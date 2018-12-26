@@ -46,12 +46,7 @@ public class KlassDao {
     }
 
     public List<Klass> listKlassBySeminarID(BigInteger seminarID) {
-        List<BigInteger> klassesID = klassMapper.listKlassIDBySeminarID(seminarID);
-        List<Klass> klasses = new ArrayList<>();
-        for(int i = 0; i < klassesID.size(); i++) {
-            Klass klass = klassMapper.getKlassByKlassID(klassesID.get(i));
-            klasses.add(klass);
-        }
-        return klasses;
+        return klassMapper.listKlassesBySeminarID(seminarID);
     }
+
 }

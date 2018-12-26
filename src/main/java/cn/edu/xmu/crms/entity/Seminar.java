@@ -12,8 +12,6 @@ import java.sql.Timestamp;
  **/
 public class Seminar {
     private BigInteger id;
-    private BigInteger courseID;
-    private BigInteger roundID;
     private String seminarName;
     private String introduction;
     private Integer maxTeam;
@@ -22,6 +20,24 @@ public class Seminar {
     private Integer roundOrder;
     private Timestamp enrollStartTime;
     private Timestamp enrollEndTime;
+    private Course course;
+    private Round round;
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Round getRound() {
+        return round;
+    }
+
+    public void setRound(Round round) {
+        this.round = round;
+    }
 
     public Integer getRoundOrder() {
         return roundOrder;
@@ -30,28 +46,13 @@ public class Seminar {
     public void setRoundOrder(Integer roundOrder) {
         this.roundOrder = roundOrder;
     }
+
     public BigInteger getID() {
         return id;
     }
 
     public void setID(BigInteger id) {
         this.id = id;
-    }
-
-    public BigInteger getCourseID() {
-        return courseID;
-    }
-
-    public void setCourseID(BigInteger courseID) {
-        this.courseID = courseID;
-    }
-
-    public BigInteger getRoundID() {
-        return roundID;
-    }
-
-    public void setRoundID(BigInteger roundID) {
-        this.roundID = roundID;
     }
 
     public String getSeminarName() {

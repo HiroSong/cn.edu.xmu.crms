@@ -38,13 +38,6 @@ public class CourseController {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
-    @GetMapping("/course/{courseID}/round")
-    public List<Map<String, Object>> listRoundsInfoByCourseID(@PathVariable("courseID")
-                                                              BigInteger courseID) {
-        return roundService.listRoundsInfoByCourseID(courseID);
-    }
-
-
     @PreAuthorize("hasAuthority('teacher')")
     @DeleteMapping("/course/{courseID}")
     public void deleteCourseByCourseID(@PathVariable("courseID")
@@ -88,8 +81,7 @@ public class CourseController {
 
     //创建队伍 三个不合法条件（还缺一个条件，选某门课程最少最多人数）
     @PostMapping("/course/{courseID}/team")
-    public Map<String, Object> createNewTeam(@PathVariable("courseID") BigInteger courseID,
-                                    @RequestBody Team team) {
+    public Map<String, Object> createNewTeam(@PathVariable("courseID") BigInteger courseID, @RequestBody Team team) {
         Course course = new Course();
         course.setID(courseID);
         team.setCourse(course);

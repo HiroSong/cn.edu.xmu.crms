@@ -31,6 +31,8 @@ public class CourseDao {
         if(course == null) {
             return null;
         }
+        course.setMaxMember(courseMapper.getCourseMaxMemberByCourseID(courseID));
+        course.setMinMember(courseMapper.getCourseMinMemberByCourseID(courseID));
         return course;
     }
 

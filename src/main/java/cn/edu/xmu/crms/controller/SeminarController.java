@@ -24,26 +24,12 @@ public class SeminarController {
     SeminarService seminarService;
 
     @PostMapping("/seminar")
-    public Map<String, Object> createSeminar(@RequestBody Map<String,Object> newSeminar) {
+    public Map<String, Object> createSeminar(@RequestBody Seminar seminar) {
         TimeZone tz = TimeZone.getTimeZone("ETC/GMT-8");
         TimeZone.setDefault(tz);
-        Seminar seminar = new Seminar();
-        seminar.setSeminarName(newSeminar.get("topic").toString());
-        seminar.setIntroduction(newSeminar.get("intro").toString());
-        seminar.setSeminarSerial(Integer.parseInt(newSeminar.get("order").toString()));
-        seminar.setRoundOrder(Integer.parseInt(newSeminar.get("roundOrder").toString()));
-        seminar.setBeVisible(Integer.parseInt(newSeminar.get("visible").toString()));
-        seminar.setMaxTeam(Integer.parseInt(newSeminar.get("teamNumLimit").toString()));
-        seminar.setEnrollStartTime(Timestamp.valueOf(newSeminar.get("signUpStartTime").toString()));
-        seminar.setEnrollEndTime(Timestamp.valueOf(newSeminar.get("signUpEndTime").toString()));
-        seminar.setCourseID(new BigInteger(newSeminar.get("courseID").toString()));
         return seminarService.insertNewSeminar(seminar);
     }
 
-    @GetMapping("/seminar/{seminarID}/class")
-    public List<Map<String, Object>> listKlassInfoBySeminarID(@PathVariable("seminarID") BigInteger seminarID) {
-        return seminarService.listKlassInfoBySeminarID(seminarID);
-    }
 
     @PutMapping("/seminar/{seminarID}")
     public void modifySeminarInfo(@PathVariable("seminarID") BigInteger seminarID,
@@ -67,11 +53,6 @@ public class SeminarController {
         seminarService.deleteSeminarInfoBySeminarID(seminarID);
     }
 
-    @GetMapping("/seminar/{seminarID}")
-    public Map<String, Object> getSeminarInfoBySeminarID(@PathVariable("seminarID") BigInteger seminarID) {
-        return seminarService.getSeminarInfoBySeminarID(seminarID);
-    }
-
     //教师修改讨论课报告截止时间
     @PutMapping("/seminar/{seminarID}/class/{classID}/reportddl")
     public void modifySeminarReportInfo(@PathVariable("seminarID") BigInteger seminarID,
@@ -86,24 +67,11 @@ public class SeminarController {
         seminarService.updateSeminarReportDDLByKlassAndSeminarID(map);
     }
 
-    @GetMapping("/seminar/{seminarID}/class/{classID}")
-    public Map<String, Object> getSeminarInfoBySeminarAndKlassID(@PathVariable("seminarID") BigInteger seminarID,
-                                                                 @PathVariable("classID") BigInteger klassID) {
-        return seminarService.getSeminarInfoBySeminarAndKlassID(seminarID,klassID);
-    }
-
     //教师开始讨论课
     @PutMapping("/seminar/{seminarID}/class/{classID}/status")
     public void startSeminar(@PathVariable("seminarID") BigInteger seminarID,
                              @PathVariable("classID") BigInteger klassID) {
         seminarService.updateSeminarStatus(klassID,seminarID);
-    }
-
-    //获得某次讨论课某个队伍的成绩
-    @GetMapping("/seminar/{seminarID}/team/{teamID}/seminarscore")
-    public Map<String, Object> getTeamSeminarScore(@PathVariable("seminarID") BigInteger seminarID,
-                                               @PathVariable("teamID") BigInteger teamID) {
-        return seminarService.getSeminarScoreBySeminarAndTeamID(seminarID, teamID);
     }
 
     //修改某次讨论课某队伍成绩

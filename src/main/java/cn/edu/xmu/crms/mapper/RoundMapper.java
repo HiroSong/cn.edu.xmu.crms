@@ -49,7 +49,7 @@ public interface RoundMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    List<BigInteger> listTeamIDByRoundID(BigInteger roundID);
+    List<RoundScore> listRoundScoresByRoundID(BigInteger roundID);
     /**
      * 通过roundID和teamID获取某队伍某轮次成绩
      *

@@ -2,16 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.SeminarMapper" >
 
+    <resultMap id="seminarMap" type="Seminar">
+        <id property="id" column="id"/>
+        <result property="seminarName" column="seminar_name"/>
+        <result property="introduction" column="introduction"/>
+        <result property="maxTeam" column="max_team"/>
+        <result property="beActive" column="is_active"/>
+        <result property="seminarSerial" column="seminar_serial"/>
+        <result property="enrollStartTime" column="enroll_start_time"/>
+        <result property="enrollEndTime" column="enroll_end_time"/>
+        <association property="course" javaType="Course">
+            <id property="id" column="course_id"/>
+            <result property="courseName" column="course_name"/>
+            <result property="introduction" column="introduction"/>
+        </association>
+        <association property="round" javaType="Round">
+            <id property="id" column="round_id"/>
+            <result property="roundSerial" column="round_serial"/>
+        </association>
+    </resultMap>
+
     <!--根据klassID获取seminarID列表-->
     <select id="listSeminarsIDByKlassID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT seminar_id FROM klass_seminar WHERE klass_id = #{klassID}
     </select>
 
-    <!--根据seminarID获取seminar对象-->
-    <select id="getSeminarBySeminarID"  resultType="Seminar" parameterType="BigInteger">
-        SELECT id id,course_id courseID,round_id roundID,seminar_name seminarName,introduction introduction,
-        max_team maxTeam,is_visible beVisible,seminar_serial seminarSerial,enroll_start_time enrollStartTime,
-        enroll_end_time enrollEndTime FROM seminar WHERE id = #{seminarID}
+    <!--根据seminarID获取seminar对象√-->
+    <select id="getSeminarBySeminarID"  resultMap="seminarMap" parameterType="BigInteger">
+        SELECT * FROM seminar,round,course WHERE seminar.course_id = course.id AND seminar.round_id = round.id
+        AND seminar.id = #{seminarID}
     </select>
 
     <!--根据courseID在共享讨论课获取subCourseID-->

@@ -33,13 +33,9 @@ public class CourseService {
     @Autowired
     CourseDao courseDao;
     @Autowired
-    CourseMapper courseMapper;
-    @Autowired
-    TeacherDao teacherDao;
-    @Autowired
     JwtTokenUtil jwtTokenUtil;
 
-    public Map<String, Object> getCourseInfo(Course course) {
+    private Map<String, Object> getCourseInfo(Course course) {
         Map<String, Object> map = new HashMap<>(8);
         map.put("id", course.getID());
         map.put("name", course.getCourseName());
@@ -52,6 +48,8 @@ public class CourseService {
         map.put("teacherID", course.getTeacher().getID());
         map.put("teacherUsername", course.getTeacher().getUsername());
         map.put("teacherName", course.getTeacher().getName());
+        map.put("minMember",course.getMinMember());
+        map.put("maxMember",course.getMaxMember());
         return map;
     }
 
@@ -96,7 +94,6 @@ public class CourseService {
 
     @GetMapping("/course/{courseID}")
     public Map<String, Object> getCourseInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
-        Map<String, Object> map = new HashMap<>(8);
         Course course = courseDao.getCourseByCourseID(courseID);
         if (course == null) {
             return null;
