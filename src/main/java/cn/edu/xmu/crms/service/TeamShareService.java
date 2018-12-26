@@ -9,12 +9,14 @@ import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
 import cn.edu.xmu.crms.mapper.TeamShareMapper;
+import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +43,9 @@ public class TeamShareService {
     TeacherMapper teacherMapper;
     @Autowired
     TeamShareMapper teamShareMapper;
-
-    private Map<String,Object> getApplicationInfo(ShareTeamApplication application) {
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+    private Map<String,Object> getApplicationInfo(ShareTeamApplication application, BigInteger teacherID) {
         Map<String,Object> map = new HashMap<>(8);
         map.put("id",application.getID());
         map.put("mainCourseID",application.getMainCourse().getID());
@@ -53,7 +56,7 @@ public class TeamShareService {
         map.put("subCourseTeacherName",application.getSubCourseTeacher().getName());
         map.put("mainCourseTeacherID",application.getMainCourseTeacher().getID());
         map.put("mainCourseTeacherName",application.getMainCourseTeacher().getName());
-        map.put("status",application.getStatus());
+        map.put("isMainCourse",teacherID.equals(application.getMainCourseTeacher().getID()));
         return map;
     }
 
@@ -86,6 +89,7 @@ public class TeamShareService {
             mainCourseMap.put("teamShareID",shareID);
             mainCourseMap.put("masterCourse",masterMap);
             mainCourseMap.put("receiveCourse",receiveMap);
+            mainCourseMap.put("isMainCourse",false);
             courseMapList.add(mainCourseMap);
         }
         for(int i = 0; i < subCourseList.size(); i++) {
@@ -103,6 +107,7 @@ public class TeamShareService {
             subCourseMap.put("teamShareID",shareID);
             subCourseMap.put("masterCourse",masterMap);
             subCourseMap.put("receiveCourse",receiveMap);
+            subCourseMap.put("isMainCourse",true);
             courseMapList.add(subCourseMap);
         }
         return courseMapList;
@@ -124,11 +129,12 @@ public class TeamShareService {
     }
 
     @GetMapping("/request/teamshare")
-    public List<Map<String, Object>> listAllTeamShareRequest() {
+    public List<Map<String, Object>> listAllTeamShareRequest(HttpServletRequest request) {
+        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
         List<Map<String, Object>> teamShareRequest = new ArrayList<>();
         List<ShareTeamApplication> allApplications = teamShareDao.listAllApplications();
         for(int i = 0 ; i < allApplications.size(); i++) {
-            teamShareRequest.add(this.getApplicationInfo(allApplications.get(i)));
+            teamShareRequest.add(this.getApplicationInfo(allApplications.get(i),id));
         }
         return teamShareRequest;
     }
