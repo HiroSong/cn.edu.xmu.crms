@@ -46,12 +46,6 @@ public class CourseController {
     }
 
 
-
-    @GetMapping("/course/{courseID}/teamshare")
-    public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
-        return teamShareService.listMainAndSubCoursesInfoByCourseID(courseID);
-    }
-
     @GetMapping("/course/{courseID}/seminarshare")
     public List<Map<String, Object>> listAllSeminarShareByCourseID(@PathVariable("courseID")
                                                                         BigInteger courseID) {

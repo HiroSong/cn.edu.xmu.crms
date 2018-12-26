@@ -46,8 +46,9 @@ public class TeamShareService {
        teamShareDao.deleteTeamShareByTeamShareID(teamShareID);
     }
 
+
     @GetMapping("/course/{courseID}/teamshare")
-    public List<Map<String, Object>> listMainAndSubCoursesInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
+    public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> courseMapList = new ArrayList<>();
         List<Course> mainCourseList = courseDao.listMainCoursesByCourseID(courseID);
         List<Course> subCourseList = courseDao.listSubCoursesByCourseID(courseID);
