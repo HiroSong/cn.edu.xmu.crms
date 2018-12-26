@@ -1,9 +1,6 @@
 package cn.edu.xmu.crms.dao;
 
-import cn.edu.xmu.crms.entity.Course;
-import cn.edu.xmu.crms.entity.Klass;
-import cn.edu.xmu.crms.entity.Student;
-import cn.edu.xmu.crms.entity.Team;
+import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.mapper.KlassMapper;
 import cn.edu.xmu.crms.mapper.StudentMapper;
@@ -92,5 +89,40 @@ public class TeamDao {
             teamMapper.updateTeamIDBy4ID(klassID,studentID,courseID,teamID);
         }
         return team;
+    }
+
+    /**
+     * @author LaiShaopeng
+     * @date 2018/12/24 15:07
+     */
+    public List<Attendance> listAttendancesByKlassSeminarID(BigInteger klass_seminarID){
+        List<Attendance> attendances=teamMapper.listAttendancesByKlassSeminarID(klass_seminarID);
+        return attendances;
+    }
+    /**
+     * @author LaiShaopeng
+     * @date 2018/12/24 18:10
+     */
+    public Attendance createAnAttendance(BigInteger klass_seminarID,BigInteger teamID,Integer teamOrder)
+    {
+        Attendance attendance=new Attendance();
+        Team team=getTeamByTeamID(teamID);
+        attendance.setKlassSeminarID(klass_seminarID);
+        attendance.setTeam(team);
+        attendance.setTeamOrder(teamOrder);
+        return attendance;
+    }
+
+    public Integer deleteAttendance(BigInteger attendanceID)
+    {
+        return teamMapper.deleteAttendance(attendanceID);
+    }
+
+    public Attendance getAttendanceByKlass_SeminarIDAndTeamID(BigInteger klass_seminarID,BigInteger teamID){
+        System.out.print(klass_seminarID);
+        BigInteger attendanceID=teamMapper.getAttendanceIDByKlass_SeminarIDAndTeamID(klass_seminarID,teamID);
+        if(attendanceID==null)
+            return null;
+        return teamMapper.getAttendanceByAttendanceID(attendanceID);
     }
 }
