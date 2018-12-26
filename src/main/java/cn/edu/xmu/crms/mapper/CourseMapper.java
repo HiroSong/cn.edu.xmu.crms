@@ -210,5 +210,7 @@ public interface CourseMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getLastInsertID();
+
+    String getCourseNameByCourseID(BigInteger courseID);
 }
 

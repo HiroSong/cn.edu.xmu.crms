@@ -20,7 +20,7 @@
 
     <!--获取所有申请的ID-->
     <select id="listApplicationID" resultType="BigInteger">
-        SELECT id FROM share_seminar_application
+        SELECT id FROM share_seminar_application status is null
     </select>
 
     <!--根据申请ID获取申请对象-->

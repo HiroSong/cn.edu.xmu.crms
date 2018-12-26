@@ -59,7 +59,7 @@ public class CourseService {
         BigInteger id = jwtTokenUtil.getIDFromRequest(request);
         String role = jwtTokenUtil.getRolesFromRequest(request);
         List<Map<String, Object>> listCoursesInfo = new ArrayList<>();
-        if (role.equals("student")) {
+        if (JwtTokenUtil.USER_STUDENT.equals(role)) {
             List<Course> courses = courseDao.listCoursesByStudentID(id);
             if (courses == null) {
                 return null;
@@ -68,6 +68,7 @@ public class CourseService {
                 Map<String, Object> map = new HashMap<>(3);
                 Course course = courses.get(i);
                 Klass klass = klassDao.getKlassByStudentAndCourseID(id, course.getID());
+                map.put("id",course.getID());
                 map.put("courseName", course.getCourseName());
                 map.put("klassGrade", klass.getGrade());
                 map.put("klassSerial", klass.getKlassSerial());
@@ -82,9 +83,9 @@ public class CourseService {
                 Map<String, Object> map = new HashMap<>(4);
                 Course course = courses.get(i);
                 map.put("id", course.getID());
-                map.put("name", course.getCourseName());
-                map.put("isShareTeam", course.getID().equals(course.getTeamMainCourseID()));
-                map.put("isShareSeminar", course.getID().equals(course.getSeminarMainCourseID()));
+                map.put("courseName", course.getCourseName());
+                map.put("isShareTeam", course.getTeamMainCourseID());
+                map.put("isShareSeminar", course.getSeminarMainCourseID());
                 listCoursesInfo.add(map);
             }
         }

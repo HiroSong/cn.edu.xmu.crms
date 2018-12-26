@@ -42,6 +42,21 @@ public class TeamShareService {
     @Autowired
     TeamShareMapper teamShareMapper;
 
+    private Map<String,Object> getApplicationInfo(ShareTeamApplication application) {
+        Map<String,Object> map = new HashMap<>(8);
+        map.put("id",application.getID());
+        map.put("mainCourseID",application.getMainCourse().getID());
+        map.put("mainCourseName",application.getMainCourse().getCourseName());
+        map.put("subCourseID",application.getSubCourse().getID());
+        map.put("subCourseName",application.getSubCourse().getCourseName());
+        map.put("subCourseTeacherID",application.getSubCourseTeacher().getID());
+        map.put("subCourseTeacherName",application.getSubCourseTeacher().getName());
+        map.put("mainCourseTeacherID",application.getMainCourseTeacher().getID());
+        map.put("mainCourseTeacherName",application.getMainCourseTeacher().getName());
+        map.put("status",application.getStatus());
+        return map;
+    }
+
     public void deleteTeamShareByTeamShareID(BigInteger teamShareID) {
        teamShareDao.deleteTeamShareByTeamShareID(teamShareID);
     }
@@ -108,18 +123,12 @@ public class TeamShareService {
         return map;
     }
 
+    @GetMapping("/request/teamshare")
     public List<Map<String, Object>> listAllTeamShareRequest() {
         List<Map<String, Object>> teamShareRequest = new ArrayList<>();
         List<ShareTeamApplication> allApplications = teamShareDao.listAllApplications();
         for(int i = 0 ; i < allApplications.size(); i++) {
-            Map<String, Object> map = new HashMap<>(5);
-            ShareTeamApplication application = allApplications.get(i);
-            map.put("masterCourseID", application.getMainCourse().getID());
-            map.put("masterCourseName", application.getMainCourse().getCourseName());
-            map.put("masterTeacherName", application.getMainCourseTeacher().getName());
-            map.put("subTeacherName", application.getSubCourseTeacher().getName());
-            map.put("shareType", application.getStatus());
-            teamShareRequest.add(map);
+            teamShareRequest.add(this.getApplicationInfo(allApplications.get(i)));
         }
         return teamShareRequest;
     }

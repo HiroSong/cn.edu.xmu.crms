@@ -27,18 +27,6 @@ public class RequestController {
     @Autowired
     TeamService teamService;
 
-    @GetMapping("/request/teamshare")
-    public List<Map<String, Object>> listAllTeamShareRequest() {
-        Map<String, Object> map = new HashMap<>(0);
-        return teamShareService.listAllTeamShareRequest();
-    }
-
-    @GetMapping("/request/seminarshare")
-    public List<Map<String, Object>> listAllSeminarShareRequest() {
-        Map<String, Object> map = new HashMap<>(0);
-        return seminarShareService.listAllSeminarShareRequest();
-    }
-
     @PutMapping("/request/teamshare/{teamShareID}")
     public Map<String, Object> updateTeamShareStatusByID(@PathVariable("teamShareID") BigInteger teamShareID,
                                                          @RequestBody Map<String,Object> statusMap) {
@@ -65,12 +53,6 @@ public class RequestController {
         BigInteger mainCourseID = courseID.get("mainCourseID");
         BigInteger subCourseID = courseID.get("subCourseID");
         return seminarShareService.createSeminarShareRequestByCourseID(mainCourseID, subCourseID);
-    }
-
-    @GetMapping("/request/teamvalid")
-    public List<Map<String,Object>> listAllTeamRequest() {
-        List<Map<String,Object>> list = new ArrayList<>();
-        return teamService.listAllTeamValidApplication();
     }
 
     @PutMapping("/request/teamvalid/{teamValidID}")

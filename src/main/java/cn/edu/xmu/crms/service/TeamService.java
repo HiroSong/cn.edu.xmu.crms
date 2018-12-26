@@ -8,6 +8,7 @@ import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -154,6 +155,7 @@ public class TeamService {
         return map;
     }
 
+    @GetMapping("/request/teamvalid")
     public List<Map<String,Object>> listAllTeamValidApplication() {
         List<Map<String,Object>> applicationMapList = new ArrayList<>();
         List<TeamValidApplication> applications = teamValidDao.listAllApplication();

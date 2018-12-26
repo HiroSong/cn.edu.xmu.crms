@@ -12,6 +12,10 @@ import cn.edu.xmu.crms.mapper.SeminarShareMapper;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +27,7 @@ import java.util.Map;
  * @ClassName CourseService
  * @Author Hongqiw
  **/
+@RestController
 @Service
 public class SeminarShareService {
     @Autowired
@@ -51,7 +56,8 @@ public class SeminarShareService {
      * @author Hongqiwu
      * @date 2018/11/30 19:41
      */
-    public List<Map<String, Object>> listMainAndSubCoursesInfoByCourseID(BigInteger courseID) {
+    @GetMapping("/course/{courseID}/seminarshare")
+    public List<Map<String, Object>> listAllSeminarShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> courseMapList = new ArrayList<>();
         List<Course> mainCourseList = seminarDao.listMainCoursesByCourseID(courseID);
         List<Course> subCourseList = seminarDao.listSubCoursesByCourseID(courseID);
@@ -111,6 +117,7 @@ public class SeminarShareService {
         return map;
     }
 
+    @GetMapping("/request/seminarshare")
     public List<Map<String, Object>> listAllSeminarShareRequest() {
         List<Map<String, Object>> seminarShareRequest = new ArrayList<>();
         List<ShareSeminarApplication> allApplications = seminarShareDao.listAllApplications();

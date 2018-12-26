@@ -5,11 +5,11 @@ import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.ShareTeamApplication;
 import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.mapper.CourseMapper;
+import cn.edu.xmu.crms.mapper.TeacherMapper;
 import cn.edu.xmu.crms.mapper.TeamShareMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +28,8 @@ public class TeamShareDao {
     TeacherDao teacherDao;
     @Autowired
     CourseDao courseDao;
+    @Autowired
+    TeacherMapper teacherMapper;
 
     public ShareTeamApplication getTeamShareApplicationByID(BigInteger id) {
         Map<String, Object> map = teamShareMapper.getApplicationByID(id);
@@ -63,12 +65,13 @@ public class TeamShareDao {
     }
 
     public List<ShareTeamApplication> listAllApplications() {
-        List<BigInteger> allID = teamShareMapper.listApplicationID();
-        List<ShareTeamApplication> allApplications = new ArrayList<>();
-        for(int i = 0; i < allID.size(); i++) {
-            ShareTeamApplication application = this.getTeamShareApplicationByID(allID.get(i));
-            allApplications.add(application);
+        List<ShareTeamApplication> applications = teamShareMapper.listAllApplications();
+        for(int i = 0; i < applications.size(); i++) {
+            BigInteger subCourseID = applications.get(i).getSubCourse().getID();
+            BigInteger mainCourseID = applications.get(i).getMainCourse().getID();
+            applications.get(i).getSubCourse().setCourseName(courseMapper.getCourseNameByCourseID(subCourseID));
+            applications.get(i).setMainCourseTeacher(teacherDao.getTeacherByCourseID(mainCourseID));
         }
-        return allApplications;
+        return applications;
     }
 }
