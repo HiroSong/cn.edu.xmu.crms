@@ -71,12 +71,4 @@
         DELETE FROM team WHERE klass_id = #{klassID}
     </delete>
 
-    <!--插入班级学生关系表-->
-    <insert id="insertStudentKlass" parameterType="java.util.Map">
-        INSERT INTO klass_student(klass_id, student_id, course_id)
-        VALUES
-        <foreach collection="studentIDList" item="id" index="index" separator=",">
-            (#{klassID}, #{id}, #{courseID})
-        </foreach>
-    </insert>
 </mapper>

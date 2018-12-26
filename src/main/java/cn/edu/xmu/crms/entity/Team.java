@@ -11,7 +11,6 @@ public class Team {
     private BigInteger id;
     private String teamName;
     private Integer teamSerial;
-    private Integer klassSerial;
     private Integer status;
     private Course course;
     private Klass klass;
@@ -42,10 +41,6 @@ public class Team {
     public void setKlass(Klass klass) {
         this.klass = klass;
     }
-
-    public Integer getKlassSerial() { return klassSerial; }
-
-    public void setKlassSerial(Integer klassSerial) { this.klassSerial = klassSerial; }
 
     public Student getLeader() {
         return leader;
@@ -93,9 +88,5 @@ public class Team {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getTeamNumber(){return getKlassSerial().toString()+"-"+
-            teamSerial.toString();
     }
 }

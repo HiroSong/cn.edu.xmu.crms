@@ -3,7 +3,8 @@ package cn.edu.xmu.crms.mapper;
 import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
+import org.omg.CORBA.OBJ_ADAPTER;
+import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
  * @Author Hongqiwu
  **/
 @Mapper
-@Component
+@Repository
 public interface StudentMapper {
 
     /**
@@ -123,24 +124,6 @@ public interface StudentMapper {
       */
     void insertStudent(User user);
 
-    /**
-      * 插入学生信息
-      *
-      * @param studentList
-      * @author SongLingbing
-      * @date 2018/12/26 2:18
-      */
-    void insertStudentList(List<Student> studentList);
-
-    /**
-      * 根据学号查找对应学生id，并返回结果列表
-      *
-      * @param studentList 学生基本信息列表
-      * @return studentID
-      * @author SongLingbing
-      * @date 2018/12/26 3:11
-      */
-    List<BigInteger> listStudentID(List<Student> studentList);
     List<Student> listMembersByTeamID(BigInteger teamID);
 
     /**

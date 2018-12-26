@@ -9,7 +9,7 @@ import java.math.BigInteger;
 public class Attendance {
     private BigInteger id;
     private BigInteger klassSeminarID;
-    private Team team;
+    private BigInteger teamID;
     private Integer teamOrder;
     private Integer bePresent;
     private String reportName;
@@ -33,13 +33,13 @@ public class Attendance {
         this.klassSeminarID = klassSeminarID;
     }
 
-    public void setTeam(Team team){this.team=team;}
+    public BigInteger getTeamID() {
+        return teamID;
+    }
 
-    public Team getTeam(){return this.team;}
-
-    public BigInteger getTeamID() { return team.getID(); }
-
-    public void setTeamID(BigInteger teamID) { this.team.setID(teamID); }
+    public void setTeamID(BigInteger teamID) {
+        this.teamID = teamID;
+    }
 
     public Integer getTeamOrder() {
         return teamOrder;
@@ -73,19 +73,19 @@ public class Attendance {
         this.reportUrl = reportUrl;
     }
 
-    public String getPPTName() {
+    public String getPptName() {
         return pptName;
     }
 
-    public void setPPTName(String pptName) {
+    public void setPptName(String pptName) {
         this.pptName = pptName;
     }
 
-    public String getPPTUrl() {
+    public String getPptUrl() {
         return pptUrl;
     }
 
-    public void setPPTUrl(String pptUrl) {
+    public void setPptUrl(String pptUrl) {
         this.pptUrl = pptUrl;
     }
 }

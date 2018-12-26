@@ -125,8 +125,4 @@
         WHERE klass_seminar_id = #{klassSeminarID} AND team_id = #{teamID}
     </update>
 
-    <!--根据seminarID和klassID获取klass_seminarID-->
-    <select id="getKlassSeminarIDBySeminarIDAndClassID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT id FROM klass_seminar WHERE seminar_id = #{param1} AND klass_id = #{param2}
-    </select>
 </mapper>
