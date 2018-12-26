@@ -29,29 +29,30 @@ import java.util.Map;
 @RestController
 @Service
 public class AttendanceService {
-
     @Autowired
     SeminarMapper seminarMapper;
     @Autowired
     SeminarDao seminarDao;
     @Autowired
     TeamDao teamDao;
-    public List<Map<String,Object>> listAttendanceInfoBySeminarIDAndClassID(BigInteger seminarID, BigInteger classID){
-        BigInteger klass_seminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
-        List<Map<String,Object>> attendanceInfoList=new ArrayList<>();
-        List<Attendance> attendances=teamDao.listAttendancesByKlassSeminarID(klass_seminarID);
-        for(int i=0;i<attendances.size();i++){
-            Attendance attendance=attendances.get(i);
-            Map<String,Object> map=new HashMap<>();
-            map.put("teamOrder",attendance.getTeamOrder());
-            map.put("teamNumber",attendance.getTeam().getTeamNumber());
+    @Autowired
+    AttendanceDao attendanceDao;
+    @Autowired
+    FileUtil fileUtil;
+
+    public List<Map<String,Object>> listAttendanceInfoBySeminarIDAndClassID(BigInteger seminarID, BigInteger classID) {
+        BigInteger klass_seminarID = seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID, classID);
+        List<Map<String, Object>> attendanceInfoList = new ArrayList<>();
+        List<Attendance> attendances = teamDao.listAttendancesByKlassSeminarID(klass_seminarID);
+        for (int i = 0; i < attendances.size(); i++) {
+            Attendance attendance = attendances.get(i);
+            Map<String, Object> map = new HashMap<>();
+            map.put("teamOrder", attendance.getTeamOrder());
+            map.put("teamNumber", attendance.getTeam().getTeamNumber());
             attendanceInfoList.add(map);
         }
         return attendanceInfoList;
-    @Autowired
-    FileUtil fileUtil;
-    @Autowired
-    AttendanceDao attendanceDao;
+    }
 
     @PostMapping("/attendance/{attendanceID}/report")
     public Map<String, Object> updateReport(@PathVariable("attendanceID") BigInteger attendanceID, @RequestParam("file") MultipartFile file) {
