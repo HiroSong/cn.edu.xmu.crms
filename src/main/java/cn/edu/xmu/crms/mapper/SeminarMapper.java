@@ -2,7 +2,6 @@ package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.Seminar;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -16,7 +15,7 @@ import java.util.Map;
  * @Author Hongqiwu
  **/
 @Mapper
-@Component
+@Repository
 public interface SeminarMapper {
     /**
      * 通过klassID获取SeminarID
@@ -27,7 +26,6 @@ public interface SeminarMapper {
      * @date 2018/11/30 19:40
      */
     List<BigInteger> listSeminarsIDByKlassID(BigInteger klassID);
-
     /**
      * 通过seminarID获取Seminar对象
      *
@@ -131,7 +129,6 @@ public interface SeminarMapper {
      * @date 2018/12/18 19:35
      */
     void updateSeminarReportDDLByKlassAndSeminarID(Map<String, Object> map);
-
     /**
      * 获取讨论课状态
      *
@@ -142,7 +139,6 @@ public interface SeminarMapper {
      * @date 2018/12/18 19:35
      */
     Integer getStatusBySeminarAndKlassID(BigInteger seminarID, BigInteger klassID);
-
     /**
      * 获取报告截止时间
      *
@@ -153,7 +149,6 @@ public interface SeminarMapper {
      * @date 2018/12/18 19:35
      */
     String getReportDDLBySeminarAndKlassID(BigInteger seminarID, BigInteger klassID);
-
     /**
      * 开始讨论课
      *

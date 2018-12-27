@@ -73,19 +73,19 @@ public class Attendance {
         this.reportUrl = reportUrl;
     }
 
-    public String getPPTName() {
+    public String getPptName() {
         return pptName;
     }
 
-    public void setPPTName(String pptName) {
+    public void setPptName(String pptName) {
         this.pptName = pptName;
     }
 
-    public String getPPTUrl() {
+    public String getPptUrl() {
         return pptUrl;
     }
 
-    public void setPPTUrl(String pptUrl) {
+    public void setPptUrl(String pptUrl) {
         this.pptUrl = pptUrl;
     }
 }

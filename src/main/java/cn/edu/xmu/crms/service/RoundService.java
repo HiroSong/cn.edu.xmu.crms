@@ -9,9 +9,6 @@ import cn.edu.xmu.crms.mapper.RoundMapper;
 import cn.edu.xmu.crms.mapper.TeamMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -25,7 +22,7 @@ import java.util.Map;
  * @Author Hongqiwu
  * @Date 2018/12/20 0:22
  **/
-@RestController
+
 @Service
 public class RoundService {
     @Autowired
@@ -33,38 +30,11 @@ public class RoundService {
     @Autowired
     RoundMapper roundMapper;
     @Autowired
+    TeamMapper teamMapper;
+    @Autowired
     TeamDao teamDao;
 
-    private Map<String, Object> getRoundInfo(Round round) {
-        Map<String, Object> roundInfo = new HashMap<>(4);
-        roundInfo.put("id",round.getID());
-        roundInfo.put("order",round.getRoundSerial());
-        roundInfo.put("calculatePreType",round.getPresentationScoreMethod());
-        roundInfo.put("calculateQueType",round.getQuestionScoreMethod());
-        roundInfo.put("calculateRepType",round.getReportScoreMethod());
-        roundInfo.put("courseID",round.getCourse().getID());
-        roundInfo.put("courseName",round.getCourse().getCourseName());
-        return roundInfo;
-    }
-
-    private Map<String, Object> getRoundScoreInfo(RoundScore roundScore) {
-        Map<String, Object> roundScoreMap = new HashMap<>(5);
-        Map<String, Object> teamMap = new HashMap<>(2);
-        teamMap.put("id",roundScore.getTeam().getID());
-        teamMap.put("name",roundScore.getTeam().getTeamName());
-        Map<String, Object> roundMap = new HashMap<>(5);
-        roundMap.put("id",roundScore.getRound().getID());
-        roundMap.put("order",roundScore.getRound().getRoundSerial());
-        roundScoreMap.put("preScore",roundScore.getPresentationScore());
-        roundScoreMap.put("reportScore",roundScore.getReportScore());
-        roundScoreMap.put("questionScore",roundScore.getQuestionScore());
-        roundScoreMap.put("team",teamMap);
-        roundScoreMap.put("round",roundMap);
-        return roundScoreMap;
-    }
-
-    @GetMapping("/course/{courseID}/round")
-    public List<Map<String, Object>> listRoundsInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
+    public List<Map<String, Object>> listRoundsInfoByCourseID(BigInteger courseID) {
         List<Map<String, Object>> roundInfoList = new ArrayList<>();
         List<Round> rounds = roundDao.listRoundsByCourseID(courseID);
         for(int i = 0; i < rounds.size(); i++) {
@@ -76,34 +46,57 @@ public class RoundService {
         return roundInfoList;
     }
 
-
-    @GetMapping("/round/{roundID}")
-    public Map<String, Object> getRoundInfoByRoundID(@PathVariable("roundID") BigInteger roundID) {
-        Round round = roundDao.getRoundByRoundID(roundID);
-        return this.getRoundInfo(round);
+    public Map<String, Object> getRoundInfoByRoundID(BigInteger roundID) {
+        Map<String, Object> roundInfo = new HashMap<>(4);
+        Round round = roundMapper.getRoundByRoundID(roundID);
+        roundInfo.put("id",round.getID());
+        roundInfo.put("order",round.getRoundSerial());
+        roundInfo.put("calculatePreType",round.getPresentationScoreMethod());
+        roundInfo.put("calculateQueType",round.getQuestionScoreMethod());
+        roundInfo.put("calculateRepType",round.getReportScoreMethod());
+        return roundInfo;
     }
 
     public void updateCalculateRuleByRound(Round round) {
         roundMapper.updateRuleByRound(round);
     }
 
-
-    @GetMapping("/round/{roundID}/roundscore")
-    public List<Map<String, Object>> listTeamRoundScoreInfoByRoundID(@PathVariable("roundID") BigInteger roundID) {
+    public List<Map<String, Object>> listTeamRoundScoreInfoByRoundID(BigInteger roundID) {
         List<Map<String, Object>> teamScoreList = new ArrayList<>();
         List<RoundScore> roundScores = roundDao.listRoundScoreByRoundID(roundID);
-        System.out.println(roundScores.size());
         for(int i = 0; i < roundScores.size(); i++) {
-            teamScoreList.add(this.getRoundScoreInfo(roundScores.get(i)));
+            Map<String, Object> teamInfo = new HashMap<>(2);
+            Map<String, Object> map = new HashMap<>(4);
+            RoundScore roundScore = roundScores.get(i);
+            Team team = teamDao.getTeamByTeamID(roundScore.getTeamID());
+            teamInfo.put("id",team.getID());
+            teamInfo.put("name",team.getTeamName());
+            map.put("team",teamInfo);
+            map.put("preScore",roundScore.getPresentationScore());
+            map.put("questionScore",roundScore.getQuestionScore());
+            map.put("reportScore",roundScore.getReportScore());
+            teamScoreList.add(map);
         }
         return teamScoreList;
     }
 
-    @GetMapping("/round/{roundID}/team/{teamID}/roundscore")
-    public Map<String, Object> getRoundScoreInfoByRoundAndTeamID(@PathVariable("roundID") BigInteger roundID,
-                                                                 @PathVariable("teamID") BigInteger teamID) {
-        RoundScore roundScore = roundDao.getRoundScoreByRoundAndTeamID(roundID, teamID);
-        return this.getRoundScoreInfo(roundScore);
+    public Map<String, Object> getRoundScoreInfoByRoundAndTeamID(BigInteger roundID, BigInteger teamID) {
+        RoundScore roundScore = roundMapper.getRoundScoreByRoundAndTeamID(roundID, teamID);
+        Map<String, Object> roundScoreMap = new HashMap<>(5);
+        Map<String, Object> teamMap = new HashMap<>(2);
+        Team team = teamDao.getTeamByTeamID(roundScore.getTeamID());
+        teamMap.put("id",team.getID());
+        teamMap.put("name",team.getTeamName());
+        Map<String, Object> roundMap = new HashMap<>(5);
+        Round round = roundMapper.getRoundByRoundID(roundID);
+        roundMap.put("id",round.getID());
+        roundMap.put("order",round.getRoundSerial());
+        roundScoreMap.put("preScore",roundScore.getPresentationScore());
+        roundScoreMap.put("reportScore",roundScore.getReportScore());
+        roundScoreMap.put("questionScore",roundScore.getQuestionScore());
+        roundScoreMap.put("team",teamMap);
+        roundScoreMap.put("round",roundMap);
+        return roundScoreMap;
     }
 
     public void updateRoundScoreInfoByRoundScore(RoundScore roundScore) {

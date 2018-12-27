@@ -1,20 +1,10 @@
 package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.KlassDao;
-import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.mapper.KlassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import org.springframework.web.bind.annotation.GetMapping;
-
 import java.lang.String;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -26,18 +16,22 @@ import java.util.Map;
  * @ClassName KlassService
  * @Author Hongqiwu
  **/
-@RestController
 @Service
 public class KlassService {
     @Autowired
     KlassDao klassDao;
     @Autowired
     KlassMapper klassMapper;
-    @Autowired
-    StudentDao studentDao;
 
-    @GetMapping("/course/{courseID}/class")
-    public List<Map<String, Object>> listKlassInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
+    /**
+     * 用courseID查找班级信息列表
+     *
+     * @param courseID 课程号码
+     * @return List<Map<String, Object>> 返回查找到的列表，若无记录则为null
+     * @author Hongqiwu
+     * @date 2018/11/30 19:41
+     */
+    public List<Map<String, Object>> listKlassInfoByCourseID(BigInteger courseID) {
         List<Klass> klassList = klassDao.listKlassByCourseID(courseID);
         if(klassList == null) {
             return null;
@@ -60,11 +54,4 @@ public class KlassService {
         return klassMapper.insertKlassByKlass(klass);
     }
 
-    @PostMapping("/class/{classID}/student")
-    public Map<String, Object> importStudentByExcel(@PathVariable("classID")BigInteger klassID, @RequestParam("file") MultipartFile file) throws IOException {
-        Map<String, Object> map = new HashMap<>(1);
-        String status = studentDao.insertStudentList(klassID, file);
-        map.put("message", status);
-        return map;
-    }
 }

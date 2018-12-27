@@ -11,10 +11,6 @@ import cn.edu.xmu.crms.mapper.TeacherMapper;
 import cn.edu.xmu.crms.mapper.TeamShareMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +22,6 @@ import java.util.Map;
  * @ClassName CourseService
  * @Author Hongqiw
  **/
-@RestController
 @Service
 public class TeamShareService {
     @Autowired
@@ -42,12 +37,11 @@ public class TeamShareService {
     @Autowired
     TeamShareMapper teamShareMapper;
 
-    public void deleteTeamShareByTeamShareID(BigInteger teamShareID) {
+   public void deleteTeamShareByTeamShareID(BigInteger teamShareID) {
        teamShareDao.deleteTeamShareByTeamShareID(teamShareID);
-    }
+   }
 
-    @GetMapping("/course/{courseID}/teamshare")
-    public List<Map<String, Object>> listMainAndSubCoursesInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
+    public List<Map<String, Object>> listMainAndSubCoursesInfoByCourseID(BigInteger courseID) {
         List<Map<String, Object>> courseMapList = new ArrayList<>();
         List<Course> mainCourseList = courseDao.listMainCoursesByCourseID(courseID);
         List<Course> subCourseList = courseDao.listSubCoursesByCourseID(courseID);

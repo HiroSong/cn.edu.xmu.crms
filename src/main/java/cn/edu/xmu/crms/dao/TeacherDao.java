@@ -1,10 +1,13 @@
 package cn.edu.xmu.crms.dao;
 
 import cn.edu.xmu.crms.entity.Teacher;
+import cn.edu.xmu.crms.entity.User;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,35 +30,18 @@ public class TeacherDao {
         return teacherMapper.getTeacherByTeacherID(teacherID);
     }
 
-    public Boolean insertTeacher(Teacher teacher) {
-        List<String> emails = teacherMapper.listAllEmails();
-        for(int i = 0; i < emails.size(); i++) {
-            if(teacher.getEmail().equals(emails.get(i))) {
-                return false;
-            }
-        }
-        System.out.println(teacherMapper.insertTeacher(teacher));
-        return true;
+    public BigInteger insertTeacher(User teacher) {
+        teacherMapper.insertTeacher(teacher);
+        return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getUsername(), teacher.getPassword());
     }
 
     public List<Teacher> listAllTeachers() {
-        return teacherMapper.listAllTeachers();
+        List<BigInteger> allTeachersID = teacherMapper.listAllTeachersID();
+        List<Teacher> teachers = new ArrayList<>();
+        for(int i = 0 ;i < allTeachersID.size(); i++) {
+            Teacher teacher = teacherMapper.getTeacherByTeacherID(allTeachersID.get(i));
+            teachers.add(teacher);
+        }
+        return teachers;
     }
-
-    public Integer updateTeacherInfoByTeacher(Teacher teacher) {
-        return teacherMapper.updateTeacherInfoByTeacher(teacher);
-    }
-
-    public Integer deleteTeacherByTeacherID(BigInteger teacherID) {
-        return teacherMapper.deleteTeacherByTeacherID(teacherID);
-    }
-
-    public Integer updateTeacherActiveByTeacher(Teacher teacher) {
-        return teacherMapper.updateTeacherActiveByTeacher(teacher);
-    }
-
-    public Integer resetTeacherPasswordByTeacherID(BigInteger teacherID) {
-        return teacherMapper.resetTeacherPasswordByTeacherID(teacherID);
-    }
-
 }
