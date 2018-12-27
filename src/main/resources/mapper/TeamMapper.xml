@@ -66,4 +66,47 @@
         UPDATE klass_student SET team_id = #{param4} WHERE klass_id = #{param1} AND student_id = #{param2}
         AND course_id = #{param3}
     </update>
+
+    <!--获得参与展示小组的ID列表-->
+    <select id="listAttendancesIDByKlassSeminarID" parameterType="BigInteger" resultType="BigInteger">
+        SELECT id FROM attendance WHERE klass_seminar_id = #{klass_seminarID}
+    </select>
+
+    <!--根据参与展示小组的ID获得参与展示小组的对象-->
+    <select id="getAttendanceByAttendanceID"  resultType="Attendance" parameterType="BigInteger">
+    SELECT id id,klass_seminar_id klassSeminarID,team_order teamOrder,is_present bePresent FROM attendance WHERE id = #{attendanceID}
+    </select>
+
+    <!--获得参与展示小组的列表-->
+    <select id="listAttendancesByKlassSeminarID" parameterType="BigInteger" resultMap="attendanceResultMap">
+        SELECT * FROM attendance,team,klass WHERE attendance.klass_seminar_id=#{klass_seminarID} AND team.id=attendance.team_id AND team.klass_id=klass.id
+    </select>
+    <resultMap id="attendanceResultMap" type="Attendance">
+        <id property="id" column="id"/>
+        <result property="klassSeminarID" column="klass_seminar_id"/>
+        <result property="teamOrder" column="team_order"/>
+        <association property="team" javaType="Team">
+            <id property="id" column="team_id"/>
+            <result property="teamSerial" column="team_serial"/>
+            <result property="klassSerial" column="klass_serial"/>
+        </association>
+    </resultMap>
+
+    <!--新建参与展示的小组-->
+    <insert id="insertAttendance" parameterType="Attendance" >
+        INSERT INTO attendance(klass_seminar_id,team_id,team_order,is_present)
+        VALUES (#{klassSeminarID},#{teamID},#{teamOrder},0)
+    </insert>
+
+    <!--删除报名参与展示的小组-->
+    <delete id="deleteAttendance" parameterType="BigInteger">
+        DELETE FROM attendance WHERE id=#{attendanceID}
+    </delete>
+
+    <!--通过klass_seminarID和teamID获得参与展示的ID-->
+    <select id="getAttendanceIDByKlass_SeminarIDAndTeamID" parameterType="BigInteger" resultType="BigInteger">
+        SELECT id FROM attendance WHERE klass_seminar_id = #{param1} AND team_id=#{param2}
+    </select>
+
+
 </mapper>

@@ -1,6 +1,7 @@
 package cn.edu.xmu.crms.dao;
 
 
+import cn.edu.xmu.crms.entity.Attendance;
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.Seminar;
 import cn.edu.xmu.crms.entity.Team;

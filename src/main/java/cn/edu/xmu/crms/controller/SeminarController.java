@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.controller;
 
 import cn.edu.xmu.crms.entity.Seminar;
 import cn.edu.xmu.crms.service.SeminarService;
+import cn.edu.xmu.crms.util.email.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -136,5 +137,28 @@ public class SeminarController {
                                                  @PathVariable("teamID") BigInteger teamID,
                                                  @RequestBody Map<String, Object> repScore){
         return seminarService.updateReportScoreBySeminarAndTeamID(seminarID,teamID,repScore);
+    }
+
+    @PostMapping("/seminar/{seminarID}/class/{classID}/attendance")
+    public Map<String, Object> registerSeminar(@PathVariable("seminarID")
+                                                       BigInteger seminarID,
+                                               @PathVariable("classID")
+                                                       BigInteger classID,
+                                               @RequestBody Map<String,Object> teamIDAndOrder){
+        BigInteger teamID=new BigInteger(teamIDAndOrder.get("teamID").toString());
+        Integer teamOrder=Integer.parseInt(teamIDAndOrder.get("teamOrder").toString());
+        return seminarService.createNewAttendance(seminarID,classID,teamID,teamOrder);
+    }
+
+    @DeleteMapping("/attendance/{attendanceID}")
+    public Map<String,String> cancelRegistion(@PathVariable("attendanceID")
+                                        BigInteger attendanceID){
+        return seminarService.cancelRegistion(attendanceID);
+    }
+
+    @GetMapping("/seminar/{seminarID}/team/{teamID}/attendance")
+    public Map<String, Object> checkIfAttendance(@PathVariable("seminarID") BigInteger seminarID,
+                                                 @PathVariable("teamID") BigInteger teamID) {
+        return seminarService.checkIfAttendanceBySeminarIDAndTeamID(seminarID,teamID);
     }
 }
