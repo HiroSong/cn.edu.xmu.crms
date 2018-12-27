@@ -131,4 +131,14 @@
     <select id="getCourseNameByCourseID" resultType="String" parameterType="BigInteger">
         SELECT course_name FROM course WHERE id = #{courseID}
     </select>
+
+    <!--更新课程的组队共享主课程-->
+    <update id="updateTeamMainCourseID" parameterType="BigInteger">
+        UPDATE course SET team_main_course_id = #{param1} WHERE id = #{param2}
+    </update>
+
+    <!--更新课程的讨论课共享主课程-->
+    <update id="updateSeminarMainCourseID" parameterType="BigInteger">
+        UPDATE course SET seminar_main_course_id = #{param1} WHERE id = #{param2}
+    </update>
 </mapper>

@@ -96,17 +96,6 @@ public interface TeamMapper {
      */
     void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID);
 
-    /**
-     * 队伍添加新成员
-     *
-     * @param klassID   队伍ID
-     * @param studentID 队伍ID
-     * @param courseID  队伍ID
-     * @param teamID    队伍ID
-     * @author Hongqiwu
-     * @date 2018/12/18 19:35
-     */
-    void insertStudentIntoTeamBy4ID(BigInteger klassID, BigInteger studentID, BigInteger courseID, BigInteger teamID);
 
     /**
      * 申请额外添加组员
@@ -126,24 +115,6 @@ public interface TeamMapper {
      */
     BigInteger getLastInsertID();
 
-    /**
-     * 教师同意队伍合法申请
-     *
-     * @param teamID 队伍ID
-     * @author Hongqiwu
-     * @date 2018/12/18 19:35
-     */
-    void updateValidApplicationByTeamID(BigInteger teamID);
-
-    /**
-     * 获得申请ID
-     *
-     * @param teamID 队伍ID
-     * @return BigInteger 申请ID
-     * @author Hongqiwu
-     * @date 2018/12/18 19:35
-     */
-    BigInteger getApplicationIDByTeamID(BigInteger teamID);
 
     /**
      * 插入新队伍信息
@@ -227,4 +198,7 @@ public interface TeamMapper {
 
     List<Team> listTeamsByCourseID(BigInteger courseID);
 
+    void updateTeamStatusByID(Team team);
+
+    void insertStudentToTeam(BigInteger teamID, BigInteger studentID);
 }

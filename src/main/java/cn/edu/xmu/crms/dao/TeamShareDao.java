@@ -74,4 +74,15 @@ public class TeamShareDao {
         }
         return applications;
     }
+
+    //更新共享组队申请的状态
+    public void updateStatusByTeamShareID(ShareTeamApplication application) {
+        teamShareMapper.updateStatusByTeamShareID(application);
+        if(application.getStatus() == 1) {
+            Map<String,Object> oldApplication = teamShareMapper.getApplicationByID(application.getID());
+            BigInteger mainCourseID = new BigInteger(oldApplication.get("mainCourseID").toString());
+            BigInteger subCourseID = new BigInteger(oldApplication.get("subCourseID").toString());
+            courseMapper.updateTeamMainCourseID(mainCourseID,subCourseID);
+        }
+    }
 }

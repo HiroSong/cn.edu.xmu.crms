@@ -73,4 +73,15 @@ public class SeminarShareDao {
         }
         return allApplications;
     }
+
+    //更新共享讨论课申请的状态
+    public void updateStatusBySeminarShareID(ShareSeminarApplication application) {
+        seminarShareMapper.updateStatusBySeminarShareID(application);
+        if(application.getStatus() == 1) {
+            Map<String,Object> oldApplication = seminarShareMapper.getApplicationByID(application.getID());
+            BigInteger mainCourseID = new BigInteger(oldApplication.get("mainCourseID").toString());
+            BigInteger subCourseID = new BigInteger(oldApplication.get("subCourseID").toString());
+            courseMapper.updateSeminarMainCourseID(mainCourseID,subCourseID);
+        }
+    }
 }

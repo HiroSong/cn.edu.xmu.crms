@@ -14,10 +14,7 @@ import cn.edu.xmu.crms.mapper.TeacherMapper;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
@@ -153,11 +150,14 @@ public class SeminarShareService {
         return seminarShareRequest;
     }
 
-    public Map<String, Object> updateSeminarShareStatusByID(BigInteger seminarShareID, Integer status) {
+    @PutMapping("/request/seminarshare/{seminarShareID}")
+    public Map<String, Object> updateSeminarShareStatusByID(@PathVariable("seminarShareID") BigInteger seminarShareID,
+                                                            @RequestBody Map<String,Integer> statusMap) {
+        Integer status = statusMap.get("status");
         ShareSeminarApplication application = new ShareSeminarApplication();
         application.setStatus(status);
         application.setID(seminarShareID);
-        seminarShareMapper.updateStatusBySeminarShareID(application);
+        seminarShareDao.updateStatusBySeminarShareID(application);
         Map<String,Object> map = new HashMap<>(1);
         if(status == 1) {
             map.put("handledType","accept");

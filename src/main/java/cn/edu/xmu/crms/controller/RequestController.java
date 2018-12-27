@@ -27,19 +27,6 @@ public class RequestController {
     @Autowired
     TeamService teamService;
 
-    @PutMapping("/request/teamshare/{teamShareID}")
-    public Map<String, Object> updateTeamShareStatusByID(@PathVariable("teamShareID") BigInteger teamShareID,
-                                                         @RequestBody Map<String,Object> statusMap) {
-        Integer status = Integer.parseInt(statusMap.get("status").toString());
-        return teamShareService.updateTeamShareStatusByID(teamShareID,status);
-    }
-
-    @PutMapping("/request/seminarshare/{seminarShareID}")
-    public Map<String, Object> updateSeminarShareStatusByID(@PathVariable("seminarShareID") BigInteger seminarShareID,
-                                                         @RequestBody Map<String,Object> statusMap) {
-        Integer status = Integer.parseInt(statusMap.get("status").toString());
-        return seminarShareService.updateSeminarShareStatusByID(seminarShareID,status);
-    }
 
     @PostMapping("/request/teamshare")
     public Map<String, Object> createTeamShareRequest(@RequestBody Map<String,BigInteger> courseID) {
@@ -55,10 +42,4 @@ public class RequestController {
         return seminarShareService.createSeminarShareRequestByCourseID(mainCourseID, subCourseID);
     }
 
-    @PutMapping("/request/teamvalid/{teamValidID}")
-    public void updateTeamValidRequestByID(@PathVariable("teamValidID") BigInteger teamValidID,
-                                           @RequestBody Map<String,Integer> map) {
-        Integer status = map.get("handleType");
-        teamService.updateTeamValidRequestByID(teamValidID,status);
-    }
 }

@@ -33,7 +33,7 @@ public interface TeamValidMapper {
      * @author Hongqiwu
      * @date 2018/12/18 19:35
      */
-    Map<String, Object> getApplicationByID(BigInteger id);
+    TeamValidApplication getApplicationByID(BigInteger id);
     /**
      * 更新额外申请的状态
      *
@@ -42,4 +42,14 @@ public interface TeamValidMapper {
      * @date 2018/12/18 19:35
      */
     void updateStatusByID(TeamValidApplication teamValidApplication);
+
+    /**
+     * 获得申请ID
+     *
+     * @param teamID 队伍ID
+     * @return BigInteger 申请ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    BigInteger getApplicationIDByTeamID(BigInteger teamID);
 }

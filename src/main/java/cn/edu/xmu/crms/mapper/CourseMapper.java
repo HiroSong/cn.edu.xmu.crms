@@ -197,5 +197,9 @@ public interface CourseMapper {
     BigInteger getLastInsertID();
 
     String getCourseNameByCourseID(BigInteger courseID);
+
+    void updateTeamMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
+
+    void updateSeminarMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
 }
 

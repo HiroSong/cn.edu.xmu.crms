@@ -12,10 +12,7 @@ import cn.edu.xmu.crms.mapper.TeamShareMapper;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
@@ -141,11 +138,14 @@ public class TeamShareService {
         return teamShareRequest;
     }
 
-    public Map<String, Object> updateTeamShareStatusByID(BigInteger teamShareID, Integer status) {
+    @PutMapping("/request/teamshare/{teamShareID}")
+    public Map<String, Object> updateTeamShareStatusByID(@PathVariable("teamShareID") BigInteger teamShareID,
+                                                         @RequestBody Map<String,Integer> statusMap) {
+        Integer status = statusMap.get("status");
         ShareTeamApplication application = new ShareTeamApplication();
         application.setStatus(status);
         application.setID(teamShareID);
-        teamShareMapper.updateStatusByTeamShareID(application);
+        teamShareDao.updateStatusByTeamShareID(application);
         Map<String,Object> map = new HashMap<>(1);
         if(status == 1) {
             map.put("handledType","accept");
