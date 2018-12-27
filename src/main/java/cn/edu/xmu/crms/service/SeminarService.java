@@ -48,6 +48,22 @@ public class SeminarService {
     GreetingController greetingController;
 
 
+    //获取seminar信息
+    private Map<String, Object> getSeminarInfo(Seminar seminar) {
+        Map<String, Object> map = new HashMap<>(7);
+        map.put("id",seminar.getID());
+        map.put("topic",seminar.getSeminarName());
+        map.put("intro",seminar.getIntroduction());
+        map.put("order",seminar.getSeminarSerial());
+        map.put("teamNumLimit",seminar.getMaxTeam());
+        map.put("signUpStartTime",seminar.getEnrollStartTime());
+        map.put("signUpEndTime",seminar.getEnrollEndTime());
+        map.put("round",seminar.getRound().getRoundSerial());
+        return map;
+    }
+
+
+
     //未完成
     public List<Map<String, Object>> listSeminarScores(BigInteger studentID, BigInteger courseID) {
         List<Map<String, Object>> listScoresInfo = new ArrayList<>();

@@ -41,7 +41,7 @@ public class KlassService {
             Klass klass = klassList.get(i);
             Map<String, Object> klassMap = new HashMap<>(4);
             klassMap.put("id",klass.getID());
-            String klassName = klass.getGrade().toString()+klass.getKlassSerial().toString();
+            String klassName = klass.getGrade().toString()+"("+klass.getKlassSerial().toString()+")";
             klassMap.put("name",klassName);
             klassMap.put("time",klass.getKlassTime());
             klassMap.put("classroom",klass.getKlassLocation());
@@ -54,4 +54,16 @@ public class KlassService {
         return klassMapper.insertKlassByKlass(klass);
     }
 
+    @PostMapping("/class/{classID}/student")
+    public Map<String, Object> importStudentByExcel(@PathVariable("classID")BigInteger klassID, @RequestParam("file") MultipartFile file) throws IOException {
+        Map<String, Object> map = new HashMap<>(1);
+        String status = studentDao.insertStudentList(klassID, file);
+        map.put("message", status);
+        return map;
+    }
+
+    @GetMapping("/class/{classID}")
+    public Klass getKlassByKlassID(@PathVariable("classID")BigInteger klassID){
+        return klassDao.getKlassByKlassID(klassID);
+    }
 }

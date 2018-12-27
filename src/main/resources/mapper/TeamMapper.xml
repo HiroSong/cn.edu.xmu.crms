@@ -118,6 +118,15 @@
     <!--根据studentID和klassID获取TeamID-->
     <select id="getTeamIDByStudentAndKlassID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT team_id FROM klass_student WHERE student_id = #{param1} AND course_id = #{param2}
+
+    <!--根据course查找teamList-->
+    <select id="listTeamsByCourseID" resultMap="teamMap" parameterType="BigInteger">
+        SELECT * FROM team,course,klass,student,klass_team
+        WHERE team.id = klass_team.team_id
+        AND course.id = #{courseID}
+        AND klass.course_id = #{courseID}
+        AND team.leader_id = student.id
+        AND klass.id = klass_team.klass_id
     </select>
 
 

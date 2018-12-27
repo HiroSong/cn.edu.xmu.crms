@@ -67,4 +67,9 @@ public class StudentService {
         map.put("name",student.getName());
         return map;
     }
+
+    @GetMapping("/student/{studentID}")
+    public Student getStudentInfo(@PathVariable("studentID") BigInteger studentID) {
+        return studentDao.getStudentByStudentID(studentID);
+    }
 }

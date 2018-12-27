@@ -8,8 +8,8 @@
     </select>
 
     <!--根据klassID获取Klass对象-->
-    <select id="getKlassByKlassID"  resultType="Klass" parameterType="BigInteger">
-        SELECT * FROM klass WHERE id = #{klassID}
+    <select id="getKlassByKlassID"  resultMap="klassMap" parameterType="BigInteger">
+        SELECT * FROM klass,course WHERE klass.id = #{klassID} AND klass.course_id = course.id
     </select>
 
     <!--根据courseID获取KlassID列表-->

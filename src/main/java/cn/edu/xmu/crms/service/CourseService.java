@@ -76,6 +76,45 @@ public class CourseService {
        return listCoursesInfo;
     }
 
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
+    @GetMapping("/course")
+    public List<Map<String, Object>> listCoursesInfoByStudentOrTeacherID(HttpServletRequest request) {
+        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
+        String role = jwtTokenUtil.getRolesFromRequest(request);
+        List<Map<String, Object>> listCoursesInfo = new ArrayList<>();
+        if (JwtTokenUtil.USER_STUDENT.equals(role)) {
+            List<Course> courses = courseDao.listCoursesByStudentID(id);
+            if (courses == null) {
+                return null;
+            }
+            for (int i = 0; i < courses.size(); i++) {
+                Map<String, Object> map = new HashMap<>(3);
+                Course course = courses.get(i);
+                Klass klass = klassDao.getKlassByStudentAndCourseID(id, course.getID());
+                map.put("id", course.getID());
+                map.put("courseName", course.getCourseName());
+                map.put("klassID", klass.getID());
+                map.put("klassGrade", klass.getGrade());
+                map.put("klassSerial", klass.getKlassSerial());
+                listCoursesInfo.add(map);
+            }
+        } else {
+            List<Course> courses = courseDao.listCoursesByTeacherID(id);
+            if (courses == null) {
+                return null;
+            }
+            for (int i = 0; i < courses.size(); i++) {
+                Map<String, Object> map = new HashMap<>(4);
+                Course course = courses.get(i);
+                map.put("id", course.getID());
+                map.put("courseName", course.getCourseName());
+                map.put("isShareTeam", course.getID().equals(course.getTeamMainCourseID()));
+                map.put("isShareSeminar", course.getID().equals(course.getSeminarMainCourseID()));
+                listCoursesInfo.add(map);
+            }
+        }
+        return listCoursesInfo;
+    }
 
     /**
      * 用于courseID查找课程信息

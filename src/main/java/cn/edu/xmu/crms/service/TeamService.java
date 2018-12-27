@@ -90,6 +90,8 @@ public class TeamService {
             teamMembersList.add(oneMemberMap);
         }
         teamInfoMap.put("id",team.getID());
+        teamInfoMap.put("teamSerial",team.getTeamSerial());
+        teamInfoMap.put("klassSerial",team.getKlassSerial());
         teamInfoMap.put("name",team.getTeamName());
         teamInfoMap.put("valid",team.getStatus());
         teamInfoMap.put("leader",teamLeaderMap);
