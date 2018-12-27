@@ -25,6 +25,13 @@ public class StudentService {
     @Autowired
     StudentMapper studentMapper;
 
+    @GetMapping("/student/{studentID}")
+    public Student getStudentInfo(@PathVariable("studentID") BigInteger studentID) {
+        return studentDao.getStudentByStudentID(studentID);
+    }
+
+
+    @GetMapping("/student")//查询所有学生
     public List<Map<String, Object>> listAllStudentsInfo() {
         List<Map<String, Object>> studentsInfoList = new ArrayList<>();
         List<Student> students = studentDao.listAllStudents();

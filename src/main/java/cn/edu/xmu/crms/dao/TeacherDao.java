@@ -30,9 +30,15 @@ public class TeacherDao {
         return teacherMapper.getTeacherByTeacherID(teacherID);
     }
 
-    public BigInteger insertTeacher(User teacher) {
+    public Boolean insertTeacher(Teacher teacher) {
+        List<String> emails = teacherMapper.listAllEmails();
+        for(int i = 0; i < emails.size(); i++) {
+            if(teacher.getEmail().equals(emails.get(i))) {
+                return false;
+            }
+        }
         teacherMapper.insertTeacher(teacher);
-        return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getUsername(), teacher.getPassword());
+        return true;
     }
 
     public List<Teacher> listAllTeachers() {

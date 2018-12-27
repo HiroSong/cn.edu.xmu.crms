@@ -15,14 +15,17 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface SeminarShareMapper {
+
     /**
      * 通过seminarShareID删除共享讨论课信息
      *
      * @param seminarShareID 讨论课共享ID
+     * @return Integer 删除条数
      * @author Hongqiwu
      * @date 2018/12/18 19:35
      */
-    void deleteSeminarShareBySeminarShareID(BigInteger seminarShareID);
+    Integer deleteSeminarShareBySeminarShareID(BigInteger seminarShareID);
+
     /**
      * 向seminarShare表插入seminarShare对象
      *
@@ -30,7 +33,7 @@ public interface SeminarShareMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void insertSeminarShareBySeminarShare(ShareSeminarApplication seminarShare);
+    void insertSeminarShare(ShareSeminarApplication seminarShare);
     /**
      * 通过主课程和从课程ID查找共享课程ID
      *

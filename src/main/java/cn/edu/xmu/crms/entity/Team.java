@@ -18,6 +18,14 @@ public class Team {
     private Student leader;
     private List<Student> members;
 
+    public Integer getKlassSerial() {
+        return klassSerial;
+    }
+
+    public void setKlassSerial(Integer klassSerial) {
+        this.klassSerial = klassSerial;
+    }
+
     public Course getCourse() {
         return course;
     }
@@ -33,10 +41,6 @@ public class Team {
     public void setKlass(Klass klass) {
         this.klass = klass;
     }
-
-    public Integer getKlassSerial() { return klassSerial; }
-
-    public void setKlassSerial(Integer klassSerial) { this.klassSerial = klassSerial; }
 
     public Student getLeader() {
         return leader;

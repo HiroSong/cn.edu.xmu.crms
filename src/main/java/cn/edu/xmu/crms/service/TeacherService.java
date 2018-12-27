@@ -38,6 +38,12 @@ public class TeacherService {
         return map;
     }
 
+    @GetMapping("/teacher/{teacherID}")
+    public Teacher getTeacherInfo(@PathVariable("teacherID") BigInteger teacherID) {
+        return teacherDao.getTeacherByTeacherID(teacherID);
+    }
+
+    @GetMapping("/teacher")
     public List<Map<String, Object>> listAllTeachersInfo() {
         List<Teacher> teachers = teacherDao.listAllTeachers();
         List<Map<String, Object>> teacherInfoList = new ArrayList<>();

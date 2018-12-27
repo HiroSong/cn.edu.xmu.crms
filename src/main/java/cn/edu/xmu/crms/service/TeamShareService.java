@@ -9,8 +9,12 @@ import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
 import cn.edu.xmu.crms.mapper.TeamShareMapper;
+import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,12 +40,32 @@ public class TeamShareService {
     TeacherMapper teacherMapper;
     @Autowired
     TeamShareMapper teamShareMapper;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
-   public void deleteTeamShareByTeamShareID(BigInteger teamShareID) {
-       teamShareDao.deleteTeamShareByTeamShareID(teamShareID);
-   }
+    private Map<String,Object> getApplicationInfo(ShareTeamApplication application, BigInteger teacherID) {
+        Map<String,Object> map = new HashMap<>(8);
+        map.put("id",application.getID());
+        map.put("mainCourseID",application.getMainCourse().getID());
+        map.put("mainCourseName",application.getMainCourse().getCourseName());
+        map.put("subCourseID",application.getSubCourse().getID());
+        map.put("subCourseName",application.getSubCourse().getCourseName());
+        map.put("subCourseTeacherID",application.getSubCourseTeacher().getID());
+        map.put("subCourseTeacherName",application.getSubCourseTeacher().getName());
+        map.put("mainCourseTeacherID",application.getMainCourseTeacher().getID());
+        map.put("mainCourseTeacherName",application.getMainCourseTeacher().getName());
+        map.put("isMainCourse",teacherID.equals(application.getMainCourseTeacher().getID()));
+        return map;
+    }
 
-    public List<Map<String, Object>> listMainAndSubCoursesInfoByCourseID(BigInteger courseID) {
+    @DeleteMapping("/course/teamshare/{teamShareID}")
+    public Integer deleteTeamShareByTeamShareID(@PathVariable("teamShareID") BigInteger teamShareID) {
+       return teamShareDao.deleteTeamShareByTeamShareID(teamShareID);
+    }
+
+
+    @GetMapping("/course/{courseID}/teamshare")
+    public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> courseMapList = new ArrayList<>();
         List<Course> mainCourseList = courseDao.listMainCoursesByCourseID(courseID);
         List<Course> subCourseList = courseDao.listSubCoursesByCourseID(courseID);
@@ -64,6 +88,7 @@ public class TeamShareService {
             mainCourseMap.put("teamShareID",shareID);
             mainCourseMap.put("masterCourse",masterMap);
             mainCourseMap.put("receiveCourse",receiveMap);
+            mainCourseMap.put("isMainCourse",false);
             courseMapList.add(mainCourseMap);
         }
         for(int i = 0; i < subCourseList.size(); i++) {
@@ -81,47 +106,45 @@ public class TeamShareService {
             subCourseMap.put("teamShareID",shareID);
             subCourseMap.put("masterCourse",masterMap);
             subCourseMap.put("receiveCourse",receiveMap);
+            subCourseMap.put("isMainCourse",true);
             courseMapList.add(subCourseMap);
         }
         return courseMapList;
     }
 
-    public Map<String, Object> createTeamShareRequestByCourseID(BigInteger mainCourseID, BigInteger subCourseID) {
-        ShareTeamApplication application = new ShareTeamApplication();
-        application.setMainCourse(new Course());
-        application.getMainCourse().setID(mainCourseID);
-        application.setSubCourse(new Course());
-        application.getSubCourse().setID(subCourseID);
-        application.setSubCourseTeacher(new Teacher());
-        application.getSubCourseTeacher().setID(teacherMapper.getTeacherIDByCourseID(subCourseID));
-        application.setStatus(null);
-        ShareTeamApplication newApplication = teamShareDao.insertTeamShareByTeamShare(application);
-        Map<String, Object> map = new HashMap<>(1);
-        map.put("teamShareRequestID",application.getID());
-        return map;
+
+    @PostMapping("/request/teamshare")
+    public Map<String,BigInteger> createTeamShareRequest(@RequestBody Map<String,BigInteger> courseID) {
+
+        BigInteger mainCourseID = courseID.get("mainCourseID");
+        BigInteger subCourseID = courseID.get("subCourseID");
+        courseID.put("id",teamShareDao.insertTeamShare(mainCourseID,subCourseID));
+        return courseID;
     }
 
-    public List<Map<String, Object>> listAllTeamShareRequest() {
+
+
+    @GetMapping("/request/teamshare")
+    public List<Map<String, Object>> listAllTeamShareRequest(HttpServletRequest request) {
+        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
         List<Map<String, Object>> teamShareRequest = new ArrayList<>();
         List<ShareTeamApplication> allApplications = teamShareDao.listAllApplications();
         for(int i = 0 ; i < allApplications.size(); i++) {
-            Map<String, Object> map = new HashMap<>(5);
-            ShareTeamApplication application = allApplications.get(i);
-            map.put("masterCourseID", application.getMainCourse().getID());
-            map.put("masterCourseName", application.getMainCourse().getCourseName());
-            map.put("masterTeacherName", application.getMainCourseTeacher().getName());
-            map.put("subTeacherName", application.getSubCourseTeacher().getName());
-            map.put("shareType", application.getStatus());
-            teamShareRequest.add(map);
+            teamShareRequest.add(this.getApplicationInfo(allApplications.get(i),id));
         }
         return teamShareRequest;
     }
 
-    public Map<String, Object> updateTeamShareStatusByID(BigInteger teamShareID, Integer status) {
+
+
+    @PutMapping("/request/teamshare/{teamShareID}")
+    public Map<String, Object> updateTeamShareStatusByID(@PathVariable("teamShareID") BigInteger teamShareID,
+                                                         @RequestBody Map<String,Integer> statusMap) {
+        Integer status = statusMap.get("status");
         ShareTeamApplication application = new ShareTeamApplication();
         application.setStatus(status);
         application.setID(teamShareID);
-        teamShareMapper.updateStatusByTeamShareID(application);
+        teamShareDao.updateStatusByTeamShareID(application);
         Map<String,Object> map = new HashMap<>(1);
         if(status == 1) {
             map.put("handledType","accept");

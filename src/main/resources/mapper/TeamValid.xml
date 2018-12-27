@@ -2,10 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.TeamValidMapper" >
 
+    <resultMap id="teamValidMap" type="TeamValidApplication">
+        <id property="id" column="id"/>
+        <result property="reason" column="reason"/>
+        <result property="status" column="status"/>
+        <association property="team" javaType="Team">
+            <id property="id" column="team_id"/>
+            <result property="teamName" column="team_name"/>
+        </association>
+        <association property="teacher" javaType="Teacher">
+            <id property="id" column="teacher_id"/>
+            <result property="name" column="teacher_name"/>
+        </association>
+    </resultMap>
+
     <!--根据id获得application对象-->
-    <select id="getApplicationByID" parameterType="BigInteger" resultType="HashMap">
-        SELECT id id,team_id teamID,teacher_id teacherID,reason reason,status status FROM team_valid_application
-        WHERE id = #{id}
+    <select id="getApplicationByID" parameterType="BigInteger" resultMap="teamValidMap">
+        SELECT * FROM team_valid_application,team,teacher
+        WHERE team_valid_application.id = #{id} AND team_valid_application.team_id = team.id
+        AND team_valid_application.teacher_id = teacher.id
     </select>
 
     <!--获得申请的所有ID-->
@@ -17,4 +32,21 @@
     <update id="updateStatusByID" parameterType="TeamValidApplication">
         UPDATE team_valid_application SET status = #{status} WHERE id = #{id}
     </update>
+
+    <!--根据teamID查询applicationID-->
+    <select id="getApplicationIDByTeamID" parameterType="BigInteger" resultType="BigInteger">
+        SELECT id FROM team_valid_application WHERE team_id = #{teamID} AND status is null
+    </select>
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
+    </select>
+
+    <!--发起额外组队申请-->
+    <insert id="insertApplicationByTeamValid" parameterType="TeamValidApplication">
+        INSERT INTO team_valid_application(team_id,teacher_id,reason,status)
+        VALUE (#{team.id},#{teacher.id},#{reason},null)
+    </insert>
+
 </mapper>

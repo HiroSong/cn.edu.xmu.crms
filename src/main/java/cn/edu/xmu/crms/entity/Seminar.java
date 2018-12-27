@@ -22,6 +22,33 @@ public class Seminar {
     private Integer roundOrder;
     private Timestamp enrollStartTime;
     private Timestamp enrollEndTime;
+    private Course course;
+    private Round round;
+    private Integer enrollNumber;
+
+    public Integer getEnrollNumber() {
+        return enrollNumber;
+    }
+
+    public void setEnrollNumber(Integer enrollNumber) {
+        this.enrollNumber = enrollNumber;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Round getRound() {
+        return round;
+    }
+
+    public void setRound(Round round) {
+        this.round = round;
+    }
 
     public Integer getRoundOrder() {
         return roundOrder;

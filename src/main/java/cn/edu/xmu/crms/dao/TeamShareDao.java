@@ -9,10 +9,7 @@ import cn.edu.xmu.crms.mapper.TeacherMapper;
 import cn.edu.xmu.crms.mapper.TeamShareMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +28,8 @@ public class TeamShareDao {
     TeacherDao teacherDao;
     @Autowired
     CourseDao courseDao;
+    @Autowired
+    TeacherMapper teacherMapper;
 
     public ShareTeamApplication getTeamShareApplicationByID(BigInteger id) {
         Map<String, Object> map = teamShareMapper.getApplicationByID(id);
@@ -54,24 +53,43 @@ public class TeamShareDao {
         return application;
     }
 
-    public void deleteTeamShareByTeamShareID(BigInteger teamShareID) {
-        teamShareMapper.deleteTeamShareByTeamShareID(teamShareID);
+    public Integer deleteTeamShareByTeamShareID(BigInteger teamShareID) {
+        return teamShareMapper.deleteTeamShareByTeamShareID(teamShareID);
     }
 
-    public ShareTeamApplication insertTeamShareByTeamShare(ShareTeamApplication application) {
-        teamShareMapper.insertTeamShareByTeamShare(application);
-        BigInteger applicationID = teamShareMapper.getLastInsertID();
-        application.setID(applicationID);
-        return application;
+    //创建一个新的组队共享
+    public BigInteger insertTeamShare(BigInteger mainCourseID,BigInteger subCourseID) {
+        ShareTeamApplication application = new ShareTeamApplication();
+        application.setMainCourse(new Course());
+        application.getMainCourse().setID(mainCourseID);
+        application.setSubCourse(new Course());
+        application.getSubCourse().setID(subCourseID);
+        application.setSubCourseTeacher(new Teacher());
+        application.getSubCourseTeacher().setID(teacherMapper.getTeacherIDByCourseID(subCourseID));
+        application.setStatus(null);
+        teamShareMapper.insertTeamShare(application);
+        return teamShareMapper.getLastInsertID();
     }
 
     public List<ShareTeamApplication> listAllApplications() {
-        List<BigInteger> allID = teamShareMapper.listApplicationID();
-        List<ShareTeamApplication> allApplications = new ArrayList<>();
-        for(int i = 0; i < allID.size(); i++) {
-            ShareTeamApplication application = this.getTeamShareApplicationByID(allID.get(i));
-            allApplications.add(application);
+        List<ShareTeamApplication> applications = teamShareMapper.listAllApplications();
+        for(int i = 0; i < applications.size(); i++) {
+            BigInteger subCourseID = applications.get(i).getSubCourse().getID();
+            BigInteger mainCourseID = applications.get(i).getMainCourse().getID();
+            applications.get(i).getSubCourse().setCourseName(courseMapper.getCourseNameByCourseID(subCourseID));
+            applications.get(i).setMainCourseTeacher(teacherDao.getTeacherByCourseID(mainCourseID));
         }
-        return allApplications;
+        return applications;
+    }
+
+    //更新共享组队申请的状态
+    public void updateStatusByTeamShareID(ShareTeamApplication application) {
+        teamShareMapper.updateStatusByTeamShareID(application);
+        if(application.getStatus() == 1) {
+            Map<String,Object> oldApplication = teamShareMapper.getApplicationByID(application.getID());
+            BigInteger mainCourseID = new BigInteger(oldApplication.get("mainCourseID").toString());
+            BigInteger subCourseID = new BigInteger(oldApplication.get("subCourseID").toString());
+            courseMapper.updateTeamMainCourseID(mainCourseID,subCourseID);
+        }
     }
 }

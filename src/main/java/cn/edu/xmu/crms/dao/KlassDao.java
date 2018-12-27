@@ -41,12 +41,11 @@ public class KlassDao {
         return klassList;
     }
 
-    public void deleteKlassInfoByKlassID(BigInteger klassID) {
+    public void deleteKlassByKlassID(BigInteger klassID) {
         klassMapper.deleteKlassByKlassID(klassID);
         klassMapper.deleteKlassRoundByKlassID(klassID);
         klassMapper.deleteKlassSeminarByKlassID(klassID);
         klassMapper.deleteKlassStudentByKlassID(klassID);
-        klassMapper.deleteKlassInTeamByKlassID(klassID);
     }
 
     public List<Klass> listKlassBySeminarID(BigInteger seminarID) {
@@ -58,4 +57,10 @@ public class KlassDao {
         }
         return klasses;
     }
+
+    public BigInteger insertKlass(Klass klass) {
+        klassMapper.insertKlass(klass);
+        return klassMapper.getLastInsertID();
+    }
+
 }

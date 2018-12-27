@@ -2,6 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.TeamShareMapper" >
 
+    <resultMap id="teamShareMap" type="ShareTeamApplication">
+        <id property="id" column="id"/>
+        <result property="status" column="status"/>
+        <association property="mainCourse" javaType="Course" >
+            <id property="id" column="main_course_id"/>
+            <result property="courseName" column="course_name"/>
+        </association>
+        <association property="subCourse" javaType="Course">
+            <id property="id" column="sub_course_id"/>
+            <result property="courseName" column="course_name"/>
+        </association>
+        <association property="subCourseTeacher" javaType="Teacher">
+            <id property="id" column="sub_course_teacher_id"/>
+            <result property="name" column="teacher_name"/>
+        </association>
+    </resultMap>
+
+    <!--获取所有申请的ID-->
+    <select id="listAllApplications" resultMap="teamShareMap">
+        SELECT *
+        FROM share_team_application s,course c1,course c2,teacher  t
+        WHERE s.main_course_id = c1.id
+        AND s.sub_course_id = c2.id AND s.sub_course_teacher_id = t.id AND s.status is null
+    </select>
+
     <!--根据主课程和从课程ID查询teamShare对象-->
     <select id="getTeamShareIDByMainAndSubCourseID" resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM share_team_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
@@ -14,20 +39,15 @@
     </select>
 
     <!--根据teamShareID删除共享组队表中的信息-->
-    <delete id="deleteTeamShareByTeamShareID"  parameterType="BigInteger">
-        DELETE FROM share_team_application WHERE  id = #{teamShareID}
+    <delete id="deleteTeamShareByTeamShareID" parameterType="BigInteger">
+        DELETE FROM share_team_application WHERE id = #{teamShareID}
     </delete>
 
     <!--teamShare插入share_team_application表-->
-    <insert id="insertTeamShareByTeamShare" parameterType="ShareTeamApplication" >
+    <insert id="insertTeamShare" parameterType="ShareTeamApplication" >
         insert into share_team_application(main_course_id,sub_course_id,sub_course_teacher_id,status) VALUE
-        (#{mainCourse.id},#{subCourse.id},#{subCourseTeacher.id},#{status})
+        (#{mainCourse.id},#{subCourse.id},#{subCourseTeacher.id},null)
     </insert>
-
-    <!--获取所有申请的ID-->
-    <select id="listApplicationID" resultType="BigInteger">
-        SELECT id FROM share_team_application
-    </select>
 
     <!--更新申请status根据ID-->
     <update id="updateStatusByTeamShareID" parameterType="ShareTeamApplication">

@@ -59,7 +59,8 @@ public interface KlassMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    BigInteger insertKlassByKlass(Klass klass);
+    void insertKlass(Klass klass);
+
     /**
      * 通过klassID删除klass表信息
      *
@@ -92,14 +93,8 @@ public interface KlassMapper {
      * @date 2018/11/30 19:45
      */
     void deleteKlassStudentByKlassID(BigInteger klassID);
-    /**
-     * 通过klassID删除其他有关klass的表信息
-     *
-     * @param klassID 班级ID
-     * @author Hongqiwu
-     * @date 2018/11/30 19:45
-     */
-    void deleteKlassInTeamByKlassID(BigInteger klassID);
+
+
     /**
      * 通过teamID获得klassID
      *
@@ -108,5 +103,26 @@ public interface KlassMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    BigInteger getKlassIDByTeamID(BigInteger teamID);
+    BigInteger getKlassIDBySeminarAndTeamID(BigInteger seminarID, BigInteger teamID);
+
+    /**
+     * 建立学生与班级的关联
+     *
+     * @param map
+     * @author SongLingbing
+     * @date 2018/12/26 2:18
+     */
+    void insertStudentKlass(Map<String, Object> map);
+    /**
+     * 获得上一次插入语句的ID
+     *
+     * @return BigInteger 上一条插入语句的ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    BigInteger getLastInsertID();
+
+    BigInteger getKlassIDByCourseAndStudentID(BigInteger courseID,BigInteger studentID);
+
+    void insertKlassTeam(BigInteger klassID,BigInteger teamID);
 }

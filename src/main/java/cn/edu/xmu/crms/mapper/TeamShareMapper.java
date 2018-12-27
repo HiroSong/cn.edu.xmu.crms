@@ -15,14 +15,17 @@ import java.util.Map;
 @Mapper
 @Repository
 public interface TeamShareMapper {
+
     /**
      * 通过teamShareID删除共享组队信息
      *
      * @param teamShareID 组队共享ID
+     * @return Integer 删除条数
      * @author Hongqiwu
      * @date 2018/12/18 19:35
      */
-    void deleteTeamShareByTeamShareID(BigInteger teamShareID);
+    Integer deleteTeamShareByTeamShareID(BigInteger teamShareID);
+
     /**
      * 向teamShare表插入teamShare对象
      *
@@ -30,7 +33,7 @@ public interface TeamShareMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void insertTeamShareByTeamShare(ShareTeamApplication teamShare);
+    void insertTeamShare(ShareTeamApplication teamShare);
     /**
      * 通过主课程和从课程ID查找共享课程ID
      *
@@ -42,12 +45,12 @@ public interface TeamShareMapper {
      */
     BigInteger getTeamShareIDByMainAndSubCourseID(BigInteger mainCourseID, BigInteger subCourseID);
     /**
-     * 获得所有申请的ID
-     * @return List<BigInteger> 共享组队课程ID
+     * 获得所有申请
+     * @return 获得所有申请
      * @author Hongqiwu
      * @date 2018/12/18 19:35
      */
-    List<BigInteger> listApplicationID();
+    List<ShareTeamApplication> listAllApplications();
     /**
      * 通过主课程和从课程ID查找共享课程ID
      *

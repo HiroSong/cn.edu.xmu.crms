@@ -26,17 +26,22 @@ public class AttendanceService {
     SeminarDao seminarDao;
     @Autowired
     TeamDao teamDao;
-    public List<Map<String,Object>> listAttendanceInfoBySeminarIDAndClassID(BigInteger seminarID, BigInteger classID){
-        BigInteger klass_seminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
-        List<Map<String,Object>> attendanceInfoList=new ArrayList<>();
-        List<Attendance> attendances=teamDao.listAttendancesByKlassSeminarID(klass_seminarID);
-        for(int i=0;i<attendances.size();i++){
-            Attendance attendance=attendances.get(i);
-            Map<String,Object> map=new HashMap<>();
-            map.put("attendanceID",attendance.getID());
-            map.put("teamID",attendance.getTeamID());
-            map.put("teamOrder",attendance.getTeamOrder());
-            map.put("teamNumber",attendance.getTeam().getTeamNumber());
+    @Autowired
+    AttendanceDao attendanceDao;
+    @Autowired
+    FileUtil fileUtil;
+
+    @GetMapping("/seminar/{seminarID}/class/{classID}/attendance")
+    public List<Map<String,Object>> listAttendanceInfoBySeminarIDAndClassID(@PathVariable("seminarID") BigInteger seminarID,
+                                                                            @PathVariable("classID") BigInteger classID) {
+        BigInteger klass_seminarID = seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID, classID);
+        List<Map<String, Object>> attendanceInfoList = new ArrayList<>();
+        List<Attendance> attendances = teamDao.listAttendancesByKlassSeminarID(klass_seminarID);
+        for (int i = 0; i < attendances.size(); i++) {
+            Attendance attendance = attendances.get(i);
+            Map<String, Object> map = new HashMap<>();
+            map.put("teamOrder", attendance.getTeamOrder());
+            map.put("teamNumber", attendance.getTeam().getTeamNumber());
             attendanceInfoList.add(map);
         }
         return attendanceInfoList;

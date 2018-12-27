@@ -1,10 +1,17 @@
 package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.KlassDao;
+import cn.edu.xmu.crms.dao.StudentDao;
+import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.mapper.KlassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
 import java.lang.String;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -50,9 +57,20 @@ public class KlassService {
         return klassMapList;
     }
 
-    public BigInteger createNewKlass(Klass klass) {
-        return klassMapper.insertKlassByKlass(klass);
+
+
+    @PostMapping("/course/{courseID}/class")
+    public Map<String,Object> createNewKlass(@PathVariable("courseID") BigInteger courseID,
+                                             @RequestBody Klass klass) {
+        Course course = new Course();
+        course.setID(courseID);
+        klass.setCourse(course);
+        Map<String,Object> map = new HashMap<>(1);
+        map.put("klassID",klassDao.insertKlass(klass));
+        return map;
     }
+
+
 
     @PostMapping("/class/{classID}/student")
     public Map<String, Object> importStudentByExcel(@PathVariable("classID")BigInteger klassID, @RequestParam("file") MultipartFile file) throws IOException {
@@ -65,5 +83,10 @@ public class KlassService {
     @GetMapping("/class/{classID}")
     public Klass getKlassByKlassID(@PathVariable("classID")BigInteger klassID){
         return klassDao.getKlassByKlassID(klassID);
+    }
+    
+    @DeleteMapping("/class/{classID}")
+    public void deleteKlass(@PathVariable("classID") BigInteger klassID) {
+        klassDao.deleteKlassByKlassID(klassID);
     }
 }
