@@ -37,39 +37,39 @@ public class CourseController {
     RoundService roundService;
     @Autowired
     JwtTokenUtil jwtTokenUtil;
-
-    @PreAuthorize("hasAuthority('teacher')")
-    @DeleteMapping("/course/{courseID}")
-    public void deleteCourseByCourseID(@PathVariable("courseID")
-                                                   BigInteger courseID) {
-        courseDao.deleteCourseInfoByCourseID(courseID);
-    }
-
-
-
-    @GetMapping("/course/{courseID}/teamshare")
-    public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
-        return teamShareService.listMainAndSubCoursesInfoByCourseID(courseID);
-    }
-
-    @GetMapping("/course/{courseID}/seminarshare")
-    public List<Map<String, Object>> listAllSeminarShareByCourseID(@PathVariable("courseID")
-                                                                        BigInteger courseID) {
-        return seminarShareService.listMainAndSubCoursesInfoByCourseID(courseID);
-    }
-
-    @DeleteMapping("/course/teamshare/{teamShareID}")
-    public void deleteTeamShareByTeamShareID(@PathVariable("teamShareID")
-                                               BigInteger teamShareID) {
-        teamShareService.deleteTeamShareByTeamShareID(teamShareID);
-    }
-
-    @DeleteMapping("/course/seminarshare/{seminarShareID}")
-    public void deleteSeminarShareBySeminarShareID(@PathVariable("seminarShareID")
-                                                     BigInteger seminarShareID) {
-        seminarShareService.deleteSeminarShareBySeminarShareID(seminarShareID);
-    }
-
+//
+//    @PreAuthorize("hasAuthority('teacher')")
+//    @DeleteMapping("/course/{courseID}")
+//    public void deleteCourseByCourseID(@PathVariable("courseID")
+//                                                   BigInteger courseID) {
+//        courseDao.deleteCourseInfoByCourseID(courseID);
+//    }
+//
+//
+//
+//    @GetMapping("/course/{courseID}/teamshare")
+//    public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
+//        return teamShareService.listMainAndSubCoursesInfoByCourseID(courseID);
+//    }
+//
+//    @GetMapping("/course/{courseID}/seminarshare")
+//    public List<Map<String, Object>> listAllSeminarShareByCourseID(@PathVariable("courseID")
+//                                                                        BigInteger courseID) {
+//        return seminarShareService.listMainAndSubCoursesInfoByCourseID(courseID);
+//    }
+//
+//    @DeleteMapping("/course/teamshare/{teamShareID}")
+//    public void deleteTeamShareByTeamShareID(@PathVariable("teamShareID")
+//                                               BigInteger teamShareID) {
+//        teamShareService.deleteTeamShareByTeamShareID(teamShareID);
+//    }
+//
+//    @DeleteMapping("/course/seminarshare/{seminarShareID}")
+//    public void deleteSeminarShareBySeminarShareID(@PathVariable("seminarShareID")
+//                                                     BigInteger seminarShareID) {
+//        seminarShareService.deleteSeminarShareBySeminarShareID(seminarShareID);
+//    }
+//
     @PostMapping("/course/{courseID}/class ")
     public BigInteger createNewKlass(@PathVariable("courseID") BigInteger courseID,
                                                           @RequestBody Klass klass) {
@@ -78,13 +78,13 @@ public class CourseController {
         klass.setCourse(course);
         return klassService.createNewKlass(klass);
     }
-
-    //创建队伍 三个不合法条件（还缺一个条件，选某门课程最少最多人数）
-    @PostMapping("/course/{courseID}/team")
-    public Map<String, Object> createNewTeam(@PathVariable("courseID") BigInteger courseID, @RequestBody Team team) {
-        Course course = new Course();
-        course.setID(courseID);
-        team.setCourse(course);
-        return teamService.createNewTeam(team);
-    }
+//
+//    //创建队伍 三个不合法条件（还缺一个条件，选某门课程最少最多人数）
+//    @PostMapping("/course/{courseID}/team")
+//    public Map<String, Object> createNewTeam(@PathVariable("courseID") BigInteger courseID, @RequestBody Team team) {
+//        Course course = new Course();
+//        course.setID(courseID);
+//        team.setCourse(course);
+//        return teamService.createNewTeam(team);
+//    }
 }

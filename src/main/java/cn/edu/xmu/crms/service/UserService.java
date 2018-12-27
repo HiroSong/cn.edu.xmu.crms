@@ -46,6 +46,7 @@ public class UserService {
         String token = jwtTokenUtil.generateToken(userInDatabase);
         Map<String, Object> map = new HashMap<>(3);
         map.put("token", token);
+        map.put("id", userInDatabase.getID());
         map.put("role", userInDatabase.getRoles().get(0));
         map.put("beActive", userInDatabase.getBeActive());
         return map;

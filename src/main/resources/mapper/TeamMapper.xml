@@ -120,7 +120,6 @@
     <select id="listTeamsByCourseID" resultMap="teamMap" parameterType="BigInteger">
         SELECT * FROM team,course,klass,student,klass_team
         WHERE team.id = klass_team.team_id
-        AND team.course_id = #{courseID}
         AND course.id = #{courseID}
         AND klass.course_id = #{courseID}
         AND team.leader_id = student.id

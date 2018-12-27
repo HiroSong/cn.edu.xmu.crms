@@ -58,6 +58,7 @@ public class SeminarService {
         map.put("teamNumLimit",seminar.getMaxTeam());
         map.put("signUpStartTime",seminar.getEnrollStartTime());
         map.put("signUpEndTime",seminar.getEnrollEndTime());
+        map.put("round",seminar.getRound().getRoundSerial());
         return map;
     }
 

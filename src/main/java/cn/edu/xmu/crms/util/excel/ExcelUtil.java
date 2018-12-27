@@ -467,7 +467,7 @@ public class ExcelUtil {
                     break;
             }
         }
-        return result.toString();
+        return result.toString().replace((char)160, ' ').trim();
     }
 
     /**
