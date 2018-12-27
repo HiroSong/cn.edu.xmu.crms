@@ -14,6 +14,7 @@ import cn.edu.xmu.crms.mapper.TeacherMapper;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,9 +66,11 @@ public class SeminarShareService {
         return map;
     }
 
-    public void deleteSeminarShareBySeminarShareID(BigInteger seminarShareID) {
-        seminarShareDao.deleteSeminarShareBySeminarShareID(seminarShareID);
+    @DeleteMapping("/course/seminarshare/{seminarShareID}")
+    public Integer deleteSeminarShareBySeminarShareID(@PathVariable("seminarShareID") BigInteger seminarShareID) {
+        return seminarShareDao.deleteSeminarShareBySeminarShareID(seminarShareID);
     }
+
     /**
      * 用于courseID查找共享讨论课的主课程和从课程信息
      *

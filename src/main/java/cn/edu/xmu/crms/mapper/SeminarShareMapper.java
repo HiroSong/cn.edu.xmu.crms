@@ -16,14 +16,17 @@ import java.util.Map;
 @Mapper
 @Component
 public interface SeminarShareMapper {
+
     /**
      * 通过seminarShareID删除共享讨论课信息
      *
      * @param seminarShareID 讨论课共享ID
+     * @return Integer 删除条数
      * @author Hongqiwu
      * @date 2018/12/18 19:35
      */
-    void deleteSeminarShareBySeminarShareID(BigInteger seminarShareID);
+    Integer deleteSeminarShareBySeminarShareID(BigInteger seminarShareID);
+
     /**
      * 向seminarShare表插入seminarShare对象
      *

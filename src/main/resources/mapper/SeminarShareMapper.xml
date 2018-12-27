@@ -3,8 +3,8 @@
 <mapper namespace="cn.edu.xmu.crms.mapper.SeminarShareMapper" >
 
     <!--根据seminarShareID删除共享讨论课表中的信息-->
-    <delete id="deleteSeminarShareBySeminarShareID"  parameterType="BigInteger">
-        DELETE FROM share_seminar_application WHERE  id = #{seminarShareID}
+    <delete id="deleteSeminarShareBySeminarShareID" parameterType="BigInteger">
+        DELETE FROM share_seminar_application WHERE id = #{seminarShareID}
     </delete>
 
     <!--seminarShare插入share_seminar_application表-->

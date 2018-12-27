@@ -14,7 +14,8 @@
     <!--根据teamID获取Team对象-->
     <select id="getTeamByTeamID" resultMap="teamMap" parameterType="BigInteger">
         SELECT * FROM team,course,klass,student,team_student
-        WHERE team.id = #{teamID} AND team.course_id = course.id
+        WHERE team.id = #{teamID}
+        AND team.course_id = course.id
         AND team.klass_id = klass.id
         AND  team.leader_id = student.id
         AND team_student.team_id = #{teamID}
@@ -120,7 +121,6 @@
     <select id="listTeamsByCourseID" resultMap="teamMap" parameterType="BigInteger">
         SELECT * FROM team,course,klass,student,klass_team
         WHERE team.id = klass_team.team_id
-        AND team.course_id = #{courseID}
         AND course.id = #{courseID}
         AND klass.course_id = #{courseID}
         AND team.leader_id = student.id

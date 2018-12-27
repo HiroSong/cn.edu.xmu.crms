@@ -53,8 +53,8 @@ public class SeminarShareDao {
         return application;
     }
 
-    public void deleteSeminarShareBySeminarShareID(BigInteger seminarShareID) {
-        seminarShareMapper.deleteSeminarShareBySeminarShareID(seminarShareID);
+    public Integer deleteSeminarShareBySeminarShareID(BigInteger seminarShareID) {
+        return seminarShareMapper.deleteSeminarShareBySeminarShareID(seminarShareID);
     }
 
     public ShareSeminarApplication insertSeminarShareBySeminarShare(ShareSeminarApplication application) {

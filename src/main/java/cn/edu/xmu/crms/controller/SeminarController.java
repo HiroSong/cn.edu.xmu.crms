@@ -118,15 +118,4 @@ public class SeminarController {
         return seminarService.createNewAttendance(seminarID,classID,teamID,teamOrder);
     }
 
-    @DeleteMapping("/attendance/{attendanceID}")
-    public Map<String,String> cancelRegistion(@PathVariable("attendanceID")
-                                        BigInteger attendanceID){
-        return seminarService.cancelRegistion(attendanceID);
-    }
-
-    @GetMapping("/seminar/{seminarID}/team/{teamID}/attendance")
-    public Map<String, Object> checkIfAttendance(@PathVariable("seminarID") BigInteger seminarID,
-                                                 @PathVariable("teamID") BigInteger teamID) {
-        return seminarService.checkIfAttendanceBySeminarIDAndTeamID(seminarID,teamID);
-    }
 }

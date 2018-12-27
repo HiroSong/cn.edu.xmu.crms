@@ -39,8 +39,8 @@
     </select>
 
     <!--根据teamShareID删除共享组队表中的信息-->
-    <delete id="deleteTeamShareByTeamShareID"  parameterType="BigInteger">
-        DELETE FROM share_team_application WHERE  id = #{teamShareID}
+    <delete id="deleteTeamShareByTeamShareID" parameterType="BigInteger">
+        DELETE FROM share_team_application WHERE id = #{teamShareID}
     </delete>
 
     <!--teamShare插入share_team_application表-->

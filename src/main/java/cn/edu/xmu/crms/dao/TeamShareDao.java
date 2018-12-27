@@ -53,8 +53,8 @@ public class TeamShareDao {
         return application;
     }
 
-    public void deleteTeamShareByTeamShareID(BigInteger teamShareID) {
-        teamShareMapper.deleteTeamShareByTeamShareID(teamShareID);
+    public Integer deleteTeamShareByTeamShareID(BigInteger teamShareID) {
+        return teamShareMapper.deleteTeamShareByTeamShareID(teamShareID);
     }
 
     public ShareTeamApplication insertTeamShareByTeamShare(ShareTeamApplication application) {

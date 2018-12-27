@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
+
 /**
  * @ClassName RoundMapper
  * @Description 有关数据库中轮次信息的操作
@@ -78,4 +80,14 @@ public interface RoundMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger getRoundIDByCourseIDAndRoundSerial(Seminar seminar);
+    /**
+     * 根据轮次顺序和班级ID获得每个班级报名次数限制
+     *
+     * @return BigInteger roundID
+     * @param roundID 轮次ID
+     * @param klassID 班级ID
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    Map<String, Object> getSignUpNumberByRoundAndKlassID(BigInteger roundID, BigInteger klassID);
 }

@@ -16,14 +16,17 @@ import java.util.Map;
 @Mapper
 @Component
 public interface TeamShareMapper {
+
     /**
      * 通过teamShareID删除共享组队信息
      *
      * @param teamShareID 组队共享ID
+     * @return Integer 删除条数
      * @author Hongqiwu
      * @date 2018/12/18 19:35
      */
-    void deleteTeamShareByTeamShareID(BigInteger teamShareID);
+    Integer deleteTeamShareByTeamShareID(BigInteger teamShareID);
+
     /**
      * 向teamShare表插入teamShare对象
      *

@@ -40,6 +40,13 @@
         SELECT * FROM round,course WHERE round.id = #{roundID} AND round.course_id = course.id
     </select>
 
+    <!--根据roundID和klassID获得报名次数限制-->
+    <select id="getSignUpNumberByRoundAndKlassID" resultType="HashMap" parameterType="BigInteger">
+        SELECT klass_round.klass_id klassID,klass_round.enroll_number signUpNumber,klass.grade klassGrade,
+        klass.klass_serial klassSerial
+        FROM klass_round,klass WHERE round_id = #{param1} AND klass_id = #{param2} AND klass.id = #{param2}
+    </select>
+
     <!--根据round修改round计算规则-->
     <update id="updateRuleByRound" parameterType="Round">
         UPDATE round SET presentation_score_method = #{presentationScoreMethod},

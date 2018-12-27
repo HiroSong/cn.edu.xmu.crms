@@ -44,6 +44,16 @@ public class RoundService {
         roundInfo.put("calculateRepType",round.getReportScoreMethod());
         roundInfo.put("courseID",round.getCourse().getID());
         roundInfo.put("courseName",round.getCourse().getCourseName());
+        ArrayList<Map<String,Object>> signUpNumber = new ArrayList<>();
+        for(int i = 0; i < round.getSignUpNumber().size();i++) {
+            Map<String,Object> map = new HashMap<>(4);
+            map.put("klassID",round.getSignUpNumber().get(i).get("klassID"));
+            map.put("klassGrade",round.getSignUpNumber().get(i).get("klassGrade"));
+            map.put("klassSerial",round.getSignUpNumber().get(i).get("klassSerial"));
+            map.put("signUpNumber",round.getSignUpNumber().get(i).get("signUpNumber"));
+            signUpNumber.add(map);
+        }
+        roundInfo.put("signUpNumber",signUpNumber);
         return roundInfo;
     }
 
@@ -92,7 +102,6 @@ public class RoundService {
     public List<Map<String, Object>> listTeamRoundScoreInfoByRoundID(@PathVariable("roundID") BigInteger roundID) {
         List<Map<String, Object>> teamScoreList = new ArrayList<>();
         List<RoundScore> roundScores = roundDao.listRoundScoreByRoundID(roundID);
-        System.out.println(roundScores.size());
         for(int i = 0; i < roundScores.size(); i++) {
             teamScoreList.add(this.getRoundScoreInfo(roundScores.get(i)));
         }

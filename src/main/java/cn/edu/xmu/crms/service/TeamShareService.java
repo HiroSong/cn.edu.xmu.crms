@@ -12,6 +12,7 @@ import cn.edu.xmu.crms.mapper.TeamShareMapper;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,8 +61,9 @@ public class TeamShareService {
         return map;
     }
 
-    public void deleteTeamShareByTeamShareID(BigInteger teamShareID) {
-       teamShareDao.deleteTeamShareByTeamShareID(teamShareID);
+    @DeleteMapping("/course/teamshare/{teamShareID}")
+    public Integer deleteTeamShareByTeamShareID(@PathVariable("teamShareID") BigInteger teamShareID) {
+       return teamShareDao.deleteTeamShareByTeamShareID(teamShareID);
     }
 
 

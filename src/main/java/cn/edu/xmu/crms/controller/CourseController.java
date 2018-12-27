@@ -44,20 +44,6 @@ public class CourseController {
         courseDao.deleteCourseInfoByCourseID(courseID);
     }
 
-
-
-    @DeleteMapping("/course/teamshare/{teamShareID}")
-    public void deleteTeamShareByTeamShareID(@PathVariable("teamShareID")
-                                               BigInteger teamShareID) {
-        teamShareService.deleteTeamShareByTeamShareID(teamShareID);
-    }
-
-    @DeleteMapping("/course/seminarshare/{seminarShareID}")
-    public void deleteSeminarShareBySeminarShareID(@PathVariable("seminarShareID")
-                                                     BigInteger seminarShareID) {
-        seminarShareService.deleteSeminarShareBySeminarShareID(seminarShareID);
-    }
-
     @PostMapping("/course/{courseID}/class ")
     public BigInteger createNewKlass(@PathVariable("courseID") BigInteger courseID,
                                                           @RequestBody Klass klass) {

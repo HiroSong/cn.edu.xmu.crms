@@ -9,6 +9,7 @@ import cn.edu.xmu.crms.entity.Team;
 import cn.edu.xmu.crms.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -206,26 +207,31 @@ public class SeminarService {
         return map;
     }
 
-    public Map<String,String> cancelRegistion(BigInteger attendanceID){
+    @DeleteMapping("/attendance/{attendanceID}")
+    public Map<String,String> cancelRegistion(@PathVariable("attendanceID") BigInteger attendanceID){
         Map<String,String> map=new HashMap<>();
-        if(teamDao.deleteAttendance(attendanceID)==0)
-            map.put("reslut","failue");
-        else
-            map.put("result","success");
+        if(teamDao.deleteAttendance(attendanceID)==0) {
+            map.put("reslut", "failue");
+        }
+        else {
+            map.put("result", "success");
+        }
         return map;
     }
 
-    public Map<String,Object> checkIfAttendanceBySeminarIDAndTeamID(BigInteger seminarID,BigInteger teamID){
+    @GetMapping("/seminar/{seminarID}/team/{teamID}/attendance")
+    public Map<String,Object> checkIfAttendanceBySeminarIDAndTeamID(@PathVariable("seminarID") BigInteger seminarID,
+                                                                    @PathVariable("teamID") BigInteger teamID){
         BigInteger klassID=klassMapper.getKlassIDByTeamID(teamID);
-        System.out.print(klassID);
         BigInteger klass_seminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
-        System.out.print(klass_seminarID);
         Attendance attendance=teamDao.getAttendanceByKlass_SeminarIDAndTeamID(klass_seminarID,teamID);
-        Map<String,Object> map=new HashMap<>();
-        if(attendance==null)
-            map.put("查询结果","未报名");
-        else
-            map.put("查询结果","已报名");
+        Map<String,Object> map=new HashMap<>(0);
+        if(attendance == null) {
+            map.put("查询结果", "未报名");
+        }
+        else {
+            map.put("查询结果", "已报名");
+        }
         return map;
     }
 }

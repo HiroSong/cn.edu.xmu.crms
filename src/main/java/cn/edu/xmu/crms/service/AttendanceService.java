@@ -40,7 +40,9 @@ public class AttendanceService {
     @Autowired
     FileUtil fileUtil;
 
-    public List<Map<String,Object>> listAttendanceInfoBySeminarIDAndClassID(BigInteger seminarID, BigInteger classID) {
+    @GetMapping("/seminar/{seminarID}/class/{classID}/attendance")
+    public List<Map<String,Object>> listAttendanceInfoBySeminarIDAndClassID(@PathVariable("seminarID") BigInteger seminarID,
+                                                                            @PathVariable("classID") BigInteger classID) {
         BigInteger klass_seminarID = seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID, classID);
         List<Map<String, Object>> attendanceInfoList = new ArrayList<>();
         List<Attendance> attendances = teamDao.listAttendancesByKlassSeminarID(klass_seminarID);
