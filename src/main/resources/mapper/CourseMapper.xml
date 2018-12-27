@@ -92,40 +92,34 @@
         #{presentationPercentage},#{questionPercentage},#{reportPercentage},#{teamStartTime},#{teamEndTime})
     </insert>
 
-    <!--根据courseID删除course表内信息-->
-    <delete id="deleteCourseByCourseID" parameterType="BigInteger">
-        DELETE FROM course WHERE id = #{courseID}
-    </delete>
-
     <!--根据klassID获取courseID-->
     <select id="getCourseIDByKlassID" resultType="BigInteger" parameterType="BigInteger">
         SELECT course_id FROM klass WHERE id=#{id};
     </select>
 
+    <!--根据courseID删除course表内信息-->
+    <delete id="deleteCourseByCourseID" parameterType="BigInteger">
+        DELETE FROM course WHERE id = #{courseID}
+    </delete>
+
     <!--根据courseID删除与course有关表的信息-->
     <delete id="deleteConflictCourseStrategyByCourseID" parameterType="BigInteger">
-        DELETE FROM conflict_course_strategy WHERE course_1_id = #{courseID} OR course_2_id = #{courseID}
+        DELETE FROM conflict_course_strategy WHERE course_id = #{courseID}
     </delete>
-    <delete id="deleteCourseInKlassByCourseID" parameterType="BigInteger">
+    <delete id="deleteKlassByCourseID" parameterType="BigInteger">
         DELETE FROM klass WHERE course_id = #{courseID}
     </delete>
-    <delete id="deleteCourseInKlassStudentByCourseID" parameterType="BigInteger">
+    <delete id="deleteKlassStudentByCourseID" parameterType="BigInteger">
         DELETE FROM klass_student WHERE course_id = #{courseID}
     </delete>
-    <delete id="deleteCourseInRoundByCourseID" parameterType="BigInteger">
+    <delete id="deleteRoundByCourseID" parameterType="BigInteger">
         DELETE FROM round WHERE course_id = #{courseID}
     </delete>
-    <delete id="deleteCourseInSeminarByCourseID" parameterType="BigInteger">
+    <delete id="deleteSeminarByCourseID" parameterType="BigInteger">
         DELETE FROM seminar WHERE course_id = #{courseID}
     </delete>
-    <delete id="deleteCourseInTeamByCourseID" parameterType="BigInteger">
-        DELETE FROM team WHERE course_id = #{courseID}
-    </delete>
-    <delete id="deleteCourseInTeamStrategyByCourseID" parameterType="BigInteger">
+    <delete id="deleteTeamStrategyByCourseID" parameterType="BigInteger">
         DELETE FROM team_strategy WHERE course_id = #{courseID}
-    </delete>
-    <delete id="deleteCourseMemberLimitStrategyByCourseID" parameterType="BigInteger">
-        DELETE FROM course_member_limit_strategy WHERE course_id = #{courseID}
     </delete>
 
     <!--返回上一条插入语句的ID-->

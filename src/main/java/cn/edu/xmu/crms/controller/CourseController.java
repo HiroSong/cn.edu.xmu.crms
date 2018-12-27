@@ -5,7 +5,6 @@ import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.service.*;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -55,4 +54,5 @@ public class CourseController {
         team.setCourse(course);
         return teamService.createNewTeam(team);
     }
+
 }
