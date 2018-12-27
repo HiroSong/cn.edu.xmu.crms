@@ -6,6 +6,7 @@ import cn.edu.xmu.crms.entity.TeamValidApplication;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +23,13 @@ public interface TeamMapper {
      * 通过学生和课程ID获取队伍ID
      *
      * @param studentID 学生ID
-     * @param courseID 课程ID
+     * @param courseID  课程ID
      * @return BigInteger 队伍Id
      * @author Hongqiwu
      * @date 2018/11/30 18:45
      */
     BigInteger getTeamIDByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
+
     /**
      * 通过teamID获取team对象
      *
@@ -36,7 +38,8 @@ public interface TeamMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:35
      */
-   Team getTeamByTeamID(BigInteger teamID);
+    Team getTeamByTeamID(BigInteger teamID);
+
     /**
      * 通过courseID获取teamID列表
      *
@@ -46,6 +49,34 @@ public interface TeamMapper {
      * @date 2018/12/18 19:35
      */
     List<BigInteger> listTeamsIDByCourseID(BigInteger courseID);
+
+    /**
+     * 删除队伍信息
+     *
+     * @param teamID 队伍ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    void deleteKlassTeamByTeamID(BigInteger teamID);
+
+    /**
+     * 删除队伍信息
+     *
+     * @param teamID 队伍ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    void deleteTeamStudentByTeamID(BigInteger teamID);
+
+    /**
+     * 删除队伍信息
+     *
+     * @param teamID 队伍ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    void deleteTeamApplicationByTeamID(BigInteger teamID);
+
     /**
      * 删除队伍信息
      *
@@ -54,34 +85,19 @@ public interface TeamMapper {
      * @date 2018/12/18 19:35
      */
     void deleteTeamByTeamID(BigInteger teamID);
+
     /**
      * 删除小组成员
      *
-     * @param teamID 队伍ID
+     * @param teamID    队伍ID
      * @param studentID 学生ID
      * @author Hongqiwu
      * @date 2018/12/18 19:35
      */
     void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID);
-    /**
-     * 队伍添加新成员
-     *
-     * @param klassID 队伍ID
-     * @param studentID 队伍ID
-     * @param courseID 队伍ID
-     * @param teamID 队伍ID
-     * @author Hongqiwu
-     * @date 2018/12/18 19:35
-     */
-    void insertStudentIntoTeamBy4ID(BigInteger klassID,BigInteger studentID, BigInteger courseID, BigInteger teamID);
-    /**
-     * 申请额外添加组员
-     *
-     * @param teamValidApplication 额外组队申请
-     * @author Hongqiwu
-     * @date 2018/12/18 19:35
-     */
-    void insertApplicationByTeamValid(TeamValidApplication teamValidApplication);
+
+
+
     /**
      * 获得上一次插入语句的ID
      *
@@ -90,23 +106,8 @@ public interface TeamMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getLastInsertID();
-    /**
-     * 教师同意队伍合法申请
-     *
-     * @param teamID 队伍ID
-     * @author Hongqiwu
-     * @date 2018/12/18 19:35
-     */
-    void updateValidApplicationByTeamID(BigInteger teamID);
-    /**
-     * 获得申请ID
-     *
-     * @param teamID 队伍ID
-     * @return BigInteger 申请ID
-     * @author Hongqiwu
-     * @date 2018/12/18 19:35
-     */
-    BigInteger getApplicationIDByTeamID(BigInteger teamID);
+
+
     /**
      * 插入新队伍信息
      *
@@ -115,17 +116,18 @@ public interface TeamMapper {
      * @date 2018/12/18 19:35
      */
     void insertTeam(Team team);
+
     /**
      * 更新学生组队情况
      *
-     * @param klassID 班级ID
+     * @param klassID   班级ID
      * @param studentID 学生ID
-     * @param courseID 课程ID
-     * @param teamID 队伍ID
+     * @param courseID  课程ID
+     * @param teamID    队伍ID
      * @author Hongqiwu
      * @date 2018/12/18 19:35
      */
-    void updateTeamIDBy4ID(BigInteger klassID,BigInteger studentID,BigInteger courseID,BigInteger teamID);
+    void updateTeamIDBy4ID(BigInteger klassID, BigInteger studentID, BigInteger courseID, BigInteger teamID);
 
     /**
      * 获得参与展示小组的ID列表//废弃预警
@@ -136,6 +138,7 @@ public interface TeamMapper {
      * @date 2018/12/24 15:22
      */
     List<BigInteger> listAttendancesIDByKlassSeminarID(BigInteger klass_seminarID);
+
     /**
      * 根据参与展示小组的ID获得参与展示小组的对象
      *
@@ -145,6 +148,7 @@ public interface TeamMapper {
      * @date 2018/12/24 15:28
      */
     Attendance getAttendanceByAttendanceID(BigInteger attendanceID);
+
     /**
      * 获得参与展示小组的列表
      *
@@ -163,6 +167,7 @@ public interface TeamMapper {
      * @date 2018/12/24 15:28
      */
     void insertAttendance(Attendance attendance);
+
     /**
      * 删除参与展示的小组
      *
@@ -176,7 +181,7 @@ public interface TeamMapper {
      * 通过klass_seminarID和teamID获得参与展示的ID
      *
      * @param klass_seminarID 班级下的讨论课的ID
-     * @param teamID 小组ID
+     * @param teamID          小组ID
      * @return BigInteger 参与展示的ID
      * @author LaiShaopeng
      * @date 2018/12/18 22:31
@@ -184,5 +189,9 @@ public interface TeamMapper {
     BigInteger getAttendanceIDByKlass_SeminarIDAndTeamID(BigInteger klass_seminarID, BigInteger teamID);
 
     List<Team> listTeamsByCourseID(BigInteger courseID);
+
+    void updateTeamStatusByID(Team team);
+
+    void insertStudentToTeam(BigInteger teamID, BigInteger studentID);
 
 }

@@ -58,5 +58,4 @@
     <select id="getTeacherByTeacherAccount" parameterType="String" resultType="Teacher">
         SELECT id id, account username, password password, is_active beActive FROM teacher WHERE account = #{username}
     </select>
-
 </mapper>

@@ -85,8 +85,8 @@ public class CourseService {
                 Course course = courses.get(i);
                 map.put("id", course.getID());
                 map.put("courseName", course.getCourseName());
-                map.put("isShareTeam", course.getID().equals(course.getTeamMainCourseID()));
-                map.put("isShareSeminar", course.getID().equals(course.getSeminarMainCourseID()));
+                map.put("isShareTeam", course.getTeamMainCourseID());
+                map.put("isShareSeminar", course.getSeminarMainCourseID());
                 listCoursesInfo.add(map);
             }
         }
@@ -103,7 +103,7 @@ public class CourseService {
         return this.getCourseInfo(course);
     }
 
-    @PostMapping("/course")
+    @PostMapping("/course")////////！！！！！！
     public Map<String, Object> createNewCourse(HttpServletRequest request,@RequestBody Course course) {
         BigInteger teacherID = jwtTokenUtil.getIDFromRequest(request);
         Teacher teacher = new Teacher();
@@ -112,5 +112,11 @@ public class CourseService {
         Map<String, Object> map = new HashMap<>(1);
         map.put("courseID",courseDao.insertCourse(course));
         return map;
+    }
+
+    @PreAuthorize("hasAuthority('teacher')")
+    @DeleteMapping("/course/{courseID}")
+    public void deleteCourseByCourseID(@PathVariable("courseID") BigInteger courseID) {
+        courseDao.deleteCourseInfoByCourseID(courseID);
     }
 }

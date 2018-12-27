@@ -16,6 +16,7 @@
         </association>
     </resultMap>
 
+
     <!--根据studentID和courseID获取klass对象-->
     <select id="getKlassByStudentAndCourseID"  resultMap="klassMap" parameterType="BigInteger">
         SELECT * FROM klass,course,klass_student
@@ -25,15 +26,18 @@
         AND course.id = #{param2}
     </select>
 
+
     <!--根据klassID获取Klass对象-->
     <select id="getKlassByKlassID"  resultMap="klassMap" parameterType="BigInteger">
         SELECT * FROM klass,course WHERE klass.id = #{klassID} AND klass.course_id = course.id
     </select>
 
+
     <!--根据courseID获取KlassID列表-->
     <select id="listKlassIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM klass WHERE course_id = #{courseID}
     </select>
+
 
     <!--根据seminarID获取Klass列表-->
     <select id="listKlassesBySeminarID"  resultMap="klassMap" parameterType="BigInteger">
@@ -41,22 +45,26 @@
         AND klass_seminar.seminar_id = #{seminarID}
     </select>
 
+
     <!--根据teamID查询klassID-->
-    <select id="getKlassIDByTeamID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT klass_id FROM team WHERE id = #{teamID}
+    <select id="getKlassIDBySeminarAndTeamID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT klass_team.klass_id FROM klass_team,klass_seminar
+        WHERE klass_team.team_id = #{param2} AND klass_seminar.seminar_id = #{param1}
+        AND klass_team.klass_id = klass_seminar.klass_id
     </select>
 
+
     <!--用klass对象插入klass表-->
-    <insert id="insertKlassByKlass" parameterType="Klass">
-        insert into klass(course_id,grade,klass_serial,klass_time,klass_location)
-        VALUE (#{courseID},#{grade},#{klassSerial},#{klassTime},#{klassLocation})
+    <insert id="insertKlass" parameterType="Klass">
+        INSERT INTO klass(course_id,grade,klass_serial,klass_time,klass_location)
+        VALUE (#{course.id},#{grade},#{klassSerial},#{klassTime},#{klassLocation})
     </insert>
+
 
     <!--根据klassID删除klass表内信息-->
     <delete id="deleteKlassByKlassID" parameterType="BigInteger">
         DELETE FROM klass WHERE id = #{klassID}
     </delete>
-
     <!--根据klassID删除与klass有关表的信息-->
     <delete id="deleteKlassRoundByKlassID" parameterType="BigInteger">
         DELETE FROM klass_round WHERE klass_id = #{klassID}
@@ -67,9 +75,7 @@
     <delete id="deleteKlassStudentByKlassID" parameterType="BigInteger">
         DELETE FROM klass_student WHERE klass_id = #{klassID}
     </delete>
-    <delete id="deleteKlassInTeamByKlassID" parameterType="BigInteger">
-        DELETE FROM team WHERE klass_id = #{klassID}
-    </delete>
+
 
     <!--插入班级学生关系表-->
     <insert id="insertStudentKlass" parameterType="java.util.Map">
@@ -79,4 +85,21 @@
             (#{klassID}, #{id}, #{courseID})
         </foreach>
     </insert>
+
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
+    </select>
+
+    <!--根据courseID和studentID查找klassID-->
+    <select id="getKlassIDByCourseAndStudentID" parameterType="BigInteger" resultType="BigInteger">
+        SELECT klass_id FROM klass_student WHERE course_id = #{param1} AND student_id = #{param2}
+    </select>
+
+    <!--建立klass和team的关系-->
+    <insert id="insertKlassTeam" parameterType="BigInteger">
+        INSERT INTO klass_team(klass_id, team_id) VALUE (#{param1},#{param2})
+    </insert>
+
 </mapper>

@@ -6,12 +6,15 @@ import cn.edu.xmu.crms.dao.SeminarShareDao;
 import cn.edu.xmu.crms.dao.TeacherDao;
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.ShareSeminarApplication;
-import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.mapper.SeminarMapper;
 import cn.edu.xmu.crms.mapper.SeminarShareMapper;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
+import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +26,7 @@ import java.util.Map;
  * @ClassName CourseService
  * @Author Hongqiw
  **/
+@RestController
 @Service
 public class SeminarShareService {
     @Autowired
@@ -39,19 +43,32 @@ public class SeminarShareService {
     TeacherMapper teacherMapper;
     @Autowired
     SeminarShareMapper seminarShareMapper;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
-    public void deleteSeminarShareBySeminarShareID(BigInteger seminarShareID) {
-        seminarShareDao.deleteSeminarShareBySeminarShareID(seminarShareID);
+    private Map<String,Object> getApplicationInfo(ShareSeminarApplication application,BigInteger teacherID) {
+        Map<String,Object> map = new HashMap<>(8);
+        map.put("id",application.getID());
+        map.put("mainCourseID",application.getMainCourse().getID());
+        map.put("mainCourseName",application.getMainCourse().getCourseName());
+        map.put("subCourseID",application.getSubCourse().getID());
+        map.put("subCourseName",application.getSubCourse().getCourseName());
+        map.put("subCourseTeacherID",application.getSubCourseTeacher().getID());
+        map.put("subCourseTeacherName",application.getSubCourseTeacher().getName());
+        map.put("mainCourseTeacherID",application.getMainCourseTeacher().getID());
+        map.put("mainCourseTeacherName",application.getMainCourseTeacher().getName());
+        map.put("isMainCourse",teacherID.equals(application.getMainCourseTeacher().getID()));
+        return map;
     }
-    /**
-     * 用于courseID查找共享讨论课的主课程和从课程信息
-     *
-     * @param courseID 课程号码
-     * @return List<Map<String, Object>> 返回查找到的信息，若无记录则为null
-     * @author Hongqiwu
-     * @date 2018/11/30 19:41
-     */
-    public List<Map<String, Object>> listMainAndSubCoursesInfoByCourseID(BigInteger courseID) {
+
+    @DeleteMapping("/course/seminarshare/{seminarShareID}")
+    public Integer deleteSeminarShareBySeminarShareID(@PathVariable("seminarShareID") BigInteger seminarShareID) {
+        return seminarShareDao.deleteSeminarShareBySeminarShareID(seminarShareID);
+    }
+
+
+    @GetMapping("/course/{courseID}/seminarshare")
+    public List<Map<String, Object>> listAllSeminarShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> courseMapList = new ArrayList<>();
         List<Course> mainCourseList = seminarDao.listMainCoursesByCourseID(courseID);
         List<Course> subCourseList = seminarDao.listSubCoursesByCourseID(courseID);
@@ -74,6 +91,7 @@ public class SeminarShareService {
             mainCourseMap.put("seminarShareID",shareID);
             mainCourseMap.put("masterCourse",masterMap);
             mainCourseMap.put("receiveCourse",receiveMap);
+            mainCourseMap.put("isMainCourse",false);
             courseMapList.add(mainCourseMap);
         }
         for(int i = 0; i < subCourseList.size(); i++) {
@@ -91,47 +109,46 @@ public class SeminarShareService {
             subCourseMap.put("teamShareID",shareID);
             subCourseMap.put("masterCourse",masterMap);
             subCourseMap.put("receiveCourse",receiveMap);
+            subCourseMap.put("isMainCourse",true);
             courseMapList.add(subCourseMap);
         }
         return courseMapList;
     }
 
-    public Map<String, Object> createSeminarShareRequestByCourseID(BigInteger mainCourseID, BigInteger subCourseID) {
-        ShareSeminarApplication application = new ShareSeminarApplication();
-        application.setMainCourse(new Course());
-        application.getMainCourse().setID(mainCourseID);
-        application.setSubCourse(new Course());
-        application.getSubCourse().setID(subCourseID);
-        application.setSubCourseTeacher(new Teacher());
-        application.getSubCourseTeacher().setID(teacherMapper.getTeacherIDByCourseID(subCourseID));
-        application.setStatus(null);
-        ShareSeminarApplication newApplication = seminarShareDao.insertSeminarShareBySeminarShare(application);
-        Map<String, Object> map = new HashMap<>(1);
-        map.put("seminarShareRequestID",application.getID());
-        return map;
+
+
+    @PostMapping("/request/seminarshare")
+    public Map<String,BigInteger> createSeminarShareRequest(@RequestBody Map<String,BigInteger> courseID) {
+
+        BigInteger mainCourseID = courseID.get("mainCourseID");
+        BigInteger subCourseID = courseID.get("subCourseID");
+        courseID.put("id",seminarShareDao.insertSeminarShare(mainCourseID,subCourseID));
+        return courseID;
     }
 
-    public List<Map<String, Object>> listAllSeminarShareRequest() {
+
+
+    @GetMapping("/request/seminarshare")
+    public List<Map<String, Object>> listAllSeminarShareRequest(HttpServletRequest request) {
+        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
         List<Map<String, Object>> seminarShareRequest = new ArrayList<>();
         List<ShareSeminarApplication> allApplications = seminarShareDao.listAllApplications();
         for(int i = 0 ; i < allApplications.size(); i++) {
-            Map<String, Object> map = new HashMap<>(5);
-            ShareSeminarApplication application = allApplications.get(i);
-            map.put("masterCourseID", application.getMainCourse().getID());
-            map.put("masterCourseName", application.getMainCourse().getCourseName());
-            map.put("masterTeacherName", application.getMainCourseTeacher().getName());
-            map.put("subTeacherName", application.getSubCourseTeacher().getName());
-            map.put("shareType", application.getStatus());
-            seminarShareRequest.add(map);
+            seminarShareRequest.add(this.getApplicationInfo(allApplications.get(i),id));
         }
         return seminarShareRequest;
     }
 
-    public Map<String, Object> updateSeminarShareStatusByID(BigInteger seminarShareID, Integer status) {
+
+
+    @PutMapping("/request/seminarshare/{seminarShareID}")
+    public Map<String, Object> updateSeminarShareStatusByID(@PathVariable("seminarShareID") BigInteger seminarShareID,
+                                                            @RequestBody Map<String,Integer> statusMap) {
+        Integer status = statusMap.get("status");
         ShareSeminarApplication application = new ShareSeminarApplication();
         application.setStatus(status);
         application.setID(seminarShareID);
-        seminarShareMapper.updateStatusBySeminarShareID(application);
+        seminarShareDao.updateStatusBySeminarShareID(application);
         Map<String,Object> map = new HashMap<>(1);
         if(status == 1) {
             map.put("handledType","accept");

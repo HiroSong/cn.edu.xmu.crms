@@ -89,7 +89,7 @@ public interface SeminarMapper {
      * @author Hongqiwu
      * @date 2018/12/18 19:35
      */
-    void insertSeminarBySeminar(Seminar seminar);
+    void insertSeminar(Seminar seminar);
     /**
      * 建立班级讨论课联系
      *
@@ -154,15 +154,7 @@ public interface SeminarMapper {
      */
     String getReportDDLBySeminarAndKlassID(BigInteger seminarID, BigInteger klassID);
 
-    /**
-     * 开始讨论课
-     *
-     * @param  klassID 班级ID
-     * @param  seminarID 讨论课ID
-     * @author Hongqiwu
-     * @date 2018/12/18 19:35
-     */
-    void updateStartSeminarByKlassAndSeminarID(BigInteger klassID, BigInteger seminarID);
+
     /**
      * 获取班级讨论课ID
      *
@@ -202,5 +194,27 @@ public interface SeminarMapper {
      * @date 2018/12/24 15:06:00
      */
     BigInteger getKlassSeminarIDBySeminarIDAndClassID(BigInteger seminarID, BigInteger klassID);
+
+    void insertKlassSeminar(Map<String,Object> map);
+
+    /**
+     * 开始讨论课
+     *
+     * @param  klassID 班级ID
+     * @param  seminarID 讨论课ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    void updateStartSeminarByKlassAndSeminarID(BigInteger klassID, BigInteger seminarID);
+
+    /**
+     * 结束讨论课
+     *
+     * @param  klassID 班级ID
+     * @param  seminarID 讨论课ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    void updateEndSeminarByKlassAndSeminarID(BigInteger klassID, BigInteger seminarID);
 
 }

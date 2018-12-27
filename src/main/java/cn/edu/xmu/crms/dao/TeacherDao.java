@@ -34,7 +34,7 @@ public class TeacherDao {
                 return false;
             }
         }
-        System.out.println(teacherMapper.insertTeacher(teacher));
+        teacherMapper.insertTeacher(teacher);
         return true;
     }
 

@@ -124,7 +124,7 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void deleteCourseInKlassByCourseID(BigInteger courseID);
+    void deleteKlassByCourseID(BigInteger courseID);
     /**
      * 通过courseID删除其他有关course的表信息
      *
@@ -132,7 +132,7 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void deleteCourseInKlassStudentByCourseID(BigInteger courseID);
+    void deleteKlassStudentByCourseID(BigInteger courseID);
     /**
      * 通过courseID删除其他有关course的表信息
      *
@@ -140,7 +140,7 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void deleteCourseInRoundByCourseID(BigInteger courseID);
+    void deleteRoundByCourseID(BigInteger courseID);
     /**
      * 通过courseID删除其他有关course的表信息
      *
@@ -148,7 +148,8 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void deleteCourseInSeminarByCourseID(BigInteger courseID);
+    void deleteSeminarByCourseID(BigInteger courseID);
+
     /**
      * 通过courseID删除其他有关course的表信息
      *
@@ -156,23 +157,7 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void deleteCourseInTeamByCourseID(BigInteger courseID);
-    /**
-     * 通过courseID删除其他有关course的表信息
-     *
-     * @param courseID 课程ID
-     * @author Hongqiwu
-     * @date 2018/11/30 19:45
-     */
-    void deleteCourseInTeamStrategyByCourseID(BigInteger courseID);
-    /**
-     * 通过courseID删除其他有关course的表信息
-     *
-     * @param courseID 课程ID
-     * @author Hongqiwu
-     * @date 2018/11/30 19:45
-     */
-    void deleteCourseMemberLimitStrategyByCourseID(BigInteger courseID);
+    void deleteTeamStrategyByCourseID(BigInteger courseID);
     /**
      * 通过teamID获得courseID
      *
@@ -210,5 +195,11 @@ public interface CourseMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getLastInsertID();
+
+    String getCourseNameByCourseID(BigInteger courseID);
+
+    void updateTeamMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
+
+    void updateSeminarMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
 }
 

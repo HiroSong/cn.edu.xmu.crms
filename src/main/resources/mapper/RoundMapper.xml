@@ -40,11 +40,18 @@
         SELECT * FROM round,course WHERE round.id = #{roundID} AND round.course_id = course.id
     </select>
 
+    <!--根据roundID和klassID获得报名次数限制-->
+    <select id="getSignUpNumberByRoundAndKlassID" resultType="HashMap" parameterType="BigInteger">
+        SELECT klass_round.klass_id klassID,klass_round.enroll_number signUpNumber,klass.grade klassGrade,
+        klass.klass_serial klassSerial
+        FROM klass_round,klass WHERE round_id = #{param1} AND klass_id = #{param2} AND klass.id = #{param2}
+    </select>
+
     <!--根据round修改round计算规则-->
     <update id="updateRuleByRound" parameterType="Round">
         UPDATE round SET presentation_score_method = #{presentationScoreMethod},
         report_score_method = #{reportScoreMethod}, question_score_method = #{questionScoreMethod}
-        WHERE  id = #{id};
+        WHERE  round.id = #{id}
     </update>
 
     <!--根据roundID和teamID获取roundScore对象-->
@@ -62,12 +69,28 @@
     <!--根据roundScore修改round_score表-->
     <update id="updateRoundScoreByRoundScore" parameterType="RoundScore">
         UPDATE round_score SET presentation_score = #{presentationScore},
-        report_score = #{reportScore}, question_score = #{questionScore}
-        WHERE  round_id = #{roundID} AND team_id = #{teamID};
+        report_score = #{reportScore}, question_score = #{questionScore},total_score = #{totalScore}
+        WHERE  round_id = #{round.id} AND team_id = #{team.id};
     </update>
 
     <!--根据courseID和roundSerial获得roundID-->
     <select id="getRoundIDByCourseIDAndRoundSerial" parameterType="Seminar" resultType="BigInteger">
         SELECT id FROM round WHERE course_id = #{courseID} AND round_serial = #{roundOrder}
+    </select>
+
+    <!--插入新的Round-->
+    <insert id="insertRound" parameterType="Round">
+        INSERT INTO round(course_id,round_serial,presentation_score_method,report_score_method,question_score_method)
+        VALUE (#{course.id},#{roundSerial},0,0,0)
+    </insert>
+
+    <insert id="insertKlassRound" parameterType="HashMap">
+        INSERT INTO klass_round(klass_id,round_id,enroll_number)
+        VALUE(#{klassID},#{roundID},#{enrollNumber})
+    </insert>
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
     </select>
 </mapper>

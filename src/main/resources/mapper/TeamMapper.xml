@@ -14,7 +14,8 @@
     <!--根据teamID获取Team对象-->
     <select id="getTeamByTeamID" resultMap="teamMap" parameterType="BigInteger">
         SELECT * FROM team,course,klass,student,team_student
-        WHERE team.id = #{teamID} AND team.course_id = course.id
+        WHERE team.id = #{teamID}
+        AND team.course_id = course.id
         AND team.klass_id = klass.id
         AND  team.leader_id = student.id
         AND team_student.team_id = #{teamID}
@@ -31,20 +32,24 @@
         VALUE(#{param1},#{param2},#{param3},#{param4})
     </insert>
 
-    <!--发起额外组队申请-->
-    <insert id="insertApplicationByTeamValid" parameterType="TeamValidApplication">
-        INSERT INTO team_valid_application(team_id,teacher_id,reason,status)
-        VALUE (#{teamID},#{teacherID},#{reason},null)
-    </insert>
-
     <!--根据TeamID删除小组-->
     <delete id="deleteTeamByTeamID" parameterType="BigInteger">
         DELETE FROM team WHERE id = #{teamID}
     </delete>
+    <!--根据TeamID删除小组的其他信息-->
+    <delete id="deleteKlassTeamByTeamID" parameterType="BigInteger">
+        DELETE FROM klass_team WHERE team_id = #{teamID}
+    </delete>
+    <delete id="deleteTeamStudentByTeamID" parameterType="BigInteger">
+        DELETE FROM team_student WHERE team_id = #{teamID}
+    </delete>
+    <delete id="deleteTeamApplicationByTeamID" parameterType="BigInteger">
+        DELETE FROM team_valid_application WHERE team_id = #{teamID}
+    </delete>
 
-    <!--根据teamID和studentID在队伍中删除成员-->
+    <!--根据删除team和student的关系-->
     <delete id="deleteStudentFromTeamByTeamAndStudentID" parameterType="BigInteger">
-        DELETE FROM klass_student WHERE team_id = #{param1} AND student_id = #{param2}
+        DELETE FROM team_student WHERE team_id = #{param1} AND student_id = #{param2}
     </delete>
 
     <!--返回上一条插入语句的ID-->
@@ -52,27 +57,17 @@
         SELECT LAST_INSERT_ID();
     </select>
 
-    <!--根据teamID查询applicationID-->
-    <select id="getApplicationIDByTeamID" parameterType="BigInteger" resultType="BigInteger">
-        SELECT id FROM team_valid_application WHERE team_id = #{teamID} AND status = null
-    </select>
-
-    <!--教师同意小组合法申请-->
-    <update id="updateValidApplicationByTeamID" parameterType="BigInteger">
-        UPDATE team_valid_application SET status = 1 WHERE team_id = #{teamID} AND status = null
-    </update>
-
     <!--插入一个新的队伍信息-->
     <insert id="insertTeam" parameterType="Team">
         INSERT INTO team(klass_id,course_id,leader_id,team_name,team_serial,status)
         VALUE (#{klass.id},#{course.id},#{leader.id},#{teamName},#{teamSerial},#{status})
     </insert>
 
-    <!--更新在klass_student表中学生组队信息-->
-    <update id="updateTeamIDBy4ID" parameterType="BigInteger">
-        UPDATE klass_student SET team_id = #{param4} WHERE klass_id = #{param1} AND student_id = #{param2}
-        AND course_id = #{param3}
-    </update>
+    <!--队伍添加成员更新-->
+    <insert id="insertStudentToTeam" parameterType="BigInteger">
+        INSERT INTO team_student(team_id, student_id) VALUE (#{param1},#{param2})
+    </insert>
+
 
     <!--获得参与展示小组的ID列表-->
     <select id="listAttendancesIDByKlassSeminarID" parameterType="BigInteger" resultType="BigInteger">
@@ -88,6 +83,7 @@
     <select id="listAttendancesByKlassSeminarID" parameterType="BigInteger" resultMap="attendanceResultMap">
         SELECT * FROM attendance,team,klass WHERE attendance.klass_seminar_id=#{klass_seminarID} AND team.id=attendance.team_id AND team.klass_id=klass.id
     </select>
+
     <resultMap id="attendanceResultMap" type="Attendance">
         <id property="id" column="id"/>
         <result property="klassSeminarID" column="klass_seminar_id"/>
@@ -149,5 +145,9 @@
         </association>
     </resultMap>
 
+    <!--更新队伍合法性-->
+    <update id="updateStatusByID" parameterType="Team">
+        UPDATE team SET status = #{status} WHERE id = #{id}
+    </update>
 
 </mapper>

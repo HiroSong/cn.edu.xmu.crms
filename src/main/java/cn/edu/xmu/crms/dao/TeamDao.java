@@ -34,59 +34,78 @@ public class TeamDao {
     public Team getTeamByTeamID(BigInteger teamID) {
         Team team = teamMapper.getTeamByTeamID(teamID);
         List<Student> members = studentMapper.listMembersByTeamID(teamID);
-        team.setMembers(members);
+        if(members != null) {
+            team.setMembers(members);
+        }
         return team;
+    }
+
+    public void deleteTeamByTeamID(BigInteger teamID) {
+        teamMapper.deleteTeamByTeamID(teamID);
+        teamMapper.deleteKlassTeamByTeamID(teamID);
+        teamMapper.deleteTeamStudentByTeamID(teamID);
+        teamMapper.deleteTeamApplicationByTeamID(teamID);
     }
 
     public Team getTeamByCourseAndStudentID(BigInteger courseID, BigInteger studentID) {
         BigInteger teamID = teamMapper.getTeamIDByStudentAndCourseID(studentID, courseID);
-        Team team = this.getTeamByTeamID(teamID);
-        return team;
+        return this.getTeamByTeamID(teamID);
     }
 
+    //根据courseID 返回队伍列表信息
     public List<Team> listTeamsByCourseID(BigInteger courseID) {
-        List<Team> teams = teamMapper.listTeamsByCourseID(courseID);
-        for(int i = 0; i < teams.size(); i++) {
-            teams.get(i).setMembers(studentMapper.listMembersByTeamID(teams.get(i).getID()));
+        Course course = courseMapper.getCourseByCourseID(courseID);
+        if(course.getTeamMainCourseID() == null) {
+            List<Team> teams = teamMapper.listTeamsByCourseID(courseID);
+            for(Team team : teams) {
+                team.setMembers(studentMapper.listMembersByTeamID(team.getID()));
+            }
+            return teams;
         }
-        return teams;
+        else {
+            List<Team> teams = teamMapper.listTeamsByCourseID(course.getTeamMainCourseID());
+            for(Team team : teams) {
+                team.setMembers(studentMapper.listMembersByTeamID(team.getID()));
+            }
+            return teams;
+        }
     }
 
+    //增加学生和队伍关联
     public void insertStudentByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
-        BigInteger courseID = courseMapper.getCourseIDByTeamID(teamID);
-        //BigInteger klassID = klassMapper.getKlassIDByStudentAndCourseID(studentID, courseID);
-        BigInteger klassID = new BigInteger("0");
-        teamMapper.updateTeamIDBy4ID(klassID,studentID,courseID,teamID);
+        teamMapper.insertStudentToTeam(teamID,studentID);
     }
+
+    //取消学生和队伍关联
+    public void deleteStudentFromTeam(BigInteger teamID, BigInteger studentID) {
+        teamMapper.deleteStudentFromTeamByTeamAndStudentID(teamID,studentID);
+    }
+
+
 
     public Team insertTeam(Team team) {
-        team.setStatus(1);
         if(team.getMembers().size() + 1 > team.getCourse().getMaxMember()||
                 team.getMembers().size() + 1 < team.getCourse().getMinMember()) {
             team.setStatus(0);
         }
+        BigInteger courseID = team.getCourse().getID();
+        BigInteger leaderKlassID = klassMapper.getKlassIDByCourseAndStudentID(courseID,team.getLeader().getID());
         //判断是否有学生不同班级
-        for(int i = 0; i < team.getMembers().size() - 1; i++) {
-            //BigInteger klassID1 = klassMapper.getKlassIDByStudentAndCourseID(team.getMembers().get(i).getID(),
-            //        team.getCourse().getID());
-            //BigInteger klassID2 = klassMapper.getKlassIDByStudentAndCourseID(team.getMembers().get(i + 1).getID(),
-            //        team.getCourse().getID());
-            BigInteger klassID1 = new BigInteger("0");
-            BigInteger klassID2 = new BigInteger("0");
-            if(!klassID1.equals(klassID2)||!klassID1.equals(team.getKlass().getID())) {
+        for(int i = 0; i < team.getMembers().size(); i++) {
+            BigInteger memberKlassID = klassMapper.getKlassIDByCourseAndStudentID
+                    (courseID,team.getMembers().get(i).getID());
+            if(!leaderKlassID.equals(memberKlassID)) {
                 team.setStatus(0);
                 break;
             }
         }
         teamMapper.insertTeam(team);
         team.setID(teamMapper.getLastInsertID());
-        BigInteger courseID = team.getCourse().getID();
         BigInteger teamID = team.getID();
+        klassMapper.insertKlassTeam(team.getKlass().getID(),teamID);
         for(int i = 0; i < team.getMembers().size(); i++) {
-            //BigInteger klassID = klassMapper.getKlassIDByStudentAndCourseID(team.getMembers().get(i).getID(),courseID);
-            BigInteger klassID = new BigInteger("0");
             BigInteger studentID = team.getMembers().get(i).getID();
-            teamMapper.updateTeamIDBy4ID(klassID,studentID,courseID,teamID);
+            teamMapper.insertStudentToTeam(teamID,studentID);
         }
         return team;
     }
@@ -96,8 +115,7 @@ public class TeamDao {
      * @date 2018/12/24 15:07
      */
     public List<Attendance> listAttendancesByKlassSeminarID(BigInteger klass_seminarID){
-        List<Attendance> attendances=teamMapper.listAttendancesByKlassSeminarID(klass_seminarID);
-        return attendances;
+        return teamMapper.listAttendancesByKlassSeminarID(klass_seminarID);
     }
     /**
      * @author LaiShaopeng
@@ -112,6 +130,7 @@ public class TeamDao {
         attendance.setTeamOrder(teamOrder);
         return attendance;
     }
+
 
     public Integer deleteAttendance(BigInteger attendanceID)
     {

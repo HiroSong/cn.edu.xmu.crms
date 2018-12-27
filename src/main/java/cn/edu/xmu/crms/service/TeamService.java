@@ -1,17 +1,12 @@
 package cn.edu.xmu.crms.service;
 
-import cn.edu.xmu.crms.dao.CourseDao;
-import cn.edu.xmu.crms.dao.StudentDao;
-import cn.edu.xmu.crms.dao.TeamDao;
-import cn.edu.xmu.crms.dao.TeamValidDao;
+import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
@@ -40,13 +35,14 @@ public class TeamService {
     @Autowired
     StudentMapper studentMapper;
     @Autowired
-    KlassMapper klassMapper;
+    KlassDao klassDao;
     @Autowired
     TeamValidDao teamValidDao;
     @Autowired
     TeamValidMapper teamValidMapper;
     @Autowired
     JwtTokenUtil jwtTokenUtil;
+
 
     private Map<String, Object> getTeamInfo(Team team) {
         Map<String,Object> teamInfoMap = new HashMap<>(5);
@@ -105,44 +101,68 @@ public class TeamService {
         return teamInfo;
     }
 
-    public void deleteTeamByTeamID(BigInteger teamID) {
-        teamMapper.deleteTeamByTeamID(teamID);
+
+    @DeleteMapping("/team/{teamID}")//组长解散小组
+    public void deleteTeamByTeamID(@PathVariable("teamID") BigInteger teamID) {
+        teamDao.deleteTeamByTeamID(teamID);
     }
 
-    public void insertStudentByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
-        teamDao.insertStudentByTeamAndStudentID(teamID,studentID);
+
+    //组员或者组长添加新的成员
+    @PutMapping("/team/{teamID}/add")
+    public Boolean addTeamMember(@PathVariable("teamID") BigInteger teamID,
+                                 @RequestBody Student student) {
+        teamDao.insertStudentByTeamAndStudentID(teamID,student.getID());
+        return teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID));
     }
 
-    public void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
-        teamMapper.deleteStudentFromTeamByTeamAndStudentID(teamID,studentID);
+
+    //移除成员或踢出队伍
+    @PutMapping("/team/{teamID}/remove")
+    public Boolean removeTeamMember(@PathVariable("teamID") BigInteger teamID,
+                                    @RequestBody Student student) {
+        teamDao.deleteStudentFromTeam(teamID,student.getID());
+        return teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID));
     }
 
-    public Map<String, Object> insertApplicationByTeamValid(TeamValidApplication teamValidApplication) {
-        BigInteger teacherID = teacherMapper.getTeacherIDByCourseID(teamValidApplication.getCourseID());
-        teamValidApplication.setTeacherID(teacherID);
-        if(teamMapper.getApplicationIDByTeamID(teamValidApplication.getTeamID())!= null) {
-            Map<String, Object> map = new HashMap<>(1);
+
+    //组长发出有效组队申请  如果返回id=0则还有未审核的申请 需等待
+    @PostMapping("/team/{teamID}/teamvalidrequest")
+    public Map<String, Object> createTeamValidRequest(@PathVariable("teamID") BigInteger teamID,
+                                                      @RequestBody TeamValidApplication teamValidApplication) {
+        Team team = new Team();
+        teamValidApplication.setTeam(team);
+        teamValidApplication.getTeam().setID(teamID);
+        Map<String, Object> map = new HashMap<>(1);
+        if(teamValidDao.getApplicationIDByTeamID(teamValidApplication.getTeam().getID())!= null) {
             map.put("id",0);
             return map;
         }
-        teamMapper.insertApplicationByTeamValid(teamValidApplication);
-        BigInteger teamValidApplicationID = teamMapper.getLastInsertID();
-        Map<String, Object> map = new HashMap<>(1);
+        BigInteger teamValidApplicationID = teamValidDao.insertApplicationByTeamValid(teamValidApplication);
         map.put("id",teamValidApplicationID);
         return map;
     }
 
-    public void updateValidApplicationByTeamID(BigInteger teamID) {
-        teamMapper.updateValidApplicationByTeamID(teamID);
+
+    //教师更新队伍是否合法
+    @PutMapping("/request/teamvalid/{teamValidID}")
+    public void updateValidApplication(@PathVariable("teamValidID") BigInteger teamValidID,
+                                       @RequestBody Map<String,Integer> statusMap) {
+        Integer status = statusMap.get("status");
+        teamValidDao.updateValidApplicationByID(teamValidID,status);
     }
 
-    public Map<String, Object> createNewTeam(Team team) {
-        Course course = courseDao.getCourseByCourseID(team.getCourse().getID());
+
+    //创建队伍 三个不合法条件（还缺一个条件，选某门课程最少最多人数）
+    @PostMapping("/course/{courseID}/team")
+    public Map<String, Object> createNewTeam(@PathVariable("courseID") BigInteger courseID,
+                                             @RequestBody Team team) {
+        Course course = courseDao.getCourseByCourseID(courseID);
         if(course == null) {
             return null;
         }
-        Student leader = studentMapper.getStudentByStudentID(team.getLeader().getID());
-        Klass klass = klassMapper.getKlassByKlassID(team.getKlass().getID());
+        Student leader = studentDao.getStudentByStudentID(team.getLeader().getID());
+        Klass klass = klassDao.getKlassByKlassID(team.getKlass().getID());
         for(int i = 0; i < team.getMembers().size(); i++) {
             Student student = studentMapper.getStudentByStudentID(team.getMembers().get(i).getID());
             team.getMembers().set(i,student);
@@ -150,12 +170,17 @@ public class TeamService {
         team.setCourse(course);
         team.setLeader(leader);
         team.setKlass(klass);
+        team.setStatus(1);
+        if(!teamValidDao.checkTeam(team)) {
+            team.setStatus(0);
+        }
         Team newTeam = teamDao.insertTeam(team);
         Map<String, Object> map = new HashMap<>(1);
         map.put("id",newTeam.getID());
         return map;
     }
 
+    @GetMapping("/request/teamvalid")
     public List<Map<String,Object>> listAllTeamValidApplication() {
         List<Map<String,Object>> applicationMapList = new ArrayList<>();
         List<TeamValidApplication> applications = teamValidDao.listAllApplication();
@@ -174,13 +199,7 @@ public class TeamService {
             map.put("status",application.getStatus());
             applicationMapList.add(map);
         }
-        return applicationMapList;
-    }
 
-    public void updateTeamValidRequestByID(BigInteger teamValidID, Integer status) {
-        TeamValidApplication application = new TeamValidApplication();
-        application.setID(teamValidID);
-        application.setStatus(status);
-        teamValidMapper.updateStatusByID(application);
+        return applicationMapList;
     }
 }
