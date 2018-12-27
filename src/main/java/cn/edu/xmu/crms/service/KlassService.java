@@ -29,6 +29,8 @@ public class KlassService {
     KlassDao klassDao;
     @Autowired
     KlassMapper klassMapper;
+    @Autowired
+    StudentDao studentDao;
 
     /**
      * 用courseID查找班级信息列表

@@ -56,14 +56,4 @@ public class StudentDao {
         }
         return students;
     }
-
-    public List<Student> listAllStudents() {
-        List<BigInteger> studentsID = studentMapper.listAllStudentsID();
-        List<Student> students = new ArrayList<>();
-        for(int i = 0; i < studentsID.size(); i++) {
-            Student student = studentMapper.getStudentByStudentID(studentsID.get(i));
-            students.add(student);
-        }
-        return students;
-    }
 }

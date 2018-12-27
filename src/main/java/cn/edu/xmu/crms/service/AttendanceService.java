@@ -6,6 +6,8 @@ import cn.edu.xmu.crms.entity.Attendance;
 import cn.edu.xmu.crms.mapper.SeminarMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

@@ -54,11 +54,12 @@
     </select>
 
     <!--用course对象插入course表-->
-    <insert id="insertCourseByCourse" parameterType="Course">
+    <insert id="insertCourse" parameterType="Course">
         INSERT INTO course(teacher_id,course_name,introduction,presentation_percentage,question_percentage,
-        report_percentage,team_start_time,team_end_time) VALUE (#{teacherID},#{courseName},#{introduction},
-        #{presentationPercentage},#{questionPercentage},#{reportPercentage},#{teamStartTime},#{teamEndTime})
+                           report_percentage,team_start_time,team_end_time) VALUE (#{teacher.id},#{courseName},#{introduction},
+            #{presentationPercentage},#{questionPercentage},#{reportPercentage},#{teamStartTime},#{teamEndTime})
     </insert>
+
 
     <!--根据klassID获取courseID-->
     <select id="getCourseIDByKlassID" resultType="BigInteger" parameterType="BigInteger">

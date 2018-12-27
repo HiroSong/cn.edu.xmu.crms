@@ -5,13 +5,14 @@ import cn.edu.xmu.crms.dao.KlassDao;
 import cn.edu.xmu.crms.dao.TeacherDao;
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.Klass;
+import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
@@ -34,6 +35,8 @@ public class CourseService {
     CourseMapper courseMapper;
     @Autowired
     TeacherDao teacherDao;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
     /**
      * 用于studentID查找课程列表信息包括课程name 班级name
@@ -80,7 +83,8 @@ public class CourseService {
        return listCoursesInfo;
     }
 
-    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
+//    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
+
     @GetMapping("/course")
     public List<Map<String, Object>> listCoursesInfoByStudentOrTeacherID(HttpServletRequest request) {
         BigInteger id = jwtTokenUtil.getIDFromRequest(request);

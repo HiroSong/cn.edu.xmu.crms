@@ -5,14 +5,9 @@ import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.service.*;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Hongqiwu
@@ -71,12 +66,6 @@ public class CourseController {
 //        seminarShareService.deleteSeminarShareBySeminarShareID(seminarShareID);
 //    }
 //
-    @PostMapping("/course/{courseID}/class ")
-    public BigInteger createNewKlass(@PathVariable("courseID") BigInteger courseID,
-                                                          @RequestBody Klass klass) {
-        klass.setCourseID(courseID);
-        return klassService.createNewKlass(klass);
-    }
 //
 //    //创建队伍 三个不合法条件（还缺一个条件，选某门课程最少最多人数）
 //    @PostMapping("/course/{courseID}/team")

@@ -198,5 +198,8 @@ public interface CourseMapper {
     void updateTeamMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
 
     void updateSeminarMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
+
+    void insertCourse(Course course);
+
 }
 
