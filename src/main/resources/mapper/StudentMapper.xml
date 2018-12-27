@@ -8,11 +8,6 @@
         FROM student WHERE id = #{studentID}
     </select>
 
-    <!--根据courseID和teamID获取studentID列表-->
-    <select id="listStudentsIDByCourseAndTeamID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT student_id FROM klass_student WHERE course_id = #{param1} AND team_id = #{param2}
-    </select>
-
     <!--根据courseID获取未组队学生ID列表-->
     <select id="listNoTeamStudentsIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT DISTINCT student_id FROM klass_student WHERE student_id NOT IN (
@@ -46,13 +41,14 @@
 
     <!--重置某个学生的密码-->
     <update id="resetStudentPasswordByStudentID" parameterType="BigInteger">
-        UPDATE student SET password = 123456 WHERE  id = #{studentID}
+        UPDATE student SET password = 123456 WHERE id = #{studentID}
     </update>
 
     <!--根据studentID删除student表内信息-->
     <delete id="deleteStudentByStudentID" parameterType="BigInteger">
         DELETE FROM student WHERE id = #{studentID}
     </delete>
+
 
     <!--激活某个学生的账号-->
     <update id="updateStudentActiveByStudent" parameterType="Student">

@@ -37,12 +37,6 @@ public class CourseController {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
-    @PreAuthorize("hasAuthority('teacher')")
-    @DeleteMapping("/course/{courseID}")
-    public void deleteCourseByCourseID(@PathVariable("courseID")
-                                                   BigInteger courseID) {
-        courseDao.deleteCourseInfoByCourseID(courseID);
-    }
 
     @PostMapping("/course/{courseID}/class ")
     public BigInteger createNewKlass(@PathVariable("courseID") BigInteger courseID,

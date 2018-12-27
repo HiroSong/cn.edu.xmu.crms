@@ -112,4 +112,10 @@ public class CourseService {
         map.put("courseID",courseDao.insertCourse(course));
         return map;
     }
+
+    @PreAuthorize("hasAuthority('teacher')")
+    @DeleteMapping("/course/{courseID}")
+    public void deleteCourseByCourseID(@PathVariable("courseID") BigInteger courseID) {
+        courseDao.deleteCourseInfoByCourseID(courseID);
+    }
 }

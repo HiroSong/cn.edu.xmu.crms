@@ -6,14 +6,10 @@ import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.mapper.KlassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.lang.String;
 import java.math.BigInteger;
@@ -66,5 +62,10 @@ public class KlassService {
         String status = studentDao.insertStudentList(klassID, file);
         map.put("message", status);
         return map;
+    }
+
+    @DeleteMapping("/class/{classID}")
+    public void deleteKlass(@PathVariable("classID") BigInteger klassID) {
+        klassDao.deleteKlassByKlassID(klassID);
     }
 }

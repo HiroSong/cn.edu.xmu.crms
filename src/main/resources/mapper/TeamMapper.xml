@@ -42,6 +42,16 @@
     <delete id="deleteTeamByTeamID" parameterType="BigInteger">
         DELETE FROM team WHERE id = #{teamID}
     </delete>
+    <!--根据TeamID删除小组的其他信息-->
+    <delete id="deleteKlassTeamByTeamID" parameterType="BigInteger">
+        DELETE FROM klass_team WHERE team_id = #{teamID}
+    </delete>
+    <delete id="deleteTeamStudentByTeamID" parameterType="BigInteger">
+        DELETE FROM team_student WHERE team_id = #{teamID}
+    </delete>
+    <delete id="deleteTeamApplicationByTeamID" parameterType="BigInteger">
+        DELETE FROM team_valid_application WHERE team_id = #{teamID}
+    </delete>
 
     <!--根据teamID和studentID在队伍中删除成员-->
     <delete id="deleteStudentFromTeamByTeamAndStudentID" parameterType="BigInteger">
@@ -89,6 +99,7 @@
     <select id="listAttendancesByKlassSeminarID" parameterType="BigInteger" resultMap="attendanceResultMap">
         SELECT * FROM attendance,team,klass WHERE attendance.klass_seminar_id=#{klass_seminarID} AND team.id=attendance.team_id AND team.klass_id=klass.id
     </select>
+
     <resultMap id="attendanceResultMap" type="Attendance">
         <id property="id" column="id"/>
         <result property="klassSeminarID" column="klass_seminar_id"/>

@@ -77,16 +77,6 @@
         enroll_end_time = #{enrollEndTime}, max_team = #{maxTeam} WHERE id = #{id}
     </update>
 
-    <!--删除讨论课信息-->
-    <delete id="deleteSeminarBySeminarID" parameterType="BigInteger">
-        DELETE FROM  seminar WHERE id = #{seminarID}
-    </delete>
-
-    <!--删除讨论课和班级的联系-->
-    <delete id="deleteKlassSeminarBySeminarID" parameterType="BigInteger">
-        DELETE FROM  klass_seminar WHERE seminar_id = #{seminarID}
-    </delete>
-
     <!--根据班级ID和讨论课ID修改reportDDL-->
     <update id="updateSeminarReportDDLByKlassAndSeminarID" parameterType="HashMap">
         UPDATE klass_seminar SET report_ddl = #{reportDDL} WHERE klass_id = #{klassID} AND seminar_id = #{seminarID}
@@ -129,4 +119,15 @@
     <select id="getKlassSeminarIDBySeminarIDAndClassID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM klass_seminar WHERE seminar_id = #{param1} AND klass_id = #{param2}
     </select>
+
+    <!--删除讨论课信息-->
+    <delete id="deleteSeminarBySeminarID" parameterType="BigInteger">
+        DELETE FROM  seminar WHERE id = #{seminarID}
+    </delete>
+
+    <!--删除讨论课和班级的联系-->
+    <delete id="deleteKlassSeminarBySeminarID" parameterType="BigInteger">
+        DELETE FROM  klass_seminar WHERE seminar_id = #{seminarID}
+    </delete>
+
 </mapper>

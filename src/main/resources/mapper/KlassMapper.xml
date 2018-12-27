@@ -26,8 +26,8 @@
     </select>
 
     <!--根据klassID获取Klass对象-->
-    <select id="getKlassByKlassID"  resultType="Klass" parameterType="BigInteger">
-        SELECT * FROM klass WHERE id = #{klassID}
+    <select id="getKlassByKlassID"  resultMap="klassMap" parameterType="BigInteger">
+        SELECT * FROM klass,course WHERE klass.id = #{klassID} AND klass.course_id = course.id
     </select>
 
     <!--根据courseID获取KlassID列表-->
@@ -56,7 +56,6 @@
     <delete id="deleteKlassByKlassID" parameterType="BigInteger">
         DELETE FROM klass WHERE id = #{klassID}
     </delete>
-
     <!--根据klassID删除与klass有关表的信息-->
     <delete id="deleteKlassRoundByKlassID" parameterType="BigInteger">
         DELETE FROM klass_round WHERE klass_id = #{klassID}
@@ -67,9 +66,6 @@
     <delete id="deleteKlassStudentByKlassID" parameterType="BigInteger">
         DELETE FROM klass_student WHERE klass_id = #{klassID}
     </delete>
-    <delete id="deleteKlassInTeamByKlassID" parameterType="BigInteger">
-        DELETE FROM team WHERE klass_id = #{klassID}
-    </delete>
 
     <!--插入班级学生关系表-->
     <insert id="insertStudentKlass" parameterType="java.util.Map">
@@ -79,4 +75,5 @@
             (#{klassID}, #{id}, #{courseID})
         </foreach>
     </insert>
+
 </mapper>

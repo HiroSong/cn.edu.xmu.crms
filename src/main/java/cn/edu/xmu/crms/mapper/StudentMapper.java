@@ -28,16 +28,7 @@ public interface StudentMapper {
      */
     Student getStudentByStudentID(BigInteger studentID);
 
-    /**
-     * 用于通过courseID和teamID获取学生ID列表
-     *
-     * @param courseID 课程号
-     * @param teamID 队伍ID
-     * @return 学生ID列表
-     * @author hongqiwu
-     * @date 2018/12/01 14:32
-     */
-    List<BigInteger> listStudentsIDByCourseAndTeamID(BigInteger courseID, BigInteger teamID);
+
     /**
      * 用于通过courseID获取未组队学生ID列表
      *

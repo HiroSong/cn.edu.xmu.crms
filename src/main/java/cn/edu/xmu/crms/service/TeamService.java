@@ -9,6 +9,7 @@ import cn.edu.xmu.crms.mapper.*;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -103,9 +104,11 @@ public class TeamService {
         return teamInfo;
     }
 
-    public void deleteTeamByTeamID(BigInteger teamID) {
-        teamMapper.deleteTeamByTeamID(teamID);
+    @DeleteMapping("/team/{teamID}")//组长解散小组
+    public void deleteTeamByTeamID(@PathVariable("teamID") BigInteger teamID) {
+        teamDao.deleteTeamByTeamID(teamID);
     }
+
 
     public void insertStudentByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
         teamDao.insertStudentByTeamAndStudentID(teamID,studentID);

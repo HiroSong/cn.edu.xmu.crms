@@ -49,11 +49,6 @@ public class SeminarController {
         seminarService.updateSeminarInfoBySeminar(seminar);
     }
 
-    @DeleteMapping("/seminar/{seminarID}")
-    public void deleteSeminar(@PathVariable("seminarID") BigInteger seminarID) {
-        seminarService.deleteSeminarInfoBySeminarID(seminarID);
-    }
-
     //教师修改讨论课报告截止时间
     @PutMapping("/seminar/{seminarID}/class/{classID}/reportddl")
     public void modifySeminarReportInfo(@PathVariable("seminarID") BigInteger seminarID,

@@ -28,11 +28,7 @@ public class TeamController {
     @Autowired
     StudentMapper studentMapper;
 
-    //队长解散小组
-    @DeleteMapping("/team/{teamID}")
-    public void deleteTeamByTeamID(@PathVariable("teamID") BigInteger teamID) {
-        teamService.deleteTeamByTeamID(teamID);
-    }
+
     //组员或者组长添加新的成员
     @PutMapping("/team/{teamID}/add")
     public void addTeamMember(@PathVariable("teamID") BigInteger teamID,

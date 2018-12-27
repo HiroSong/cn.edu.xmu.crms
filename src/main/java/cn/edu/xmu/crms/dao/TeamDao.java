@@ -38,6 +38,13 @@ public class TeamDao {
         return team;
     }
 
+    public void deleteTeamByTeamID(BigInteger teamID) {
+        teamMapper.deleteTeamByTeamID(teamID);
+        teamMapper.deleteKlassTeamByTeamID(teamID);
+        teamMapper.deleteTeamStudentByTeamID(teamID);
+        teamMapper.deleteTeamApplicationByTeamID(teamID);
+    }
+
     public Team getTeamByCourseAndStudentID(BigInteger courseID, BigInteger studentID) {
         BigInteger teamID = teamMapper.getTeamIDByStudentAndCourseID(studentID, courseID);
         Team team = this.getTeamByTeamID(teamID);

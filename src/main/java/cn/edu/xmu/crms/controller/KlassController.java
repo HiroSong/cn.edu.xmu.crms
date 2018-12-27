@@ -23,9 +23,4 @@ public class KlassController {
         //未完成
     }
 
-    @DeleteMapping("/class/{classID}")
-    public void deleteKlassByKlassID(@PathVariable("classID")
-                                               BigInteger klassID) {
-        klassDao.deleteKlassInfoByKlassID(klassID);
-    }
 }

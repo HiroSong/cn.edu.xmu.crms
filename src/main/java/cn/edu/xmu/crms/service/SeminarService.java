@@ -120,9 +120,12 @@ public class SeminarService {
         seminarMapper.updateSeminarBySeminarID(seminar);
     }
 
-    public void deleteSeminarInfoBySeminarID(BigInteger seminarID) {
+
+    @DeleteMapping("/seminar/{seminarID}")
+    public void deleteSeminar(@PathVariable("seminarID") BigInteger seminarID) {
         seminarDao.deleteSeminarBySeminarID(seminarID);
     }
+
 
     @GetMapping("/seminar/{seminarID}")//获取单个讨论课信息
     public Map<String, Object> getSeminarInfoBySeminarID(@PathVariable("seminarID") BigInteger seminarID) {
