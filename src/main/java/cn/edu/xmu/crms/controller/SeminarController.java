@@ -161,4 +161,12 @@ public class SeminarController {
                                                  @PathVariable("teamID") BigInteger teamID) {
         return seminarService.checkIfAttendanceBySeminarIDAndTeamID(seminarID,teamID);
     }
+
+    /*@GetMapping("/user/information")
+    public void send()
+    {
+        Email email=new Email();
+        email.sendSimpleMail("2737785072@qq.com","123456");
+    }*/
+    //test email
 }

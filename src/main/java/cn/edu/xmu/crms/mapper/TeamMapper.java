@@ -28,6 +28,16 @@ public interface TeamMapper {
      */
     BigInteger getTeamIDByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
     /**
+     * 通过学生和班级ID获取队伍ID
+     *
+     * @param studentID 学生ID
+     * @param klassID 班级ID
+     * @return BigInteger 队伍Id
+     * @author LaiShaopeng
+     * @date 2018/12/27 1:59
+     */
+    BigInteger getTeamIDByStudentAndKlassID(BigInteger studentID, BigInteger klassID);
+    /**
      * 通过teamID获取team对象
      *
      * @param teamID 队伍ID
@@ -166,6 +176,7 @@ public interface TeamMapper {
      * 删除参与展示的小组
      *
      * @param attendanceID 参与展示的小组的ID
+     * @return 无返回结果
      * @author LaiShaopeng
      * @date 2018/12/24 20:07
      */

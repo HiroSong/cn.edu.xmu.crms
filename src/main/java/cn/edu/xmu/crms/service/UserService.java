@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.UserDao;
 import cn.edu.xmu.crms.entity.User;
+import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import cn.edu.xmu.crms.util.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -88,5 +86,18 @@ public class UserService {
             return jwtTokenUtil.refreshToken(token);
         }
         return "error";
+    }
+    @GetMapping("/user/{userName}/password")
+    public Map<String,Object> retrievePassWord(@PathVariable("userName") String userName){
+        User userInDatabase = userDao.getUserByUsername(userName);
+        Map<String,Object> map=new HashMap<>();
+        if(userInDatabase==null)  map.put("result","user"+userName+" not found.");
+        else{
+            System.out.print("\n"+userInDatabase.getName()+userInDatabase.getEmail()+'\n');
+            Email email=new Email();
+            email.sendPassWordMail(userInDatabase.getEmail(),userInDatabase.getPassword());
+            map.put("result","password has been sent to Mail.");
+        }
+        return map;
     }
 }

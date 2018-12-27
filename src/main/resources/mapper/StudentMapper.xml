@@ -51,12 +51,12 @@
 
     <!--根据学号获取学生对象-->
     <select id="getStudentByStudentAccount" parameterType="String" resultType="Student">
-        SELECT id id, account username, password password FROM student WHERE account = #{username}
+        SELECT id id, account username, password password, student_name name, email email FROM student WHERE account = #{username}
     </select>
 
     <!--插入一个Student信息-->
     <insert id="insertStudent" parameterType="User">
         INSERT INTO student(account,password,student_name,email,is_active)
-            VALUE (#{username},#{password},#{name},"",0)
+        VALUE (#{username},#{password},#{name},"",0)
     </insert>
 </mapper>
