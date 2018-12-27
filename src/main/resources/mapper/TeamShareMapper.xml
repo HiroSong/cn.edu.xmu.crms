@@ -44,9 +44,9 @@
     </delete>
 
     <!--teamShare插入share_team_application表-->
-    <insert id="insertTeamShareByTeamShare" parameterType="ShareTeamApplication" >
+    <insert id="insertTeamShare" parameterType="ShareTeamApplication" >
         insert into share_team_application(main_course_id,sub_course_id,sub_course_teacher_id,status) VALUE
-        (#{mainCourse.id},#{subCourse.id},#{subCourseTeacher.id},#{status})
+        (#{mainCourse.id},#{subCourse.id},#{subCourseTeacher.id},null)
     </insert>
 
     <!--更新申请status根据ID-->

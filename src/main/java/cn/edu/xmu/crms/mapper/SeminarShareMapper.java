@@ -34,7 +34,7 @@ public interface SeminarShareMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void insertSeminarShareBySeminarShare(ShareSeminarApplication seminarShare);
+    void insertSeminarShare(ShareSeminarApplication seminarShare);
     /**
      * 通过主课程和从课程ID查找共享课程ID
      *

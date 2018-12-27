@@ -37,4 +37,16 @@
     <select id="getApplicationIDByTeamID" parameterType="BigInteger" resultType="BigInteger">
         SELECT id FROM team_valid_application WHERE team_id = #{teamID} AND status is null
     </select>
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
+    </select>
+
+    <!--发起额外组队申请-->
+    <insert id="insertApplicationByTeamValid" parameterType="TeamValidApplication">
+        INSERT INTO team_valid_application(team_id,teacher_id,reason,status)
+        VALUE (#{team.id},#{teacher.id},#{reason},null)
+    </insert>
+
 </mapper>

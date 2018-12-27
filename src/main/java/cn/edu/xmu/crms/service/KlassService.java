@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.KlassDao;
 import cn.edu.xmu.crms.dao.StudentDao;
+import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.mapper.KlassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +53,20 @@ public class KlassService {
         return klassMapList;
     }
 
-    public BigInteger createNewKlass(Klass klass) {
-        return klassMapper.insertKlassByKlass(klass);
+
+
+    @PostMapping("/course/{courseID}/class")
+    public Map<String,Object> createNewKlass(@PathVariable("courseID") BigInteger courseID,
+                                             @RequestBody Klass klass) {
+        Course course = new Course();
+        course.setID(courseID);
+        klass.setCourse(course);
+        Map<String,Object> map = new HashMap<>(1);
+        map.put("klassID",klassDao.insertKlass(klass));
+        return map;
     }
+
+
 
     @PostMapping("/class/{classID}/student")
     public Map<String, Object> importStudentByExcel(@PathVariable("classID")BigInteger klassID, @RequestParam("file") MultipartFile file) throws IOException {

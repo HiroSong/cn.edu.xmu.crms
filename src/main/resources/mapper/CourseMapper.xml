@@ -94,7 +94,7 @@
 
     <!--根据klassID获取courseID-->
     <select id="getCourseIDByKlassID" resultType="BigInteger" parameterType="BigInteger">
-        SELECT course_id FROM klass WHERE id=#{id};
+        SELECT course_id FROM klass WHERE id = #{id};
     </select>
 
     <!--根据courseID删除course表内信息-->

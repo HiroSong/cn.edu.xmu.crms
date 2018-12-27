@@ -39,7 +39,6 @@ public class KlassDao {
 
     public void deleteKlassByKlassID(BigInteger klassID) {
         klassMapper.deleteKlassByKlassID(klassID);
-
         klassMapper.deleteKlassRoundByKlassID(klassID);
         klassMapper.deleteKlassSeminarByKlassID(klassID);
         klassMapper.deleteKlassStudentByKlassID(klassID);
@@ -47,6 +46,11 @@ public class KlassDao {
 
     public List<Klass> listKlassBySeminarID(BigInteger seminarID) {
         return klassMapper.listKlassesBySeminarID(seminarID);
+    }
+
+    public BigInteger insertKlass(Klass klass) {
+        klassMapper.insertKlass(klass);
+        return klassMapper.getLastInsertID();
     }
 
 }

@@ -43,6 +43,7 @@ public class TeamShareService {
     TeamShareMapper teamShareMapper;
     @Autowired
     JwtTokenUtil jwtTokenUtil;
+
     private Map<String,Object> getApplicationInfo(ShareTeamApplication application, BigInteger teacherID) {
         Map<String,Object> map = new HashMap<>(8);
         map.put("id",application.getID());
@@ -112,20 +113,17 @@ public class TeamShareService {
         return courseMapList;
     }
 
-    public Map<String, Object> createTeamShareRequestByCourseID(BigInteger mainCourseID, BigInteger subCourseID) {
-        ShareTeamApplication application = new ShareTeamApplication();
-        application.setMainCourse(new Course());
-        application.getMainCourse().setID(mainCourseID);
-        application.setSubCourse(new Course());
-        application.getSubCourse().setID(subCourseID);
-        application.setSubCourseTeacher(new Teacher());
-        application.getSubCourseTeacher().setID(teacherMapper.getTeacherIDByCourseID(subCourseID));
-        application.setStatus(null);
-        ShareTeamApplication newApplication = teamShareDao.insertTeamShareByTeamShare(application);
-        Map<String, Object> map = new HashMap<>(1);
-        map.put("teamShareRequestID",application.getID());
-        return map;
+
+    @PostMapping("/request/teamshare")
+    public Map<String,BigInteger> createTeamShareRequest(@RequestBody Map<String,BigInteger> courseID) {
+
+        BigInteger mainCourseID = courseID.get("mainCourseID");
+        BigInteger subCourseID = courseID.get("subCourseID");
+        courseID.put("id",teamShareDao.insertTeamShare(mainCourseID,subCourseID));
+        return courseID;
     }
+
+
 
     @GetMapping("/request/teamshare")
     public List<Map<String, Object>> listAllTeamShareRequest(HttpServletRequest request) {
@@ -137,6 +135,8 @@ public class TeamShareService {
         }
         return teamShareRequest;
     }
+
+
 
     @PutMapping("/request/teamshare/{teamShareID}")
     public Map<String, Object> updateTeamShareStatusByID(@PathVariable("teamShareID") BigInteger teamShareID,

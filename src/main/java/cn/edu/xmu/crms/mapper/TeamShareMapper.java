@@ -34,7 +34,7 @@ public interface TeamShareMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void insertTeamShareByTeamShare(ShareTeamApplication teamShare);
+    void insertTeamShare(ShareTeamApplication teamShare);
     /**
      * 通过主课程和从课程ID查找共享课程ID
      *

@@ -54,9 +54,9 @@
     </select>
 
     <!--插入新的讨论课信息-->
-    <insert id="insertSeminarBySeminar" parameterType="Seminar">
+    <insert id="insertSeminar" parameterType="Seminar">
         INSERT INTO seminar(course_id,round_id,seminar_name,introduction,max_team,is_visible,
-        seminar_serial,enroll_start_time,enroll_end_time) VALUE (#{courseID},#{roundID},#{seminarName},
+        seminar_serial,enroll_start_time,enroll_end_time) VALUE (#{course.id},#{round.id},#{seminarName},
         #{introduction},#{maxTeam},#{beVisible},#{seminarSerial},#{enrollStartTime},#{enrollEndTime})
     </insert>
 
@@ -72,7 +72,7 @@
 
     <!--修改讨论课信息-->
     <update id="updateSeminarBySeminarID" parameterType="Seminar">
-        UPDATE Seminar SET seminar_name = #{seminarName}, introduction = #{introduction},
+        UPDATE seminar SET seminar_name = #{seminarName}, introduction = #{introduction},
         seminar_serial = #{seminarSerial}, is_visible = #{beVisible}, enroll_start_time = #{enrollStartTime},
         enroll_end_time = #{enrollEndTime}, max_team = #{maxTeam} WHERE id = #{id}
     </update>
@@ -95,6 +95,11 @@
     <!--根据klassID和seminarID开始讨论课-->
     <update id="updateStartSeminarByKlassAndSeminarID" parameterType="BigInteger">
         UPDATE klass_seminar SET status = 1 WHERE klass_id = #{param1} AND seminar_id = #{param2}
+    </update>
+
+    <!--根据klassID和seminarID结束讨论课-->
+    <update id="updateEndSeminarByKlassAndSeminarID" parameterType="BigInteger">
+        UPDATE klass_seminar SET status = 2 WHERE klass_id = #{param1} AND seminar_id = #{param2}
     </update>
 
     <!--根据klassID和seminarID获取klassSeminarID-->
@@ -130,4 +135,8 @@
         DELETE FROM  klass_seminar WHERE seminar_id = #{seminarID}
     </delete>
 
+    <insert id="insertKlassSeminar" parameterType="HashMap">
+        INSERT INTO klass_seminar(klass_id, seminar_id, status)
+        VALUE (#{klassID},#{seminarID},0)
+    </insert>
 </mapper>

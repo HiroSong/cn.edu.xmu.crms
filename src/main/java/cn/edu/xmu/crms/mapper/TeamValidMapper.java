@@ -52,4 +52,22 @@ public interface TeamValidMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getApplicationIDByTeamID(BigInteger teamID);
+
+    /**
+     * 获得上一次插入语句的ID
+     *
+     * @return BigInteger 上一条插入语句的ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    BigInteger getLastInsertID();
+
+    /**
+     * 申请额外添加组员
+     *
+     * @param teamValidApplication 额外组队申请
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    void insertApplicationByTeamValid(TeamValidApplication teamValidApplication);
 }

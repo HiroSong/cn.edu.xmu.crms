@@ -97,14 +97,6 @@ public interface TeamMapper {
     void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID);
 
 
-    /**
-     * 申请额外添加组员
-     *
-     * @param teamValidApplication 额外组队申请
-     * @author Hongqiwu
-     * @date 2018/12/18 19:35
-     */
-    void insertApplicationByTeamValid(TeamValidApplication teamValidApplication);
 
     /**
      * 获得上一次插入语句的ID
@@ -201,4 +193,5 @@ public interface TeamMapper {
     void updateTeamStatusByID(Team team);
 
     void insertStudentToTeam(BigInteger teamID, BigInteger studentID);
+
 }

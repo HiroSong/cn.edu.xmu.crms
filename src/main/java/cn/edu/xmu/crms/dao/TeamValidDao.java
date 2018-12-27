@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ClassName TeamValidDao
@@ -58,10 +57,16 @@ public class TeamValidDao {
     }
 
     public Boolean checkTeam(Team team) {
+
         return true;
     }
 
     public BigInteger getApplicationIDByTeamID(BigInteger teamID) {
         return teamValidMapper.getApplicationIDByTeamID(teamID);
+    }
+
+    public BigInteger insertApplicationByTeamValid(TeamValidApplication application) {
+        teamValidMapper.insertApplicationByTeamValid(application);
+        return teamValidMapper.getLastInsertID();
     }
 }

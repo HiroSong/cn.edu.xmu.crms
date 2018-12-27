@@ -32,12 +32,6 @@
         VALUE(#{param1},#{param2},#{param3},#{param4})
     </insert>
 
-    <!--发起额外组队申请-->
-    <insert id="insertApplicationByTeamValid" parameterType="TeamValidApplication">
-        INSERT INTO team_valid_application(team_id,teacher_id,reason,status)
-        VALUE (#{teamID},#{teacherID},#{reason},null)
-    </insert>
-
     <!--根据TeamID删除小组-->
     <delete id="deleteTeamByTeamID" parameterType="BigInteger">
         DELETE FROM team WHERE id = #{teamID}

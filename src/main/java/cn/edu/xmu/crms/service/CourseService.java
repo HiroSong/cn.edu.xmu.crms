@@ -102,7 +102,7 @@ public class CourseService {
         return this.getCourseInfo(course);
     }
 
-    @PostMapping("/course")
+    @PostMapping("/course")////////！！！！！！
     public Map<String, Object> createNewCourse(HttpServletRequest request,@RequestBody Course course) {
         BigInteger teacherID = jwtTokenUtil.getIDFromRequest(request);
         Teacher teacher = new Teacher();

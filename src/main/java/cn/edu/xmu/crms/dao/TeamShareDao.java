@@ -57,11 +57,18 @@ public class TeamShareDao {
         return teamShareMapper.deleteTeamShareByTeamShareID(teamShareID);
     }
 
-    public ShareTeamApplication insertTeamShareByTeamShare(ShareTeamApplication application) {
-        teamShareMapper.insertTeamShareByTeamShare(application);
-        BigInteger applicationID = teamShareMapper.getLastInsertID();
-        application.setID(applicationID);
-        return application;
+    //创建一个新的组队共享
+    public BigInteger insertTeamShare(BigInteger mainCourseID,BigInteger subCourseID) {
+        ShareTeamApplication application = new ShareTeamApplication();
+        application.setMainCourse(new Course());
+        application.getMainCourse().setID(mainCourseID);
+        application.setSubCourse(new Course());
+        application.getSubCourse().setID(subCourseID);
+        application.setSubCourseTeacher(new Teacher());
+        application.getSubCourseTeacher().setID(teacherMapper.getTeacherIDByCourseID(subCourseID));
+        application.setStatus(null);
+        teamShareMapper.insertTeamShare(application);
+        return teamShareMapper.getLastInsertID();
     }
 
     public List<ShareTeamApplication> listAllApplications() {

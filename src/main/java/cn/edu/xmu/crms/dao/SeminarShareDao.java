@@ -27,9 +27,11 @@ public class SeminarShareDao {
     @Autowired
     CourseMapper courseMapper;
     @Autowired
-    TeacherDao teacherDao;
+    TeacherMapper teacherMapper;
     @Autowired
     CourseDao courseDao;
+    @Autowired
+    TeacherDao teacherDao;
 
     public ShareSeminarApplication getSeminarShareApplicationByID(BigInteger id) {
         Map<String, Object> map = seminarShareMapper.getApplicationByID(id);
@@ -57,11 +59,18 @@ public class SeminarShareDao {
         return seminarShareMapper.deleteSeminarShareBySeminarShareID(seminarShareID);
     }
 
-    public ShareSeminarApplication insertSeminarShareBySeminarShare(ShareSeminarApplication application) {
-        seminarShareMapper.insertSeminarShareBySeminarShare(application);
-        BigInteger applicationID = seminarShareMapper.getLastInsertID();
-        application.setID(applicationID);
-        return application;
+    //创建一个新的讨论课共享
+    public BigInteger insertSeminarShare(BigInteger mainCourseID,BigInteger subCourseID) {
+        ShareSeminarApplication application = new ShareSeminarApplication();
+        application.setMainCourse(new Course());
+        application.getMainCourse().setID(mainCourseID);
+        application.setSubCourse(new Course());
+        application.getSubCourse().setID(subCourseID);
+        application.setSubCourseTeacher(new Teacher());
+        application.getSubCourseTeacher().setID(teacherMapper.getTeacherIDByCourseID(subCourseID));
+        application.setStatus(null);
+        seminarShareMapper.insertSeminarShare(application);
+        return seminarShareMapper.getLastInsertID();
     }
 
     public List<ShareSeminarApplication> listAllApplications() {

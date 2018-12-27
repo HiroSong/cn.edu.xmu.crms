@@ -6,8 +6,6 @@ import cn.edu.xmu.crms.dao.SeminarShareDao;
 import cn.edu.xmu.crms.dao.TeacherDao;
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.ShareSeminarApplication;
-import cn.edu.xmu.crms.entity.ShareTeamApplication;
-import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.mapper.SeminarMapper;
 import cn.edu.xmu.crms.mapper.SeminarShareMapper;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
@@ -68,14 +66,7 @@ public class SeminarShareService {
         return seminarShareDao.deleteSeminarShareBySeminarShareID(seminarShareID);
     }
 
-    /**
-     * 用于courseID查找共享讨论课的主课程和从课程信息
-     *
-     * @param courseID 课程号码
-     * @return List<Map<String, Object>> 返回查找到的信息，若无记录则为null
-     * @author Hongqiwu
-     * @date 2018/11/30 19:41
-     */
+
     @GetMapping("/course/{courseID}/seminarshare")
     public List<Map<String, Object>> listAllSeminarShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> courseMapList = new ArrayList<>();
@@ -124,20 +115,18 @@ public class SeminarShareService {
         return courseMapList;
     }
 
-    public Map<String, Object> createSeminarShareRequestByCourseID(BigInteger mainCourseID, BigInteger subCourseID) {
-        ShareSeminarApplication application = new ShareSeminarApplication();
-        application.setMainCourse(new Course());
-        application.getMainCourse().setID(mainCourseID);
-        application.setSubCourse(new Course());
-        application.getSubCourse().setID(subCourseID);
-        application.setSubCourseTeacher(new Teacher());
-        application.getSubCourseTeacher().setID(teacherMapper.getTeacherIDByCourseID(subCourseID));
-        application.setStatus(null);
-        ShareSeminarApplication newApplication = seminarShareDao.insertSeminarShareBySeminarShare(application);
-        Map<String, Object> map = new HashMap<>(1);
-        map.put("seminarShareRequestID",application.getID());
-        return map;
+
+
+    @PostMapping("/request/seminarshare")
+    public Map<String,BigInteger> createSeminarShareRequest(@RequestBody Map<String,BigInteger> courseID) {
+
+        BigInteger mainCourseID = courseID.get("mainCourseID");
+        BigInteger subCourseID = courseID.get("subCourseID");
+        courseID.put("id",seminarShareDao.insertSeminarShare(mainCourseID,subCourseID));
+        return courseID;
     }
+
+
 
     @GetMapping("/request/seminarshare")
     public List<Map<String, Object>> listAllSeminarShareRequest(HttpServletRequest request) {
@@ -149,6 +138,8 @@ public class SeminarShareService {
         }
         return seminarShareRequest;
     }
+
+
 
     @PutMapping("/request/seminarshare/{seminarShareID}")
     public Map<String, Object> updateSeminarShareStatusByID(@PathVariable("seminarShareID") BigInteger seminarShareID,

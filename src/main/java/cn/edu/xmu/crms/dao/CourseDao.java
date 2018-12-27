@@ -36,6 +36,7 @@ public class CourseDao {
         return course;
     }
 
+
     public List<Course> listCoursesByStudentID(BigInteger studentID) {
         return courseMapper.listCoursesByStudentID(studentID);
     }
@@ -43,6 +44,7 @@ public class CourseDao {
     public List<Course> listCoursesByTeacherID(BigInteger teacherID) {
         return courseMapper.listCoursesByTeacherID(teacherID);
     }
+
 
     public void deleteCourseInfoByCourseID(BigInteger courseID) {
         courseMapper.deleteCourseByCourseID(courseID);
@@ -54,8 +56,10 @@ public class CourseDao {
         courseMapper.deleteTeamStrategyByCourseID(courseID);
     }
 
+
     public BigInteger insertCourse(Course course) {
         courseMapper.insertCourse(course);
+        BigInteger courseID = courseMapper.getLastInsertID();//缺各个策略表的关系创建
         return courseMapper.getLastInsertID();
     }
 

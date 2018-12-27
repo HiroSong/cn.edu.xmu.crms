@@ -84,33 +84,28 @@ public class TeamDao {
 
 
     public Team insertTeam(Team team) {
-        team.setStatus(1);
         if(team.getMembers().size() + 1 > team.getCourse().getMaxMember()||
                 team.getMembers().size() + 1 < team.getCourse().getMinMember()) {
             team.setStatus(0);
         }
+        BigInteger courseID = team.getCourse().getID();
+        BigInteger leaderKlassID = klassMapper.getKlassIDByCourseAndStudentID(courseID,team.getLeader().getID());
         //判断是否有学生不同班级
-        for(int i = 0; i < team.getMembers().size() - 1; i++) {
-            //BigInteger klassID1 = klassMapper.getKlassIDByStudentAndCourseID(team.getMembers().get(i).getID(),
-            //        team.getCourse().getID());
-            //BigInteger klassID2 = klassMapper.getKlassIDByStudentAndCourseID(team.getMembers().get(i + 1).getID(),
-            //        team.getCourse().getID());
-            BigInteger klassID1 = new BigInteger("0");
-            BigInteger klassID2 = new BigInteger("0");
-            if(!klassID1.equals(klassID2)||!klassID1.equals(team.getKlass().getID())) {
+        for(int i = 0; i < team.getMembers().size(); i++) {
+            BigInteger memberKlassID = klassMapper.getKlassIDByCourseAndStudentID
+                    (courseID,team.getMembers().get(i).getID());
+            if(!leaderKlassID.equals(memberKlassID)) {
                 team.setStatus(0);
                 break;
             }
         }
         teamMapper.insertTeam(team);
         team.setID(teamMapper.getLastInsertID());
-        BigInteger courseID = team.getCourse().getID();
         BigInteger teamID = team.getID();
+        klassMapper.insertKlassTeam(team.getKlass().getID(),teamID);
         for(int i = 0; i < team.getMembers().size(); i++) {
-            //BigInteger klassID = klassMapper.getKlassIDByStudentAndCourseID(team.getMembers().get(i).getID(),courseID);
-            BigInteger klassID = new BigInteger("0");
             BigInteger studentID = team.getMembers().get(i).getID();
-            //teamMapper.updateTeamIDBy4ID(klassID,studentID,courseID,teamID);
+            teamMapper.insertStudentToTeam(teamID,studentID);
         }
         return team;
     }
