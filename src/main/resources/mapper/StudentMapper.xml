@@ -48,4 +48,5 @@
     <select id="getLeaderIDByTeamID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT leader_id FROM team WHERE id = #{teamID}
     </select>
+
 </mapper>

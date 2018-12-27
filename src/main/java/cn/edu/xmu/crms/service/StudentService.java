@@ -63,8 +63,20 @@ public class StudentService {
         studentMapper.updateStudentActiveByStudentID(student);
         Map<String, Object> map = new HashMap<>(3);
         map.put("id",student.getID());
-        map.put("account",student.getID());
+        map.put("account",student.getAccount());
         map.put("name",student.getStudentName());
         return map;
     }
+
+    public Map<String, Object> getStudentInfoByStudentID(BigInteger studentID) {
+        Map<String, Object> map = new HashMap<>(3);
+        Student student = studentMapper.getStudentByStudentID(studentID);
+        map.put("id",student.getID());
+        map.put("name",student.getStudentName());
+        map.put("account",student.getAccount());
+        map.put("email",student.getEmail());
+        return map;
+    }
+
 }
+
