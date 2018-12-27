@@ -95,9 +95,4 @@ public class StudentService {
         }
         return noTeamStudentsMap;
     }
-
-    @GetMapping("/student/{studentID}")
-    public Student getStudentInfo(@PathVariable("studentID") BigInteger studentID) {
-        return studentDao.getStudentByStudentID(studentID);
-    }
 }

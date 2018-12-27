@@ -88,10 +88,4 @@ public class TeacherService {
         }
         return false;
     }
-
-    @GetMapping("/teacher/{teacherID}")
-    public Teacher getTeacherInfo(@PathVariable("teacherID") BigInteger teacherID) {
-        return teacherDao.getTeacherByTeacherID(teacherID);
-    }
-
 }
