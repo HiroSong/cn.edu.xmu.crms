@@ -1,12 +1,26 @@
 package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.*;
+<<<<<<< HEAD
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
 import cn.edu.xmu.crms.util.websocket.GreetingController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+=======
+import cn.edu.xmu.crms.entity.Attendance;
+import cn.edu.xmu.crms.entity.Klass;
+import cn.edu.xmu.crms.entity.Round;
+import cn.edu.xmu.crms.entity.Seminar;
+import cn.edu.xmu.crms.entity.Team;
+import cn.edu.xmu.crms.mapper.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+>>>>>>> 5d5befc44ed4cebd65dba44c35b069ff8e125256
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -16,6 +30,7 @@ import java.util.*;
  * @ClassName SeminarService
  * @Author Hongqiwu
  **/
+@RestController
 @Service
 public class SeminarService {
 
@@ -46,15 +61,37 @@ public class SeminarService {
 
     GreetingController greetingController;
 
+<<<<<<< HEAD
     /**
     *未完成
      ***/
+=======
+
+
+    //获取seminar信息
+    private Map<String, Object> getSeminarInfo(Seminar seminar) {
+        Map<String, Object> map = new HashMap<>(7);
+        map.put("id",seminar.getID());
+        map.put("topic",seminar.getSeminarName());
+        map.put("intro",seminar.getIntroduction());
+        map.put("order",seminar.getSeminarSerial());
+        map.put("teamNumLimit",seminar.getMaxTeam());
+        map.put("signUpStartTime",seminar.getEnrollStartTime());
+        map.put("signUpEndTime",seminar.getEnrollEndTime());
+        return map;
+    }
+
+
+
+    //未完成
+>>>>>>> 5d5befc44ed4cebd65dba44c35b069ff8e125256
     public List<Map<String, Object>> listSeminarScores(BigInteger studentID, BigInteger courseID) {
         List<Map<String, Object>> listScoresInfo = new ArrayList<>();
         return listScoresInfo;
     }
 
-    public List<Map<String, Object>> listSeminarsInfoByRoundID(BigInteger roundID) {
+    @GetMapping("/round/{roundID}/seminar")//获得某轮下的讨论课信息
+    public List<Map<String, Object>> listSeminarsInfoByRoundID(@PathVariable("roundID") BigInteger roundID) {
         List<Map<String, Object>> seminarInfoList = new ArrayList<>();
         List<Seminar> seminars = seminarDao.listSeminarsByRoundID(roundID);
         for(int i = 0; i < seminars.size(); i++) {
@@ -70,19 +107,22 @@ public class SeminarService {
 
     public Map<String, Object> insertNewSeminar(Seminar seminar) {
         BigInteger roundID = roundMapper.getRoundIDByCourseIDAndRoundSerial(seminar);
-        seminar.setRoundID(roundID);
+        Round round = new Round();
+        round.setID(roundID);
+        seminar.setRound(round);
         seminarMapper.insertSeminarBySeminar(seminar);
         BigInteger seminarID = seminarMapper.getLastInsertID();
         Map<String, Object> map = new HashMap<>(1);
         map.put("id",seminarID);
-        List<BigInteger> klassesID = klassMapper.listKlassIDByCourseID(seminar.getCourseID());
+        List<BigInteger> klassesID = klassMapper.listKlassIDByCourseID(seminar.getCourse().getID());
         for(int i = 0; i < klassesID.size(); i++) {
             seminarMapper.insertKlassSeminarBy2ID(klassesID.get(i), seminarID);
         }
         return map;
     }
 
-    public List<Map<String, Object>> listKlassInfoBySeminarID(BigInteger seminarID) {
+    @GetMapping("/seminar/{seminarID}/class")//获得一个讨论课下的班级信息
+    public List<Map<String, Object>> listKlassInfoBySeminarID(@PathVariable("seminarID") BigInteger seminarID) {
         List<Klass> klasses = klassDao.listKlassBySeminarID(seminarID);
         List<Map<String, Object>> klassInfoList = new ArrayList<>();
         for(int i = 0; i < klasses.size(); i++) {
@@ -104,43 +144,32 @@ public class SeminarService {
         seminarDao.deleteSeminarBySeminarID(seminarID);
     }
 
-    public Map<String, Object> getSeminarInfoBySeminarID(BigInteger seminarID) {
-        Map<String, Object> map = new HashMap<>(7);
-        Seminar seminar = seminarMapper.getSeminarBySeminarID(seminarID);
+    @GetMapping("/seminar/{seminarID}")//获取单个讨论课信息
+    public Map<String, Object> getSeminarInfoBySeminarID(@PathVariable("seminarID") BigInteger seminarID) {
+        Seminar seminar = seminarDao.getSeminarBySeminarID(seminarID);
         if(seminar == null) {
             return null;
         }
-        map.put("id",seminar.getID());
-        map.put("topic",seminar.getSeminarName());
-        map.put("intro",seminar.getIntroduction());
-        map.put("order",seminar.getSeminarSerial());
-        map.put("teamNumLimit",seminar.getMaxTeam());
-        map.put("signUpStartTime",seminar.getEnrollStartTime());
-        map.put("signUpEndTime",seminar.getEnrollEndTime());
-        return map;
+        return this.getSeminarInfo(seminar);
     }
 
     public void updateSeminarReportDDLByKlassAndSeminarID(Map<String, Object> map) {
         seminarMapper.updateSeminarReportDDLByKlassAndSeminarID(map);
     }
 
-    public Map<String, Object> getSeminarInfoBySeminarAndKlassID(BigInteger seminarID, BigInteger klassID) {
+
+    @GetMapping("/seminar/{seminarID}/class/{classID}")
+    public Map<String, Object> getSeminarInfoBySeminarAndKlassID(@PathVariable("seminarID") BigInteger seminarID,
+                                                                 @PathVariable("classID") BigInteger klassID) {
         TimeZone tz = TimeZone.getTimeZone("ETC/GMT-8");
         TimeZone.setDefault(tz);
-        Map<String, Object> map = new HashMap<>(9);
-        Seminar seminar = seminarMapper.getSeminarBySeminarID(seminarID);
+        Seminar seminar = seminarDao.getSeminarBySeminarID(seminarID);
         if(seminar == null) {
             return null;
         }
+        Map<String,Object> map = this.getSeminarInfo(seminar);
         Integer status = seminarMapper.getStatusBySeminarAndKlassID(seminarID,klassID);
         Timestamp ddl = Timestamp.valueOf(seminarMapper.getReportDDLBySeminarAndKlassID(seminarID,klassID));
-        map.put("id",seminar.getID());
-        map.put("topic",seminar.getSeminarName());
-        map.put("intro",seminar.getIntroduction());
-        map.put("order",seminar.getSeminarSerial());
-        map.put("teamNumLimit",seminar.getMaxTeam());
-        map.put("signUpStartTime",seminar.getEnrollStartTime());
-        map.put("signUpEndTime",seminar.getEnrollEndTime());
         map.put("status",status);
         map.put("reportDDL",ddl);
         return map;
@@ -152,7 +181,11 @@ public class SeminarService {
         greetingController=new GreetingController(klassSeminarID);
     }
 
-    public Map<String,Object> getSeminarScoreBySeminarAndTeamID(BigInteger seminarID, BigInteger teamID) {
+
+    //获得某次讨论课某个队伍的成绩
+    @GetMapping("/seminar/{seminarID}/team/{teamID}/seminarscore")
+    public Map<String,Object> getTeamSeminarScore(@PathVariable("seminarID") BigInteger seminarID,
+                                                  @PathVariable("teamID") BigInteger teamID) {
         return seminarDao.getSeminarScoreBySeminarAndTeamID(seminarID,teamID);
     }
 
@@ -216,8 +249,8 @@ public class SeminarService {
         map.put("teamNumber",attendance.getTeam().getTeamNumber());
         map.put("teamOrder",attendance.getTeamOrder());
         map.put("be_present",attendance.getBePresent());
-        map.put("ppt_name",attendance.getPptName());
-        map.put("ppt_url",attendance.getPptUrl());
+        map.put("ppt_name",attendance.getPPTName());
+        map.put("ppt_url",attendance.getPPTUrl());
         map.put("report_name",attendance.getReportName());
         map.put("report_url",attendance.getReportUrl());
         return map;

@@ -6,10 +6,18 @@ import cn.edu.xmu.crms.dao.TeamDao;
 import cn.edu.xmu.crms.dao.TeamValidDao;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
+<<<<<<< HEAD
 import cn.edu.xmu.crms.util.email.Email;
+=======
+import cn.edu.xmu.crms.util.security.JwtTokenUtil;
+>>>>>>> 5d5befc44ed4cebd65dba44c35b069ff8e125256
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +28,7 @@ import java.util.Map;
  * @ClassName TeamService
  * @Author Hongqiwu
  **/
+@RestController
 @Service
 public class TeamService {
     @Autowired
@@ -40,39 +49,10 @@ public class TeamService {
     TeamValidDao teamValidDao;
     @Autowired
     TeamValidMapper teamValidMapper;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
-    public List<Map<String, Object>> listTeamsInfoByCourseID(BigInteger courseID) {
-        List<Map<String, Object>> teamsInfoList = new ArrayList<>();
-        List<Team> teams = teamDao.listTeamsByCourseID(courseID);
-        for(int i = 0; i < teams.size(); i++) {
-            Team team = teams.get(i);
-            Student teamLeader = team.getLeader();
-            Map<String, Object> teamLeaderMap = new HashMap<>(3);
-            teamLeaderMap.put("id",teamLeader.getID());
-            teamLeaderMap.put("account",teamLeader.getUsername());
-            teamLeaderMap.put("name",teamLeader.getName());
-            List<Student> teamMembers = team.getMembers();
-            List<Map<String, Object>> teamMembersList = new ArrayList<>();
-            for(int j = 0; j < teamMembers.size(); j++) {
-                Student teamMember = teamMembers.get(j);
-                Map<String, Object> oneMemberMap = new HashMap<>(3);
-                oneMemberMap.put("id",teamMember.getID());
-                oneMemberMap.put("account",teamMember.getUsername());
-                oneMemberMap.put("name",teamMember.getName());
-                teamMembersList.add(oneMemberMap);
-            }
-            Map<String, Object> oneTeamInfo = new HashMap<>(4);
-            oneTeamInfo.put("name",team.getTeamName());
-            oneTeamInfo.put("valid",team.getStatus());
-            oneTeamInfo.put("leader",teamLeaderMap);
-            oneTeamInfo.put("members",teamMembersList);
-            teamsInfoList.add(oneTeamInfo);
-        }
-        return teamsInfoList;
-    }
-
-    public Map<String, Object> getTeamInfoByCourseAndStudentID(BigInteger courseID, BigInteger studentID) {
-        Team team = teamDao.getTeamByCourseAndStudentID(courseID, studentID);
+    private Map<String, Object> getTeamInfo(Team team) {
         Map<String,Object> teamInfoMap = new HashMap<>(5);
         Map<String, Object> teamLeaderMap = new HashMap<>(3);
         Student teamLeader = team.getLeader();
@@ -83,6 +63,9 @@ public class TeamService {
         List<Map<String, Object>> teamMembersList = new ArrayList<>();
         for(int i = 0; i < teamMembers.size(); i++) {
             Student teamMember = teamMembers.get(i);
+            if(teamMember.getID().equals(teamLeader.getID())) {
+                continue;
+            }
             Map<String, Object> oneMemberMap = new HashMap<>(3);
             oneMemberMap.put("id",teamMember.getID());
             oneMemberMap.put("account",teamMember.getUsername());
@@ -97,49 +80,30 @@ public class TeamService {
         return teamInfoMap;
     }
 
-    public List<Map<String, Object>> listNoTeamStudentsInfoByCourseID(BigInteger courseID) {
-        List<Map<String, Object>> noTeamStudentsMap = new ArrayList<>();
-        List<Student> noTeamStudents = studentDao.listNoTeamStudentsByCourseID(courseID);
-        for(int i = 0; i < noTeamStudents.size(); i++) {
-            Student noTeamStudent = noTeamStudents.get(i);
-            Map<String, Object> noTeamStudentMap = new HashMap<>(3);
-            noTeamStudentMap.put("id",noTeamStudent.getID());
-            noTeamStudentMap.put("account",noTeamStudent.getUsername());
-            noTeamStudentMap.put("name",noTeamStudent.getName());
-            noTeamStudentsMap.add(noTeamStudentMap);
+    @GetMapping("/course/{courseID}/team")
+    public List<Map<String, Object>> listTeamsInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
+        List<Map<String, Object>> teamsInfoList = new ArrayList<>();
+        List<Team> teams = teamDao.listTeamsByCourseID(courseID);
+        for(int i = 0; i < teams.size(); i++) {
+            Team team = teams.get(i);
+            Map<String, Object> map = this.getTeamInfo(team);
+            teamsInfoList.add(map);
         }
-        return noTeamStudentsMap;
+        return teamsInfoList;
     }
 
-    public Map<String, Object> getTeamInfoByTeamID(BigInteger teamID) {
+    @GetMapping("/course/{courseID}/myTeam")//查看我的队伍信息
+    public Map<String, Object> getTeamInfoByCourseAndStudentID(@PathVariable("courseID") BigInteger courseID,
+                                                               HttpServletRequest request) {
+        BigInteger studentID = jwtTokenUtil.getIDFromRequest(request);
+        Team team = teamDao.getTeamByCourseAndStudentID(courseID, studentID);
+        return this.getTeamInfo(team);
+    }
+
+    @GetMapping("/team/{teamID}")
+    public Map<String, Object> getTeamInfoByTeamID(@PathVariable("teamID") BigInteger teamID) {
         Team team = teamDao.getTeamByTeamID(teamID);
-        Map<String, Object> teamInfo = new HashMap<>(7);
-        Map<String, Object> courseInfo = new HashMap<>(2);
-        courseInfo.put("id",team.getCourse().getID());
-        courseInfo.put("name",team.getCourse().getCourseName());
-        Map<String, Object> klassInfo = new HashMap<>(2);
-        klassInfo.put("id",team.getKlass().getID());
-        klassInfo.put("name",team.getKlass().getGrade().toString()+team.getKlass().getKlassSerial().toString());
-        Map<String, Object> leaderInfo = new HashMap<>(2);
-        leaderInfo.put("id",team.getLeader().getID());
-        leaderInfo.put("account",team.getLeader().getUsername());
-        leaderInfo.put("name",team.getLeader().getName());
-        List<Map<String, Object>> membersInfo = new ArrayList<>();
-        for(int i = 0; i < team.getMembers().size(); i++) {
-            Student student = team.getMembers().get(i);
-            Map<String, Object> memberInfo = new HashMap<>(3);
-            memberInfo.put("id",student.getID());
-            memberInfo.put("account",student.getUsername());
-            memberInfo.put("name",student.getName());
-            membersInfo.add(memberInfo);
-        }
-        teamInfo.put("id",team.getID());
-        teamInfo.put("name",team.getTeamName());
-        teamInfo.put("course",courseInfo);
-        teamInfo.put("class",klassInfo);
-        teamInfo.put("leader",leaderInfo);
-        teamInfo.put("members",membersInfo);
-        teamInfo.put("valid",team.getStatus());
+        Map<String, Object> teamInfo = this.getTeamInfo(team);
         return teamInfo;
     }
 

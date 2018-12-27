@@ -2,7 +2,7 @@ package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.Course;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -14,28 +14,31 @@ import java.util.Map;
  * @date 2018/11/30 19:45
  */
 @Mapper
-@Repository
+@Component
 public interface CourseMapper {
+
     /**
-     * 通过studentID获取courseID列表
+     * 通过studentID获取course对象列表
      *
      * @param studentID 学生ID
-     * @return List<BigInteger>  课程ID列表
+     * @return 课程对象列表
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    List<BigInteger> listCourseIDByStudentID(BigInteger studentID);
+    List<Course> listCoursesByStudentID(BigInteger studentID);
+
     /**
-     * 通过teacherID获取courseID列表
+     * 通过teacherID获取course对象列表
      *
      * @param teacherID 教师ID
-     * @return List<BigInteger>  课程ID列表
+     * @return 课程对象列表
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    List<BigInteger> listCourseIDByTeacherID(BigInteger teacherID);
+    List<Course> listCoursesByTeacherID(BigInteger teacherID);
+
     /**
-     * 通过klassID获取Klass对象
+     * 通过CourseID获取Course对象
      *
      * @param courseID 课程ID
      * @return Course 课程对象
@@ -97,7 +100,7 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    BigInteger insertCourseByCourse(Course course);
+    void insertCourse(Course course);
     /**
      * 通过courseID删除course表信息
      *
@@ -188,5 +191,24 @@ public interface CourseMapper {
      * @date 2018/11/30 19:45
      */
     Map<String, Object> getScoreWeightByCourseID(BigInteger courseID);
+
+    /**
+      * 根据班级id获取课程id
+      *
+      * @param id 班级id
+      * @return courseID
+      * @author SongLingbing
+      * @date 2018/12/26 2:54
+      */
+    BigInteger getCourseIDByKlassID(BigInteger id);
+     
+    /**
+     * 获得上一次插入语句的ID
+     *
+     * @return BigInteger 上一条插入语句的ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    BigInteger getLastInsertID();
 }
 

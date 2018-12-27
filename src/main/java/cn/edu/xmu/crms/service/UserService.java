@@ -4,16 +4,12 @@ import cn.edu.xmu.crms.dao.UserDao;
 import cn.edu.xmu.crms.entity.User;
 import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
-import cn.edu.xmu.crms.util.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +47,8 @@ public class UserService {
         String token = jwtTokenUtil.generateToken(userInDatabase);
         Map<String, Object> map = new HashMap<>(3);
         map.put("token", token);
-        map.put("role", userInDatabase.getRoles());
+        map.put("role", userInDatabase.getRoles().get(0));
+        map.put("beActive", userInDatabase.getBeActive());
         return map;
     }
 
@@ -74,6 +71,7 @@ public class UserService {
         return "success";
     }
 
+<<<<<<< HEAD
     /**
      * 刷新密钥
      *
@@ -100,4 +98,6 @@ public class UserService {
         }
         return map;
     }
+=======
+>>>>>>> 5d5befc44ed4cebd65dba44c35b069ff8e125256
 }

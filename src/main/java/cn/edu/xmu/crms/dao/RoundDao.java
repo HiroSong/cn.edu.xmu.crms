@@ -21,6 +21,10 @@ public class RoundDao {
     @Autowired
     RoundMapper roundMapper;
 
+    public Round getRoundByRoundID(BigInteger roundID) {
+        return roundMapper.getRoundByRoundID(roundID);
+    }
+
     public List<Round> listRoundsByCourseID(BigInteger courseID) {
         List<Round> rounds = new ArrayList<>();
         List<BigInteger> roundsID = roundMapper.listRoundIDByCourseID(courseID);
@@ -32,12 +36,10 @@ public class RoundDao {
     }
 
     public List<RoundScore> listRoundScoreByRoundID(BigInteger roundID) {
-        List<BigInteger> teamsID = roundMapper.listTeamIDByRoundID(roundID);
-        List<RoundScore> roundScores = new ArrayList<>();
-        for(int i = 0; i < teamsID.size(); i++) {
-            RoundScore roundScore = roundMapper.getRoundScoreByRoundAndTeamID(roundID,teamsID.get(i));
-            roundScores.add(roundScore);
-        }
-        return roundScores;
+        return roundMapper.listRoundScoresByRoundID(roundID);
+    }
+
+    public RoundScore getRoundScoreByRoundAndTeamID(BigInteger roundID, BigInteger teamID) {
+        return roundMapper.getRoundScoreByRoundAndTeamID(roundID,teamID);
     }
 }

@@ -10,11 +10,19 @@ import java.math.BigInteger;
  **/
 public class Round {
     private BigInteger id;
-    private BigInteger courseID;
+    private Course course;
     private Integer roundSerial;
     private Integer presentationScoreMethod;
     private Integer reportScoreMethod;
     private Integer questionScoreMethod;
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
     public BigInteger getID() {
         return id;
@@ -22,14 +30,6 @@ public class Round {
 
     public void setID(BigInteger ID) {
         this.id = id;
-    }
-
-    public BigInteger getCourseID() {
-        return courseID;
-    }
-
-    public void setCourseID(BigInteger courseID) {
-        this.courseID = courseID;
     }
 
     public Integer getRoundSerial() {

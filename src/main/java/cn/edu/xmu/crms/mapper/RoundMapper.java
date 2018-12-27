@@ -4,6 +4,7 @@ import cn.edu.xmu.crms.entity.Round;
 import cn.edu.xmu.crms.entity.RoundScore;
 import cn.edu.xmu.crms.entity.Seminar;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @Author Hongqiwu
  **/
 @Mapper
-@Repository
+@Component
 public interface RoundMapper {
     /**
      * 通过RoundID获取Round对象
@@ -49,7 +50,7 @@ public interface RoundMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    List<BigInteger> listTeamIDByRoundID(BigInteger roundID);
+    List<RoundScore> listRoundScoresByRoundID(BigInteger roundID);
     /**
      * 通过roundID和teamID获取某队伍某轮次成绩
      *
