@@ -1,12 +1,14 @@
 package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.*;
-import cn.edu.xmu.crms.entity.*;
+import cn.edu.xmu.crms.entity.Attendance;
+import cn.edu.xmu.crms.entity.Klass;
+import cn.edu.xmu.crms.entity.Seminar;
+import cn.edu.xmu.crms.entity.Team;
 import cn.edu.xmu.crms.mapper.*;
-import cn.edu.xmu.crms.util.websocket.GreetingController;
+/*import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIGlobalBinding;*/
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -39,16 +41,8 @@ public class SeminarService {
     CourseMapper courseMapper;
     @Autowired
     TeamDao teamDao;
-    @Autowired
-    StudentDao studentDao;
-    @Autowired
-    QuestionDao questionDao;
 
-    GreetingController greetingController;
-
-    /**
-    *未完成
-     ***/
+    //未完成
     public List<Map<String, Object>> listSeminarScores(BigInteger studentID, BigInteger courseID) {
         List<Map<String, Object>> listScoresInfo = new ArrayList<>();
         return listScoresInfo;
@@ -148,8 +142,6 @@ public class SeminarService {
 
     public void updateSeminarStatus(BigInteger klassID, BigInteger seminarID) {
         seminarMapper.updateStartSeminarByKlassAndSeminarID(klassID,seminarID);
-        BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDByKlassAndSeminarID(klassID,seminarID);
-        greetingController=new GreetingController(klassSeminarID);
     }
 
     public Map<String,Object> getSeminarScoreBySeminarAndTeamID(BigInteger seminarID, BigInteger teamID) {
@@ -186,96 +178,36 @@ public class SeminarService {
     }
 
     public Map<String,Object> createNewAttendance(BigInteger seminarID,BigInteger classID,BigInteger teamID,Integer teamOrder) {
-        BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
-        Attendance attendance=teamDao.createAnAttendance(klassSeminarID,teamID,teamOrder);
+        BigInteger klass_seminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
+        Attendance attendance=teamDao.createAnAttendance(klass_seminarID,teamID,teamOrder);
         teamMapper.insertAttendance(attendance);
         BigInteger attendanceID=teamMapper.getLastInsertID();
-        Map<String,Object> map=new HashMap<>(0);
+        Map<String,Object> map=new HashMap<>();
         map.put("id",attendanceID);
         map.put("teamNumber",attendance.getTeam().getTeamNumber());
         return map;
     }
 
     public Map<String,String> cancelRegistion(BigInteger attendanceID){
-        Map<String,String> map=new HashMap<>(0);
-        if(teamDao.deleteAttendance(attendanceID)==0) { map.put("result","failure"); }
-        else { map.put("result", "success"); }
+        Map<String,String> map=new HashMap<>();
+        if(teamDao.deleteAttendance(attendanceID)==0)
+            map.put("reslut","failue");
+        else
+            map.put("result","success");
         return map;
     }
 
     public Map<String,Object> checkIfAttendanceBySeminarIDAndTeamID(BigInteger seminarID,BigInteger teamID){
         BigInteger klassID=klassMapper.getKlassIDByTeamID(teamID);
         System.out.print(klassID);
-        BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
-        System.out.print(klassSeminarID);
-        Attendance attendance=teamDao.getAttendanceByKlass_SeminarIDAndTeamID(klassSeminarID,teamID);
+        BigInteger klass_seminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
+        System.out.print(klass_seminarID);
+        Attendance attendance=teamDao.getAttendanceByKlass_SeminarIDAndTeamID(klass_seminarID,teamID);
         Map<String,Object> map=new HashMap<>();
-        if(attendance==null){ return null; }
-
-        map.put("teamName",attendance.getTeam().getTeamName());
-        map.put("teamNumber",attendance.getTeam().getTeamNumber());
-        map.put("teamOrder",attendance.getTeamOrder());
-        map.put("be_present",attendance.getBePresent());
-        map.put("ppt_name",attendance.getPptName());
-        map.put("ppt_url",attendance.getPptUrl());
-        map.put("report_name",attendance.getReportName());
-        map.put("report_url",attendance.getReportUrl());
-        return map;
-    }
-
-    @GetMapping("/seminar/{seminarID}/class/{classID}/question")
-    public List<Map<String,Object>> getQuestionQueue(@PathVariable("seminarID") BigInteger seminarID,
-                                                     @PathVariable("classID") BigInteger classID){
-        //两个参数都没用
-        Queue<Question> questionQueue=greetingController.getQuestionQueue();
-        List<Map<String,Object>> questionsInfoList=new ArrayList<>();
-        for (Question question:questionQueue) {
-            Map<String,Object>map=new HashMap<>(0);
-            Student student=studentDao.getStudentByStudentID(question.getStudentID());
-            Team team=teamDao.getTeamByTeamID(question.getTeamID());
-            map.put("teamNumber",team.getTeamNumber());
-            map.put("studentName",student.getName());
-            questionsInfoList.add(map);
-        }
-        return questionsInfoList;
-    }
-
-    @PostMapping("/seminar/{seminarID}/class/{classID}/question")
-    public Map<String,Object> raiseQuestion(@PathVariable("seminarID") BigInteger seminarID,
-                                            @PathVariable("classID") BigInteger classID,
-                                            @RequestBody Question question){
-        //question里需要有studentID和attendanceID。
-        question.setBeSelected(0);
-        question.setKlssSeminarID(seminarMapper.getKlassSeminarIDByKlassAndSeminarID(classID,seminarID));
-        question.setTeamID(teamMapper.getTeamIDByStudentAndKlassID(question.getStudentID(),classID));
-        Map<String,Object> map=new HashMap<>(0);
-        if(greetingController.addQuestion(question)) {
-            questionDao.insertQuestionByQuestion(question);
-            map.put("result","success");
-        }
-        map.put("result","failure");
-        map.put("reason","You have raised a question already.");
-        return map;
-    }
-
-    @PutMapping("/question/{questionID}")
-    public Map<String,Object> selectQuestion()
-    {
-        //不需要questionID
-        Map<String,Object> map=new HashMap<>(0);
-        Question question=greetingController.getQuestion();
-        if(question==null){
-            map.put("result","There is no question in queue.");
-            return map;
-        }
-        try{
-            greetingController.selectQuestion(question);
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        } ;
-        questionDao.updateQuestionByQuestion(question);
-        map.put("result","success");
+        if(attendance==null)
+            map.put("查询结果","未报名");
+        else
+            map.put("查询结果","已报名");
         return map;
     }
 }

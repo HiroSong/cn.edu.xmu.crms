@@ -13,7 +13,6 @@ public class Question {
     private BigInteger klssSeminarID;
     private BigInteger attendanceID;
     private BigInteger studentID;
-    private BigInteger teamID;
     private Integer beSelected;
     private String score;
 
@@ -64,9 +63,4 @@ public class Question {
     public void setScore(String score) {
         this.score = score;
     }
-
-    public BigInteger getTeamID() { return teamID; }
-
-    public void setTeamID(BigInteger teamID) { this.teamID = teamID; }
-
 }
