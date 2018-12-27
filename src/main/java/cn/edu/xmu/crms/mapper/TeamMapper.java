@@ -181,4 +181,15 @@ public interface TeamMapper {
      * @date 2018/12/18 22:31
      */
     BigInteger getAttendanceIDByKlass_SeminarIDAndTeamID(BigInteger klass_seminarID, BigInteger teamID);
+    /**
+     * 通过学生和班级ID获取队伍ID
+     *
+     * @param studentID 学生ID
+     * @param klassID 班级ID
+     * @return BigInteger 队伍Id
+     * @author LaiShaopeng
+     * @date 2018/12/27 1:59
+     */
+    BigInteger getTeamIDByStudentAndKlassID(BigInteger studentID, BigInteger klassID);
+
 }

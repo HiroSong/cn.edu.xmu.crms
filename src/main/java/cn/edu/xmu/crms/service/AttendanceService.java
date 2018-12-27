@@ -33,6 +33,8 @@ public class AttendanceService {
         for(int i=0;i<attendances.size();i++){
             Attendance attendance=attendances.get(i);
             Map<String,Object> map=new HashMap<>();
+            map.put("attendanceID",attendance.getID());
+            map.put("teamID",attendance.getTeamID());
             map.put("teamOrder",attendance.getTeamOrder());
             map.put("teamNumber",attendance.getTeam().getTeamNumber());
             attendanceInfoList.add(map);

@@ -131,10 +131,10 @@ public class TeamDao {
     }
 
     public Attendance getAttendanceByKlass_SeminarIDAndTeamID(BigInteger klass_seminarID,BigInteger teamID){
-        System.out.print(klass_seminarID);
         BigInteger attendanceID=teamMapper.getAttendanceIDByKlass_SeminarIDAndTeamID(klass_seminarID,teamID);
-        if(attendanceID==null)
+        if(attendanceID==null) {
             return null;
+        }
         return teamMapper.getAttendanceByAttendanceID(attendanceID);
     }
 }

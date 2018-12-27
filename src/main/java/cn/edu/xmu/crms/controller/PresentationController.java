@@ -19,6 +19,8 @@ public class PresentationController {
 
     @Autowired
     AttendanceService attendanceService;
+    @Autowired
+    SeminarService seminarService;
 
 
     @GetMapping("/seminar/{seminarID}/class/{classID}/attendance")
@@ -26,5 +28,12 @@ public class PresentationController {
                                                          @PathVariable("classID") BigInteger classID){
         return attendanceService.listAttendanceInfoBySeminarIDAndClassID(seminarID,classID);
     }
+
+    @PutMapping("/question/{questionID}")
+    public void selectQuestion(@PathVariable("questionID") BigInteger questionID)
+    {
+        seminarService.selectQuestion();
+    }
+
 
 }
