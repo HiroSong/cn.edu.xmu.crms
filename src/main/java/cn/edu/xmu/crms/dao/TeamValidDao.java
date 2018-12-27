@@ -1,6 +1,7 @@
 package cn.edu.xmu.crms.dao;
 
 import cn.edu.xmu.crms.entity.*;
+import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.mapper.TeamMapper;
 import cn.edu.xmu.crms.mapper.TeamValidMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class TeamValidDao {
     KlassDao klassDao;
     @Autowired
     TeamMapper teamMapper;
+    @Autowired
+    CourseMapper courseMapper;
 
 
     public TeamValidApplication getApplicationByID(BigInteger id) {
@@ -57,7 +60,8 @@ public class TeamValidDao {
     }
 
     public Boolean checkTeam(Team team) {
-
+        BigInteger courseID = team.getCourse().getID();
+        Course course = courseMapper.getCourseByCourseID(courseID);
         return true;
     }
 

@@ -72,6 +72,7 @@ public class SeminarDao{
         return totalScore;
     }
 
+
     public List<Course> listMainCoursesByCourseID(BigInteger courseID) {
         List<BigInteger> mainCoursesIDList = seminarMapper.listMainCoursesIDByCourseID(courseID);
         List<Course> courses = new ArrayList<>();
@@ -86,6 +87,7 @@ public class SeminarDao{
         return courses;
     }
 
+
     public List<Course> listSubCoursesByCourseID(BigInteger courseID) {
         List<BigInteger> subCoursesIDList = seminarMapper.listSubCoursesIDByCourseID(courseID);
         List<Course> courses = new ArrayList<>();
@@ -99,6 +101,7 @@ public class SeminarDao{
         }
         return courses;
     }
+
 
     public List<Seminar> listSeminarsByRoundID(BigInteger roundID) {
         List<Seminar> seminars = new ArrayList<>();
