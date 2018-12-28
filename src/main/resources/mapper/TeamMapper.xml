@@ -146,7 +146,7 @@
     </resultMap>
 
     <!--更新队伍合法性-->
-    <update id="updateStatusByID" parameterType="Team">
+    <update id="updateTeamStatusByID" parameterType="Team">
         UPDATE team SET status = #{status} WHERE id = #{id}
     </update>
 

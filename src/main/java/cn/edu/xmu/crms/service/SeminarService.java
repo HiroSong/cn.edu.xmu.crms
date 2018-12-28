@@ -57,6 +57,15 @@ public class SeminarService {
         return map;
     }
 
+    //获取正在进行的讨论课
+    @GetMapping("/seminar/process")
+    public Map<String, Object> getSeminarInProcess() {
+        Seminar seminar = seminarDao.getSeminarInProcess();
+        if(seminar==null){
+            return null;
+        }
+        return this.getSeminarInfo(seminar);
+    }
 
 
     @GetMapping("/round/{roundID}/seminar")//获得某轮下的讨论课信息

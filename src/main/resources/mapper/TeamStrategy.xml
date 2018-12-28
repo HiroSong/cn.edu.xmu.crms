@@ -34,4 +34,9 @@
         SELECT c.id id,c.course_id courseID FROM conflict_course_strategy c,team_strategy t
         WHERE t.course_id = #{courseID} AND t.strategy_name = 'ConflictCourseStrategy' AND t.strategy_id = c.id
     </select>
+
+    <!--根据courseID获取策略Serial,Name,和id-->
+    <select id="listStrategyInfoByCourseID" parameterType="BigInteger" resultType="TeamStrategy">
+    SELECT * FROM team_strategy WHERE  course_id = #{courseID}
+    </select>
 </mapper>

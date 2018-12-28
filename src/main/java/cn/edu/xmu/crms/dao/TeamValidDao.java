@@ -78,7 +78,7 @@ public class TeamValidDao {
                 id = conflictCourses.get(i).getID();
                 flag = 0;
             }
-            for(int j = 0; j < students.size(); i++) {
+            for(int j = 0; j < students.size(); j++) {
                 if(studentMapper.getIDByStudentAndCourseID(students.get(j).getID(),
                         conflictCourses.get(i).getCourseID()) != null) {
                     if(flag == 0) {
@@ -110,7 +110,7 @@ public class TeamValidDao {
                     teamStrategyMapper.listOrCourseMemberLimitInfo(courseID);
             for(int i = 0; i < courseMemberLimits.size();i++) {
                 int count = 0;
-                for(int j = 0; j < students.size(); i++) {
+                for(int j = 0; j < students.size(); j++) {
                     if(studentMapper.getIDByStudentAndCourseID(students.get(j).getID(),
                             courseMemberLimits.get(i).getCourseID()) != null) {
                         count++;

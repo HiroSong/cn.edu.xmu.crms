@@ -34,6 +34,10 @@ public class SeminarDao{
     @Autowired
     RoundMapper roundMapper;
 
+    public Seminar getSeminarInProcess() {
+        return seminarMapper.getSeminarInProcess();
+    }
+
     public Seminar getSeminarBySeminarID(BigInteger seminarID) {
         return seminarMapper.getSeminarBySeminarID(seminarID);
     }

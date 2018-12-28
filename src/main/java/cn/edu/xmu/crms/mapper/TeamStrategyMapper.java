@@ -26,4 +26,7 @@ public interface TeamStrategyMapper {
     List<CourseMemberLimitStrategy> listOrCourseMemberLimitInfo(BigInteger courseID);
 
     List<ConflictCourseStrategy> listConflictCourse(BigInteger courseID);
+
+    List<TeamStrategy> listStrategyInfoByCourseID(BigInteger courseID);
+
 }
