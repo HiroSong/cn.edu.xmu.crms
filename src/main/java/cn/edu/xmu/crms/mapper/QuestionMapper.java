@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
+
 /**
  * @ClassName QuestionMapper
  * @Description 有关数据库中提问信息的操作
@@ -31,4 +33,14 @@ public interface QuestionMapper {
      * @date 2018/12/27 3:20
      */
     public void updateQuestionByQuestion(Question question);
+
+    /**
+     * 向question表插入question对象
+     *
+     * @param questionList 提问对象
+     * @return BigInteger 提问ID
+     * @author LaiShaopeng
+     * @date 2018/12/27 3:17
+     */
+    void insertQuestionByQuestionList(Map<String,Object> questionList);
 }

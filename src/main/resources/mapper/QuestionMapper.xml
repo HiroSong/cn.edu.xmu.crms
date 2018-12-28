@@ -13,4 +13,12 @@
         UPDATE question SET is_selected = #{beSelected},score=#{score}
         WHERE id = #{id}
     </update>
+
+    <!--向question表插入question对象-->
+    <insert id="insertQuestionByQuestionList" parameterType="java.util.Map">
+            INSERT INTO question(klass_seminar_id,attendance_id,team_id,student_id,is_selected,score)VALUES
+                <foreach collection="questionList" item="question" separator=",">
+                  (#{question.klassSeminarID},#{question.attendanceID},#{question.teamID},#{question.studentID},#{question.beSelected},#{question.score})
+                </foreach>
+    </insert>
 </mapper>

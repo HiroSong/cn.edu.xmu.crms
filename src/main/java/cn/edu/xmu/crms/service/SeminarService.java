@@ -316,11 +316,17 @@ public class SeminarService {
         map.put("result","success");
         return map;
     }
+
+    /**
+     * @Author LaiShaopeng
+     * @param seminarID
+     * @param classID
+     * 切换分组
+     */
     @PutMapping("/seminar/{seminarID}/class/{classID}/process/attendance")
     public void switchAttendance(@PathVariable("seminarID")BigInteger seminarID,
                                  @PathVariable("classID")BigInteger classID)
     {
         seminarRoom.resetQueue();
     }
-
 }

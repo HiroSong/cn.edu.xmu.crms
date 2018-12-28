@@ -4,6 +4,7 @@ package cn.edu.xmu.crms.util.websocket;
 import cn.edu.xmu.crms.dao.SeminarDao;
 import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Team;
+import cn.edu.xmu.crms.mapper.QuestionMapper;
 import cn.edu.xmu.crms.mapper.SeminarMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import cn.edu.xmu.crms.dao.TeamDao;
@@ -24,6 +25,8 @@ public class SeminarRoom {
     TeamDao teamDao;
     @Autowired
     StudentDao studentDao;
+    @Autowired
+    QuestionMapper questionMapper;
 
     private BigInteger klassSeminarID;
     private Integer count;
@@ -51,6 +54,7 @@ public class SeminarRoom {
         return question;
     }
 
+    //给某个问题打分
     public boolean updateQuestionScore(Question question,Double score){
         for(int i=0;i<questionSelectedQueueList.get(klassSeminarID).size();i++)
         {
@@ -132,6 +136,22 @@ public class SeminarRoom {
 
     public void resetQueue()
     {
+        List<Map<String,Object>> questionList=new ArrayList<>(0);
+        for(Question question :questionSelectedQueueList.get(klassSeminarID)){
+            Map<String,Object> map=new HashMap<>();
+            map.put("klassSeminarID",klassSeminarID);
+            map.put("attendanceID",question.getAttendanceID());
+            map.put("teamID",question.getTeamID());
+            map.put("studentID",question.getStudentID());
+            map.put("beSelected",1);
+            map.put("score",question.getScore());
+
+            questionList.add(map);
+        }
+        Map<String,Object> map=new HashMap<>();
+        map.put("questionList",questionList);
+        questionMapper.insertQuestionByQuestionList(map);
+
         count=0;
         questionQueueList.get(klassSeminarID).clear();
         questionSelectedQueueList.get(klassSeminarID).clear();;
