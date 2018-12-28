@@ -22,11 +22,11 @@ public class TeamStrategy {
         this.courseID = courseID;
     }
 
-    public Integer getStrategyNumber() {
+    public Integer getStrategySerial() {
         return strategySerial;
     }
 
-    public void setStrategyNumber(Integer strategySerial) {
+    public void setStrategySerial(Integer strategySerial) {
         this.strategySerial = strategySerial;
     }
 

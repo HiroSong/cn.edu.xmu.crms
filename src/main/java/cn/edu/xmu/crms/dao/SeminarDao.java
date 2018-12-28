@@ -204,4 +204,9 @@ public class SeminarDao{
     public void updateSeminarBySeminarID(Seminar seminar) {
         seminarMapper.updateSeminarBySeminarID(seminar);
     }
+
+
+    public Seminar getSeminarInProcess() {
+        return seminarMapper.getSeminarInProcess();
+    }
 }

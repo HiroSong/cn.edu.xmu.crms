@@ -11,8 +11,26 @@ import java.math.BigInteger;
 public class CourseMemberLimitStrategy {
     private BigInteger id;
     private BigInteger courseID;
+    private String teacherName;
+    private String courseName;
     private Integer minMember;
     private Integer maxMember;
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
 
     public BigInteger getID() {
         return id;

@@ -143,4 +143,8 @@ public class TeamDao {
             return null;
         return teamMapper.getAttendanceByAttendanceID(attendanceID);
     }
+
+    public void updateTeamStatusByID(Team team) {
+        teamMapper.updateTeamStatusByID(team);
+    }
 }

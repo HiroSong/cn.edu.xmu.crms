@@ -3,6 +3,7 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
+import com.alibaba.druid.sql.dialect.mysql.ast.MysqlForeignKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -241,4 +242,11 @@ public class SeminarService {
         return map;
     }
 
+
+    //获取正在进行的讨论课
+    @GetMapping("/seminar/process")
+    public Map<String, Object> getSeminarInProcess() {
+        Seminar seminar = seminarDao.getSeminarInProcess();
+        return this.getSeminarInfo(seminar);
+    }
 }

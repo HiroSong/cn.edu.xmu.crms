@@ -107,20 +107,40 @@ public class TeamService {
 
 
     //组员或者组长添加新的成员
-    @PutMapping("/team/{teamID}/add")
+    @PutMapping("/team/{teamID}/member")
     public Boolean addTeamMember(@PathVariable("teamID") BigInteger teamID,
                                  @RequestBody Student student) {
         teamDao.insertStudentByTeamAndStudentID(teamID,student.getID());
-        return teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID));
+        Team team = new Team();
+        if(teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID))) {
+            team.setStatus(1);
+            teamDao.updateTeamStatusByID(team);
+            return true;
+        }
+        else {
+            team.setStatus(0);
+            teamMapper.updateTeamStatusByID(team);
+            return false;
+        }
     }
 
 
     //移除成员或踢出队伍
-    @PutMapping("/team/{teamID}/remove")
+    @DeleteMapping("/team/{teamID}/member")
     public Boolean removeTeamMember(@PathVariable("teamID") BigInteger teamID,
                                     @RequestBody Student student) {
         teamDao.deleteStudentFromTeam(teamID,student.getID());
-        return teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID));
+        Team team = new Team();
+        if(teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID))) {
+            team.setStatus(1);
+            teamDao.updateTeamStatusByID(team);
+            return true;
+        }
+        else {
+            team.setStatus(0);
+            teamMapper.updateTeamStatusByID(team);
+            return false;
+        }
     }
 
 

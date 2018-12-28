@@ -66,6 +66,7 @@ public class RoundService {
         roundScoreMap.put("preScore",roundScore.getPresentationScore());
         roundScoreMap.put("reportScore",roundScore.getReportScore());
         roundScoreMap.put("questionScore",roundScore.getQuestionScore());
+        roundScoreMap.put("totalScore",roundScore.getTotalScore());
         roundScoreMap.put("team",teamMap);
         roundScoreMap.put("round",roundMap);
         return roundScoreMap;
