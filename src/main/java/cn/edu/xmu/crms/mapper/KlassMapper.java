@@ -1,5 +1,6 @@
 package cn.edu.xmu.crms.mapper;
 
+import cn.edu.xmu.crms.entity.Klass;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -98,8 +99,9 @@ public interface KlassMapper {
 
 
     /**
-     * 通过teamID获得klassID
+     * 通过teamID和seminarID获得klassID
      *
+     * @param seminarID 讨论课ID
      * @param teamID 队伍ID
      * @return BigInteger klassID
      * @author Hongqiwu

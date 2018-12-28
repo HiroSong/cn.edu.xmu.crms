@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.UserDao;
 import cn.edu.xmu.crms.entity.User;
+import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -100,20 +101,5 @@ public class UserService {
         user.setPassword(password);
         userDao.insertUser(user);
         return "success";
-    }
-
-    @GetMapping("/user/information")
-    public User getUserInfo(HttpServletRequest request) {
-        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
-        String role = jwtTokenUtil.getRolesFromRequest(request);
-        return userDao.getUserByInfo(id,role);
-    }
-
-    @PutMapping("/user/password")//修改密码
-    public void modifyPassword(@RequestBody User user, HttpServletRequest request) {
-        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
-        String role = jwtTokenUtil.getRolesFromRequest(request);
-        user.setID(id);
-        userDao.updateUserPassword(user,role);
     }
 }

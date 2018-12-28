@@ -15,6 +15,8 @@ import java.util.List;
 
 @Repository
 public class TeacherDao {
+    @Autowired
+    TeacherMapper teacherMapper;
 
     public Teacher getTeacherByTeacherID(BigInteger teacherID) {
         return teacherMapper.getTeacherByTeacherID(teacherID);

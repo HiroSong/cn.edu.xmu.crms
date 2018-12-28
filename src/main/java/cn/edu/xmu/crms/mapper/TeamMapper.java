@@ -1,6 +1,7 @@
 package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.Attendance;
+import cn.edu.xmu.crms.entity.Team;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -175,15 +176,27 @@ public interface TeamMapper {
     Integer deleteAttendance(BigInteger attendanceID);
 
     /**
-     * 通过klass_seminarID和teamID获得参与展示的ID
+     * 通过klassSeminarID和teamID获得参与展示的ID
      *
-     * @param klass_seminarID 班级下的讨论课的ID
+     * @param klassSeminarID 班级下的讨论课的ID
      * @param teamID          小组ID
      * @return BigInteger 参与展示的ID
      * @author LaiShaopeng
      * @date 2018/12/18 22:31
      */
-    BigInteger getAttendanceIDByKlass_SeminarIDAndTeamID(BigInteger klass_seminarID, BigInteger teamID);
+    BigInteger getAttendanceIDByKlassSeminarIDAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
+
+    /**
+     * 通过学生和班级ID获取队伍ID
+     *
+     * @param studentID 学生ID
+     * @param klassID 班级ID
+     * @return BigInteger 队伍Id
+     * @author LaiShaopeng
+     * @date 2018/12/27 1:59
+     */
+    BigInteger getTeamIDByStudentAndKlassID(BigInteger studentID, BigInteger klassID);
+
 
     List<Team> listTeamsByCourseID(BigInteger courseID);
 

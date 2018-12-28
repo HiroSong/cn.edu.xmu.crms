@@ -138,11 +138,12 @@ public class TeamDao {
         return teamMapper.deleteAttendance(attendanceID);
     }
 
-    public Attendance getAttendanceByKlass_SeminarIDAndTeamID(BigInteger klass_seminarID,BigInteger teamID){
+    public Attendance getAttendanceByKlassSeminarIDAndTeamID(BigInteger klass_seminarID,BigInteger teamID){
         System.out.print(klass_seminarID);
-        BigInteger attendanceID=teamMapper.getAttendanceIDByKlass_SeminarIDAndTeamID(klass_seminarID,teamID);
-        if(attendanceID==null)
+        BigInteger attendanceID=teamMapper.getAttendanceIDByKlassSeminarIDAndTeamID(klass_seminarID,teamID);
+        if(attendanceID==null) {
             return null;
+        }
         return teamMapper.getAttendanceByAttendanceID(attendanceID);
     }
 }

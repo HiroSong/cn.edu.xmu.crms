@@ -3,6 +3,7 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
+import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,8 +56,9 @@ public class TeamService {
     }
     
     private Map<String, Object> getTeamInfo(Team team) {
-        if(team==null)
+        if(team==null) {
             return null;
+        }
         Map<String,Object> teamInfoMap = new HashMap<>(5);
         Map<String, Object> teamLeaderMap = new HashMap<>(3);
         Student teamLeader = team.getLeader();

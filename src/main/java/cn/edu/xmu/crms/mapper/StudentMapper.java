@@ -1,5 +1,7 @@
 package cn.edu.xmu.crms.mapper;
 
+import cn.edu.xmu.crms.entity.Student;
+import cn.edu.xmu.crms.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 import java.math.BigInteger;

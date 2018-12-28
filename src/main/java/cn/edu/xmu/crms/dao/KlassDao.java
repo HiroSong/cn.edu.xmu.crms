@@ -1,6 +1,13 @@
 package cn.edu.xmu.crms.dao;
 
+import cn.edu.xmu.crms.entity.Klass;
+import cn.edu.xmu.crms.mapper.KlassMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName KlassDao

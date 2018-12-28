@@ -46,7 +46,7 @@
     </select>
 
 
-    <!--根据teamID查询klassID-->
+    <!--根据teamID和seminarID查询klassID-->
     <select id="getKlassIDBySeminarAndTeamID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT klass_team.klass_id FROM klass_team,klass_seminar
         WHERE klass_team.team_id = #{param2} AND klass_seminar.seminar_id = #{param1}

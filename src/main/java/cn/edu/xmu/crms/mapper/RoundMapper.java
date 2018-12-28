@@ -1,5 +1,8 @@
 package cn.edu.xmu.crms.mapper;
 
+import cn.edu.xmu.crms.entity.Round;
+import cn.edu.xmu.crms.entity.RoundScore;
+import cn.edu.xmu.crms.entity.Seminar;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 import java.math.BigInteger;
