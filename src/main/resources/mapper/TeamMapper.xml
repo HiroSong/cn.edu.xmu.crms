@@ -4,11 +4,7 @@
 
     <!--根据studentID和courseID获取TeamID-->
     <select id="getTeamIDByStudentAndCourseID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT team_id FROM team_student WHERE student_id = #{param1} AND team_id IN (
-        SELECT klass_team.team_id FROM klass_team,team_student WHERE
-        klass_team.team_id = team_student.team_id AND klass_team.klass_id IN (
-        SELECT klass_student.klass_id FROM klass_student,klass_team WHERE klass_student.klass_id = klass_team.klass_id
-        AND klass_student.course_id = #{param2}))
+        SELECT team_id FROM klass_student WHERE student_id = #{param1} AND course_id = #{param2}
     </select>
 
     <!--根据teamID获取Team对象-->
@@ -75,8 +71,8 @@
     </select>
 
     <!--根据参与展示小组的ID获得参与展示小组的对象-->
-    <select id="getAttendanceByAttendanceID"  resultType="Attendance" parameterType="BigInteger">
-    SELECT id id,klass_seminar_id klassSeminarID,team_order teamOrder,is_present bePresent FROM attendance WHERE id = #{attendanceID}
+    <select id="getAttendanceByAttendanceID"  resultMap="attendanceResultMap" parameterType="BigInteger">
+    SELECT * FROM attendance,team WHERE attendance.id = #{attendanceID} AND team.id=attendance.team_id
     </select>
 
     <!--获得参与展示小组的列表-->
@@ -88,15 +84,22 @@
         <id property="id" column="id"/>
         <result property="klassSeminarID" column="klass_seminar_id"/>
         <result property="teamOrder" column="team_order"/>
+        <result property="bePresent" column="is_present"/>
+        <result property="reportName" column="report_name"/>
+        <result property="reportUrl" column="report_url"/>
+        <result property="pptName" column="ppt_name"/>
+        <result property="pptUrl" column="ppt_url"/>
         <association property="team" javaType="Team">
             <id property="id" column="team_id"/>
+            <result property="teamName" column="team_name"/>
             <result property="teamSerial" column="team_serial"/>
             <result property="klassSerial" column="klass_serial"/>
+            <result property="status" column="status"/>
         </association>
     </resultMap>
 
     <!--新建参与展示的小组-->
-    <insert id="insertAttendance" parameterType="Attendance" >
+    <insert id="insertAttendance" parameterType="Attendance" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO attendance(klass_seminar_id,team_id,team_order,is_present)
         VALUES (#{klassSeminarID},#{teamID},#{teamOrder},0)
     </insert>
@@ -149,5 +152,10 @@
     <update id="updateStatusByID" parameterType="Team">
         UPDATE team SET status = #{status} WHERE id = #{id}
     </update>
+    <!--根据studentID和klassID获取TeamID-->
+    <select id="getTeamIDByStudentAndKlassID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT klass_team.team_id FROM klass_team,team_student WHERE team_student.student_id = #{param1} AND klass_team.klass_id = #{param2} AND klass_team.team_id=team_student.team_id
+    </select>
+
 
 </mapper>

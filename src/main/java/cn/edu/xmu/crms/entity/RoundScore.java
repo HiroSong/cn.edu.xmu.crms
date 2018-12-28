@@ -9,29 +9,28 @@ import java.math.BigInteger;
  * @Date 2018/12/20 3:11
  **/
 public class RoundScore {
+    private BigInteger roundID;
+    private BigInteger teamID;
     private Double totalScore;
     private Double presentationScore;
     private Double questionScore;
     private Double reportScore;
-    private Round round;
-    private Team team;
 
-    public Round getRound() {
-        return round;
+    public BigInteger getRoundID() {
+        return roundID;
     }
 
-    public void setRound(Round round) {
-        this.round = round;
+    public void setRoundID(BigInteger roundID) {
+        this.roundID = roundID;
     }
 
-    public Team getTeam() {
-        return team;
+    public BigInteger getTeamID() {
+        return teamID;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setTeamID(BigInteger teamID) {
+        this.teamID = teamID;
     }
-
 
     public Double getTotalScore() {
         return totalScore;

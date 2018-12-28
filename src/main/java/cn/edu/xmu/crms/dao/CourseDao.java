@@ -31,18 +31,38 @@ public class CourseDao {
         if(course == null) {
             return null;
         }
-        course.setMaxMember(courseMapper.getCourseMaxMemberByCourseID(courseID));
         course.setMinMember(courseMapper.getCourseMinMemberByCourseID(courseID));
+        course.setMaxMember(courseMapper.getCourseMaxMemberByCourseID(courseID));
+        Teacher teacher = teacherDao.getTeacherByCourseID(courseID);
+        course.setTeacher(teacher);
         return course;
     }
 
 
     public List<Course> listCoursesByStudentID(BigInteger studentID) {
-        return courseMapper.listCoursesByStudentID(studentID);
+        List<Course> courses = new ArrayList<>();
+        List<BigInteger> allCoursesID = courseMapper.listCourseIDByStudentID(studentID);
+        if(allCoursesID == null) {
+            return null;
+        }
+        for(int i = 0; i < allCoursesID.size(); i++) {
+            Course course = this.getCourseByCourseID(allCoursesID.get(i));
+            courses.add(course);
+        }
+        return courses;
     }
 
     public List<Course> listCoursesByTeacherID(BigInteger teacherID) {
-        return courseMapper.listCoursesByTeacherID(teacherID);
+        List<Course> courses = new ArrayList<>();
+        List<BigInteger> allCoursesID = courseMapper.listCourseIDByTeacherID(teacherID);
+        if(allCoursesID == null) {
+            return null;
+        }
+        for(int i = 0; i < allCoursesID.size(); i++) {
+            Course course = this.getCourseByCourseID(allCoursesID.get(i));
+            courses.add(course);
+        }
+        return courses;
     }
 
 

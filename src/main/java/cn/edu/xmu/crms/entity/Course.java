@@ -11,6 +11,7 @@ import java.util.List;
  **/
 public class Course {
     private BigInteger id;
+    private BigInteger teacherID;
     private String courseName;
     private String introduction;
     private Integer presentationPercentage;
@@ -40,6 +41,14 @@ public class Course {
 
     public void setID(BigInteger id) {
         this.id = id;
+    }
+
+    public BigInteger getTeacherID() {
+        return teacherID;
+    }
+
+    public void setTeacherID(BigInteger teacherID) {
+        this.teacherID = teacherID;
     }
 
     public String getCourseName() {

@@ -47,11 +47,13 @@ public class RoundDao {
     }
 
     public List<RoundScore> listRoundScoreByRoundID(BigInteger roundID) {
-        return roundMapper.listRoundScoresByRoundID(roundID);
-    }
-
-    public RoundScore getRoundScoreByRoundAndTeamID(BigInteger roundID, BigInteger teamID) {
-        return roundMapper.getRoundScoreByRoundAndTeamID(roundID,teamID);
+        List<BigInteger> teamsID = roundMapper.listTeamIDByRoundID(roundID);
+        List<RoundScore> roundScores = new ArrayList<>();
+        for(int i = 0; i < teamsID.size(); i++) {
+            RoundScore roundScore = roundMapper.getRoundScoreByRoundAndTeamID(roundID,teamsID.get(i));
+            roundScores.add(roundScore);
+        }
+        return roundScores;
     }
 
     public void updateRuleByRound(Round round) {

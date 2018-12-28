@@ -2,42 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.RoundMapper" >
 
-    <resultMap id="roundMap" type="Round">
-        <id property="id" column="id"/>
-        <result property="roundSerial" column="round_serial"/>
-        <result property="presentationScoreMethod" column="presentation_score_method"/>
-        <result property="reportScoreMethod" column="report_score_method"/>
-        <result property="questionScoreMethod" column="question_score_method"/>
-        <association property="course" javaType="Course">
-            <id property="id" column="course_id"/>
-            <result property="courseName" column="course_name"/>
-            <result property="introduction" column="introduction"/>
-        </association>
-    </resultMap>
-
-    <resultMap id="roundScoreMap" type="RoundScore">
-        <result property="totalScore" column="total_score"/>
-        <result property="presentationScore" column="presentation_score"/>
-        <result property="reportScore" column="report_score"/>
-        <result property="questionScore" column="question_score"/>
-        <association property="team" javaType="Team">
-            <id property="id" column="team_id"/>
-            <result property="teamName" column="team_name"/>
-        </association>
-        <association property="round" javaType="Round">
-            <id property="id" column="round_id"/>
-            <result property="roundSerial" column="round_serial"/>
-        </association>
-    </resultMap>
-
     <!--根据courseID获取roundID列表-->
     <select id="listRoundIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM round WHERE course_id = #{courseID}
     </select>
 
     <!--根据roundID获取round对象-->
-    <select id="getRoundByRoundID"  resultMap="roundMap" parameterType="BigInteger">
-        SELECT * FROM round,course WHERE round.id = #{roundID} AND round.course_id = course.id
+    <select id="getRoundByRoundID"  resultType="Round" parameterType="BigInteger">
+        SELECT * FROM round WHERE id = #{roundID}
     </select>
 
     <!--根据roundID和klassID获得报名次数限制-->
@@ -55,15 +27,13 @@
     </update>
 
     <!--根据roundID和teamID获取roundScore对象-->
-    <select id="getRoundScoreByRoundAndTeamID"  resultMap="roundScoreMap" parameterType="BigInteger">
-        SELECT * FROM round_score,round,team WHERE round_score.round_id = #{param1} AND round_score.team_id = #{param2}
-        AND team.id = #{param2} AND round.id = #{param1}
+    <select id="getRoundScoreByRoundAndTeamID"  resultType="RoundScore" parameterType="BigInteger">
+        SELECT * FROM round_score WHERE round_id = #{param1} AND team_id = #{param2}
     </select>
 
-    <!--根据roundID获取RoundScore列表-->
-    <select id="listRoundScoresByRoundID"  resultMap="roundScoreMap" parameterType="BigInteger">
-        SELECT * FROM round_score,round,team WHERE round_score.round_id = #{roundID} AND round.id = #{roundID}
-        AND round_score.team_id = team.id
+    <!--根据roundID获取teamID列表-->
+    <select id="listTeamIDByRoundID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT team_id FROM round_score WHERE round_id = #{roundID}
     </select>
 
     <!--根据roundScore修改round_score表-->

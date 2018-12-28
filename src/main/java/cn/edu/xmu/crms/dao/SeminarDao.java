@@ -34,44 +34,6 @@ public class SeminarDao{
     @Autowired
     RoundMapper roundMapper;
 
-    public Seminar getSeminarBySeminarID(BigInteger seminarID) {
-        return seminarMapper.getSeminarBySeminarID(seminarID);
-    }
-
-    private Double getTotalScore(Map<String,Object> scoreMap, BigInteger courseID) {
-        Map<String, Object> scoreWeight = courseMapper.getScoreWeightByCourseID(courseID);
-        Double presentationScore ;
-        Object preScore = scoreMap.get("presentationScore");
-        if(preScore != null) {
-            presentationScore = new Double(scoreMap.get("presentationScore").toString());
-        }
-        else {
-            presentationScore = 0.0;
-        }
-        Double questionScore;
-        Object quesScore = scoreMap.get("questionScore");
-        if(quesScore != null) {
-            questionScore = new Double(scoreMap.get("questionScore").toString());
-        }
-        else {
-            questionScore = 0.0;
-        }
-        Double reportScore;
-        Object repScore = scoreMap.get("reportScore");
-        if(repScore != null) {
-            reportScore = new Double(scoreMap.get("reportScore").toString());
-        }
-        else {
-            reportScore = 0.0;
-        }
-        Double presentationWeight = new Double(scoreWeight.get("presentationPercentage").toString()) / 100.0;
-        Double questionWeight = new Double(scoreWeight.get("questionPercentage").toString()) / 100.0;
-        Double reportWeight = new Double(scoreWeight.get("reportPercentage").toString()) / 100.0;
-        Double totalScore = presentationScore * presentationWeight + questionScore * questionWeight +
-                reportScore * reportWeight;
-        return totalScore;
-    }
-
     public List<Course> listMainCoursesByCourseID(BigInteger courseID) {
         List<BigInteger> mainCoursesIDList = seminarMapper.listMainCoursesIDByCourseID(courseID);
         List<Course> courses = new ArrayList<>();
@@ -128,7 +90,7 @@ public class SeminarDao{
         map.put("presentationScore",scoreMap.get("presentationScore"));
         map.put("reportScore",scoreMap.get("reportScore"));
         map.put("questionScore",scoreMap.get("questionScore"));
-        map.put("totalScore",this.getTotalScore(map, team.getCourse().getID()));
+        map.put("totalScore",scoreMap.get("totalScore"));
         return map;
     }
 

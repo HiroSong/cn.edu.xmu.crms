@@ -3,22 +3,19 @@ package cn.edu.xmu.crms.mapper;
 import cn.edu.xmu.crms.entity.Klass;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Map;
-
 /**
  * @ClassName KlassMapper
  * @Description 有关数据库中班级信息的操作
  * @Author Hongqiwu
  **/
 @Mapper
-@Component
+@Repository
 public interface KlassMapper {
     /**
-     * 通过studentID和courseID获取klass对象
+     * 通过studentID和courseID获取klassID
      *
      * @param studentID 学生ID
      * @param courseID 课程ID
@@ -26,7 +23,7 @@ public interface KlassMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    Klass getKlassByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
+    BigInteger getKlassIDByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
     /**
      * 通过klassID获取Klass对象
      *
@@ -45,16 +42,15 @@ public interface KlassMapper {
      * @date 2018/11/30 19:45
      */
     List<BigInteger> listKlassIDByCourseID(BigInteger courseID);
-
     /**
-     * 通过讨论课ID获取班级列表
+     * 通过讨论课ID获取班级ID列表
      *
      * @param seminarID 讨论课ID
-     * @return 班级列表
+     * @return List<BigInteger>班级ID列表
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    List<Klass> listKlassesBySeminarID(BigInteger seminarID);
+    List<BigInteger> listKlassIDBySeminarID(BigInteger seminarID);
     /**
      * 向klass表插入klass对象
      *
@@ -130,4 +126,6 @@ public interface KlassMapper {
     BigInteger getKlassIDByCourseAndStudentID(BigInteger courseID,BigInteger studentID);
 
     void insertKlassTeam(BigInteger klassID,BigInteger teamID);
+    
+    BigInteger getKlassIDByTeamID(BigInteger teamID);
 }

@@ -24,7 +24,11 @@ public class KlassDao {
     }
 
     public Klass getKlassByStudentAndCourseID(BigInteger studentID, BigInteger courseID) {
-        return klassMapper.getKlassByStudentAndCourseID(studentID,courseID);
+        BigInteger klassID = klassMapper.getKlassIDByStudentAndCourseID(studentID, courseID);
+        if(klassID == null) {
+            return null;
+        }
+        return klassMapper.getKlassByKlassID(klassID);
     }
 
     public List<Klass> listKlassByCourseID(BigInteger courseID) {
@@ -45,7 +49,13 @@ public class KlassDao {
     }
 
     public List<Klass> listKlassBySeminarID(BigInteger seminarID) {
-        return klassMapper.listKlassesBySeminarID(seminarID);
+        List<BigInteger> klassesID = klassMapper.listKlassIDBySeminarID(seminarID);
+        List<Klass> klasses = new ArrayList<>();
+        for(int i = 0; i < klassesID.size(); i++) {
+            Klass klass = klassMapper.getKlassByKlassID(klassesID.get(i));
+            klasses.add(klass);
+        }
+        return klasses;
     }
 
     public BigInteger insertKlass(Klass klass) {

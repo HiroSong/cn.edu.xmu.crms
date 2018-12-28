@@ -1,19 +1,11 @@
 package cn.edu.xmu.crms.dao;
 
+
 import cn.edu.xmu.crms.entity.Student;
-import cn.edu.xmu.crms.mapper.CourseMapper;
-import cn.edu.xmu.crms.mapper.KlassMapper;
 import cn.edu.xmu.crms.mapper.StudentMapper;
-import cn.edu.xmu.crms.util.common.FileUtil;
-import cn.edu.xmu.crms.util.excel.ExcelUtil;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,14 +22,6 @@ import java.util.Map;
 public class StudentDao {
     @Autowired
     StudentMapper studentMapper;
-    @Autowired
-    CourseMapper courseMapper;
-    @Autowired
-    KlassMapper klassMapper;
-    @Autowired
-    FileUtil fileUtil;
-    @Autowired
-    ExcelUtil excelUtil;
 
     public Student getStudentByStudentID(BigInteger studentID) {
         return studentMapper.getStudentByStudentID(studentID);
@@ -64,7 +48,13 @@ public class StudentDao {
     }
 
     public List<Student> listNoTeamStudentsByCourseID(BigInteger courseID) {
-        return studentMapper.listNoTeamStudentsByCourseID(courseID);
+        List<Student> students = new ArrayList<>();
+        List<BigInteger> noTeamStudentsID = studentMapper.listNoTeamStudentsIDByCourseID(courseID);
+        for(int i = 0; i < noTeamStudentsID.size(); i++) {
+            Student noTeamStudent = studentMapper.getStudentByStudentID(noTeamStudentsID.get(i));
+            students.add(noTeamStudent);
+        }
+        return students;
     }
 
     public String insertStudentList(BigInteger klassID, MultipartFile file) throws IOException {
@@ -88,14 +78,6 @@ public class StudentDao {
             student.setBeActive(0);
             studentList.add(student);
         }
-        studentMapper.insertStudentList(studentList);
-        BigInteger courseID = courseMapper.getCourseIDByKlassID(klassID);
-        List<BigInteger> studentIDList = studentMapper.listStudentID(studentList);
-        Map<String, Object> map = new HashMap<>(3);
-        map.put("courseID", courseID);
-        map.put("klassID", klassID);
-        map.put("studentIDList", studentIDList);
-        klassMapper.insertStudentKlass(map);
-        return "插入成功";
+        return students;
     }
 }
