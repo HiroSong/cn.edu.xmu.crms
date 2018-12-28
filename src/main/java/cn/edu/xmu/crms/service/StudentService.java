@@ -3,10 +3,8 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.User;
-import cn.edu.xmu.crms.mapper.StudentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
@@ -21,7 +19,6 @@ import java.util.Map;
  * @Author Hongqiwu
  * @Date 2018/12/20 4:05
  **/
-@RestController
 @Service
 public class StudentService {
     @Autowired
