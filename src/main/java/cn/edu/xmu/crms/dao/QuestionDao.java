@@ -19,5 +19,6 @@ public class QuestionDao {
         questionMapper.insertQuestionByQuestion(question);
     }
 
-    public void updateQuestionByQuestion(Question question){questionMapper.updateQuestionByQuestion(question);}
+    public void updateQuestionByQuestion(Question question){
+        questionMapper.updateQuestionByQuestion(question);}
 }

@@ -6,6 +6,9 @@ import cn.edu.xmu.crms.entity.Attendance;
 import cn.edu.xmu.crms.mapper.SeminarMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import java.util.Map;
  * @author SongLingbing
  * @date 2018/12/24 20:20
  */
+@RestController
 @Service
 public class AttendanceService {
 
@@ -26,7 +30,12 @@ public class AttendanceService {
     SeminarDao seminarDao;
     @Autowired
     TeamDao teamDao;
-    public List<Map<String,Object>> listAttendanceInfoBySeminarIDAndClassID(BigInteger seminarID, BigInteger classID){
+
+    @GetMapping("/seminar/{seminarID}/class/{classID}/attendance")
+    public List<Map<String,Object>> listAttendanceInfoBySeminarIDAndClassID(@PathVariable("seminarID") BigInteger seminarID,
+                                                                            @PathVariable("classID") BigInteger classID){
+
+
         BigInteger klass_seminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
         List<Map<String,Object>> attendanceInfoList=new ArrayList<>();
         List<Attendance> attendances=teamDao.listAttendancesByKlassSeminarID(klass_seminarID);

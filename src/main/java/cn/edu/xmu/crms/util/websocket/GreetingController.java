@@ -1,6 +1,8 @@
 package cn.edu.xmu.crms.util.websocket;
 
 import cn.edu.xmu.crms.dao.SeminarDao;
+import cn.edu.xmu.crms.entity.Student;
+import cn.edu.xmu.crms.entity.Team;
 import cn.edu.xmu.crms.mapper.SeminarMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import cn.edu.xmu.crms.dao.TeamDao;
@@ -8,7 +10,6 @@ import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.entity.Question;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.util.HtmlUtils;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -24,52 +25,37 @@ public class GreetingController {
     StudentDao studentDao;
 
     private BigInteger klassSeminarID;
+    private Integer count;
     private static Map<BigInteger,Queue<Question>> questionQueueList=new HashMap<>(0);
-    private static Map<BigInteger,Set<BigInteger>> studentIDRecorderList=new HashMap<>(0);
+    private static Map<BigInteger,List<Question>> questionSelectedQueueList=new HashMap<>(0);
 
     public GreetingController(BigInteger klassSeminarID){
         this.klassSeminarID=klassSeminarID;
         Queue<Question> questionQueue=new LinkedList<>();
-        Set<BigInteger> studentIDRecorder=new TreeSet<>();
+        List<Question> questionSelectedQueue=new ArrayList<>();
+
+        count=0;
         questionQueueList.put(klassSeminarID,questionQueue);
-        studentIDRecorderList.put(klassSeminarID,studentIDRecorder);
+        questionSelectedQueueList.put(klassSeminarID,questionSelectedQueue);
     }
 
-    public Question getQuestion()
+    public Question getTopQuestion()
     {
         if(questionQueueList.get(klassSeminarID).isEmpty()){
             return null;
         }
-        Question question=questionQueueList.get(klassSeminarID).peek();
-        while(studentIDRecorderList.get(klassSeminarID).contains(question.getStudentID()))
-        {
-            questionQueueList.get(klassSeminarID).offer(question);
-            questionQueueList.get(klassSeminarID).poll();
-            questionQueueList.get(klassSeminarID).remove(question.getStudentID());
-            question=questionQueueList.get(klassSeminarID).peek();
-            try{
-                greeting();
-            }catch (Exception e)
-            {
-                e.printStackTrace();
-            } ;
-        }
+        Question question=questionQueueList.get(klassSeminarID).poll();
         question.setBeSelected(1);
+        questionSelectedQueueList.get(klassSeminarID).add(question);
         return question;
-    }
-
-    public Queue<Question> getQuestionQueue()
-    {
-        return questionQueueList.get(klassSeminarID);
     }
 
     public boolean addQuestion(Question question)
     {
-        if(studentIDRecorderList.get(klassSeminarID).contains(question.getStudentID())){
-            return false;
-        }
+        count=count+1;
+        question.order=count;
         questionQueueList.get(klassSeminarID).offer(question);
-        studentIDRecorderList.get(klassSeminarID).add(question.getStudentID());
+
         try{
             greeting();
         }catch (Exception e)
@@ -79,16 +65,51 @@ public class GreetingController {
         return true;
     }
 
-    @MessageMapping("/websocket/{seminarID}/{klassID}")
+    /**
+     * 获得提问队列和已被抽取的提问的队列的信息。
+     * @Author LaiShaopeng
+     * @return map 装有提问队列和已被抽取的提问的队列的提问信息。
+     * @throws Exception
+     */
     @SendTo("topic/greetings/all/{seminarID}")
     public Map<String,Object> greeting()throws Exception{
         Map<String,Object> map=new HashMap<>(0);
-        map.put("questionNumber",questionQueueList.get(klassSeminarID).size());
+        List<Map<String,Object>> questionQueue=new ArrayList<>();
+        List<Map<String,Object>> questionSelectedQueue=new ArrayList<>();
+
+        for (Question question:questionQueueList.get(klassSeminarID)) {
+            Map<String,Object>questionInfo=new HashMap<>(0);
+            Student student=studentDao.getStudentByStudentID(question.getStudentID());
+            Team team=teamDao.getTeamByTeamID(question.getTeamID());
+            questionInfo.put("teamNumber",team.getTeamNumber());
+            questionInfo.put("studentName",student.getName());
+            questionInfo.put("order",question.order);
+            questionQueue.add(questionInfo);
+        }
+        map.put("questionQueue",questionQueue);
+
+        for (Question question:questionSelectedQueueList.get(klassSeminarID)) {
+            Map<String,Object>questionInfo=new HashMap<>(0);
+            Student student=studentDao.getStudentByStudentID(question.getStudentID());
+            Team team=teamDao.getTeamByTeamID(question.getTeamID());
+            questionInfo.put("teamNumber",team.getTeamNumber());
+            questionInfo.put("studentName",student.getName());
+            questionInfo.put("order",question.order);
+            questionSelectedQueue.add(questionInfo);
+        }
+        map.put("questionSelectedQueue",questionSelectedQueue);
+
         return map;
     }
 
+    /**
+     * @Author LaiShaopeng
+     * @param question
+     * @return map 抽取到的提问的发起该提问的学生的组号和姓名。
+     * @throws Exception
+     */
     @SendTo("topic/greetings/all/{seminarID}")
-    public Map<String,Object> selectQuestion(Question question)throws Exception{
+    public Map<String,Object> broadcastQuestion(Question question)throws Exception{
         Map<String,Object> map=new HashMap<>(0);
         cn.edu.xmu.crms.entity.Student student=studentDao.getStudentByStudentID(question.getStudentID());
         cn.edu.xmu.crms.entity.Team team=teamDao.getTeamByTeamID(question.getTeamID());
@@ -97,9 +118,10 @@ public class GreetingController {
         return map;
     }
 
-    public void resetQueueAndRecorder()
+    public void resetQueue()
     {
+        count=0;
         questionQueueList.get(klassSeminarID).clear();
-        studentIDRecorderList.get(klassSeminarID).clear();
+        questionSelectedQueueList.get(klassSeminarID).clear();;
     }
 }

@@ -100,7 +100,7 @@
     </resultMap>
 
     <!--新建参与展示的小组-->
-    <insert id="insertAttendance" parameterType="Attendance" >
+    <insert id="insertAttendance" parameterType="Attendance" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO attendance(klass_seminar_id,team_id,team_order,is_present)
         VALUES (#{klassSeminarID},#{teamID},#{teamOrder},0)
     </insert>
@@ -117,7 +117,7 @@
 
     <!--根据studentID和klassID获取TeamID-->
     <select id="getTeamIDByStudentAndKlassID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT team_id FROM klass_student WHERE student_id = #{param1} AND course_id = #{param2}
+        SELECT klass_team.team_id FROM klass_team,team_student WHERE team_student.student_id = #{param1} AND klass_team.klass_id = #{param2} AND klass_team.team_id=team_student.team_id
     </select>
 
 

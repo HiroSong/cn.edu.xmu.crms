@@ -22,7 +22,7 @@ public interface QuestionMapper {
      * @author LaiShaopeng
      * @date 2018/12/27 3:17
      */
-    BigInteger insertQuestionByQuestion(Question question);
+    Integer insertQuestionByQuestion(Question question);
     /**
      * 向question表更新question值
      *

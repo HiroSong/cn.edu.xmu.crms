@@ -11,19 +11,27 @@ import java.math.BigInteger;
 public class Question {
     private BigInteger id;
     private BigInteger klssSeminarID;
-    private BigInteger attendanceID;
-    private BigInteger studentID;
-    private BigInteger teamID;
+    private Attendance attendance;
+    private Student student;
+    private Team team;
     private Integer beSelected;
-    private String score;
+    private Double score;
+    public Integer order;
 
+    public Question(){
+        attendance=new Attendance();
+        student=new Student();
+        team=new Team();
+    }
     public BigInteger getID() {
         return id;
     }
 
-    public void setID(BigInteger ID) {
+    public void setID(BigInteger id) {
         this.id = id;
     }
+
+    public void setTeamID(BigInteger teamID){this.team.setID(teamID);}
 
     public BigInteger getKlssSeminarID() {
         return klssSeminarID;
@@ -34,19 +42,19 @@ public class Question {
     }
 
     public BigInteger getAttendanceID() {
-        return attendanceID;
+        return attendance.getID();
     }
 
     public void setAttendanceID(BigInteger attendanceID) {
-        this.attendanceID = attendanceID;
+        this.attendance.setID(attendanceID);
     }
 
     public BigInteger getStudentID() {
-        return studentID;
+        return student.getID();
     }
 
     public void setStudentID(BigInteger studentID) {
-        this.studentID = studentID;
+        this.student.setID(studentID);
     }
 
     public Integer getBeSelected() {
@@ -57,16 +65,31 @@ public class Question {
         this.beSelected = beSelected;
     }
 
-    public String getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 
-    public BigInteger getTeamID() { return teamID; }
+    public BigInteger getTeamID() { return team.getID(); }
 
-    public void setTeamID(BigInteger teamID) { this.teamID = teamID; }
+    public Team getTeam(){return this.team;}
 
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Attendance getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(Attendance attendance) {
+        this.attendance = attendance;
+    }
 }
