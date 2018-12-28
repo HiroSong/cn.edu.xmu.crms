@@ -2,40 +2,101 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.TeamMapper" >
 
+    <!--根据studentID和courseID获取TeamID-->
+    <select id="getTeamIDByStudentAndCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT team_id FROM team_student WHERE student_id = #{param1} AND team_id IN (
+        SELECT klass_team.team_id FROM klass_team,team_student WHERE
+        klass_team.team_id = team_student.team_id AND klass_team.klass_id IN (
+        SELECT klass_student.klass_id FROM klass_student,klass_team WHERE klass_student.klass_id = klass_team.klass_id
+        AND klass_student.course_id = #{param2}))
+    </select>
+
+    <!--根据teamID获取Team对象-->
+    <select id="getTeamByTeamID" resultMap="teamMap" parameterType="BigInteger">
+        SELECT * FROM team,course,klass,student,team_student
+        WHERE team.id = #{teamID}
+        AND team.course_id = course.id
+        AND team.klass_id = klass.id
+        AND  team.leader_id = student.id
+        AND team_student.team_id = #{teamID}
+    </select>
+
+    <!--根据courseID获取teamID列表-->
+    <select id="listTeamsIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM team WHERE course_id = #{courseID}
+    </select>
+
+    <!--添加新成员进入队伍-->
+    <insert id="insertStudentIntoTeamBy4ID" parameterType="BigInteger">
+        INSERT INTO klass_student(klass_id,student_id,course_id,team_id)
+        VALUE(#{param1},#{param2},#{param3},#{param4})
+    </insert>
+
+    <!--根据TeamID删除小组-->
+    <delete id="deleteTeamByTeamID" parameterType="BigInteger">
+        DELETE FROM team WHERE id = #{teamID}
+    </delete>
+    <!--根据TeamID删除小组的其他信息-->
+    <delete id="deleteKlassTeamByTeamID" parameterType="BigInteger">
+        DELETE FROM klass_team WHERE team_id = #{teamID}
+    </delete>
+    <delete id="deleteTeamStudentByTeamID" parameterType="BigInteger">
+        DELETE FROM team_student WHERE team_id = #{teamID}
+    </delete>
+    <delete id="deleteTeamApplicationByTeamID" parameterType="BigInteger">
+        DELETE FROM team_valid_application WHERE team_id = #{teamID}
+    </delete>
+
+    <!--根据删除team和student的关系-->
+    <delete id="deleteStudentFromTeamByTeamAndStudentID" parameterType="BigInteger">
+        DELETE FROM team_student WHERE team_id = #{param1} AND student_id = #{param2}
+    </delete>
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
+    </select>
+
+    <!--插入一个新的队伍信息-->
+    <insert id="insertTeam" parameterType="Team">
+        INSERT INTO team(klass_id,course_id,leader_id,team_name,team_serial,status)
+        VALUE (#{klass.id},#{course.id},#{leader.id},#{teamName},#{teamSerial},#{status})
+    </insert>
+
+    <!--队伍添加成员更新-->
+    <insert id="insertStudentToTeam" parameterType="BigInteger">
+        INSERT INTO team_student(team_id, student_id) VALUE (#{param1},#{param2})
+    </insert>
+
+
     <!--获得参与展示小组的ID列表-->
     <select id="listAttendancesIDByKlassSeminarID" parameterType="BigInteger" resultType="BigInteger">
         SELECT id FROM attendance WHERE klass_seminar_id = #{klass_seminarID}
     </select>
 
     <!--根据参与展示小组的ID获得参与展示小组的对象-->
-    <select id="getAttendanceByAttendanceID"  resultMap="attendanceResultMap" parameterType="BigInteger">
-    SELECT * FROM attendance,team WHERE attendance.id = #{attendanceID} AND team.id=attendance.team_id
+    <select id="getAttendanceByAttendanceID"  resultType="Attendance" parameterType="BigInteger">
+    SELECT id id,klass_seminar_id klassSeminarID,team_order teamOrder,is_present bePresent FROM attendance WHERE id = #{attendanceID}
     </select>
 
     <!--获得参与展示小组的列表-->
     <select id="listAttendancesByKlassSeminarID" parameterType="BigInteger" resultMap="attendanceResultMap">
         SELECT * FROM attendance,team,klass WHERE attendance.klass_seminar_id=#{klass_seminarID} AND team.id=attendance.team_id AND team.klass_id=klass.id
     </select>
+
     <resultMap id="attendanceResultMap" type="Attendance">
         <id property="id" column="id"/>
         <result property="klassSeminarID" column="klass_seminar_id"/>
         <result property="teamOrder" column="team_order"/>
-        <result property="bePresent" column="is_present"/>
-        <result property="reportName" column="report_name"/>
-        <result property="reportUrl" column="report_url"/>
-        <result property="pptName" column="ppt_name"/>
-        <result property="pptUrl" column="ppt_url"/>
         <association property="team" javaType="Team">
             <id property="id" column="team_id"/>
-            <result property="teamName" column="team_name"/>
             <result property="teamSerial" column="team_serial"/>
             <result property="klassSerial" column="klass_serial"/>
-            <result property="status" column="status"/>
         </association>
     </resultMap>
 
     <!--新建参与展示的小组-->
-    <insert id="insertAttendance" parameterType="Attendance" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertAttendance" parameterType="Attendance" >
         INSERT INTO attendance(klass_seminar_id,team_id,team_order,is_present)
         VALUES (#{klassSeminarID},#{teamID},#{teamOrder},0)
     </insert>
@@ -50,10 +111,43 @@
         SELECT id FROM attendance WHERE klass_seminar_id = #{param1} AND team_id=#{param2}
     </select>
 
-    <!--根据studentID和klassID获取TeamID-->
-    <select id="getTeamIDByStudentAndKlassID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT klass_team.team_id FROM klass_team,team_student WHERE team_student.student_id = #{param1} AND klass_team.klass_id = #{param2} AND klass_team.team_id=team_student.team_id
+
+    <!--根据course查找teamList-->
+    <select id="listTeamsByCourseID" resultMap="teamMap" parameterType="BigInteger">
+        SELECT * FROM team,course,klass,student,klass_team
+        WHERE team.id = klass_team.team_id
+        AND course.id = #{courseID}
+        AND klass.course_id = #{courseID}
+        AND team.leader_id = student.id
+        AND klass.id = klass_team.klass_id
     </select>
 
+    <resultMap id="teamMap" type="Team">
+        <id property="id" column="id"/>
+        <result property="teamName" column="team_name"/>
+        <result property="teamSerial" column="team_serial"/>
+        <result property="klassSerial" column="klass_serial"/>
+        <result property="status" column="status"/>
+        <association property="course" javaType="Course">
+            <id property="id" column="course_id"/>
+            <result property="courseName" column="course_name"/>
+            <result property="introduction" column="introduction"/>
+        </association>
+        <association property="klass" javaType="Klass">
+            <id property="id" column="klass_id"/>
+            <result property="grade" column="grade"/>
+            <result property="klassSerial" column="klass_serial"/>
+        </association>
+        <association property="leader" javaType="Student">
+            <id property="id" column="leader_id"/>
+            <result property="username" column="account"/>
+            <result property="name" column="student_name"/>
+        </association>
+    </resultMap>
+
+    <!--更新队伍合法性-->
+    <update id="updateStatusByID" parameterType="Team">
+        UPDATE team SET status = #{status} WHERE id = #{id}
+    </update>
 
 </mapper>

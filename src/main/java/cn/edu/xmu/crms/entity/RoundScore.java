@@ -1,6 +1,5 @@
 package cn.edu.xmu.crms.entity;
 
-import java.math.BigInteger;
 
 /**
  * @ClassName RoundScore
@@ -9,28 +8,29 @@ import java.math.BigInteger;
  * @Date 2018/12/20 3:11
  **/
 public class RoundScore {
-    private BigInteger roundID;
-    private BigInteger teamID;
     private Double totalScore;
     private Double presentationScore;
     private Double questionScore;
     private Double reportScore;
+    private Round round;
+    private Team team;
 
-    public BigInteger getRoundID() {
-        return roundID;
+    public Round getRound() {
+        return round;
     }
 
-    public void setRoundID(BigInteger roundID) {
-        this.roundID = roundID;
+    public void setRound(Round round) {
+        this.round = round;
     }
 
-    public BigInteger getTeamID() {
-        return teamID;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setTeamID(BigInteger teamID) {
-        this.teamID = teamID;
+    public void setTeam(Team team) {
+        this.team = team;
     }
+
 
     public Double getTotalScore() {
         return totalScore;

@@ -11,27 +11,18 @@ import java.math.BigInteger;
 public class Question {
     private BigInteger id;
     private BigInteger klssSeminarID;
-    private Attendance attendance;
-    private Student student;
-    private Team team;
+    private BigInteger attendanceID;
+    private BigInteger studentID;
     private Integer beSelected;
-    private Double score;
-    public Integer order;
+    private String score;
 
-    public Question(){
-        attendance=new Attendance();
-        student=new Student();
-        team=new Team();
-    }
     public BigInteger getID() {
         return id;
     }
 
-    public void setID(BigInteger id) {
+    public void setID(BigInteger ID) {
         this.id = id;
     }
-
-    public void setTeamID(BigInteger teamID){this.team.setID(teamID);}
 
     public BigInteger getKlssSeminarID() {
         return klssSeminarID;
@@ -42,19 +33,19 @@ public class Question {
     }
 
     public BigInteger getAttendanceID() {
-        return attendance.getID();
+        return attendanceID;
     }
 
     public void setAttendanceID(BigInteger attendanceID) {
-        this.attendance.setID(attendanceID);
+        this.attendanceID = attendanceID;
     }
 
     public BigInteger getStudentID() {
-        return student.getID();
+        return studentID;
     }
 
     public void setStudentID(BigInteger studentID) {
-        this.student.setID(studentID);
+        this.studentID = studentID;
     }
 
     public Integer getBeSelected() {
@@ -65,31 +56,11 @@ public class Question {
         this.beSelected = beSelected;
     }
 
-    public Double getScore() {
+    public String getScore() {
         return score;
     }
 
-    public void setScore(Double score) {
+    public void setScore(String score) {
         this.score = score;
-    }
-
-    public BigInteger getTeamID() { return team.getID(); }
-
-    public Team getTeam(){return this.team;}
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Attendance getAttendance() {
-        return attendance;
-    }
-
-    public void setAttendance(Attendance attendance) {
-        this.attendance = attendance;
     }
 }

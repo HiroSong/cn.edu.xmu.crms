@@ -1,13 +1,10 @@
 package cn.edu.xmu.crms.service;
 
-import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.dao.TeacherDao;
-import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Teacher;
-import cn.edu.xmu.crms.mapper.StudentMapper;
-import cn.edu.xmu.crms.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -21,7 +18,74 @@ import java.util.Map;
  * @Author Hongqiwu
  * @Date 2018/12/20 4:05
  **/
+@RestController
 @Service
 public class TeacherService {
 
+    @Autowired
+    TeacherDao teacherDao;
+
+    @PostMapping("/teacher")
+    public Boolean createTeacher(@RequestBody Teacher teacher) {
+        return teacherDao.insertTeacher(teacher);
+    }
+
+    @GetMapping("/teacher/{teacherID}")
+    public Teacher getTeacherInfo(@PathVariable("teacherID") BigInteger teacherID) {
+        return teacherDao.getTeacherByTeacherID(teacherID);
+    }
+
+    @GetMapping("/teacher")
+    public List<Map<String, Object>> listAllTeachersInfo() {
+        List<Teacher> teachers = teacherDao.listAllTeachers();
+        List<Map<String, Object>> teacherInfoList = new ArrayList<>();
+        for(int i = 0; i < teachers.size(); i++) {
+            Teacher teacher = teachers.get(i);
+            Map<String, Object> map = new HashMap<>(4);
+            map.put("id",teacher.getID());
+            map.put("account",teacher.getUsername());
+            map.put("name",teacher.getName());
+            map.put("email",teacher.getEmail());
+            teacherInfoList.add(map);
+        }
+        return teacherInfoList;
+    }
+
+    //修改教师信息(邮箱)
+    @PutMapping("/teacher/{teacherID}/information")
+    public Teacher modifyTeacherInfo(@PathVariable("teacherID") BigInteger teacherID,
+                                     @RequestBody Teacher teacher) {
+        teacher.setID(teacherID);
+        if(teacherDao.updateTeacherInfoByTeacher(teacher) == 1) {
+            return teacher;
+        }
+        return null;
+    }
+
+    //重置教师密码
+    @PutMapping("/teacher/{teacherID}/password")
+    public Boolean resetTeacherPassword(@PathVariable("teacherID") BigInteger teacherID) {
+        if(teacherDao.resetTeacherPasswordByTeacherID(teacherID) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    //删除教师
+    @DeleteMapping("/teacher/{teacherID}")
+    public Boolean deleteTeacher(@PathVariable("teacherID") BigInteger teacherID) {
+        if(teacherDao.deleteTeacherByTeacherID(teacherID) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    //激活教师账号
+    @PutMapping("/teacher/active")
+    public Boolean activeTeacher(@RequestBody Teacher teacher) {
+        if(teacherDao.updateTeacherActiveByTeacher(teacher) == 1) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -1,6 +1,8 @@
 package cn.edu.xmu.crms.entity;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName Round
@@ -10,26 +12,35 @@ import java.math.BigInteger;
  **/
 public class Round {
     private BigInteger id;
-    private BigInteger courseID;
+    private Course course;
     private Integer roundSerial;
     private Integer presentationScoreMethod;
     private Integer reportScoreMethod;
     private Integer questionScoreMethod;
+    private List<Map<String,Object>> signUpNumber;
+
+    public List<Map<String, Object>> getSignUpNumber() {
+        return signUpNumber;
+    }
+
+    public void setSignUpNumber(List<Map<String, Object>> signUpNumber) {
+        this.signUpNumber = signUpNumber;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 
     public BigInteger getID() {
         return id;
     }
 
-    public void setID(BigInteger ID) {
+    public void setID(BigInteger id) {
         this.id = id;
-    }
-
-    public BigInteger getCourseID() {
-        return courseID;
-    }
-
-    public void setCourseID(BigInteger courseID) {
-        this.courseID = courseID;
     }
 
     public Integer getRoundSerial() {

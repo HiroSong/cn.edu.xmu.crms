@@ -20,6 +20,10 @@ import java.util.*;
 @Component
 public class JwtTokenUtil implements Serializable {
 
+    public static String USER_STUDENT="student";
+    public static String USER_TEACHER="teacher";
+    public static String USER_ADMIN="admin";
+
     /**
      * 密钥
      */
@@ -155,6 +159,20 @@ public class JwtTokenUtil implements Serializable {
         }
         return refreshedToken;
     }
+
+    //    /**
+//     * 刷新密钥
+//     *
+//     * @param oldToken 原密钥
+//     * @return String 新密钥
+//     */
+//    public String refreshToken(String oldToken) {
+//        String token = oldToken.substring("Bearer ".length());
+//        if (!jwtTokenUtil.isTokenExpired(token)) {
+//            return jwtTokenUtil.refreshToken(token);
+//        }
+//        return "error";
+//    }
 
     /**
      * 验证令牌

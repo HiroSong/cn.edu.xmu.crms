@@ -2,4 +2,141 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.SeminarMapper" >
 
+    <resultMap id="seminarMap" type="Seminar">
+        <id property="id" column="id"/>
+        <result property="seminarName" column="seminar_name"/>
+        <result property="introduction" column="introduction"/>
+        <result property="maxTeam" column="max_team"/>
+        <result property="beVisible" column="is_visible"/>
+        <result property="seminarSerial" column="seminar_serial"/>
+        <result property="enrollStartTime" column="enroll_start_time"/>
+        <result property="enrollEndTime" column="enroll_end_time"/>
+        <association property="course" javaType="Course">
+            <id property="id" column="course_id"/>
+            <result property="courseName" column="course_name"/>
+            <result property="introduction" column="introduction"/>
+        </association>
+        <association property="round" javaType="Round">
+            <id property="id" column="round_id"/>
+            <result property="roundSerial" column="round_serial"/>
+        </association>
+    </resultMap>
+
+    <!--根据klassID获取seminarID列表-->
+    <select id="listSeminarsIDByKlassID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT seminar_id FROM klass_seminar WHERE klass_id = #{klassID}
+    </select>
+
+    <!--根据seminarID获取seminar对象√-->
+    <select id="getSeminarBySeminarID"  resultMap="seminarMap" parameterType="BigInteger">
+        SELECT * FROM seminar,round,course WHERE seminar.course_id = course.id AND seminar.round_id = round.id
+        AND seminar.id = #{seminarID}
+    </select>
+
+    <!--根据courseID在共享讨论课获取subCourseID-->
+    <select id="listSubCoursesIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT sub_course_id FROM share_seminar_application WHERE main_course_id = #{courseID} AND status = 1
+    </select>
+
+    <!--根据courseID在共享讨论课获取mainCourseID-->
+    <select id="listMainCoursesIDByCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT main_course_id FROM share_seminar_application WHERE sub_course_id = #{courseID} AND status = 1
+    </select>
+
+    <!--根据main和subCourseID在共享讨论课获取shareID-->
+    <select id="getSeminarShareIDByMainAndSubCourseID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM share_seminar_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
+    </select>
+
+    <!--根据roundID获取seminarID列表-->
+    <select id="listSeminarsIDByRoundID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM seminar WHERE round_id = #{roundID}
+    </select>
+
+    <!--插入新的讨论课信息-->
+    <insert id="insertSeminar" parameterType="Seminar">
+        INSERT INTO seminar(course_id,round_id,seminar_name,introduction,max_team,is_visible,
+        seminar_serial,enroll_start_time,enroll_end_time) VALUE (#{course.id},#{round.id},#{seminarName},
+        #{introduction},#{maxTeam},#{beVisible},#{seminarSerial},#{enrollStartTime},#{enrollEndTime})
+    </insert>
+
+    <!--插入讨论课和班级联系-->
+    <insert id="insertKlassSeminarBy2ID" parameterType="BigInteger">
+        INSERT INTO klass_seminar(klass_id,seminar_id,status) VALUE (#{param1},#{param2},0)
+    </insert>
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
+    </select>
+
+    <!--修改讨论课信息-->
+    <update id="updateSeminarBySeminarID" parameterType="Seminar">
+        UPDATE seminar SET seminar_name = #{seminarName}, introduction = #{introduction},
+        seminar_serial = #{seminarSerial}, is_visible = #{beVisible}, enroll_start_time = #{enrollStartTime},
+        enroll_end_time = #{enrollEndTime}, max_team = #{maxTeam} WHERE id = #{id}
+    </update>
+
+    <!--根据班级ID和讨论课ID修改reportDDL-->
+    <update id="updateSeminarReportDDLByKlassAndSeminarID" parameterType="HashMap">
+        UPDATE klass_seminar SET report_ddl = #{reportDDL} WHERE klass_id = #{klassID} AND seminar_id = #{seminarID}
+    </update>
+
+    <!--根据seminarID和klassID获取报告截止时间和讨论课状态-->
+    <select id="getStatusBySeminarAndKlassID" parameterType="BigInteger" resultType="Integer">
+        SELECT status FROM klass_seminar WHERE seminar_id = #{param1} AND klass_id = #{param2}
+    </select>
+
+    <!--根据seminarID和klassID获取报告截止时间-->
+    <select id="getReportDDLBySeminarAndKlassID" parameterType="BigInteger" resultType="String">
+        SELECT report_ddl FROM klass_seminar WHERE seminar_id = #{param1} AND klass_id = #{param2}
+    </select>
+
+    <!--根据klassID和seminarID开始讨论课-->
+    <update id="updateStartSeminarByKlassAndSeminarID" parameterType="BigInteger">
+        UPDATE klass_seminar SET status = 1 WHERE klass_id = #{param1} AND seminar_id = #{param2}
+    </update>
+
+    <!--根据klassID和seminarID结束讨论课-->
+    <update id="updateEndSeminarByKlassAndSeminarID" parameterType="BigInteger">
+        UPDATE klass_seminar SET status = 2 WHERE klass_id = #{param1} AND seminar_id = #{param2}
+    </update>
+
+    <!--根据klassID和seminarID获取klassSeminarID-->
+    <select id="getKlassSeminarIDByKlassAndSeminarID" parameterType="BigInteger" resultType="BigInteger">
+        SELECT id FROM klass_seminar WHERE klass_id = #{param1} AND seminar_id = #{param2}
+    </select>
+
+    <!--根据班级讨论课ID和小组ID获得小组本次讨论课成绩-->
+    <select id="getTeamSeminarScoreByKlassSeminarAndTeamID" parameterType="BigInteger" resultType="HashMap">
+        SELECT total_score totalScore,presentation_score presentationScore,question_score questionScore,
+        report_score reportScore FROM seminar_score WHERE klass_seminar_id = #{param1} AND team_id = #{param2}
+    </select>
+
+    <!--根据班级讨论课ID和teamID修改成绩-->
+    <update id="updateSeminarScoreByKlassSeminarAndTeamID" parameterType="HashMap">
+        UPDATE seminar_score SET total_score = #{totalScore},presentation_score =#{presentationScore},
+        question_score = #{questionScore},report_score = #{reportScore}
+        WHERE klass_seminar_id = #{klassSeminarID} AND team_id = #{teamID}
+    </update>
+
+    <!--根据seminarID和klassID获取klass_seminarID-->
+    <select id="getKlassSeminarIDBySeminarIDAndClassID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM klass_seminar WHERE seminar_id = #{param1} AND klass_id = #{param2}
+    </select>
+
+    <!--删除讨论课信息-->
+    <delete id="deleteSeminarBySeminarID" parameterType="BigInteger">
+        DELETE FROM  seminar WHERE id = #{seminarID}
+    </delete>
+
+    <!--删除讨论课和班级的联系-->
+    <delete id="deleteKlassSeminarBySeminarID" parameterType="BigInteger">
+        DELETE FROM  klass_seminar WHERE seminar_id = #{seminarID}
+    </delete>
+
+    <insert id="insertKlassSeminar" parameterType="HashMap">
+        INSERT INTO klass_seminar(klass_id, seminar_id, status)
+        VALUE (#{klassID},#{seminarID},0)
+    </insert>
 </mapper>
