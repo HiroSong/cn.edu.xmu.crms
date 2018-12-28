@@ -18,30 +18,5 @@ import java.util.List;
 
 @Repository
 public class TeacherDao {
-    @Autowired
-    TeacherMapper teacherMapper;
 
-    public Teacher getTeacherByTeacherID(BigInteger teacherID) {
-        return teacherMapper.getTeacherByTeacherID(teacherID);
-    }
-
-    public Teacher getTeacherByCourseID(BigInteger courseID) {
-        BigInteger teacherID = teacherMapper.getTeacherIDByCourseID(courseID);
-        return teacherMapper.getTeacherByTeacherID(teacherID);
-    }
-
-    public BigInteger insertTeacher(User teacher) {
-        teacherMapper.insertTeacher(teacher);
-        return teacherMapper.getTeacherIDByAccountAndPassword(teacher.getUsername(), teacher.getPassword());
-    }
-
-    public List<Teacher> listAllTeachers() {
-        List<BigInteger> allTeachersID = teacherMapper.listAllTeachersID();
-        List<Teacher> teachers = new ArrayList<>();
-        for(int i = 0 ;i < allTeachersID.size(); i++) {
-            Teacher teacher = teacherMapper.getTeacherByTeacherID(allTeachersID.get(i));
-            teachers.add(teacher);
-        }
-        return teachers;
-    }
 }

@@ -2,40 +2,4 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.TeamShareMapper" >
 
-    <!--根据主课程和从课程ID查询teamShare对象-->
-    <select id="getTeamShareIDByMainAndSubCourseID" resultType="BigInteger" parameterType="BigInteger">
-        SELECT id FROM share_team_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
-    </select>
-
-    <!--根据申请ID获取申请对象-->
-    <select id="getApplicationByID" parameterType="BigInteger" resultType="HashMap">
-        SELECT id id,main_course_id mainCourseID,sub_course_id subCourseID,sub_course_teacher_id subCourseTeacherID,
-        status status FROM share_team_application WHERE id = #{id}
-    </select>
-
-    <!--根据teamShareID删除共享组队表中的信息-->
-    <delete id="deleteTeamShareByTeamShareID"  parameterType="BigInteger">
-        DELETE FROM share_team_application WHERE  id = #{teamShareID}
-    </delete>
-
-    <!--teamShare插入share_team_application表-->
-    <insert id="insertTeamShareByTeamShare" parameterType="ShareTeamApplication" >
-        insert into share_team_application(main_course_id,sub_course_id,sub_course_teacher_id,status) VALUE
-        (#{mainCourse.id},#{subCourse.id},#{subCourseTeacher.id},#{status})
-    </insert>
-
-    <!--获取所有申请的ID-->
-    <select id="listApplicationID" resultType="BigInteger">
-        SELECT id FROM share_team_application
-    </select>
-
-    <!--更新申请status根据ID-->
-    <update id="updateStatusByTeamShareID" parameterType="ShareTeamApplication">
-        UPDATE share_team_application SET status = #{status} WHERE id = #{id}
-    </update>
-
-    <!--返回上一条插入语句的ID-->
-    <select id="getLastInsertID" resultType="BigInteger">
-        SELECT LAST_INSERT_ID();
-    </select>
 </mapper>

@@ -20,51 +20,5 @@ import java.util.Map;
  **/
 @Service
 public class StudentService {
-    @Autowired
-    StudentDao studentDao;
-    @Autowired
-    StudentMapper studentMapper;
 
-    public List<Map<String, Object>> listAllStudentsInfo() {
-        List<Map<String, Object>> studentsInfoList = new ArrayList<>();
-        List<Student> students = studentDao.listAllStudents();
-        for(int i = 0; i < students.size(); i++) {
-            Map<String, Object> map = new HashMap<>(4);
-            Student student = students.get(i);
-            map.put("id",student.getID());
-            map.put("account",student.getUsername());
-            map.put("name",student.getName());
-            map.put("email",student.getEmail());
-            studentsInfoList.add(map);
-        }
-        return studentsInfoList;
-    }
-
-    public void updateStudentInfoByStudent(Student student) {
-        studentMapper.updateStudentInfoByStudent(student);
-    }
-
-    public Map<String, Object> resetStudentPasswordByStudentID(BigInteger studentID) {
-        Map<String, Object> map = new HashMap<>(4);
-        studentMapper.resetStudentPasswordByStudentID(studentID);
-        Student student = studentMapper.getStudentByStudentID(studentID);
-        map.put("id",student.getID());
-        map.put("account",student.getUsername());
-        map.put("name",student.getName());
-        map.put("email",student.getEmail());
-        return map;
-    }
-
-    public void deleteStudentByStudentID(BigInteger studentID) {
-        studentMapper.deleteStudentByStudentID(studentID);
-    }
-
-    public Map<String, Object> updateStudentActiveByStudentID(Student student) {
-        studentMapper.updateStudentActiveByStudentID(student);
-        Map<String, Object> map = new HashMap<>(3);
-        map.put("id",student.getID());
-        map.put("account",student.getID());
-        map.put("name",student.getName());
-        return map;
-    }
 }
