@@ -143,4 +143,8 @@ public interface StudentMapper {
      * @date 2018/12/01 14:32
      */
     List<Student> listNoTeamStudentsByCourseID(BigInteger courseID);
+
+    void updateStudentPassword(User user);
+
+    BigInteger getIDByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
 }

@@ -1,5 +1,8 @@
 package cn.edu.xmu.crms.mapper;
 
+import cn.edu.xmu.crms.entity.ConflictCourseStrategy;
+import cn.edu.xmu.crms.entity.CourseMemberLimitStrategy;
+import cn.edu.xmu.crms.entity.TeamStrategy;
 import cn.edu.xmu.crms.entity.TeamValidApplication;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -70,4 +73,5 @@ public interface TeamValidMapper {
      * @date 2018/12/18 19:35
      */
     void insertApplicationByTeamValid(TeamValidApplication teamValidApplication);
+
 }

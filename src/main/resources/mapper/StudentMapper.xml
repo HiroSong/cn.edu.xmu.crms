@@ -94,4 +94,14 @@
         team_student WHERE student.id = team_student.student_id AND team_student.team_id = #{teamID}
     </select>
 
+    <!--修改学生密码-->
+    <update id="updateStudentPassword" parameterType="User">
+        UPDATE student SET password = #{password} WHERE id = #{id}
+    </update>
+
+    <!--查看学生是否有选某课程-->
+    <select id="getIDByStudentAndCourseID" resultType="BigInteger" parameterType="BigInteger">
+        SELECT klass_id FROM klass_student WHERE klass_student.student_id = #{param1}
+        AND klass_student.course_id = #{param2}
+    </select>
 </mapper>
