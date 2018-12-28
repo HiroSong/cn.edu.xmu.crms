@@ -36,7 +36,7 @@ public class Email {
             // 获取邮件对象
             Message message = new MimeMessage(session);
             // 设置发件人邮箱地址
-            message.setFrom(new InternetAddress(from));
+            message.setFrom(new InternetAddress("759849985@qq.com"));
             // 设置收件人邮箱地址
             //message.setRecipients(Message.RecipientType.TO, new InternetAddress[]{new InternetAddress("xxx@qq.com"),new InternetAddress("xxx@qq.com"),new InternetAddress("xxx@qq.com")});
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));//一个收件人
@@ -61,7 +61,7 @@ public class Email {
             // 获取邮件对象
             Message message = new MimeMessage(session);
             // 设置发件人邮箱地址
-            message.setFrom(new InternetAddress(from));
+            message.setFrom(new InternetAddress("759849985@qq.com"));
             // 设置收件人邮箱地址
             //message.setRecipients(Message.RecipientType.TO, new InternetAddress[]{new InternetAddress("xxx@qq.com"),new InternetAddress("xxx@qq.com"),new InternetAddress("xxx@qq.com")});
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(sendTo));//一个收件人
@@ -73,7 +73,7 @@ public class Email {
             // 得到邮差对象
             Transport transport = session.getTransport();
             // 连接自己的邮箱账户
-            transport.connect(from, this.passWord);// 密码为QQ邮箱开通的stmp服务后得到的客户端授权码
+            transport.connect(from, passWord);// 密码为QQ邮箱开通的stmp服务后得到的客户端授权码
             // 发送邮件
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();

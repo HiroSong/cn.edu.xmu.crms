@@ -26,6 +26,7 @@ import java.util.Map;
  * @ClassName CourseService
  * @Author Hongqiw
  **/
+@RestController
 @Service
 public class TeamShareService {
     @Autowired

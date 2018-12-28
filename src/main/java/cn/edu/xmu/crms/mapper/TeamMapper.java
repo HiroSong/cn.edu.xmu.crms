@@ -4,6 +4,7 @@ import cn.edu.xmu.crms.entity.Attendance;
 import cn.edu.xmu.crms.entity.Team;
 import cn.edu.xmu.crms.entity.TeamValidApplication;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
@@ -16,7 +17,7 @@ import java.util.Map;
  * @Author Hongqiwu
  **/
 @Mapper
-@Repository
+@Component
 public interface TeamMapper {
     /**
      * 通过学生和课程ID获取队伍ID
@@ -186,16 +187,8 @@ public interface TeamMapper {
      * @date 2018/12/18 22:31
      */
     BigInteger getAttendanceIDByKlass_SeminarIDAndTeamID(BigInteger klass_seminarID, BigInteger teamID);
-    /**
-     * 通过学生和班级ID获取队伍ID
-     *
-     * @param studentID 学生ID
-     * @param klassID 班级ID
-     * @return BigInteger 队伍Id
-     * @author LaiShaopeng
-     * @date 2018/12/27 1:59
-     */
-    BigInteger getTeamIDByStudentAndKlassID(BigInteger studentID, BigInteger klassID);
+
+    List<Team> listTeamsByCourseID(BigInteger courseID);
 
     void updateTeamStatusByID(Team team);
 

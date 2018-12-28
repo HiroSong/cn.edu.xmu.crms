@@ -3,8 +3,7 @@ package cn.edu.xmu.crms.mapper;
 import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.omg.CORBA.OBJ_ADAPTER;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +15,11 @@ import java.util.Map;
  * @Author Hongqiwu
  **/
 @Mapper
-@Repository
+@Component
 public interface StudentMapper {
+
     /**
-     * 用于通过学生id获取学生对象
+     * 通过学生id获取学生对象
      *
      * @param studentID 学号
      * @return Student 学生对象
@@ -38,14 +38,17 @@ public interface StudentMapper {
      * @date 2018/12/01 14:32
      */
     List<BigInteger> listNoTeamStudentsIDByCourseID(BigInteger courseID);
+
+
     /**
-     * 用于获取所有学生的ID列表
+     * 获取所有学生对象
      *
-     * @return 所有学生ID列表
+     * @return 所有学生
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    List<BigInteger> listAllStudentsID();
+    List<Student> listAllStudents();
+
     /**
      * 用于修改学生信息
      *
@@ -53,7 +56,8 @@ public interface StudentMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void updateStudentInfoByStudent(Student student);
+    Integer updateStudentInfoByStudent(Student student);
+
     /**
      * 用于重置学生密码为123456
      *
@@ -61,7 +65,8 @@ public interface StudentMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void resetStudentPasswordByStudentID(BigInteger studentID);
+    Integer resetStudentPasswordByStudentID(BigInteger studentID);
+
     /**
      * 用于删除单个学生
      *
@@ -69,7 +74,8 @@ public interface StudentMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void deleteStudentByStudentID(BigInteger studentID);
+    Integer deleteStudentByStudentID(BigInteger studentID);
+
     /**
      * 用于激活某个学生账号
      *
@@ -77,7 +83,8 @@ public interface StudentMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void updateStudentActiveByStudentID(Student student);
+    Integer updateStudentActiveByStudent(Student student);
+
     /**
      * 通过teamID获得leaderID
      *

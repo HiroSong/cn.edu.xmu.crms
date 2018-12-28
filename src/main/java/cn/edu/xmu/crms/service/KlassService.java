@@ -23,22 +23,18 @@ import java.util.Map;
  * @ClassName KlassService
  * @Author Hongqiwu
  **/
+@RestController
 @Service
 public class KlassService {
     @Autowired
     KlassDao klassDao;
     @Autowired
     KlassMapper klassMapper;
+    @Autowired
+    StudentDao studentDao;
 
-    /**
-     * 用courseID查找班级信息列表
-     *
-     * @param courseID 课程号码
-     * @return List<Map<String, Object>> 返回查找到的列表，若无记录则为null
-     * @author Hongqiwu
-     * @date 2018/11/30 19:41
-     */
-    public List<Map<String, Object>> listKlassInfoByCourseID(BigInteger courseID) {
+    @GetMapping("/course/{courseID}/class")
+    public List<Map<String, Object>> listKlassInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Klass> klassList = klassDao.listKlassByCourseID(courseID);
         if(klassList == null) {
             return null;

@@ -3,11 +3,12 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
-import cn.edu.xmu.crms.util.email.Email;
+import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.Map;
  * @ClassName TeamService
  * @Author Hongqiwu
  **/
+@RestController
 @Service
 public class TeamService {
     @Autowired
@@ -38,6 +40,8 @@ public class TeamService {
     TeamValidDao teamValidDao;
     @Autowired
     TeamValidMapper teamValidMapper;
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
 
 
     private Map<String, Object> getTeamInfo(Team team) {
@@ -53,6 +57,9 @@ public class TeamService {
         List<Map<String, Object>> teamMembersList = new ArrayList<>();
         for(int i = 0; i < teamMembers.size(); i++) {
             Student teamMember = teamMembers.get(i);
+            if(teamMember.getID().equals(teamLeader.getID())) {
+                continue;
+            }
             Map<String, Object> oneMemberMap = new HashMap<>(3);
             oneMemberMap.put("id",teamMember.getID());
             oneMemberMap.put("account",teamMember.getUsername());
@@ -69,49 +76,30 @@ public class TeamService {
         return teamInfoMap;
     }
 
-    public List<Map<String, Object>> listNoTeamStudentsInfoByCourseID(BigInteger courseID) {
-        List<Map<String, Object>> noTeamStudentsMap = new ArrayList<>();
-        List<Student> noTeamStudents = studentDao.listNoTeamStudentsByCourseID(courseID);
-        for(int i = 0; i < noTeamStudents.size(); i++) {
-            Student noTeamStudent = noTeamStudents.get(i);
-            Map<String, Object> noTeamStudentMap = new HashMap<>(3);
-            noTeamStudentMap.put("id",noTeamStudent.getID());
-            noTeamStudentMap.put("account",noTeamStudent.getUsername());
-            noTeamStudentMap.put("name",noTeamStudent.getName());
-            noTeamStudentsMap.add(noTeamStudentMap);
+    @GetMapping("/course/{courseID}/team")
+    public List<Map<String, Object>> listTeamsInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
+        List<Map<String, Object>> teamsInfoList = new ArrayList<>();
+        List<Team> teams = teamDao.listTeamsByCourseID(courseID);
+        for(int i = 0; i < teams.size(); i++) {
+            Team team = teams.get(i);
+            Map<String, Object> map = this.getTeamInfo(team);
+            teamsInfoList.add(map);
         }
-        return noTeamStudentsMap;
+        return teamsInfoList;
     }
 
-    public Map<String, Object> getTeamInfoByTeamID(BigInteger teamID) {
+    @GetMapping("/course/{courseID}/myTeam")//查看我的队伍信息
+    public Map<String, Object> getTeamInfoByCourseAndStudentID(@PathVariable("courseID") BigInteger courseID,
+                                                               HttpServletRequest request) {
+        BigInteger studentID = jwtTokenUtil.getIDFromRequest(request);
+        Team team = teamDao.getTeamByCourseAndStudentID(courseID, studentID);
+        return this.getTeamInfo(team);
+    }
+
+    @GetMapping("/team/{teamID}")
+    public Map<String, Object> getTeamInfoByTeamID(@PathVariable("teamID") BigInteger teamID) {
         Team team = teamDao.getTeamByTeamID(teamID);
-        Map<String, Object> teamInfo = new HashMap<>(7);
-        Map<String, Object> courseInfo = new HashMap<>(2);
-        courseInfo.put("id",team.getCourse().getID());
-        courseInfo.put("name",team.getCourse().getCourseName());
-        Map<String, Object> klassInfo = new HashMap<>(2);
-        klassInfo.put("id",team.getKlass().getID());
-        klassInfo.put("name",team.getKlass().getGrade().toString()+team.getKlass().getKlassSerial().toString());
-        Map<String, Object> leaderInfo = new HashMap<>(2);
-        leaderInfo.put("id",team.getLeader().getID());
-        leaderInfo.put("account",team.getLeader().getUsername());
-        leaderInfo.put("name",team.getLeader().getName());
-        List<Map<String, Object>> membersInfo = new ArrayList<>();
-        for(int i = 0; i < team.getMembers().size(); i++) {
-            Student student = team.getMembers().get(i);
-            Map<String, Object> memberInfo = new HashMap<>(3);
-            memberInfo.put("id",student.getID());
-            memberInfo.put("account",student.getUsername());
-            memberInfo.put("name",student.getName());
-            membersInfo.add(memberInfo);
-        }
-        teamInfo.put("id",team.getID());
-        teamInfo.put("name",team.getTeamName());
-        teamInfo.put("course",courseInfo);
-        teamInfo.put("class",klassInfo);
-        teamInfo.put("leader",leaderInfo);
-        teamInfo.put("members",membersInfo);
-        teamInfo.put("valid",team.getStatus());
+        Map<String, Object> teamInfo = this.getTeamInfo(team);
         return teamInfo;
     }
 
@@ -133,13 +121,10 @@ public class TeamService {
 
     //移除成员或踢出队伍
     @PutMapping("/team/{teamID}/remove")
-    public void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
-        teamMapper.deleteStudentFromTeamByTeamAndStudentID(teamID,studentID);
-        Student student=studentDao.getStudentByStudentID(studentID);
-        Team team=teamDao.getTeamByTeamID(teamID);
-        String text=student.getName()+"同学，你已离开"+team.getTeamName()+"小组。";
-        Email email=new Email();
-        email.sendSimpleMail(student.getEmail(),text);
+    public Boolean removeTeamMember(@PathVariable("teamID") BigInteger teamID,
+                                    @RequestBody Student student) {
+        teamDao.deleteStudentFromTeam(teamID,student.getID());
+        return teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID));
     }
 
 

@@ -27,11 +27,10 @@
         SELECT seminar_id FROM klass_seminar WHERE klass_id = #{klassID}
     </select>
 
-    <!--根据seminarID获取seminar对象-->
-    <select id="getSeminarBySeminarID"  resultType="Seminar" parameterType="BigInteger">
-        SELECT id id,course_id courseID,round_id roundID,seminar_name seminarName,introduction introduction,
-        max_team maxTeam,is_visible beVisible,seminar_serial seminarSerial,enroll_start_time enrollStartTime,
-        enroll_end_time enrollEndTime FROM seminar WHERE id = #{seminarID}
+    <!--根据seminarID获取seminar对象√-->
+    <select id="getSeminarBySeminarID"  resultMap="seminarMap" parameterType="BigInteger">
+        SELECT * FROM seminar,round,course WHERE seminar.course_id = course.id AND seminar.round_id = round.id
+        AND seminar.id = #{seminarID}
     </select>
 
     <!--根据courseID在共享讨论课获取subCourseID-->

@@ -12,7 +12,7 @@ import java.util.Map;
  **/
 public class Round {
     private BigInteger id;
-    private BigInteger courseID;
+    private Course course;
     private Integer roundSerial;
     private Integer presentationScoreMethod;
     private Integer reportScoreMethod;
@@ -27,20 +27,20 @@ public class Round {
         this.signUpNumber = signUpNumber;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
     public BigInteger getID() {
         return id;
     }
 
     public void setID(BigInteger id) {
         this.id = id;
-    }
-
-    public BigInteger getCourseID() {
-        return courseID;
-    }
-
-    public void setCourseID(BigInteger courseID) {
-        this.courseID = courseID;
     }
 
     public Integer getRoundSerial() {

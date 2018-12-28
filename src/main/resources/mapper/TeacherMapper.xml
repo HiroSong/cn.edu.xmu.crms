@@ -14,25 +14,24 @@
     </select>
 
     <!--插入一个Teacher信息-->
-    <insert id="insertTeacher" parameterType="User">
+    <insert id="insertTeacher" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO teacher(account,password,teacher_name,email,is_active)
-        VALUE (#{username},#{password},#{name},#{email},0)
+        VALUE (#{username},123456,#{name},#{email},0)
     </insert>
 
-    <!--根据Teacher的账号密码查找ID-->
-    <select id="getTeacherIDByAccountAndPassword" parameterType="String" resultType="BigInteger">
-        SELECT id FROM teacher WHERE account = #{param1} AND password = #{param2}
+    <!--查询所有email-->
+    <select id="listAllEmails" resultType="String">
+        SELECT email FROM teacher
     </select>
 
-    <!--获取所有教师ID-->
-    <select id="listAllTeachersID" resultType="BigInteger">
-        SELECT id FROM teacher
+    <!--获取所有教师对象-->
+    <select id="listAllTeachers" resultType="Teacher">
+        SELECT id id,account username,password password,teacher_name name,is_active beActive,email email FROM teacher
     </select>
 
-    <!--根据ID修改某教师信息-->
-    <update id="updateTeacherInfoByTeacherID" parameterType="Teacher">
-        UPDATE teacher SET account = #{username},teacher_name = #{name},email = #{email}
-        WHERE id = #{id}
+    <!--根据ID修改某教师信息(邮箱)-->
+    <update id="updateTeacherInfoByTeacher" parameterType="Teacher">
+        UPDATE teacher SET email = #{email} WHERE id = #{id}
     </update>
 
     <!--重置某个教师的密码-->
@@ -49,6 +48,11 @@
     <update id="updateTeacherActiveByTeacher" parameterType="Teacher">
         UPDATE teacher SET is_active = 1,password = #{password} WHERE  id = #{id} AND is_active=0
     </update>
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
+    </select>
 
     <!--根据教工号获取教师对象-->
     <select id="getTeacherByTeacherAccount" parameterType="String" resultType="Teacher">
