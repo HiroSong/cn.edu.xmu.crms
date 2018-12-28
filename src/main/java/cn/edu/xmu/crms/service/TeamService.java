@@ -3,6 +3,7 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
+import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Map;
 @RestController
 @Service
 public class TeamService {
+    
     @Autowired
     TeamDao teamDao;
     @Autowired
@@ -44,6 +46,15 @@ public class TeamService {
     JwtTokenUtil jwtTokenUtil;
 
 
+    public void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
+        teamMapper.deleteStudentFromTeamByTeamAndStudentID(teamID,studentID);
+        Student student=studentDao.getStudentByStudentID(studentID);
+        Team team=teamDao.getTeamByTeamID(teamID);
+        String text=student.getName()+"同学，你已离开"+team.getTeamName()+"小组。";
+        Email email=new Email();
+        email.sendSimpleMail(student.getEmail(),text);
+    }
+    
     private Map<String, Object> getTeamInfo(Team team) {
         if(team==null){
             return null;

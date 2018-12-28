@@ -1,6 +1,5 @@
 package cn.edu.xmu.crms.mapper;
 
-import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.entity.User;
 import org.apache.ibatis.annotations.Mapper;
