@@ -22,9 +22,35 @@ public class Course {
     private BigInteger seminarMainCourseID;
     private Integer minMemberNumber;
     private Integer maxMemberNumber;
-    private List<ConflictCourse> conflictCourses;
     private Teacher teacher;
+    private String andOr;
+    private List<ConflictCourseStrategy> conflictCourseStrategies;
+    private List<CourseMemberLimitStrategy> courseMemberLimitStrategies;
 
+    public String getAndOr() {
+        return andOr;
+    }
+
+    public void setAndOr(String andOr) {
+        this.andOr = andOr;
+    }
+
+
+    public List<ConflictCourseStrategy> getConflictCourseStrategies() {
+        return conflictCourseStrategies;
+    }
+
+    public void setConflictCourseStrategies(List<ConflictCourseStrategy> conflictCourseStrategies) {
+        this.conflictCourseStrategies = conflictCourseStrategies;
+    }
+
+    public List<CourseMemberLimitStrategy> getCourseMemberLimitStrategies() {
+        return courseMemberLimitStrategies;
+    }
+
+    public void setCourseMemberLimitStrategies(List<CourseMemberLimitStrategy> courseMemberLimitStrategies) {
+        this.courseMemberLimitStrategies = courseMemberLimitStrategies;
+    }
 
     public Teacher getTeacher() {
         return teacher;
@@ -130,11 +156,4 @@ public class Course {
         this.maxMemberNumber = maxMemberNumber;
     }
 
-    public List<ConflictCourse> getConflictCourses() {
-        return conflictCourses;
-    }
-
-    public void setConflictCourses(List<ConflictCourse> conflictCourses) {
-        this.conflictCourses = conflictCourses;
-    }
 }

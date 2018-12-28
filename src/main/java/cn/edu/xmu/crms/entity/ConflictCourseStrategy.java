@@ -10,8 +10,7 @@ import java.math.BigInteger;
  **/
 public class ConflictCourseStrategy {
     private BigInteger id;
-    private BigInteger course1ID;
-    private BigInteger course2ID;
+    private BigInteger courseID;
 
     public BigInteger getID() {
         return id;
@@ -21,19 +20,11 @@ public class ConflictCourseStrategy {
         this.id = id;
     }
 
-    public BigInteger getCourse1ID() {
-        return course1ID;
+    public BigInteger getCourseID() {
+        return courseID;
     }
 
-    public void setCourse1ID(BigInteger course1ID) {
-        this.course1ID = course1ID;
-    }
-
-    public BigInteger getCourse2ID() {
-        return course2ID;
-    }
-
-    public void setCourse2ID(BigInteger course2ID) {
-        this.course2ID = course2ID;
+    public void setCourseID(BigInteger courseID) {
+        this.courseID = courseID;
     }
 }

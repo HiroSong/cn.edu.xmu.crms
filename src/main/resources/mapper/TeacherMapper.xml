@@ -59,6 +59,7 @@
         SELECT id id, account username, password password, is_active beActive FROM teacher WHERE account = #{username}
     </select>
 
+    <!--修改教师密码-->
     <update id="updateTeacherPassword" parameterType="User">
         UPDATE teacher SET password = #{password} WHERE id = #{id}
     </update>

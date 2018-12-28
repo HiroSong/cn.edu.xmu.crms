@@ -3,9 +3,11 @@ package cn.edu.xmu.crms.dao;
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.entity.Team;
+import cn.edu.xmu.crms.entity.TeamStrategy;
 import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.mapper.KlassMapper;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
+import cn.edu.xmu.crms.mapper.TeamStrategyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +27,8 @@ public class CourseDao {
     KlassMapper klassMapper;
     @Autowired
     TeacherDao teacherDao;
+    @Autowired
+    TeamStrategyMapper teamStrategyMapper;
 
     public Course getCourseByCourseID(BigInteger courseID) {
         Course course = courseMapper.getCourseByCourseID(courseID);
@@ -33,6 +37,13 @@ public class CourseDao {
         }
         course.setMaxMember(courseMapper.getCourseMaxMemberByCourseID(courseID));
         course.setMinMember(courseMapper.getCourseMinMemberByCourseID(courseID));
+        course.setAndOr(teamStrategyMapper.getOptionalCourseInfo(courseID));
+        if(course.getAndOr() == "TeamAndStrategy") {
+            course.setCourseMemberLimitStrategies(teamStrategyMapper.listAndCourseMemberLimitInfo(courseID));
+        } else {
+            course.setCourseMemberLimitStrategies(teamStrategyMapper.listOrCourseMemberLimitInfo(courseID));
+        }
+        course.setConflictCourseStrategies(teamStrategyMapper.listConflictCourse(courseID));
         return course;
     }
 

@@ -49,7 +49,7 @@ public class StudentService {
         return studentsInfoList;
     }
 
-    @PutMapping("/student/{studentID}/information")//修改学生信息
+    @PutMapping("/student/{studentID}/information")//修改学生信息（邮箱）
     public Student modifyStudentInfo(@PathVariable("studentID") BigInteger studentID,
                                      @RequestBody Student student) {
         student.setID(studentID);

@@ -146,4 +146,5 @@ public interface StudentMapper {
 
     void updateStudentPassword(User user);
 
+    BigInteger getIDByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
 }

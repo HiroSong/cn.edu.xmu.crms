@@ -50,6 +50,9 @@ public class CourseService {
         map.put("teacherName", course.getTeacher().getName());
         map.put("minMember",course.getMinMember());
         map.put("maxMember",course.getMaxMember());
+        map.put("andOr",course.getAndOr());
+        map.put("conflictStrategy",course.getConflictCourseStrategies());
+        map.put("courseStrategy",course.getCourseMemberLimitStrategies());
         return map;
     }
 

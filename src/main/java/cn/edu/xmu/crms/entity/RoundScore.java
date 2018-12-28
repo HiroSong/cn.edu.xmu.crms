@@ -1,6 +1,5 @@
 package cn.edu.xmu.crms.entity;
 
-import java.math.BigInteger;
 
 /**
  * @ClassName RoundScore

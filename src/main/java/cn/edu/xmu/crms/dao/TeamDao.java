@@ -84,7 +84,6 @@ public class TeamDao {
     }
 
 
-
     public Team insertTeam(Team team) {
         if(team.getMembers().size() + 1 > team.getCourse().getMaxMember()||
                 team.getMembers().size() + 1 < team.getCourse().getMinMember()) {
