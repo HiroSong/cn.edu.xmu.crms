@@ -94,4 +94,8 @@
         team_student WHERE student.id = team_student.student_id AND team_student.team_id = #{teamID}
     </select>
 
+    <update id="updateStudentPassword" parameterType="User">
+        UPDATE student SET password = #{password} WHERE id = #{id}
+    </update>
+
 </mapper>

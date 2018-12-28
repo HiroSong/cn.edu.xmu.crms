@@ -45,6 +45,8 @@ public class TeamService {
 
 
     private Map<String, Object> getTeamInfo(Team team) {
+        if(team==null)
+            return null;
         Map<String,Object> teamInfoMap = new HashMap<>(5);
         Map<String, Object> teamLeaderMap = new HashMap<>(3);
         Student teamLeader = team.getLeader();
@@ -193,6 +195,7 @@ public class TeamService {
             map.put("classGrade",application.getKlass().getGrade());
             map.put("classSerial",application.getKlass().getKlassSerial());
             map.put("teamID",application.getTeam().getID());
+            map.put("teamName",application.getTeam().getTeamName());
             map.put("leaderID",application.getLeader().getID());
             map.put("leaderName",application.getLeader().getName());
             map.put("reason",application.getReason());

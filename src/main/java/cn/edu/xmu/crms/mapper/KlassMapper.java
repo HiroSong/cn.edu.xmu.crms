@@ -117,6 +117,7 @@ public interface KlassMapper {
      * @date 2018/12/26 2:18
      */
     void insertStudentKlass(Map<String, Object> map);
+
     /**
      * 获得上一次插入语句的ID
      *

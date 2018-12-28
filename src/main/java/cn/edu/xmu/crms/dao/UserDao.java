@@ -7,6 +7,7 @@ import cn.edu.xmu.crms.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,4 +65,21 @@ public class UserDao {
             studentMapper.insertStudent(user);
         }
     }
+
+    public User getUserByInfo(BigInteger id, String role) {
+        if(role.equals("student")) {
+            return studentMapper.getStudentByStudentID(id);
+        }
+        return teacherMapper.getTeacherByTeacherID(id);
+    }
+
+    public void updateUserPassword(User user,String role) {
+        if(role.equals("student")) {
+            studentMapper.updateStudentPassword(user);
+        }
+        else {
+            teacherMapper.updateTeacherPassword(user);
+        }
+    }
+
 }

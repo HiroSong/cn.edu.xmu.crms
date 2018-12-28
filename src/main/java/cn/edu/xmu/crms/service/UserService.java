@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,4 +73,18 @@ public class UserService {
         return "success";
     }
 
+    @GetMapping("/user/information")
+    public User getUserInfo(HttpServletRequest request) {
+        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
+        String role = jwtTokenUtil.getRolesFromRequest(request);
+        return userDao.getUserByInfo(id,role);
+    }
+
+    @PutMapping("/user/password")//修改密码
+    public void modifyPassword(@RequestBody User user, HttpServletRequest request) {
+        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
+        String role = jwtTokenUtil.getRolesFromRequest(request);
+        user.setID(id);
+        userDao.updateUserPassword(user,role);
+    }
 }

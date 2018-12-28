@@ -53,6 +53,7 @@ public class SeminarService {
         map.put("signUpStartTime",seminar.getEnrollStartTime());
         map.put("signUpEndTime",seminar.getEnrollEndTime());
         map.put("round",seminar.getRound().getRoundSerial());
+        map.put("beVisible",seminar.getBeVisible());
         return map;
     }
 

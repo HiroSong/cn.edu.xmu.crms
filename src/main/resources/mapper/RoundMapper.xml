@@ -86,7 +86,7 @@
 
     <insert id="insertKlassRound" parameterType="HashMap">
         INSERT INTO klass_round(klass_id,round_id,enroll_number)
-        VALUE(#{klassID},#{roundID},#{enrollNumber})
+        VALUE(#{klassID},#{roundID},1)
     </insert>
 
     <!--返回上一条插入语句的ID-->

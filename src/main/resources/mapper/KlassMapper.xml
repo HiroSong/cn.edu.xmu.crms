@@ -86,7 +86,6 @@
         </foreach>
     </insert>
 
-
     <!--返回上一条插入语句的ID-->
     <select id="getLastInsertID" resultType="BigInteger">
         SELECT LAST_INSERT_ID();

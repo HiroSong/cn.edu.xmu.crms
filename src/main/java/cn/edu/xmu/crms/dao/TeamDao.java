@@ -33,6 +33,8 @@ public class TeamDao {
 
     public Team getTeamByTeamID(BigInteger teamID) {
         Team team = teamMapper.getTeamByTeamID(teamID);
+        if(team==null)
+            return null;
         List<Student> members = studentMapper.listMembersByTeamID(teamID);
         if(members != null) {
             team.setMembers(members);

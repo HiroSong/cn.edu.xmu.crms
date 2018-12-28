@@ -116,4 +116,6 @@ public interface TeacherMapper {
      * @date 2018/12/01 14:32
      */
     List<String> listAllEmails();
+
+    void updateTeacherPassword(User user);
 }

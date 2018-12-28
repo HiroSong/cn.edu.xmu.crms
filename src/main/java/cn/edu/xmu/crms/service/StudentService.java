@@ -2,10 +2,12 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.entity.Student;
+import cn.edu.xmu.crms.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +49,7 @@ public class StudentService {
         return studentsInfoList;
     }
 
-    @PutMapping("/student/{studentID}/information")//修改学生信息（密码）
+    @PutMapping("/student/{studentID}/information")//修改学生信息
     public Student modifyStudentInfo(@PathVariable("studentID") BigInteger studentID,
                                      @RequestBody Student student) {
         student.setID(studentID);
