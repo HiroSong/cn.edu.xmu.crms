@@ -96,6 +96,10 @@ public class CourseService {
         return listCoursesInfo;
     }
 
+    @GetMapping("/allcourse")
+    public List<Course> listAllCourses() {
+        return courseDao.listAllCourse();
+    }
 
     @GetMapping("/course/{courseID}")
     public Map<String, Object> getCourseInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {

@@ -230,10 +230,9 @@ public class TeamService {
             map.put("classSerial",application.getKlass().getKlassSerial());
             map.put("teamID",application.getTeam().getID());
             map.put("teamName",application.getTeam().getTeamName());
-            map.put("leaderID",application.getLeader().getID());
-            map.put("leaderName",application.getLeader().getName());
             map.put("reason",application.getReason());
             map.put("status",application.getStatus());
+            map.put("id",application.getID());
             applicationMapList.add(map);
         }
 

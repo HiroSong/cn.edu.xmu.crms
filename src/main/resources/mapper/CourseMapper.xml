@@ -20,6 +20,12 @@
         </association>
     </resultMap>
 
+
+    <select id="listAllCourse" resultMap="courseMap">
+        SELECT * FROM teacher,course WHERE teacher.id = course.teacher_id
+    </select>
+
+
     <!--根据studentID获取course对象列表-->
     <select id="listCoursesByStudentID"  resultMap="courseMap" parameterType="BigInteger">
         SELECT * FROM klass_student,course

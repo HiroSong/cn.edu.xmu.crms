@@ -30,6 +30,10 @@ public class CourseDao {
     @Autowired
     TeamStrategyMapper teamStrategyMapper;
 
+    public List<Course> listAllCourse() {
+        return courseMapper.listAllCourse();
+    }
+
     public Course getCourseByCourseID(BigInteger courseID) {
         Course course = courseMapper.getCourseByCourseID(courseID);
         if(course == null) {

@@ -44,6 +44,10 @@ public class TeamValidDao {
         List<TeamValidApplication> applications = new ArrayList<>();
         for(int i = 0; i < allID.size(); i++) {
             TeamValidApplication application = this.getApplicationByID(allID.get(i));
+            application.setTeam(teamMapper.getTeamByTeamID(application.getTeam().getID()));
+            application.setCourse(courseMapper.getCourseByCourseID(application.getTeam().getCourse().getID()));
+            application.setKlass(klassDao.getKlassByKlassID(application.getTeam().getKlass().getID()));
+            application.setTeacher(teacherDao.getTeacherByCourseID(application.getCourse().getID()));
             applications.add(application);
         }
         return applications;
