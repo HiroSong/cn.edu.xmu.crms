@@ -29,6 +29,8 @@ public class CourseDao {
     TeacherDao teacherDao;
     @Autowired
     TeamStrategyMapper teamStrategyMapper;
+    @Autowired
+    TeamStrategyDao teamStrategyDao;
 
     public List<Course> listAllCourse() {
         return courseMapper.listAllCourse();
@@ -74,9 +76,10 @@ public class CourseDao {
 
     public BigInteger insertCourse(Course course) {
         courseMapper.insertCourse(course);
-        BigInteger courseID = courseMapper.getLastInsertID();//缺各个策略表的关系创建
-        return courseMapper.getLastInsertID();
+        teamStrategyDao.insertStrategy(course);
+        return course.getID();
     }
+
 
     public List<Course> listMainCoursesByCourseID(BigInteger courseID) {
         List<BigInteger> mainCoursesIDList = courseMapper.listMainCoursesIDByCourseID(courseID);
@@ -104,5 +107,9 @@ public class CourseDao {
             courses.add(course);
         }
         return courses;
+    }
+
+    public List<Course> listAllCourse() {
+        return courseMapper.listAllCourse();
     }
 }

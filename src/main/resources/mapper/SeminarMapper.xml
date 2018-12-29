@@ -143,6 +143,6 @@
     <!--获得正在进行的讨论课-->
     <select id="getSeminarInProcess" resultMap="seminarMap">
         SELECT * FROM seminar,klass_seminar WHERE klass_seminar.status = 1
-                                              AND klass_seminar.seminar_id = seminar.id
+        AND klass_seminar.seminar_id = seminar.id
     </select>
 </mapper>

@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.ConflictCourseStrategy;
 import cn.edu.xmu.crms.entity.CourseMemberLimitStrategy;
+import cn.edu.xmu.crms.entity.MemberLimitStrategy;
 import cn.edu.xmu.crms.entity.TeamStrategy;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,8 @@ import java.util.List;
 @Component
 public interface TeamStrategyMapper {
 
+    List<TeamStrategy> listStrategyInfoByCourseID(BigInteger courseID);
+
     String getOptionalCourseInfo(BigInteger courseID);
 
     List<CourseMemberLimitStrategy> listAndCourseMemberLimitInfo(BigInteger courseID);
@@ -27,6 +30,23 @@ public interface TeamStrategyMapper {
 
     List<ConflictCourseStrategy> listConflictCourse(BigInteger courseID);
 
-    List<TeamStrategy> listStrategyInfoByCourseID(BigInteger courseID);
+    void insertTeamStrategy(TeamStrategy teamStrategy);
 
+    void insertMemberLimit(MemberLimitStrategy memberLimitStrategy);
+
+    void insertCourseLimit(CourseMemberLimitStrategy courseMemberLimitStrategy);
+
+    void insertTeamOr(BigInteger id, BigInteger serial);
+
+    void insertTeamAnd(BigInteger id, BigInteger serial);
+
+    void insertTeamAndMember(BigInteger id);
+
+    void insertTeamAndOr(BigInteger id);
+
+    void insertTeamAndAnd(BigInteger id);
+
+    void insertConflict(BigInteger id, BigInteger courseID);
+
+    List<BigInteger> listIDFromConflict();
 }

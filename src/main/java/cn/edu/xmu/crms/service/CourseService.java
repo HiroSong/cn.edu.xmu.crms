@@ -101,6 +101,11 @@ public class CourseService {
         return courseDao.listAllCourse();
     }
 
+    @GetMapping("/allcourse")
+    public List<Course> listAllCourses() {
+        return courseDao.listAllCourse();
+    }
+
     @GetMapping("/course/{courseID}")
     public Map<String, Object> getCourseInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
         Course course = courseDao.getCourseByCourseID(courseID);
@@ -110,7 +115,7 @@ public class CourseService {
         return this.getCourseInfo(course);
     }
 
-    @PostMapping("/course")////////！！！！！！
+    @PostMapping("/course")
     public Map<String, Object> createNewCourse(HttpServletRequest request,@RequestBody Course course) {
         BigInteger teacherID = jwtTokenUtil.getIDFromRequest(request);
         Teacher teacher = new Teacher();

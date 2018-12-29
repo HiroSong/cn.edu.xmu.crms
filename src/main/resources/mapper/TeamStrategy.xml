@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.TeamStrategyMapper" >
 
+    <!--根据courseID获取策略Serial,Name,和id-->
+    <select id="listStrategyInfoByCourseID" parameterType="BigInteger" resultType="TeamStrategy">
+        SELECT * FROM team_strategy WHERE  course_id = #{courseID}
+    </select>
     
     <!--判断选修课程之间是与还是或-->
     <select id="getOptionalCourseInfo" parameterType="BigInteger" resultType="String">
@@ -13,26 +17,81 @@
 
     <!--获取选修课程之间   与   的选修课程信息-->
     <select id="listAndCourseMemberLimitInfo" parameterType="BigInteger" resultType="CourseMemberLimitStrategy">
-        SELECT c.id id,c.course_id courseID,c.max_member maxMember,c.min_member minMember
-        FROM course_member_limit_strategy c,team_strategy,team_and_strategy t1,team_and_strategy t2
+        SELECT c.id id,c.course_id courseID,c.max_member maxMember,c.min_member minMember,t.teacher_name teacherName,
+        c2.course_name courseName
+        FROM course_member_limit_strategy c,team_strategy,team_and_strategy t1,team_and_strategy t2,teacher t,course c2
         WHERE team_strategy.course_id = #{courseID} AND team_strategy.strategy_name = 'TeamAndStrategy'
         AND team_strategy.strategy_id = t1.id AND t1.strategy_name = 'TeamAndStrategy' AND t1.strategy_id = t2.id
-        AND t2.strategy_name = 'CourseMemberLimitStrategy' AND t2.strategy_id = c.id
+        AND t2.strategy_name = 'CourseMemberLimitStrategy' AND t2.strategy_id = c.id AND c2.id = #{courseID}
+        AND c2.teacher_id = t.id
     </select>
 
     <!--获取选修课程之间  或   的选修课程信息-->
     <select id="listOrCourseMemberLimitInfo" parameterType="BigInteger" resultType="CourseMemberLimitStrategy">
-        SELECT c.id id,c.course_id courseID,c.max_member maxMember,c.min_member minMember
-        FROM course_member_limit_strategy c,team_strategy,team_and_strategy t1,team_or_strategy t2
+        SELECT c.id id,c.course_id courseID,c.max_member maxMember,c.min_member minMember,t.teacher_name teacherName,
+        c2.course_name courseName
+        FROM course_member_limit_strategy c,team_strategy,team_and_strategy t1,team_or_strategy t2,teacher t,course c2
         WHERE team_strategy.course_id = #{courseID} AND team_strategy.strategy_name = 'TeamAndStrategy'
         AND team_strategy.strategy_id = t1.id AND t1.strategy_name = 'TeamOrStrategy' AND t1.strategy_id = t2.id
-        AND t2.strategy_name = 'CourseMemberLimitStrategy' AND t2.strategy_id = c.id
+        AND t2.strategy_name = 'CourseMemberLimitStrategy' AND t2.strategy_id = c.id AND c2.id = #{courseID}
+        AND c2.teacher_id = t.id
     </select>
 
     <!--获取冲突课程-->
     <select id="listConflictCourse" parameterType="BigInteger" resultType="ConflictCourseStrategy">
-        SELECT c.id id,c.course_id courseID FROM conflict_course_strategy c,team_strategy t
+        SELECT c.id id,c.course_id courseID,t2.teacher_name teacherName,c2.course_name courseName
+        FROM conflict_course_strategy c,team_strategy t,course c2,teacher t2
         WHERE t.course_id = #{courseID} AND t.strategy_name = 'ConflictCourseStrategy' AND t.strategy_id = c.id
+        AND c2.id = #{courseID} AND c2.teacher_id = t2.id
+    </select>
+
+    <insert id="insertMemberLimit" parameterType="MemberLimitStrategy" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO member_limit_strategy(min_member, max_member) VALUE (#{minMember},#{maxMember})
+    </insert>
+
+    <insert id="insertCourseLimit" parameterType="CourseMemberLimitStrategy" useGeneratedKeys="true" keyProperty="id">
+        INSERT into course_member_limit_strategy(course_id, min_member, max_member)
+        VALUE(#{courseID},#{minMember},#{maxMember})
+    </insert>
+
+    <!--插入组队与表-->
+    <insert id="insertTeamOr" parameterType="BigInteger">
+        INSERT into team_or_strategy(id,strategy_name,strategy_id)
+        VALUE (#{param1},'CourseMemberLimitStrategy',#{param2})
+    </insert>
+
+    <insert id="insertTeamAnd" parameterType="BigInteger">
+        INSERT into team_and_strategy(id,strategy_name,strategy_id)
+        VALUE (#{param1},'CourseMemberLimitStrategy',#{param2})
+    </insert>
+
+    <insert id="insertTeamAndMember" parameterType="BigInteger">
+        INSERT into team_and_strategy(id,strategy_name,strategy_id)
+        VALUE (#{id},'MemberLimitStrategy',1)
+    </insert>
+
+    <insert id="insertTeamAndOr" parameterType="BigInteger">
+        INSERT into team_and_strategy(id,strategy_name,strategy_id)
+        VALUE (#{id},'TeamOrStrategy',1)
+    </insert>
+
+    <insert id="insertTeamAndAnd" parameterType="BigInteger">
+        INSERT into team_and_strategy(id,strategy_name,strategy_id)
+        VALUE (#{id},'TeamAndStrategy',1)
+    </insert>
+
+    <!--建立组队策略-->
+    <insert id="insertTeamStrategy" parameterType="TeamStrategy">
+        INSERT INTO team_strategy(course_id,strategy_serial,strategy_name,strategy_id)
+        VALUE (#{courseID},#{strategySerial},#{strategyName},#{strategyID})
+    </insert>
+
+    <insert id="insertConflict" parameterType="BigInteger">
+        INSERT INTO conflict_course_strategy(id,course_id) VALUE (#{param1},#{param2})
+    </insert>
+
+    <select id="listIDFromConflict" resultType="BigInteger">
+        SELECT id FROM conflict_course_strategy;
     </select>
 
     <!--根据courseID获取策略Serial,Name,和id-->

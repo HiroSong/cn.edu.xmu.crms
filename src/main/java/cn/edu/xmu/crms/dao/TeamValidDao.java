@@ -67,6 +67,9 @@ public class TeamValidDao {
 
     public Boolean checkTeam(Team team) {
         BigInteger courseID = team.getCourse().getID();
+        if(teamStrategyMapper.listStrategyInfoByCourseID(courseID) == null) {
+            return true;
+        }
         //队伍内成员数量判断
         Integer minMemberNumber = courseMapper.getCourseMinMemberByCourseID(courseID);
         Integer maxMemberNumber = courseMapper.getCourseMaxMemberByCourseID(courseID);
@@ -78,7 +81,7 @@ public class TeamValidDao {
         List<ConflictCourseStrategy> conflictCourses = teamStrategyMapper.listConflictCourse(courseID);
         int flag = 0;BigInteger id = conflictCourses.get(0).getID();
         for(int i = 0; i < conflictCourses.size(); i++) {
-            if(!id.equals(conflictCourses.get(i).getID())) {
+            if(id != conflictCourses.get(i).getID()) {
                 id = conflictCourses.get(i).getID();
                 flag = 0;
             }
@@ -105,8 +108,10 @@ public class TeamValidDao {
                         count++;
                     }
                 }
-                if(count < courseMemberLimits.get(i).getMinMember() || count > courseMemberLimits.get(i).getMaxMember())
+                if(count < courseMemberLimits.get(i).getMinMember() ||
+                        count > courseMemberLimits.get(i).getMaxMember()) {
                     return false;
+                }
             }
             return true;
         } else {
@@ -120,8 +125,10 @@ public class TeamValidDao {
                         count++;
                     }
                 }
-                if(count < courseMemberLimits.get(i).getMinMember() || count > courseMemberLimits.get(i).getMaxMember())
+                if(count < courseMemberLimits.get(i).getMinMember() ||
+                        count > courseMemberLimits.get(i).getMaxMember()) {
                     return true;
+                }
             }
             return false;
         }
