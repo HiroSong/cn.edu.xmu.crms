@@ -101,11 +101,6 @@ public class CourseService {
         return courseDao.listAllCourse();
     }
 
-    @GetMapping("/allcourse")
-    public List<Course> listAllCourses() {
-        return courseDao.listAllCourse();
-    }
-
     @GetMapping("/course/{courseID}")
     public Map<String, Object> getCourseInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
         Course course = courseDao.getCourseByCourseID(courseID);

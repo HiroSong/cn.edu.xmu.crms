@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.TeamStrategyMapper" >
-
-    <!--根据courseID获取策略Serial,Name,和id-->
-    <select id="listStrategyInfoByCourseID" parameterType="BigInteger" resultType="TeamStrategy">
-        SELECT * FROM team_strategy WHERE  course_id = #{courseID}
-    </select>
     
     <!--判断选修课程之间是与还是或-->
     <select id="getOptionalCourseInfo" parameterType="BigInteger" resultType="String">
