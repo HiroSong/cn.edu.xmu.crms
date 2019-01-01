@@ -74,6 +74,7 @@ public class StudentDao {
         List<Row> rowList;
         try {
             rowList = excelUtil.readExcel(excelUrl);
+            fileUtil.deleteUploadedFile("//excel//", excelUrl);
         }catch (IOException e){
             return "解析失败";
         }

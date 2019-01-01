@@ -89,8 +89,7 @@
     <insert id="insertCourse" parameterType="Course" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO course(teacher_id,course_name,introduction,presentation_percentage,question_percentage,
         report_percentage,team_start_time,team_end_time)
-        VALUE (#{teacher.id},#{courseName},#{introduction},
-        #{presentationPercentage},#{questionPercentage},#{reportPercentage},#{teamStartTime},#{teamEndTime})
+        VALUE (#{teacher.id},#{courseName},#{introduction},#{presentationPercentage},#{questionPercentage},#{reportPercentage},#{teamStartTime},#{teamEndTime})
     </insert>
 
     <!--根据klassID获取courseID-->
@@ -144,6 +143,6 @@
     </update>
 
     <select id="listAllCourse" resultMap="courseMap">
-        SELECT * FROM teacher,course WHERE teacher.id = course.teacher_id
+        SELECT course.id,teacher_id,course_name,teacher.account,teacher.teacher_name FROM teacher,course WHERE teacher.id = course.teacher_id
     </select>
 </mapper>
