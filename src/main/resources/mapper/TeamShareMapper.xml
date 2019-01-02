@@ -26,14 +26,11 @@
         WHERE s.main_course_id = c1.id
         AND s.sub_course_id = c2.id AND s.sub_course_teacher_id = t.id AND s.status is null
 <<<<<<< HEAD
-<<<<<<< HEAD
     </select>
 
     <!--根据courseID获取策略Serial,Name,和id-->
     <select id="listStrategyInfoByCourseID" parameterType="BigInteger" resultType="TeamStrategy">
         SELECT * FROM team_strategy WHERE  course_id = #{courseID}
-=======
->>>>>>> parent of 98e0087... Merge branch 'developer_hqw' into developer_slb
 =======
 >>>>>>> parent of 98e0087... Merge branch 'developer_hqw' into developer_slb
     </select>
