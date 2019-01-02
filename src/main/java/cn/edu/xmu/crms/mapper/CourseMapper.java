@@ -204,7 +204,5 @@ public interface CourseMapper {
 
     List<Course> listAllCourse();
 
-    Integer deleteTeamMainCourseID(BigInteger courseID);
-
 }
 

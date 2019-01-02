@@ -58,9 +58,9 @@
     </select>
 
     <!--插入一个新的队伍信息-->
-    <insert id="insertTeam" parameterType="Team" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO team(klass_id,course_id,leader_id,team_name,team_serial,klass_serial,status)
-        VALUE (#{klass.id},#{course.id},#{leader.id},#{teamName},#{teamSerial},#{klass.klassSerial},#{status})
+    <insert id="insertTeam" parameterType="Team">
+        INSERT INTO team(klass_id,course_id,leader_id,team_name,team_serial,status)
+        VALUE (#{klass.id},#{course.id},#{leader.id},#{teamName},#{teamSerial},#{status})
     </insert>
 
     <!--队伍添加成员更新-->

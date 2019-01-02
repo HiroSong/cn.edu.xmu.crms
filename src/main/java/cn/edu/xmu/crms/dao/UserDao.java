@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author SongLingbing
@@ -74,27 +73,12 @@ public class UserDao {
         return teacherMapper.getTeacherByTeacherID(id);
     }
 
-    public Boolean updateUserPassword(BigInteger id, String role, Map<String,String> map) {
-        String oldPassword = map.get("oldPassword");
-        String student = "student";
-        User user = new User();
-        user.setID(id);
-        user.setPassword(map.get("password"));
-        if(role.equals(student)) {
-            if(studentMapper.getPasswordByID(id).equals(oldPassword)) {
-                studentMapper.updateStudentPassword(user);
-                return true;
-            } else {
-                return false;
-            }
+    public void updateUserPassword(User user,String role) {
+        if(role.equals("student")) {
+            studentMapper.updateStudentPassword(user);
         }
         else {
-            if(teacherMapper.getPasswordByID(id).equals(oldPassword)) {
-                teacherMapper.updateTeacherPassword(user);
-                return true;
-            } else {
-                return false;
-            }
+            teacherMapper.updateTeacherPassword(user);
         }
     }
 }

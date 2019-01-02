@@ -143,7 +143,6 @@ public class SeminarService {
 
     @GetMapping("/seminar/{seminarID}")//获取单个讨论课信息
     public Map<String, Object> getSeminarInfoBySeminarID(@PathVariable("seminarID") BigInteger seminarID) {
-        Map<String,Object> map=new HashMap<>();
         Seminar seminar = seminarDao.getSeminarBySeminarID(seminarID);
         if(seminar == null) {
             return null;

@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.edu.xmu.crms.mapper.TeamStrategyMapper" >
-
-    <!--根据courseID获取策略Serial,Name,和id-->
-    <select id="listStrategyInfoByCourseID" parameterType="BigInteger" resultType="TeamStrategy">
-        SELECT * FROM team_strategy WHERE course_id = #{courseID}
-    </select>
-
-
+    
     <!--判断选修课程之间是与还是或-->
     <select id="getOptionalCourseInfo" parameterType="BigInteger" resultType="String">
         SELECT team_and_strategy.strategy_name FROM team_and_strategy,team_strategy
@@ -16,7 +10,6 @@
         AND team_and_strategy.strategy_name != 'MemberLimitStrategy'
     </select>
 
-
     <!--获取选修课程之间   与   的选修课程信息-->
     <select id="listAndCourseMemberLimitInfo" parameterType="BigInteger" resultType="CourseMemberLimitStrategy">
         SELECT c.id id,c.course_id courseID,c.max_member maxMember,c.min_member minMember,t.teacher_name teacherName,
@@ -24,7 +17,7 @@
         FROM course_member_limit_strategy c,team_strategy,team_and_strategy t1,team_and_strategy t2,teacher t,course c2
         WHERE team_strategy.course_id = #{courseID} AND team_strategy.strategy_name = 'TeamAndStrategy'
         AND team_strategy.strategy_id = t1.id AND t1.strategy_name = 'TeamAndStrategy' AND t1.strategy_id = t2.id
-        AND t2.strategy_name = 'CourseMemberLimitStrategy' AND t2.strategy_id = c.id AND c2.id = c.course_id
+        AND t2.strategy_name = 'CourseMemberLimitStrategy' AND t2.strategy_id = c.id AND c2.id = #{courseID}
         AND c2.teacher_id = t.id
     </select>
 
@@ -35,7 +28,7 @@
         FROM course_member_limit_strategy c,team_strategy,team_and_strategy t1,team_or_strategy t2,teacher t,course c2
         WHERE team_strategy.course_id = #{courseID} AND team_strategy.strategy_name = 'TeamAndStrategy'
         AND team_strategy.strategy_id = t1.id AND t1.strategy_name = 'TeamOrStrategy' AND t1.strategy_id = t2.id
-        AND t2.strategy_name = 'CourseMemberLimitStrategy' AND t2.strategy_id = c.id AND c2.id = c.course_id
+        AND t2.strategy_name = 'CourseMemberLimitStrategy' AND t2.strategy_id = c.id AND c2.id = #{courseID}
         AND c2.teacher_id = t.id
     </select>
 
@@ -44,7 +37,7 @@
         SELECT c.id id,c.course_id courseID,t2.teacher_name teacherName,c2.course_name courseName
         FROM conflict_course_strategy c,team_strategy t,course c2,teacher t2
         WHERE t.course_id = #{courseID} AND t.strategy_name = 'ConflictCourseStrategy' AND t.strategy_id = c.id
-        AND c2.id = c.course_id AND c2.teacher_id = t2.id
+        AND c2.id = #{courseID} AND c2.teacher_id = t2.id
     </select>
 
     <insert id="insertMemberLimit" parameterType="MemberLimitStrategy" useGeneratedKeys="true" keyProperty="id">
@@ -96,4 +89,8 @@
         SELECT id FROM conflict_course_strategy;
     </select>
 
+    <!--根据courseID获取策略Serial,Name,和id-->
+    <select id="listStrategyInfoByCourseID" parameterType="BigInteger" resultType="TeamStrategy">
+    SELECT * FROM team_strategy WHERE  course_id = #{courseID}
+    </select>
 </mapper>

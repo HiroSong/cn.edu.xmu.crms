@@ -117,6 +117,4 @@ public interface TeacherMapper {
     List<String> listAllEmails();
 
     void updateTeacherPassword(User user);
-
-    String getPasswordByID(BigInteger id);
 }

@@ -92,7 +92,6 @@
         VALUE (#{teacher.id},#{courseName},#{introduction},#{presentationPercentage},#{questionPercentage},#{reportPercentage},#{teamStartTime},#{teamEndTime})
     </insert>
 
-
     <!--根据klassID获取courseID-->
     <select id="getCourseIDByKlassID" resultType="BigInteger" parameterType="BigInteger">
         SELECT course_id FROM klass WHERE id = #{id};
@@ -141,11 +140,6 @@
     <!--更新课程的讨论课共享主课程-->
     <update id="updateSeminarMainCourseID" parameterType="BigInteger">
         UPDATE course SET seminar_main_course_id = #{param1} WHERE id = #{param2}
-    </update>
-
-    <!--删除从课程中的共享分组主课程信息-->
-    <update id="deleteTeamMainCourseID" parameterType="BigInteger">
-        UPDATE course SET team_main_course_id = null WHERE id = #{courseID}
     </update>
 
     <select id="listAllCourse" resultMap="courseMap">

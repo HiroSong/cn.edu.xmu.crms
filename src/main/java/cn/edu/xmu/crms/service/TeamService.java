@@ -44,8 +44,6 @@ public class TeamService {
     TeamValidMapper teamValidMapper;
     @Autowired
     JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    TeamStrategyDao teamStrategyDao;
 
 
     public void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
@@ -194,6 +192,9 @@ public class TeamService {
     public Map<String, Object> createNewTeam(@PathVariable("courseID") BigInteger courseID,
                                              @RequestBody Team team) {
         Course course = courseDao.getCourseByCourseID(courseID);
+        if(course == null) {
+            return null;
+        }
         Student leader = studentDao.getStudentByStudentID(team.getLeader().getID());
         Klass klass = klassDao.getKlassByKlassID(team.getKlass().getID());
         for(int i = 0; i < team.getMembers().size(); i++) {
@@ -204,14 +205,10 @@ public class TeamService {
         team.setLeader(leader);
         team.setKlass(klass);
         team.setStatus(1);
-        Team newTeam = teamDao.insertTeam(team);
-        if(teamStrategyDao.listStrategyInfoByCourseID(team.getCourse().getID()).size() != 0) {
-            System.out.println(0);
-            if(!teamValidDao.checkTeam(team)) {
-                team.setStatus(0);
-                teamDao.updateTeamStatusByID(team);
-            }
+        if(!teamValidDao.checkTeam(team)) {
+            team.setStatus(0);
         }
+        Team newTeam = teamDao.insertTeam(team);
         Map<String, Object> map = new HashMap<>(1);
         map.put("id",newTeam.getID());
         return map;
