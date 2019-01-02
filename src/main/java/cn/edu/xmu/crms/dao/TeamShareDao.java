@@ -54,6 +54,8 @@ public class TeamShareDao {
     }
 
     public Integer deleteTeamShareByTeamShareID(BigInteger teamShareID) {
+        Map<String,Object> application = teamShareMapper.getApplicationByID(teamShareID);
+        courseMapper.deleteTeamMainCourseID(new BigInteger(application.get("subCourseID").toString()));
         return teamShareMapper.deleteTeamShareByTeamShareID(teamShareID);
     }
 

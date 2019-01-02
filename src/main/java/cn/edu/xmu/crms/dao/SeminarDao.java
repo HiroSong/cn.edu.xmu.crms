@@ -158,6 +158,7 @@ public class SeminarDao{
     }
 
 
+
     //创建一个新的seminar
     public BigInteger insertSeminar(Seminar seminar) {
         BigInteger roundID;

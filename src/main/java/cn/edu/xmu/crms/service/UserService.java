@@ -96,10 +96,9 @@ public class UserService {
     }
 
     @PutMapping("/user/password")//修改密码
-    public void modifyPassword(@RequestBody User user, HttpServletRequest request) {
+    public Boolean modifyPassword(@RequestBody Map<String,String> map, HttpServletRequest request) {
         BigInteger id = jwtTokenUtil.getIDFromRequest(request);
         String role = jwtTokenUtil.getRolesFromRequest(request);
-        user.setID(id);
-        userDao.updateUserPassword(user,role);
+        return userDao.updateUserPassword(id,role,map);
     }
 }
