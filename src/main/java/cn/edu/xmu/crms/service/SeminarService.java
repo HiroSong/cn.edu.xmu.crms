@@ -6,6 +6,7 @@ import cn.edu.xmu.crms.mapper.*;
 import cn.edu.xmu.crms.util.websocket.SeminarRoom;
 import com.alibaba.druid.sql.dialect.mysql.ast.MysqlForeignKey;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -309,8 +310,8 @@ public class SeminarService {
         seminarRoom.addQuestion(question);
     }
 
-    @PutMapping("/question/{questionID}")
-    public Map<String,Object> selectQuestion(@PathVariable("questionID")BigInteger questionID)
+    @PutMapping("/question")
+    public Map<String,Object> selectQuestion()
     {
         //不需要questionID
         Map<String,Object> map=new HashMap<>(0);
@@ -342,4 +343,23 @@ public class SeminarService {
     {
         seminarRoom.resetQueue();
     }
+    /**
+     * @Author LaiShaopeng
+     * @param seminarID
+     * @param classID
+     * @param order
+     * @param score
+     * 为某个提问打分
+     */
+    @PutMapping("/seminar/{seminarID}/class/{classID}/question/{order}/{score}")
+    public void updateQuestionScore(@PathVariable("seminarID") BigInteger seminarID,
+                                    @PathVariable("classID") BigInteger classID,
+                                    @PathVariable("order") Integer order,
+                                    @PathVariable("score") String score)
+    {
+        BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
+        Double questionScore= Double.parseDouble(score);
+        seminarRoom.updateQuestionScore(klassSeminarID,order,questionScore);
+    }
+
 }

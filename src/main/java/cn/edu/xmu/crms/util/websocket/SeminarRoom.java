@@ -51,15 +51,27 @@ public class SeminarRoom {
         Question question=questionQueueList.get(klassSeminarID).poll();
         question.setBeSelected(1);
         questionSelectedQueueList.get(klassSeminarID).add(question);
+        try{broadcastQuestion(question);}
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return question;
     }
 
     //给某个问题打分
-    public boolean updateQuestionScore(Question question,Double score){
+    public boolean updateQuestionScore(BigInteger klassSeminarID,Integer order,Double score){
+        List<Map<String,Object>> questionList=new ArrayList<>(0);
         for(int i=0;i<questionSelectedQueueList.get(klassSeminarID).size();i++)
         {
-            if(questionSelectedQueueList.get(klassSeminarID).get(i).equals(question)){
+            if(questionSelectedQueueList.get(klassSeminarID).get(i).order.equals(order)){
                 questionSelectedQueueList.get(klassSeminarID).get(i).setScore(score);
+                questionMapper.insertQuestionByQuestion(questionSelectedQueueList.get(klassSeminarID).get(i));
+                try{greeting();}
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 return true;
             }
         }
@@ -70,7 +82,7 @@ public class SeminarRoom {
     {
         count=count+1;
         question.order=count;
-        questionQueueList.get(klassSeminarID).offer(question);
+        questionQueueList.get(question.getKlssSeminarID()).offer(question);
 
         try{
             greeting();
@@ -124,7 +136,7 @@ public class SeminarRoom {
      * @return map 抽取到的提问的发起该提问的学生的组号和姓名。
      * @throws Exception
      */
-    @SendTo("topic/greetings/all/{seminarID}")
+    @SendTo("topic/greetings/student/{seminarID}")
     public Map<String,Object> broadcastQuestion(Question question)throws Exception{
         Map<String,Object> map=new HashMap<>(0);
         cn.edu.xmu.crms.entity.Student student=studentDao.getStudentByStudentID(question.getStudentID());
@@ -136,22 +148,6 @@ public class SeminarRoom {
 
     public void resetQueue()
     {
-        List<Map<String,Object>> questionList=new ArrayList<>(0);
-        for(Question question :questionSelectedQueueList.get(klassSeminarID)){
-            Map<String,Object> map=new HashMap<>();
-            map.put("klassSeminarID",klassSeminarID);
-            map.put("attendanceID",question.getAttendanceID());
-            map.put("teamID",question.getTeamID());
-            map.put("studentID",question.getStudentID());
-            map.put("beSelected",1);
-            map.put("score",question.getScore());
-
-            questionList.add(map);
-        }
-        Map<String,Object> map=new HashMap<>();
-        map.put("questionList",questionList);
-        questionMapper.insertQuestionByQuestionList(map);
-
         count=0;
         questionQueueList.get(klassSeminarID).clear();
         questionSelectedQueueList.get(klassSeminarID).clear();;
