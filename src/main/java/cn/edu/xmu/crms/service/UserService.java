@@ -4,19 +4,17 @@ import cn.edu.xmu.crms.dao.UserDao;
 import cn.edu.xmu.crms.entity.User;
 import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
-import cn.edu.xmu.crms.util.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +33,20 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
+    @GetMapping("/user/{userName}/password")
+    public Map<String,Object> retrievePassWord(@PathVariable("userName") String userName){
+        User userInDatabase = userDao.getUserByUsername(userName);
+        Map<String,Object> map=new HashMap<>();
+        if(userInDatabase==null) {
+            map.put("result","user"+userName+" not found.");
+        } else{
+            System.out.print("\n"+userInDatabase.getName()+userInDatabase.getEmail()+'\n');
+            Email email=new Email();
+            email.sendPassWordMail(userInDatabase.getEmail(),userInDatabase.getPassword());
+            map.put("result","password has been sent to Mail.");
+        }
+        return map;
+    }
     /**
      * 用户登录
      *
@@ -76,33 +88,18 @@ public class UserService {
         return "success";
     }
 
-    /**
-     * 刷新密钥
-     *
-     * @param oldToken 原密钥
-     * @return String 新密钥
-     */
-    public String refreshToken(String oldToken) {
-        String token = oldToken.substring("Bearer ".length());
-        if (!jwtTokenUtil.isTokenExpired(token)) {
-            return jwtTokenUtil.refreshToken(token);
-        }
-        return "error";
+    @GetMapping("/user/information")
+    public User getUserInfo(HttpServletRequest request) {
+        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
+        String role = jwtTokenUtil.getRolesFromRequest(request);
+        return userDao.getUserByInfo(id,role);
     }
 
-    @GetMapping("/user/{userName}/password")
-    public Map<String,Object> retrievePassWord(@PathVariable("userName") String userName){
-        User userInDatabase = userDao.getUserByUsername(userName);
-        Map<String,Object> map=new HashMap<>();
-        if(userInDatabase==null) {
-            map.put("result","user"+userName+" not found.");
-        } else{
-            System.out.print("\n"+userInDatabase.getName()+userInDatabase.getEmail()+'\n');
-            Email email=new Email();
-            email.sendPassWordMail(userInDatabase.getEmail(),userInDatabase.getPassword());
-            map.put("result","password has been sent to Mail.");
-        }
-        return map;
+    @PutMapping("/user/password")//修改密码
+    public void modifyPassword(@RequestBody User user, HttpServletRequest request) {
+        BigInteger id = jwtTokenUtil.getIDFromRequest(request);
+        String role = jwtTokenUtil.getRolesFromRequest(request);
+        user.setID(id);
+        userDao.updateUserPassword(user,role);
     }
-
 }

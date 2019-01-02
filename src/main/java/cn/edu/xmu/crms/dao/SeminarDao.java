@@ -34,22 +34,12 @@ public class SeminarDao{
     @Autowired
     RoundMapper roundMapper;
 
-    public Seminar getSeminarBySeminarID(BigInteger seminarID) {
-        return seminarMapper.getSeminarBySeminarID(seminarID);
+    public Seminar getSeminarInProcess() {
+        return seminarMapper.getSeminarInProcess();
     }
 
-    public List<Course> listMainCoursesByCourseID(BigInteger courseID) {
-        List<BigInteger> mainCoursesIDList = seminarMapper.listMainCoursesIDByCourseID(courseID);
-        List<Course> courses = new ArrayList<>();
-        if(mainCoursesIDList == null) {
-            return null;
-        }
-        for(int i = 0; i < mainCoursesIDList.size(); i++) {
-            BigInteger mainCourseID = mainCoursesIDList.get(i);
-            Course course = courseDao.getCourseByCourseID(mainCourseID);
-            courses.add(course);
-        }
-        return courses;
+    public Seminar getSeminarBySeminarID(BigInteger seminarID) {
+        return seminarMapper.getSeminarBySeminarID(seminarID);
     }
 
     private Double getTotalScore(Map<String,Object> scoreMap, BigInteger courseID) {
@@ -87,6 +77,21 @@ public class SeminarDao{
     }
 
 
+    public List<Course> listMainCoursesByCourseID(BigInteger courseID) {
+        List<BigInteger> mainCoursesIDList = seminarMapper.listMainCoursesIDByCourseID(courseID);
+        List<Course> courses = new ArrayList<>();
+        if(mainCoursesIDList == null) {
+            return null;
+        }
+        for(int i = 0; i < mainCoursesIDList.size(); i++) {
+            BigInteger mainCourseID = mainCoursesIDList.get(i);
+            Course course = courseDao.getCourseByCourseID(mainCourseID);
+            courses.add(course);
+        }
+        return courses;
+    }
+
+
     public List<Course> listSubCoursesByCourseID(BigInteger courseID) {
         List<BigInteger> subCoursesIDList = seminarMapper.listSubCoursesIDByCourseID(courseID);
         List<Course> courses = new ArrayList<>();
@@ -100,6 +105,7 @@ public class SeminarDao{
         }
         return courses;
     }
+
 
     public List<Seminar> listSeminarsByRoundID(BigInteger roundID) {
         List<Seminar> seminars = new ArrayList<>();
@@ -118,18 +124,16 @@ public class SeminarDao{
 
     public Map<String,Object> getSeminarScoreBySeminarAndTeamID(BigInteger seminarID, BigInteger teamID) {
         Map<String,Object> map = new HashMap<>(5);
-        Map<String,Object> teamMap = new HashMap<>(2);
         Team team = teamMapper.getTeamByTeamID(teamID);
         BigInteger klassID = klassMapper.getKlassIDBySeminarAndTeamID(seminarID,teamID);
         BigInteger klassSeminarID = seminarMapper.getKlassSeminarIDByKlassAndSeminarID(klassID,seminarID);
         Map<String,Object> scoreMap = seminarMapper.getTeamSeminarScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
-        teamMap.put("id",teamID);
-        teamMap.put("name",team.getTeamName());
-        map.put("team",teamMap);
+        map.put("teamID",teamID);
+        map.put("teamName",team.getTeamName());
         map.put("presentationScore",scoreMap.get("presentationScore"));
         map.put("reportScore",scoreMap.get("reportScore"));
         map.put("questionScore",scoreMap.get("questionScore"));
-        map.put("totalScore",scoreMap.get("totalScore"));
+        map.put("totalScore",this.getTotalScore(map, team.getCourse().getID()));
         return map;
     }
 
@@ -203,4 +207,5 @@ public class SeminarDao{
     public void updateSeminarBySeminarID(Seminar seminar) {
         seminarMapper.updateSeminarBySeminarID(seminar);
     }
+
 }

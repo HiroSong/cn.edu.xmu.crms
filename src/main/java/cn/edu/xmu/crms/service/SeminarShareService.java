@@ -49,14 +49,14 @@ public class SeminarShareService {
     private Map<String,Object> getApplicationInfo(ShareSeminarApplication application,BigInteger teacherID) {
         Map<String,Object> map = new HashMap<>(8);
         map.put("id",application.getID());
-        map.put("mainCourseID",application.getMainCourse().getID());
-        map.put("mainCourseName",application.getMainCourse().getCourseName());
-        map.put("subCourseID",application.getSubCourse().getID());
-        map.put("subCourseName",application.getSubCourse().getCourseName());
-        map.put("subCourseTeacherID",application.getSubCourseTeacher().getID());
-        map.put("subCourseTeacherName",application.getSubCourseTeacher().getName());
-        map.put("mainCourseTeacherID",application.getMainCourseTeacher().getID());
-        map.put("mainCourseTeacherName",application.getMainCourseTeacher().getName());
+        map.put("masterCourseID",application.getMainCourse().getID());
+        map.put("masterCourseName",application.getMainCourse().getCourseName());
+        map.put("receiveCourseID",application.getSubCourse().getID());
+        map.put("receiveCourseName",application.getSubCourse().getCourseName());
+        map.put("receiveCourseTeacherID",application.getSubCourseTeacher().getID());
+        map.put("receiveCourseTeacherName",application.getSubCourseTeacher().getName());
+        map.put("masterCourseTeacherID",application.getMainCourseTeacher().getID());
+        map.put("masterCourseTeacherName",application.getMainCourseTeacher().getName());
         map.put("isMainCourse",teacherID.equals(application.getMainCourseTeacher().getID()));
         return map;
     }
@@ -88,7 +88,7 @@ public class SeminarShareService {
             receiveMap.put("receiveCourseName",course.getCourseName());
             receiveMap.put("teacherName",course.getTeacher().getName());
             BigInteger shareID = seminarMapper.getSeminarShareIDByMainAndSubCourseID(mainCourse.getID(), courseID);
-            mainCourseMap.put("seminarShareID",shareID);
+            mainCourseMap.put("id",shareID);
             mainCourseMap.put("masterCourse",masterMap);
             mainCourseMap.put("receiveCourse",receiveMap);
             mainCourseMap.put("isMainCourse",false);
@@ -106,7 +106,7 @@ public class SeminarShareService {
             receiveMap.put("receiveCourseName",subCourse.getCourseName());
             receiveMap.put("teacherName",subCourse.getTeacher().getName());
             BigInteger shareID = seminarMapper.getSeminarShareIDByMainAndSubCourseID(courseID, subCourse.getID());
-            subCourseMap.put("teamShareID",shareID);
+            subCourseMap.put("id",shareID);
             subCourseMap.put("masterCourse",masterMap);
             subCourseMap.put("receiveCourse",receiveMap);
             subCourseMap.put("isMainCourse",true);

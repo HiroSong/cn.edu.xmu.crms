@@ -23,15 +23,13 @@ import java.util.Map;
  * @Author Hongqiwu
  * @Date 2018/12/20 0:22
  **/
-
+@RestController
 @Service
 public class RoundService {
     @Autowired
     RoundDao roundDao;
     @Autowired
     RoundMapper roundMapper;
-    @Autowired
-    TeamMapper teamMapper;
     @Autowired
     TeamDao teamDao;
 
@@ -59,17 +57,13 @@ public class RoundService {
 
     private Map<String, Object> getRoundScoreInfo(RoundScore roundScore) {
         Map<String, Object> roundScoreMap = new HashMap<>(5);
-        Map<String, Object> teamMap = new HashMap<>(2);
-        teamMap.put("id",roundScore.getTeam().getID());
-        teamMap.put("name",roundScore.getTeam().getTeamName());
-        Map<String, Object> roundMap = new HashMap<>(5);
-        roundMap.put("id",roundScore.getRound().getID());
-        roundMap.put("order",roundScore.getRound().getRoundSerial());
+        roundScoreMap.put("round",roundScore.getRound().getRoundSerial());
+        roundScoreMap.put("teamID",roundScore.getTeam().getID());
+        roundScoreMap.put("teamName",roundScore.getTeam().getTeamName());
         roundScoreMap.put("preScore",roundScore.getPresentationScore());
         roundScoreMap.put("reportScore",roundScore.getReportScore());
         roundScoreMap.put("questionScore",roundScore.getQuestionScore());
-        roundScoreMap.put("team",teamMap);
-        roundScoreMap.put("round",roundMap);
+        roundScoreMap.put("totalScore",roundScore.getTotalScore());
         return roundScoreMap;
     }
 
@@ -86,15 +80,11 @@ public class RoundService {
         return roundInfoList;
     }
 
-    public Map<String, Object> getRoundInfoByRoundID(BigInteger roundID) {
-        Map<String, Object> roundInfo = new HashMap<>(4);
-        Round round = roundMapper.getRoundByRoundID(roundID);
-        roundInfo.put("id",round.getID());
-        roundInfo.put("order",round.getRoundSerial());
-        roundInfo.put("calculatePreType",round.getPresentationScoreMethod());
-        roundInfo.put("calculateQueType",round.getQuestionScoreMethod());
-        roundInfo.put("calculateRepType",round.getReportScoreMethod());
-        return roundInfo;
+
+    @GetMapping("/round/{roundID}")
+    public Map<String, Object> getRoundInfoByRoundID(@PathVariable("roundID") BigInteger roundID) {
+        Round round = roundDao.getRoundByRoundID(roundID);
+        return this.getRoundInfo(round);
     }
 
 
@@ -113,17 +103,7 @@ public class RoundService {
         List<Map<String, Object>> teamScoreList = new ArrayList<>();
         List<RoundScore> roundScores = roundDao.listRoundScoreByRoundID(roundID);
         for(int i = 0; i < roundScores.size(); i++) {
-            Map<String, Object> teamInfo = new HashMap<>(2);
-            Map<String, Object> map = new HashMap<>(4);
-            RoundScore roundScore = roundScores.get(i);
-            Team team = teamDao.getTeamByTeamID(roundScore.getTeamID());
-            teamInfo.put("id",team.getID());
-            teamInfo.put("name",team.getTeamName());
-            map.put("team",teamInfo);
-            map.put("preScore",roundScore.getPresentationScore());
-            map.put("questionScore",roundScore.getQuestionScore());
-            map.put("reportScore",roundScore.getReportScore());
-            teamScoreList.add(map);
+            teamScoreList.add(this.getRoundScoreInfo(roundScores.get(i)));
         }
         return teamScoreList;
     }

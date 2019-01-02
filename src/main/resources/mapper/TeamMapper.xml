@@ -4,7 +4,11 @@
 
     <!--根据studentID和courseID获取TeamID-->
     <select id="getTeamIDByStudentAndCourseID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT team_id FROM klass_student WHERE student_id = #{param1} AND course_id = #{param2}
+        SELECT team_id FROM team_student WHERE student_id = #{param1} AND team_id IN (
+        SELECT klass_team.team_id FROM klass_team,team_student WHERE
+        klass_team.team_id = team_student.team_id AND klass_team.klass_id IN (
+        SELECT klass_student.klass_id FROM klass_student,klass_team WHERE klass_student.klass_id = klass_team.klass_id
+        AND klass_student.course_id = #{param2}))
     </select>
 
     <!--根据teamID获取Team对象-->
@@ -70,16 +74,20 @@
         SELECT id FROM attendance WHERE klass_seminar_id = #{klass_seminarID}
     </select>
 
-    <!--根据参与展示小组的ID获得参与展示小组的对象-->
-    <select id="getAttendanceByAttendanceID"  resultMap="attendanceResultMap" parameterType="BigInteger">
-    SELECT * FROM attendance,team WHERE attendance.id = #{attendanceID} AND team.id=attendance.team_id
+    <!--通过klassSeminarID和teamID获得参与展示的ID-->
+    <select id="getAttendanceIDByKlassSeminarIDAndTeamID" parameterType="BigInteger" resultType="BigInteger">
+        SELECT id FROM attendance WHERE klass_seminar_id = #{param1} AND team_id=#{param2}
     </select>
+
+    <select id="getAttendanceByAttendanceID"  resultMap="attendanceResultMap" parameterType="BigInteger">
+      SELECT * FROM attendance,team WHERE attendance.id = #{attendanceID} AND team.id=attendance.team_id
+    </select>
+
 
     <!--获得参与展示小组的列表-->
     <select id="listAttendancesByKlassSeminarID" parameterType="BigInteger" resultMap="attendanceResultMap">
-        SELECT * FROM attendance,team,klass WHERE attendance.klass_seminar_id=#{klass_seminarID} AND team.id=attendance.team_id AND team.klass_id=klass.id
-    </select>
-
+    SELECT * FROM attendance,team,klass WHERE attendance.klass_seminar_id=#{klass_seminarID} AND team.id=attendance.team_id AND team.klass_id=klass.id
+</select>
     <resultMap id="attendanceResultMap" type="Attendance">
         <id property="id" column="id"/>
         <result property="klassSeminarID" column="klass_seminar_id"/>
@@ -98,6 +106,7 @@
         </association>
     </resultMap>
 
+
     <!--新建参与展示的小组-->
     <insert id="insertAttendance" parameterType="Attendance" >
         INSERT INTO attendance(klass_seminar_id,team_id,team_order,is_present)
@@ -114,9 +123,6 @@
         SELECT id FROM attendance WHERE klass_seminar_id = #{param1} AND team_id=#{param2}
     </select>
 
-    <!--根据studentID和klassID获取TeamID-->
-    <select id="getTeamIDByStudentAndKlassID"  resultType="BigInteger" parameterType="BigInteger">
-        SELECT team_id FROM klass_student WHERE student_id = #{param1} AND course_id = #{param2}
 
     <!--根据course查找teamList-->
     <select id="listTeamsByCourseID" resultMap="teamMap" parameterType="BigInteger">
@@ -152,8 +158,14 @@
     </resultMap>
 
     <!--更新队伍合法性-->
-    <update id="updateStatusByID" parameterType="Team">
+    <update id="updateTeamStatusByID" parameterType="Team">
         UPDATE team SET status = #{status} WHERE id = #{id}
     </update>
+
+    <!--根据studentID和klassID获取TeamID-->
+    <select id="getTeamIDByStudentAndKlassID"  resultType="BigInteger" parameterType="BigInteger">
+        SELECT klass_team.team_id FROM klass_team,team_student WHERE team_student.student_id = #{param1} AND klass_team.klass_id = #{param2} AND klass_team.team_id=team_student.team_id
+    </select>
+
 
 </mapper>

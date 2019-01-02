@@ -9,6 +9,7 @@
         <association property="team" javaType="Team">
             <id property="id" column="team_id"/>
             <result property="teamName" column="team_name"/>
+            <result property="teamSerial" column="team_serial"/>
         </association>
         <association property="teacher" javaType="Teacher">
             <id property="id" column="teacher_id"/>
@@ -25,7 +26,7 @@
 
     <!--获得申请的所有ID-->
     <select id="listAllApplicationID" resultType="BigInteger">
-        SELECT id FROM team_valid_application
+        SELECT id FROM team_valid_application WHERE status IS NULL
     </select>
 
     <!--更新额外申请的状态-->

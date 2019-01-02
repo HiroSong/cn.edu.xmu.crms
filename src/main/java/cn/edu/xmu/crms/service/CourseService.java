@@ -25,6 +25,7 @@ import java.util.Map;
  * @ClassName CourseService
  * @Author Hongqiwu
  **/
+@RestController
 @Service
 public class CourseService {
     @Autowired
@@ -32,59 +33,30 @@ public class CourseService {
     @Autowired
     CourseDao courseDao;
     @Autowired
-    CourseMapper courseMapper;
-    @Autowired
-    TeacherDao teacherDao;
-    @Autowired
     JwtTokenUtil jwtTokenUtil;
 
-    /**
-     * 用于studentID查找课程列表信息包括课程name 班级name
-     *
-     * @param id 学生号码
-     * @return List<Map<String, Object>> 返回查找到的列表，若无记录则为null
-     * @author Hongqiwu
-     * @date 2018/11/30 19:41
-     */
-   public List<Map<String, Object>> listCoursesInfoByStudentOrTeacherID(BigInteger id) {
-       List<Map<String, Object>> listCoursesInfo = new ArrayList<>();
-       //如果是studentID
-       if(id.equals(BigInteger.valueOf(1))) {
-           List<Course> courses = courseDao.listCoursesByStudentID(id);
-           if(courses == null) {
-               return null;
-           }
-           for(int i = 0; i < courses.size(); i++) {
-               Map<String, Object> map = new HashMap<>(3);
-               Course course = courses.get(i);
-               Klass klass = klassDao.getKlassByStudentAndCourseID(id, course.getID());
-               map.put("courseName",course.getCourseName());
-               map.put("klassGrade",klass.getGrade());
-               map.put("klassSerial",klass.getKlassSerial());
-               listCoursesInfo.add(map);
-           }
-       }
-       else {
-           List<Course> courses = courseDao.listCoursesByTeacherID(id);
-           if(courses == null) {
-               return null;
-           }
-           for(int i = 0; i < courses.size(); i++) {
-               Map<String, Object> map = new HashMap<>(4);
-               Course course = courses.get(i);
-               Klass klass = klassDao.getKlassByStudentAndCourseID(id, course.getID());
-               map.put("id",course.getID());
-               map.put("name",course.getCourseName());
-               map.put("isShareTeam",course.getID().equals(course.getTeamMainCourseID()));
-               map.put("isShareSeminar",course.getID().equals(course.getSeminarMainCourseID()));
-               listCoursesInfo.add(map);
-           }
-       }
-       return listCoursesInfo;
+    private Map<String, Object> getCourseInfo(Course course) {
+        Map<String, Object> map = new HashMap<>(8);
+        map.put("id", course.getID());
+        map.put("name", course.getCourseName());
+        map.put("introduction", course.getIntroduction());
+        map.put("presentationWeight", new Double(course.getPresentationPercentage()) / 100.0);
+        map.put("questionWeight", new Double(course.getQuestionPercentage()) / 100.0);
+        map.put("reportWeight", new Double(course.getReportPercentage()) / 100.0);
+        map.put("startTeamTime", course.getTeamStartTime());
+        map.put("endTeamTime", course.getTeamEndTime());
+        map.put("teacherID", course.getTeacher().getID());
+        map.put("teacherUsername", course.getTeacher().getUsername());
+        map.put("teacherName", course.getTeacher().getName());
+        map.put("minMember",course.getMinMember());
+        map.put("maxMember",course.getMaxMember());
+        map.put("andOr",course.getAndOr());
+        map.put("conflictStrategy",course.getConflictCourseStrategies());
+        map.put("courseStrategy",course.getCourseMemberLimitStrategies());
+        return map;
     }
 
-//    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
-
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/course")
     public List<Map<String, Object>> listCoursesInfoByStudentOrTeacherID(HttpServletRequest request) {
         BigInteger id = jwtTokenUtil.getIDFromRequest(request);
@@ -124,32 +96,21 @@ public class CourseService {
         return listCoursesInfo;
     }
 
-    /**
-     * 用于courseID查找课程信息
-     *
-     * @param courseID 课程号码
-     * @return Map<String, Object> 返回查找到的信息，若无记录则为null
-     * @author Hongqiwu
-     * @date 2018/11/30 19:41
-     */
-    public Map<String, Object> getCourseInfoByCourseID(BigInteger courseID) {
-        Map<String, Object> map = new HashMap<>(8);
-        Course course = courseDao.getCourseByCourseID(courseID);
-        if(course == null) {
-            return null;
-        }
-        map.put("introduction",course.getIntroduction());
-        map.put("presentationWeight",course.getPresentationPercentage());
-        map.put("questionWeight",course.getQuestionPercentage());
-        map.put("reportWeight",course.getReportPercentage());
-        map.put("startTeamTime",course.getTeamStartTime());
-        map.put("endTeamTime",course.getTeamEndTime());
-        map.put("minMemberNumber",courseMapper.getCourseMinMemberByCourseID(courseID));
-        map.put("maxMemberNumber",courseMapper.getCourseMaxMemberByCourseID(courseID));
-        return map;
+    @GetMapping("/allcourse")
+    public List<Course> listAllCourses() {
+        return courseDao.listAllCourse();
     }
 
-    @PostMapping("/course")////////！！！！！！
+    @GetMapping("/course/{courseID}")
+    public Map<String, Object> getCourseInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
+        Course course = courseDao.getCourseByCourseID(courseID);
+        if (course == null) {
+            return null;
+        }
+        return this.getCourseInfo(course);
+    }
+
+    @PostMapping("/course")
     public Map<String, Object> createNewCourse(HttpServletRequest request,@RequestBody Course course) {
         BigInteger teacherID = jwtTokenUtil.getIDFromRequest(request);
         Teacher teacher = new Teacher();

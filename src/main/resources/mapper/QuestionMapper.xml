@@ -3,9 +3,9 @@
 <mapper namespace="cn.edu.xmu.crms.mapper.QuestionMapper" >
 
     <!--向question表插入question对象-->
-    <insert id="insertQuestionByQuestion" parameterType="Question">
+    <insert id="insertQuestionByQuestion" parameterType="Question" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO question(klass_seminar_id,attendance_id,team_id,student_id,is_selected)
-        VALUE (#{klssSeminarID},#{attendanceID},#{teamID},#{studentID},#{beSelected})
+        VALUE (#{klssSeminarID},#{attendance.id},#{team.id},#{student.id},#{beSelected})
     </insert>
 
     <!--根据提问对象修改相应提问信息-->

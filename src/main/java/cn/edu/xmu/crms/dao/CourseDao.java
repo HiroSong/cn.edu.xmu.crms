@@ -3,9 +3,11 @@ package cn.edu.xmu.crms.dao;
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.entity.Team;
+import cn.edu.xmu.crms.entity.TeamStrategy;
 import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.mapper.KlassMapper;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
+import cn.edu.xmu.crms.mapper.TeamStrategyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,44 +27,35 @@ public class CourseDao {
     KlassMapper klassMapper;
     @Autowired
     TeacherDao teacherDao;
+    @Autowired
+    TeamStrategyMapper teamStrategyMapper;
+    @Autowired
+    TeamStrategyDao teamStrategyDao;
 
     public Course getCourseByCourseID(BigInteger courseID) {
         Course course = courseMapper.getCourseByCourseID(courseID);
         if(course == null) {
             return null;
         }
-        course.setMinMember(courseMapper.getCourseMinMemberByCourseID(courseID));
         course.setMaxMember(courseMapper.getCourseMaxMemberByCourseID(courseID));
-        Teacher teacher = teacherDao.getTeacherByCourseID(courseID);
-        course.setTeacher(teacher);
+        course.setMinMember(courseMapper.getCourseMinMemberByCourseID(courseID));
+        course.setAndOr(teamStrategyMapper.getOptionalCourseInfo(courseID));
+        if(course.getAndOr() == "TeamAndStrategy") {
+            course.setCourseMemberLimitStrategies(teamStrategyMapper.listAndCourseMemberLimitInfo(courseID));
+        } else {
+            course.setCourseMemberLimitStrategies(teamStrategyMapper.listOrCourseMemberLimitInfo(courseID));
+        }
+        course.setConflictCourseStrategies(teamStrategyMapper.listConflictCourse(courseID));
         return course;
     }
 
 
     public List<Course> listCoursesByStudentID(BigInteger studentID) {
-        List<Course> courses = new ArrayList<>();
-        List<BigInteger> allCoursesID = courseMapper.listCourseIDByStudentID(studentID);
-        if(allCoursesID == null) {
-            return null;
-        }
-        for(int i = 0; i < allCoursesID.size(); i++) {
-            Course course = this.getCourseByCourseID(allCoursesID.get(i));
-            courses.add(course);
-        }
-        return courses;
+        return courseMapper.listCoursesByStudentID(studentID);
     }
 
     public List<Course> listCoursesByTeacherID(BigInteger teacherID) {
-        List<Course> courses = new ArrayList<>();
-        List<BigInteger> allCoursesID = courseMapper.listCourseIDByTeacherID(teacherID);
-        if(allCoursesID == null) {
-            return null;
-        }
-        for(int i = 0; i < allCoursesID.size(); i++) {
-            Course course = this.getCourseByCourseID(allCoursesID.get(i));
-            courses.add(course);
-        }
-        return courses;
+        return courseMapper.listCoursesByTeacherID(teacherID);
     }
 
 
@@ -79,9 +72,10 @@ public class CourseDao {
 
     public BigInteger insertCourse(Course course) {
         courseMapper.insertCourse(course);
-        BigInteger courseID = courseMapper.getLastInsertID();//缺各个策略表的关系创建
-        return courseMapper.getLastInsertID();
+        teamStrategyDao.insertStrategy(course);
+        return course.getID();
     }
+
 
     public List<Course> listMainCoursesByCourseID(BigInteger courseID) {
         List<BigInteger> mainCoursesIDList = courseMapper.listMainCoursesIDByCourseID(courseID);
@@ -109,5 +103,9 @@ public class CourseDao {
             courses.add(course);
         }
         return courses;
+    }
+
+    public List<Course> listAllCourse() {
+        return courseMapper.listAllCourse();
     }
 }
