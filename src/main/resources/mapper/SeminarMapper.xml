@@ -74,7 +74,7 @@
     <update id="updateSeminarBySeminarID" parameterType="Seminar">
         UPDATE seminar SET seminar_name = #{seminarName}, introduction = #{introduction},
         seminar_serial = #{seminarSerial}, is_visible = #{beVisible}, enroll_start_time = #{enrollStartTime},
-        enroll_end_time = #{enrollEndTime}, max_team = #{maxTeam} WHERE id = #{id}
+        enroll_end_time = #{enrollEndTime}, max_team = #{maxTeam}, WHERE id = #{id}
     </update>
 
     <!--根据班级ID和讨论课ID修改reportDDL-->
@@ -144,5 +144,14 @@
     <select id="getSeminarInProcess" resultMap="seminarMap">
         SELECT * FROM seminar,klass_seminar WHERE klass_seminar.status = 1
         AND klass_seminar.seminar_id = seminar.id
+    </select>
+
+    <!--根据班级ID和讨论课ID修改reportDDL-->
+    <update id="updateSeminarReportDDLBySeminarID" parameterType="HashMap">
+        UPDATE klass_seminar SET report_ddl = #{reportDDL} WHERE seminar_id = #{seminarID}
+    </update>
+
+    <select id="getKlassIDByProcessSeminarID" parameterType="BigInteger" resultType="BigInteger">
+        SELECT klass_id FROM klass_seminar WHERE status = 1 AND seminar_id = #{seminarID}
     </select>
 </mapper>

@@ -23,6 +23,15 @@ public class Seminar {
     private Course course;
     private Round round;
     private Integer enrollNumber;
+    private Timestamp reportDDL;
+
+    public Timestamp getReportDDL() {
+        return reportDDL;
+    }
+
+    public void setReportDDL(Timestamp reportDDL) {
+        this.reportDDL = reportDDL;
+    }
 
     public Integer getEnrollNumber() {
         return enrollNumber;

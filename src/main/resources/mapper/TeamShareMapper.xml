@@ -19,6 +19,15 @@
         </association>
     </resultMap>
 
+    <!--获取所有申请的ID-->
+    <select id="listAllApplications" resultMap="teamShareMap">
+        SELECT *
+        FROM share_team_application s,course c1,course c2,teacher  t
+        WHERE s.main_course_id = c1.id
+        AND s.sub_course_id = c2.id AND s.sub_course_teacher_id = t.id AND s.status is null
+    </select>
+
+
     <!--根据courseID获取策略Serial,Name,和id-->
     <select id="listStrategyInfoByCourseID" parameterType="BigInteger" resultType="TeamStrategy">
         SELECT * FROM team_strategy WHERE  course_id = #{courseID}
@@ -56,4 +65,6 @@
     <select id="getLastInsertID" resultType="BigInteger">
         SELECT LAST_INSERT_ID();
     </select>
+
+
 </mapper>

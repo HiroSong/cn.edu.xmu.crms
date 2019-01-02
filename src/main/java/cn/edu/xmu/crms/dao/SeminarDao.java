@@ -157,8 +157,6 @@ public class SeminarDao{
         return scoreMap;
     }
 
-
-
     //创建一个新的seminar
     public BigInteger insertSeminar(Seminar seminar) {
         BigInteger roundID;
@@ -205,7 +203,14 @@ public class SeminarDao{
 
 
     public void updateSeminarBySeminarID(Seminar seminar) {
+        Map<String,Object> map = new HashMap<>(0);
+        map.put("seminarID",seminar.getID());
+        map.put("reportDDL",seminar.getReportDDL());
+        seminarMapper.updateSeminarReportDDLBySeminarID(map);
         seminarMapper.updateSeminarBySeminarID(seminar);
     }
 
+    public BigInteger getKlassIDByProcessSeminarID(BigInteger seminarID) {
+        return seminarMapper.getKlassIDByProcessSeminarID(seminarID);
+    }
 }

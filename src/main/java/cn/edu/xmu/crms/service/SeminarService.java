@@ -65,6 +65,7 @@ public class SeminarService {
         map.put("signUpEndTime",seminar.getEnrollEndTime());
         map.put("round",seminar.getRound().getRoundSerial());
         map.put("beVisible",seminar.getBeVisible());
+        map.put("courseID",seminar.getCourse().getID());
         return map;
     }
 
@@ -75,6 +76,9 @@ public class SeminarService {
         if(seminar==null){
             return null;
         }
+        BigInteger klassID = seminarDao.getKlassIDByProcessSeminarID(seminar.getID());
+        Map<String,Object> map = this.getSeminarInfo(seminar);
+        map.put("klassID",klassID);
         return this.getSeminarInfo(seminar);
     }
 
