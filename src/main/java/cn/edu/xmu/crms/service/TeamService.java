@@ -211,8 +211,8 @@ public class TeamService {
             map.put("classGrade",application.getKlass().getGrade());
             map.put("classSerial",application.getKlass().getKlassSerial());
             map.put("teamID",application.getTeam().getID());
-            map.put("leaderID",application.getLeader().getID());
-            map.put("leaderName",application.getLeader().getName());
+            //map.put("leaderID",application.getLeader().getID());
+            //map.put("leaderName",application.getLeader().getName());
             map.put("reason",application.getReason());
             map.put("status",application.getStatus());
             applicationMapList.add(map);
