@@ -21,7 +21,7 @@
     <!--根据courseID获取未组队学生列表-->
     <select id="listNoTeamStudentsByCourseID" resultType="Student" parameterType="BigInteger">
         SELECT id id,account username,student_name name FROM student WHERE id IN (
-        SELECT DISTINCT student_id FROM klass_student WHERE student_id NOT IN (
+        SELECT DISTINCT student_id FROM klass_student WHERE klass_student.course_id = #{courseID} AND student_id NOT IN (
         SELECT team_student.student_id FROM team_student,klass_team WHERE
         klass_team.team_id = team_student.team_id AND klass_team.klass_id IN (
         SELECT klass_student.klass_id FROM klass_student,klass_team WHERE klass_student.klass_id =klass_team.klass_id
