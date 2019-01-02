@@ -86,7 +86,7 @@
 
     <!--获得参与展示小组的列表-->
     <select id="listAttendancesByKlassSeminarID" parameterType="BigInteger" resultMap="attendanceResultMap">
-    SELECT attendance.* FROM attendance,team,klass WHERE attendance.klass_seminar_id=#{klass_seminarID} AND team.id=attendance.team_id AND team.klass_id=klass.id
+    SELECT attendance.*,team.* FROM attendance,team,klass WHERE attendance.klass_seminar_id=#{klass_seminarID} AND team.id=attendance.team_id AND team.klass_id=klass.id
 </select>
     <resultMap id="attendanceResultMap" type="Attendance">
         <id property="id" column="id"/>
