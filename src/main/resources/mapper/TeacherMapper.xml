@@ -63,4 +63,9 @@
     <update id="updateTeacherPassword" parameterType="User">
         UPDATE teacher SET password = #{password} WHERE id = #{id}
     </update>
+
+    <!--根据ID查询密码-->
+    <select id="getPasswordByID" parameterType="BigInteger" resultType="String">
+        SELECT password FROM student WHERE id = #{id}
+    </select>
 </mapper>
