@@ -71,8 +71,9 @@ public class CourseService {
                 Map<String, Object> map = new HashMap<>(3);
                 Course course = courses.get(i);
                 Klass klass = klassDao.getKlassByStudentAndCourseID(id, course.getID());
-                map.put("id",course.getID());
+                map.put("id", course.getID());
                 map.put("courseName", course.getCourseName());
+                map.put("klassID", klass.getID());
                 map.put("klassGrade", klass.getGrade());
                 map.put("klassSerial", klass.getKlassSerial());
                 listCoursesInfo.add(map);
@@ -94,7 +95,6 @@ public class CourseService {
         }
         return listCoursesInfo;
     }
-
 
     @GetMapping("/allcourse")
     public List<Course> listAllCourses() {

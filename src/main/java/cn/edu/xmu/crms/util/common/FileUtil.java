@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Component
 public class FileUtil {
-    private static String UPLOADED_FOLDER = "L://temp";
+    private static String UPLOADED_FOLDER = "//home";
 
     public static String getUploadedFolder() {
         return UPLOADED_FOLDER;
@@ -90,5 +90,15 @@ public class FileUtil {
             Path path = Paths.get(UPLOADED_FOLDER + fileType + file.getOriginalFilename());
             Files.write(path, bytes);
             return file.getOriginalFilename();
+    }
+
+    public String deleteUploadedFile(String fileType, String fileName) {
+        File file = new File(UPLOADED_FOLDER  + fileType + fileName);
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                return "删除成功";
+            }
+        }
+        return "删除失败";
     }
 }

@@ -7,7 +7,7 @@
         <result property="seminarName" column="seminar_name"/>
         <result property="introduction" column="introduction"/>
         <result property="maxTeam" column="max_team"/>
-        <result property="beActive" column="is_active"/>
+        <result property="beVisible" column="is_visible"/>
         <result property="seminarSerial" column="seminar_serial"/>
         <result property="enrollStartTime" column="enroll_start_time"/>
         <result property="enrollEndTime" column="enroll_end_time"/>

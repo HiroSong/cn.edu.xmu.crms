@@ -33,6 +33,8 @@ public class TeamDao {
 
     public Team getTeamByTeamID(BigInteger teamID) {
         Team team = teamMapper.getTeamByTeamID(teamID);
+        if(team==null)
+            return null;
         List<Student> members = studentMapper.listMembersByTeamID(teamID);
         if(members != null) {
             team.setMembers(members);
@@ -136,15 +138,17 @@ public class TeamDao {
         return teamMapper.deleteAttendance(attendanceID);
     }
 
-    public Attendance getAttendanceByKlass_SeminarIDAndTeamID(BigInteger klass_seminarID,BigInteger teamID){
+    public Attendance getAttendanceByKlassSeminarIDAndTeamID(BigInteger klass_seminarID,BigInteger teamID){
         System.out.print(klass_seminarID);
-        BigInteger attendanceID=teamMapper.getAttendanceIDByKlass_SeminarIDAndTeamID(klass_seminarID,teamID);
-        if(attendanceID==null)
+        BigInteger attendanceID=teamMapper.getAttendanceIDByKlassSeminarIDAndTeamID(klass_seminarID,teamID);
+        if(attendanceID==null) {
             return null;
+        }
         return teamMapper.getAttendanceByAttendanceID(attendanceID);
     }
 
     public void updateTeamStatusByID(Team team) {
         teamMapper.updateTeamStatusByID(team);
     }
+
 }

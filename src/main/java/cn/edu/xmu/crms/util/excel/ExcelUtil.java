@@ -1,6 +1,5 @@
 package cn.edu.xmu.crms.util.excel;
 
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -467,7 +466,7 @@ public class ExcelUtil {
                     break;
             }
         }
-        return result.toString();
+        return result.toString().replace((char)160, ' ').trim();
     }
 
     /**

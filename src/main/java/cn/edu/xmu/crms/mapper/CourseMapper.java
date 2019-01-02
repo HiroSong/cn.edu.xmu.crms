@@ -203,5 +203,6 @@ public interface CourseMapper {
     void updateSeminarMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
 
     List<Course> listAllCourse();
+
 }
 

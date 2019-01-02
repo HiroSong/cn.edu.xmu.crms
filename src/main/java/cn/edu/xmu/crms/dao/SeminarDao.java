@@ -34,6 +34,10 @@ public class SeminarDao{
     @Autowired
     RoundMapper roundMapper;
 
+    public Seminar getSeminarInProcess() {
+        return seminarMapper.getSeminarInProcess();
+    }
+
     public Seminar getSeminarBySeminarID(BigInteger seminarID) {
         return seminarMapper.getSeminarBySeminarID(seminarID);
     }
@@ -120,14 +124,12 @@ public class SeminarDao{
 
     public Map<String,Object> getSeminarScoreBySeminarAndTeamID(BigInteger seminarID, BigInteger teamID) {
         Map<String,Object> map = new HashMap<>(5);
-        Map<String,Object> teamMap = new HashMap<>(2);
         Team team = teamMapper.getTeamByTeamID(teamID);
         BigInteger klassID = klassMapper.getKlassIDBySeminarAndTeamID(seminarID,teamID);
         BigInteger klassSeminarID = seminarMapper.getKlassSeminarIDByKlassAndSeminarID(klassID,seminarID);
         Map<String,Object> scoreMap = seminarMapper.getTeamSeminarScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
-        teamMap.put("id",teamID);
-        teamMap.put("name",team.getTeamName());
-        map.put("team",teamMap);
+        map.put("teamID",teamID);
+        map.put("teamName",team.getTeamName());
         map.put("presentationScore",scoreMap.get("presentationScore"));
         map.put("reportScore",scoreMap.get("reportScore"));
         map.put("questionScore",scoreMap.get("questionScore"));
@@ -154,6 +156,7 @@ public class SeminarDao{
         scoreMap.put("team",teamMap);
         return scoreMap;
     }
+
 
 
     //创建一个新的seminar
@@ -205,8 +208,4 @@ public class SeminarDao{
         seminarMapper.updateSeminarBySeminarID(seminar);
     }
 
-
-    public Seminar getSeminarInProcess() {
-        return seminarMapper.getSeminarInProcess();
-    }
 }

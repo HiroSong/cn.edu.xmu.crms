@@ -1,6 +1,7 @@
 package cn.edu.xmu.crms.dao;
 
 import cn.edu.xmu.crms.entity.User;
+import cn.edu.xmu.crms.mapper.AdminMapper;
 import cn.edu.xmu.crms.mapper.StudentMapper;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class UserDao {
     StudentMapper studentMapper;
     @Autowired
     TeacherMapper teacherMapper;
+    @Autowired
+    AdminMapper adminMapper;
 
     /**
       * 根据账号查找对应的用户
@@ -30,23 +33,26 @@ public class UserDao {
       * @date 2018/12/23 22:13
       */
     public User getUserByUsername(String username){
+        List<String> roles=new ArrayList<>();
         User user = studentMapper.getStudentByStudentAccount(username);
-        if (user==null) {
-            user = teacherMapper.getTeacherByTeacherAccount(username);
-        }else {
-            List<String> roles=new ArrayList<>();
+        if (user!=null) {
             roles.add("student");
             user.setRoles(roles);
-            return user;
+            return  user;
         }
-        if(user==null){
-            return null;
-        }else {
-            List<String> roles=new ArrayList<>();
+        user = teacherMapper.getTeacherByTeacherAccount(username);
+        if(user!=null){
             roles.add("teacher");
             user.setRoles(roles);
-            return user;
+            return  user;
         }
+        user = adminMapper.getAdminByAdminAccount(username);
+        if(user!=null){
+            roles.add("admin");
+            user.setRoles(roles);
+            return  user;
+        }
+        return null;
     }
 
     public void insertUser(User user){

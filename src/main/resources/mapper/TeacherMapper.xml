@@ -46,8 +46,7 @@
 
     <!--激活某个教师的账号-->
     <update id="updateTeacherActiveByTeacher" parameterType="Teacher">
-        UPDATE teacher SET is_active = 1,password = #{password},email = #{email}
-        WHERE  id = #{id} AND is_active = 0
+        UPDATE teacher SET is_active = 1,password = #{password} WHERE  id = #{id} AND is_active=0
     </update>
 
     <!--返回上一条插入语句的ID-->
@@ -57,7 +56,7 @@
 
     <!--根据教工号获取教师对象-->
     <select id="getTeacherByTeacherAccount" parameterType="String" resultType="Teacher">
-        SELECT id id, account username, password password FROM teacher WHERE account = #{username}
+        SELECT id id, account username, password password, is_active beActive FROM teacher WHERE account = #{username}
     </select>
 
     <!--修改教师密码-->

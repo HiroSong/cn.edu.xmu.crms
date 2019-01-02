@@ -26,7 +26,7 @@
 
     <!--获得申请的所有ID-->
     <select id="listAllApplicationID" resultType="BigInteger">
-        SELECT id FROM team_valid_application
+        SELECT id FROM team_valid_application WHERE status IS NULL
     </select>
 
     <!--更新额外申请的状态-->

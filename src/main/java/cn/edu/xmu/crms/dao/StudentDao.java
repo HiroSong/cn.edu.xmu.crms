@@ -68,11 +68,13 @@ public class StudentDao {
     }
 
     public String insertStudentList(BigInteger klassID, MultipartFile file) throws IOException {
+        klassMapper.deleteKlassStudentByKlassID(klassID);
         String folder = FileUtil.getUploadedFolder();
         String excelUrl = folder + "//excel//" + fileUtil.uploadFile("//excel//", file);
         List<Row> rowList;
         try {
             rowList = excelUtil.readExcel(excelUrl);
+            fileUtil.deleteUploadedFile("//excel//", excelUrl);
         }catch (IOException e){
             return "解析失败";
         }
