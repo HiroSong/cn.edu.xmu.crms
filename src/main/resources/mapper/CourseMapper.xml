@@ -143,6 +143,11 @@
         UPDATE course SET seminar_main_course_id = #{param1} WHERE id = #{param2}
     </update>
 
+    <!--删除从课程中的共享分组主课程信息-->
+    <update id="deleteTeamMainCourseID" parameterType="BigInteger">
+        UPDATE course SET team_main_course_id = null WHERE id = #{courseID}
+    </update>
+
     <select id="listAllCourse" resultMap="courseMap">
         SELECT course.id,teacher_id,course_name,teacher.account,teacher.teacher_name FROM teacher,course WHERE teacher.id = course.teacher_id
     </select>

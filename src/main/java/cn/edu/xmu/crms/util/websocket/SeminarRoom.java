@@ -12,6 +12,7 @@ import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.entity.Question;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.util.*;

@@ -3,6 +3,7 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
+import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import cn.edu.xmu.crms.util.websocket.SeminarRoom;
 import com.alibaba.druid.sql.dialect.mysql.ast.MysqlForeignKey;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
@@ -44,7 +46,8 @@ public class SeminarService {
     TeamDao teamDao;
     @Autowired
     QuestionDao questionDao;
-
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
     SeminarRoom seminarRoom;
 
 
@@ -288,18 +291,18 @@ public class SeminarService {
         map.put("teamName",attendance.getTeam().getTeamName());
         map.put("teamNumber",attendance.getTeam().getTeamNumber());
         map.put("teamOrder",attendance.getTeamOrder());
-        map.put("be_present",attendance.getBePresent());
-        map.put("ppt_name",attendance.getPPTName());
-        map.put("ppt_url",attendance.getPPTUrl());
-        map.put("report_name",attendance.getReportName());
-        map.put("report_url",attendance.getReportUrl());
+        map.put("bePresent",attendance.getBePresent());
+        map.put("pptName",attendance.getPPTName());
+        map.put("pptUrl",attendance.getPPTUrl());
+        map.put("reportName",attendance.getReportName());
+        map.put("reportUrl",attendance.getReportUrl());
         return map;
     }
 
     @PostMapping("/seminar/{seminarID}/class/{classID}/question")
     public void raiseQuestion(@PathVariable("seminarID") BigInteger seminarID,
                               @PathVariable("classID") BigInteger classID,
-                              @RequestBody Question question){
+                              @RequestBody Question question, HttpServletRequest request){
         //question里需要有studentID和attendanceID。
         question.setBeSelected(0);
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
