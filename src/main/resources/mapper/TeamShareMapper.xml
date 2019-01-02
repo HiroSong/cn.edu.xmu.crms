@@ -27,7 +27,6 @@
         AND s.sub_course_id = c2.id AND s.sub_course_teacher_id = t.id AND s.status is null
     </select>
 
-
     <!--根据courseID获取策略Serial,Name,和id-->
     <select id="listStrategyInfoByCourseID" parameterType="BigInteger" resultType="TeamStrategy">
         SELECT * FROM team_strategy WHERE  course_id = #{courseID}
