@@ -160,8 +160,6 @@ public class TeamService {
         }
     }
 
-
-
     //组长发出有效组队申请  如果返回id=0则还有未审核的申请 需等待
     @PostMapping("/team/{teamID}/teamvalidrequest")
     public Map<String, Object> createTeamValidRequest(@PathVariable("teamID") BigInteger teamID,
