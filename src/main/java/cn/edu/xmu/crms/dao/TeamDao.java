@@ -85,25 +85,13 @@ public class TeamDao {
 
 
     public Team insertTeam(Team team) {
-        if(team.getMembers().size() + 1 > team.getCourse().getMaxMember()||
-                team.getMembers().size() + 1 < team.getCourse().getMinMember()) {
-            team.setStatus(0);
-        }
         BigInteger courseID = team.getCourse().getID();
         BigInteger leaderKlassID = klassMapper.getKlassIDByCourseAndStudentID(courseID,team.getLeader().getID());
-        //判断是否有学生不同班级
-        for(int i = 0; i < team.getMembers().size(); i++) {
-            BigInteger memberKlassID = klassMapper.getKlassIDByCourseAndStudentID
-                    (courseID,team.getMembers().get(i).getID());
-            if(!leaderKlassID.equals(memberKlassID)) {
-                team.setStatus(0);
-                break;
-            }
-        }
         teamMapper.insertTeam(team);
-        team.setID(teamMapper.getLastInsertID());
         BigInteger teamID = team.getID();
         klassMapper.insertKlassTeam(team.getKlass().getID(),teamID);
+        BigInteger leaderID = team.getLeader().getID();
+        teamMapper.insertStudentToTeam(teamID,leaderID);
         for(int i = 0; i < team.getMembers().size(); i++) {
             BigInteger studentID = team.getMembers().get(i).getID();
             teamMapper.insertStudentToTeam(teamID,studentID);

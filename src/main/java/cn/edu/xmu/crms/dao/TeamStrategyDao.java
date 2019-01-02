@@ -23,7 +23,11 @@ public class TeamStrategyDao {
     @Autowired
     TeamStrategyMapper teamStrategyMapper;
 
-    void insertStrategy(Course course) {
+    public List<TeamStrategy> listStrategyInfoByCourseID(BigInteger courseID) {
+        return teamStrategyMapper.listStrategyInfoByCourseID(courseID);
+    }
+
+    public void insertStrategy(Course course) {
         BigInteger courseID = course.getID();
         TeamStrategy teamStrategy = new TeamStrategy();
         MemberLimitStrategy memberLimitStrategy = new MemberLimitStrategy();
