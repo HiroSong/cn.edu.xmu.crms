@@ -11,6 +11,25 @@ import java.math.BigInteger;
 public class ConflictCourseStrategy {
     private BigInteger id;
     private BigInteger courseID;
+    private String teacherName;
+    private String courseName;
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
 
     public BigInteger getID() {
         return id;

@@ -217,4 +217,7 @@ public interface SeminarMapper {
      */
     void updateEndSeminarByKlassAndSeminarID(BigInteger klassID, BigInteger seminarID);
 
+
+    Seminar getSeminarInProcess();
+
 }

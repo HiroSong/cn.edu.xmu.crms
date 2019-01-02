@@ -4,6 +4,7 @@ import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
 import cn.edu.xmu.crms.util.websocket.SeminarRoom;
+import com.alibaba.druid.sql.dialect.mysql.ast.MysqlForeignKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +68,17 @@ public class SeminarService {
         return map;
     }
 
+    //获取正在进行的讨论课
+    @GetMapping("/seminar/process")
+    public Map<String, Object> getSeminarInProcess() {
+        Seminar seminar = seminarDao.getSeminarInProcess();
+        if(seminar==null){
+            return null;
+        }
+        return this.getSeminarInfo(seminar);
+    }
+
+
     @GetMapping("/round/{roundID}/seminar")//获得某轮下的讨论课信息
     public List<Map<String, Object>> listSeminarsInfoByRoundID(@PathVariable("roundID") BigInteger roundID) {
         List<Map<String, Object>> seminarInfoList = new ArrayList<>();
@@ -128,6 +140,7 @@ public class SeminarService {
 
     @GetMapping("/seminar/{seminarID}")//获取单个讨论课信息
     public Map<String, Object> getSeminarInfoBySeminarID(@PathVariable("seminarID") BigInteger seminarID) {
+        Map<String,Object> map=new HashMap<>();
         Seminar seminar = seminarDao.getSeminarBySeminarID(seminarID);
         if(seminar == null) {
             return null;

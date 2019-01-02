@@ -56,7 +56,7 @@ public class TeamService {
     }
     
     private Map<String, Object> getTeamInfo(Team team) {
-        if(team==null) {
+        if(team==null){
             return null;
         }
         Map<String,Object> teamInfoMap = new HashMap<>(5);
@@ -121,24 +121,44 @@ public class TeamService {
         teamDao.deleteTeamByTeamID(teamID);
     }
 
-
     //组员或者组长添加新的成员
-    @PutMapping("/team/{teamID}/add")
+    @PutMapping("/team/{teamID}/member/new")
     public Boolean addTeamMember(@PathVariable("teamID") BigInteger teamID,
                                  @RequestBody Student student) {
         teamDao.insertStudentByTeamAndStudentID(teamID,student.getID());
-        return teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID));
+        Team team = new Team();
+        team.setID(teamID);
+        if(teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID))) {
+            team.setStatus(1);
+            teamDao.updateTeamStatusByID(team);
+            return true;
+        }
+        else {
+            team.setStatus(0);
+            teamMapper.updateTeamStatusByID(team);
+            return false;
+        }
     }
 
 
     //移除成员或踢出队伍
-    @PutMapping("/team/{teamID}/remove")
+    @PutMapping("/team/{teamID}/member/old")
     public Boolean removeTeamMember(@PathVariable("teamID") BigInteger teamID,
                                     @RequestBody Student student) {
         teamDao.deleteStudentFromTeam(teamID,student.getID());
-        return teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID));
+        Team team = new Team();
+        team.setID(teamID);
+        if(teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID))) {
+            team.setStatus(1);
+            teamDao.updateTeamStatusByID(team);
+            return true;
+        }
+        else {
+            team.setStatus(0);
+            teamMapper.updateTeamStatusByID(team);
+            return false;
+        }
     }
-
 
     //组长发出有效组队申请  如果返回id=0则还有未审核的申请 需等待
     @PostMapping("/team/{teamID}/teamvalidrequest")
@@ -208,10 +228,9 @@ public class TeamService {
             map.put("classSerial",application.getKlass().getKlassSerial());
             map.put("teamID",application.getTeam().getID());
             map.put("teamName",application.getTeam().getTeamName());
-            map.put("leaderID",application.getLeader().getID());
-            map.put("leaderName",application.getLeader().getName());
             map.put("reason",application.getReason());
             map.put("status",application.getStatus());
+            map.put("id",application.getID());
             applicationMapList.add(map);
         }
 
