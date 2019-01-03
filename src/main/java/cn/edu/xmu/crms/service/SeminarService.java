@@ -69,6 +69,8 @@ public class SeminarService {
         map.put("signUpEndTime",seminar.getEnrollEndTime());
         map.put("round",seminar.getRound().getRoundSerial());
         map.put("beVisible",seminar.getBeVisible());
+        map.put("roundID",seminar.getRound().getID());
+        map.put("reportDDL",seminar.getReportDDL());
         return map;
     }
 
@@ -79,7 +81,10 @@ public class SeminarService {
         if(seminar==null){
             return null;
         }
-        return this.getSeminarInfo(seminar);
+        BigInteger klassID = seminarDao.getKlassIDByProcessSeminarID(seminar.getID());
+        Map<String,Object> map = this.getSeminarInfo(seminar);
+        map.put("klassID",klassID);
+        return map;
     }
 
 
@@ -144,7 +149,7 @@ public class SeminarService {
 
     @GetMapping("/seminar/{seminarID}")//获取单个讨论课信息
     public Map<String, Object> getSeminarInfoBySeminarID(@PathVariable("seminarID") BigInteger seminarID) {
-        Map<String,Object> map=new HashMap<>();
+        Map<String,Object> map = new HashMap<>(0);
         Seminar seminar = seminarDao.getSeminarBySeminarID(seminarID);
         if(seminar == null) {
             return null;
@@ -153,6 +158,18 @@ public class SeminarService {
     }
 
 
+    //教师获取讨论课报告截止时间
+    @GetMapping("/seminar/{seminarID}/class/{classID}/reportddl")
+    public Map<String,Object> getSeminarReportInfo(@PathVariable("seminarID") BigInteger seminarID,
+                                                   @PathVariable("classID") BigInteger klassID) {
+        TimeZone tz = TimeZone.getTimeZone("ETC/GMT-8");
+        TimeZone.setDefault(tz);
+        Map<String, Object> map = new HashMap<>(3);
+        map.put("seminarID",seminarID);
+        map.put("klassID",klassID);
+        map.put("reportDDL",seminarDao.getReportDDLBySeminarAndKlassID(seminarID,klassID));
+        return map;
+    }
 
     //教师修改讨论课报告截止时间
     @PutMapping("/seminar/{seminarID}/class/{classID}/reportddl")

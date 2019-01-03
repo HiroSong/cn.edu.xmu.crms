@@ -130,4 +130,5 @@ public interface KlassMapper {
     BigInteger getKlassIDByCourseAndStudentID(BigInteger courseID,BigInteger studentID);
 
     void insertKlassTeam(BigInteger klassID,BigInteger teamID);
+
 }

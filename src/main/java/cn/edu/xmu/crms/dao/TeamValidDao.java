@@ -72,9 +72,8 @@ public class TeamValidDao {
         }
         //队伍内成员数量判断
         Integer minMemberNumber = courseMapper.getCourseMinMemberByCourseID(courseID);
-        System.out.println(minMemberNumber);
         Integer maxMemberNumber = courseMapper.getCourseMaxMemberByCourseID(courseID);
-        List<Student> students = studentMapper.listMembersByTeamID(team.getID());
+        List<Student> students = studentMapper.listMembersByTeamAndCourseID(team.getID(),courseID);
         if(students.size() > maxMemberNumber || students.size() < minMemberNumber) {
             return false;
         }

@@ -131,7 +131,10 @@ public interface StudentMapper {
       * @date 2018/12/26 3:11
       */
     List<BigInteger> listStudentID(List<Student> studentList);
+
     List<Student> listMembersByTeamID(BigInteger teamID);
+
+    List<Student> listMembersByTeamAndCourseID(BigInteger teamID,BigInteger courseID);
 
     /**
      * 用于通过courseID获取未组队学生列表

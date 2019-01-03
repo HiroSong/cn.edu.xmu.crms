@@ -64,4 +64,6 @@
     <select id="getLastInsertID" resultType="BigInteger">
         SELECT LAST_INSERT_ID();
     </select>
+
+
 </mapper>
