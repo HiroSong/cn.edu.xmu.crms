@@ -204,4 +204,7 @@ public interface TeamMapper {
 
     void insertStudentToTeam(BigInteger teamID, BigInteger studentID);
 
+    void insertKlassTeam(BigInteger klassID,BigInteger teamID);
+
+    void deleteKlassTeam(BigInteger klassID);
 }

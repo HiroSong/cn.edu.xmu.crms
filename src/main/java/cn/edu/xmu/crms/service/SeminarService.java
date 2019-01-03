@@ -83,7 +83,7 @@ public class SeminarService {
         BigInteger klassID = seminarDao.getKlassIDByProcessSeminarID(seminar.getID());
         Map<String,Object> map = this.getSeminarInfo(seminar);
         map.put("klassID",klassID);
-        return this.getSeminarInfo(seminar);
+        return map;
     }
 
 
@@ -155,6 +155,7 @@ public class SeminarService {
         }
         return this.getSeminarInfo(seminar);
     }
+
 
     //教师获取讨论课报告截止时间
     @GetMapping("/seminar/{seminarID}/class/{classID}/reportddl")

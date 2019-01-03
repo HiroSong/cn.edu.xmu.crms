@@ -51,6 +51,7 @@ public class RoundDao {
     }
 
     public RoundScore getRoundScoreByRoundAndTeamID(BigInteger roundID, BigInteger teamID) {
+        RoundScore roundScore = roundMapper.getRoundScoreByRoundAndTeamID(roundID,teamID);
         return roundMapper.getRoundScoreByRoundAndTeamID(roundID,teamID);
     }
 
