@@ -60,8 +60,13 @@ public class AttendanceDao {
             map.put("message", "no file found");
             return map;
         }
-        map.put("name", attendance.getReportName());
-        map.put("url", attendance.getReportUrl());
+        if(fileType==REPORT_FILE) {
+            map.put("name", attendance.getReportName());
+            map.put("url", attendance.getReportUrl());
+        }else if(fileType==PPT_FILE) {
+            map.put("name", attendance.getPPTName());
+            map.put("url", attendance.getPPTUrl());
+        }
         return map;
     }
 }
