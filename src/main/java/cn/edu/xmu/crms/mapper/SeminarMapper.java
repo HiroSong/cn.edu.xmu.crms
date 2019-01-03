@@ -1,5 +1,6 @@
 package cn.edu.xmu.crms.mapper;
 
+import cn.edu.xmu.crms.entity.RoundScore;
 import cn.edu.xmu.crms.entity.Seminar;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -174,7 +175,11 @@ public interface SeminarMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    Map<String, Object> getTeamSeminarScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
+    Double getPreScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
+
+    Double getReportScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
+
+    Double getQuestionScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
     /**
      * 修改某次讨论课某队伍成绩
      *

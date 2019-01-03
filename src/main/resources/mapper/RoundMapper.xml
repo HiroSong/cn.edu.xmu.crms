@@ -79,7 +79,7 @@
     </select>
 
     <!--插入新的Round-->
-    <insert id="insertRound" parameterType="Round">
+    <insert id="insertRound" parameterType="Round" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO round(course_id,round_serial,presentation_score_method,report_score_method,question_score_method)
         VALUE (#{course.id},#{roundSerial},0,0,0)
     </insert>

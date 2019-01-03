@@ -110,12 +110,12 @@ public class TeamService {
         return this.getTeamInfo(team);
     }
 
-    @GetMapping("/team/{teamID}")
-    public Map<String, Object> getTeamInfoByTeamID(@PathVariable("teamID") BigInteger teamID) {
-        Team team = teamDao.getTeamByTeamID(teamID);
-        Map<String, Object> teamInfo = this.getTeamInfo(team);
-        return teamInfo;
-    }
+    //@GetMapping("/team/{teamID}")
+    //public Map<String, Object> getTeamInfoByTeamID(@PathVariable("teamID") BigInteger teamID) {
+    //    Team team = teamDao.getTeamByTeamID(teamID);
+    //    Map<String, Object> teamInfo = this.getTeamInfo(team);
+    //    return teamInfo;
+    //}
 
 
     @DeleteMapping("/team/{teamID}")//组长解散小组

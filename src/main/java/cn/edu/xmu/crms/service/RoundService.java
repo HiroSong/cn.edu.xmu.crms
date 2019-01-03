@@ -116,6 +116,4 @@ public class RoundService {
         RoundScore roundScore = roundDao.getRoundScoreByRoundAndTeamID(roundID, teamID);
         return this.getRoundScoreInfo(roundScore);
     }
-
-
 }
