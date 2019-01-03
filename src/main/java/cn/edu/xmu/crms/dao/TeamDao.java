@@ -70,20 +70,11 @@ public class TeamDao {
     //根据courseID 返回队伍列表信息
     public List<Team> listTeamsByCourseID(BigInteger courseID) {
         Course course = courseMapper.getCourseByCourseID(courseID);
-        if(course.getTeamMainCourseID() == null) {
-            List<Team> teams = teamMapper.listTeamsByCourseID(courseID);
-            for(Team team : teams) {
-                team.setMembers(studentMapper.listMembersByTeamAndCourseID(team.getID(),courseID));
-            }
-            return teams;
+        List<Team> teams = teamMapper.listTeamsByCourseID(courseID);
+        for(Team team : teams) {
+            team.setMembers(studentMapper.listMembersByTeamAndCourseID(team.getID(),courseID));
         }
-        else {
-            List<Team> teams = teamMapper.listTeamsByCourseID(course.getTeamMainCourseID());
-            for(Team team : teams) {
-                team.setMembers(studentMapper.listMembersByTeamAndCourseID(team.getID(),courseID));
-            }
-            return teams;
-        }
+        return teams;
     }
 
     //增加学生和队伍关联

@@ -156,6 +156,7 @@ public class SeminarService {
         return this.getSeminarInfo(seminar);
     }
 
+
     //教师获取讨论课报告截止时间
     @GetMapping("/seminar/{seminarID}/class/{classID}/reportddl")
     public Map<String,Object> getSeminarReportInfo(@PathVariable("seminarID") BigInteger seminarID,

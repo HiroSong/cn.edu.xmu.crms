@@ -55,7 +55,7 @@
 
 
     <!--用klass对象插入klass表-->
-    <insert id="insertKlass" parameterType="Klass">
+    <insert id="insertKlass" parameterType="Klass" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO klass(course_id,grade,klass_serial,klass_time,klass_location)
         VALUE (#{course.id},#{grade},#{klassSerial},#{klassTime},#{klassLocation})
     </insert>
