@@ -74,7 +74,8 @@
     <update id="updateSeminarBySeminarID" parameterType="Seminar">
         UPDATE seminar SET seminar_name = #{seminarName}, introduction = #{introduction},
         seminar_serial = #{seminarSerial}, is_visible = #{beVisible}, enroll_start_time = #{enrollStartTime},
-        enroll_end_time = #{enrollEndTime}, max_team = #{maxTeam}, round_id = #{round.id} WHERE id = #{id}
+        enroll_end_time = #{enrollEndTime}, max_team = #{maxTeam},round_id = #{round.id}
+        WHERE id = #{id}
     </update>
 
     <!--根据班级ID和讨论课ID修改reportDDL-->

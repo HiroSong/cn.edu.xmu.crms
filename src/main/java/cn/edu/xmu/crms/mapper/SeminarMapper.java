@@ -166,6 +166,7 @@ public interface SeminarMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger getKlassSeminarIDByKlassAndSeminarID(BigInteger klassID, BigInteger seminarID);
+
     /**
      * 获取某次讨论课某队伍成绩
      *
