@@ -94,6 +94,7 @@ public class RoundService {
                                              @RequestBody Round round) {
         round.setID(roundID);
         roundDao.updateRuleByRound(round);
+        roundDao.updateRoundSignUpNumber(round);
     }
 
 

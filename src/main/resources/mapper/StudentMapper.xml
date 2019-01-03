@@ -94,6 +94,13 @@
         team_student WHERE student.id = team_student.student_id AND team_student.team_id = #{teamID}
     </select>
 
+    <!--获取一个小组的选了这门课的成员-->
+    <select id="listMembersByTeamAndCourseID" resultType="Student" parameterType="BigInteger">
+        SELECT id id,account username,password password,is_active beActive,student_name name,email email FROM student,
+                                                                                                              team_student,klass_student WHERE student.id = team_student.student_id AND team_student.team_id = #{param1}
+                                                                                                                                           AND klass_student.student_id = student.id AND klass_student.course_id = #{param2}
+    </select>
+
     <!--修改学生密码-->
     <update id="updateStudentPassword" parameterType="User">
         UPDATE student SET password = #{password} WHERE id = #{id}

@@ -165,6 +165,7 @@ public interface SeminarMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger getKlassSeminarIDByKlassAndSeminarID(BigInteger klassID, BigInteger seminarID);
+
     /**
      * 获取某次讨论课某队伍成绩
      *
@@ -174,7 +175,12 @@ public interface SeminarMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    Map<String, Object> getTeamSeminarScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
+    Double getPreScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
+
+    Double getReportScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
+
+    Double getQuestionScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
+
     /**
      * 修改某次讨论课某队伍成绩
      *

@@ -79,7 +79,7 @@
     </select>
 
     <!--插入新的Round-->
-    <insert id="insertRound" parameterType="Round">
+    <insert id="insertRound" parameterType="Round" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO round(course_id,round_serial,presentation_score_method,report_score_method,question_score_method)
         VALUE (#{course.id},#{roundSerial},0,0,0)
     </insert>
@@ -93,4 +93,10 @@
     <select id="getLastInsertID" resultType="BigInteger">
         SELECT LAST_INSERT_ID();
     </select>
+
+    <!--修改每个轮次每个班级的报名次数-->
+    <update id="updateSignUpNumber" parameterType="HashMap">
+        UPDATE klass_round SET enroll_number = #{signUpNumber} WHERE klass_id = #{klassID} AND round_id = #{roundID}
+    </update>
+
 </mapper>

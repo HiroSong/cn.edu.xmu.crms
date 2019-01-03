@@ -54,7 +54,7 @@
     </select>
 
     <!--插入新的讨论课信息-->
-    <insert id="insertSeminar" parameterType="Seminar">
+    <insert id="insertSeminar" parameterType="Seminar" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO seminar(course_id,round_id,seminar_name,introduction,max_team,is_visible,
         seminar_serial,enroll_start_time,enroll_end_time) VALUE (#{course.id},#{round.id},#{seminarName},
         #{introduction},#{maxTeam},#{beVisible},#{seminarSerial},#{enrollStartTime},#{enrollEndTime})
@@ -74,7 +74,8 @@
     <update id="updateSeminarBySeminarID" parameterType="Seminar">
         UPDATE seminar SET seminar_name = #{seminarName}, introduction = #{introduction},
         seminar_serial = #{seminarSerial}, is_visible = #{beVisible}, enroll_start_time = #{enrollStartTime},
-        enroll_end_time = #{enrollEndTime}, max_team = #{maxTeam} WHERE id = #{id}
+        enroll_end_time = #{enrollEndTime}, max_team = #{maxTeam},round_id = #{round.id}
+        WHERE id = #{id}
     </update>
 
     <!--根据班级ID和讨论课ID修改reportDDL-->
@@ -108,10 +109,20 @@
     </select>
 
     <!--根据班级讨论课ID和小组ID获得小组本次讨论课成绩-->
-    <select id="getTeamSeminarScoreByKlassSeminarAndTeamID" parameterType="BigInteger" resultType="HashMap">
-        SELECT total_score totalScore,presentation_score presentationScore,question_score questionScore,
-        report_score reportScore FROM seminar_score WHERE klass_seminar_id = #{param1} AND team_id = #{param2}
+    <select id="getPreScoreByKlassSeminarAndTeamID" parameterType="BigInteger" resultType="Double">
+    SELECT presentation_score presentationScore FROM seminar_score WHERE klass_seminar_id = #{param1} AND team_id = #{param2}
     </select>
+
+    <!--根据班级讨论课ID和小组ID获得小组本次讨论课成绩-->
+    <select id="getReportScoreByKlassSeminarAndTeamID" parameterType="BigInteger" resultType="Double">
+    SELECT report_score reportScore FROM seminar_score WHERE klass_seminar_id = #{param1} AND team_id = #{param2}
+    </select>
+
+    <!--根据班级讨论课ID和小组ID获得小组本次讨论课成绩-->
+    <select id="getQuestionScoreByKlassSeminarAndTeamID" parameterType="BigInteger" resultType="Double">
+    SELECT question_score questionScore FROM seminar_score WHERE klass_seminar_id = #{param1} AND team_id = #{param2}
+    </select>
+
 
     <!--根据班级讨论课ID和teamID修改成绩-->
     <update id="updateSeminarScoreByKlassSeminarAndTeamID" parameterType="HashMap">

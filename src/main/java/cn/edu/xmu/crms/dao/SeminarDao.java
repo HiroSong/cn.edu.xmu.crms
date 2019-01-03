@@ -127,12 +127,26 @@ public class SeminarDao{
         Team team = teamMapper.getTeamByTeamID(teamID);
         BigInteger klassID = klassMapper.getKlassIDBySeminarAndTeamID(seminarID,teamID);
         BigInteger klassSeminarID = seminarMapper.getKlassSeminarIDByKlassAndSeminarID(klassID,seminarID);
-        Map<String,Object> scoreMap = seminarMapper.getTeamSeminarScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
+        Double preScore = seminarMapper.getPreScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
+        Double reportScore = seminarMapper.getReportScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
+        Double questionScore = seminarMapper.getQuestionScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
         map.put("teamID",teamID);
         map.put("teamName",team.getTeamName());
-        map.put("presentationScore",scoreMap.get("presentationScore"));
-        map.put("reportScore",scoreMap.get("reportScore"));
-        map.put("questionScore",scoreMap.get("questionScore"));
+        if(preScore == null) {
+            map.put("presentationScore",0);
+        } else {
+            map.put("presentationScore",preScore);
+        }
+        if(reportScore == null){
+            map.put("reportScore",0);
+        } else {
+            map.put("reportScore",reportScore);
+        }
+        if(questionScore == null) {
+            map.put("questionScore",0);
+        } else {
+            map.put("questionScore",questionScore);
+        }
         map.put("totalScore",this.getTotalScore(map, team.getCourse().getID()));
         return map;
     }
@@ -157,37 +171,43 @@ public class SeminarDao{
         return scoreMap;
     }
 
-
-
     //创建一个新的seminar
     public BigInteger insertSeminar(Seminar seminar) {
         BigInteger roundID;
-        if(seminar.getRound().getID() == null) {//新round
+        if(seminar.getRoundOrder() != null) {//新round
             Round round = new Round();
             round.setCourse(seminar.getCourse());
-            round.setRoundSerial(seminar.getRound().getRoundSerial());
+            round.setRoundSerial(seminar.getRoundOrder());
             roundMapper.insertRound(round);
-            roundID = roundMapper.getLastInsertID();
+            seminar.setRound(round);
+            roundID = round.getID();
+            seminarMapper.insertSeminar(seminar);
+            BigInteger seminarID = seminar.getID();
+            List<BigInteger> klassesID = klassMapper.listKlassIDByCourseID(seminar.getCourse().getID());
+            for(BigInteger klassID : klassesID) {
+                Map<String,Object> map1 = new HashMap<>(3);
+                map1.put("klassID",klassID);
+                map1.put("roundID",roundID);
+                map1.put("enrollNumber",seminar.getEnrollNumber());
+                roundMapper.insertKlassRound(map1);
+                Map<String,Object> map2 = new HashMap<>(2);
+                map2.put("klassID",klassID);
+                map2.put("seminarID",seminarID);
+                seminarMapper.insertKlassSeminar(map2);
+            }
         }
         else {
-            roundID = seminar.getRound().getID();
+            seminarMapper.insertSeminar(seminar);
+            BigInteger seminarID = seminar.getID();
+            List<BigInteger> klassesID = klassMapper.listKlassIDByCourseID(seminar.getCourse().getID());
+            for(BigInteger klassID : klassesID) {
+                Map<String,Object> map2 = new HashMap<>(2);
+                map2.put("klassID",klassID);
+                map2.put("seminarID",seminarID);
+                seminarMapper.insertKlassSeminar(map2);
+            }
         }
-        seminar.getRound().setID(roundID);
-        seminarMapper.insertSeminar(seminar);
-        BigInteger seminarID = seminarMapper.getLastInsertID();
-        List<BigInteger> klassesID = klassMapper.listKlassIDByCourseID(seminar.getCourse().getID());
-        for(BigInteger klassID : klassesID) {
-            Map<String,Object> map1 = new HashMap<>(3);
-            map1.put("klassID",klassID);
-            map1.put("roundID",roundID);
-            map1.put("enrollNumber",seminar.getEnrollNumber());
-            roundMapper.insertKlassRound(map1);
-            Map<String,Object> map2 = new HashMap<>(2);
-            map2.put("klassID",klassID);
-            map2.put("seminarID",seminarID);
-            seminarMapper.insertKlassSeminar(map2);
-        }
-        return seminarID;
+        return seminar.getID();
     }
 
     public void updateSeminarStatus(BigInteger klassID, BigInteger seminarID,Integer status) {

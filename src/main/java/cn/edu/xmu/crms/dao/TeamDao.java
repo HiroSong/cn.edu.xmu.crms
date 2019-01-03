@@ -42,6 +42,19 @@ public class TeamDao {
         return team;
     }
 
+    public Team getTeamByTeamAndCourseID(BigInteger teamID,BigInteger courseID) {
+        Team team = teamMapper.getTeamByTeamID(teamID);
+        if(team == null) {
+            return null;
+        }
+        List<Student> members = studentMapper.listMembersByTeamAndCourseID(teamID,courseID);
+        if(members != null) {
+            team.setMembers(members);
+        }
+        return team;
+    }
+
+
     public void deleteTeamByTeamID(BigInteger teamID) {
         teamMapper.deleteTeamByTeamID(teamID);
         teamMapper.deleteKlassTeamByTeamID(teamID);
@@ -51,7 +64,7 @@ public class TeamDao {
 
     public Team getTeamByCourseAndStudentID(BigInteger courseID, BigInteger studentID) {
         BigInteger teamID = teamMapper.getTeamIDByStudentAndCourseID(studentID, courseID);
-        return this.getTeamByTeamID(teamID);
+        return this.getTeamByTeamAndCourseID(teamID,courseID);
     }
 
     //根据courseID 返回队伍列表信息
@@ -60,14 +73,14 @@ public class TeamDao {
         if(course.getTeamMainCourseID() == null) {
             List<Team> teams = teamMapper.listTeamsByCourseID(courseID);
             for(Team team : teams) {
-                team.setMembers(studentMapper.listMembersByTeamID(team.getID()));
+                team.setMembers(studentMapper.listMembersByTeamAndCourseID(team.getID(),courseID));
             }
             return teams;
         }
         else {
             List<Team> teams = teamMapper.listTeamsByCourseID(course.getTeamMainCourseID());
             for(Team team : teams) {
-                team.setMembers(studentMapper.listMembersByTeamID(team.getID()));
+                team.setMembers(studentMapper.listMembersByTeamAndCourseID(team.getID(),courseID));
             }
             return teams;
         }
