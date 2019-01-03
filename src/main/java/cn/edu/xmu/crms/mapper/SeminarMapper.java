@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -225,15 +226,6 @@ public interface SeminarMapper {
 
 
     Seminar getSeminarInProcess();
-
-    /**
-     * 修改讨论课报告提交截止时间
-     *
-     * @param  map 讨论课报告截止时间信息
-     * @author Hongqiwu
-     * @date 2018/12/18 19:35
-     */
-    void updateSeminarReportDDLBySeminarID(Map<String, Object> map);
 
 
     BigInteger getKlassIDByProcessSeminarID(BigInteger seminarID);

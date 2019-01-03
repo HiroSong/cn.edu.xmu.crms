@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -225,14 +226,15 @@ public class SeminarDao{
 
 
     public void updateSeminarBySeminarID(Seminar seminar) {
-        Map<String,Object> map = new HashMap<>(0);
-        map.put("seminarID",seminar.getID());
-        map.put("reportDDL",seminar.getReportDDL());
-        seminarMapper.updateSeminarReportDDLBySeminarID(map);
         seminarMapper.updateSeminarBySeminarID(seminar);
     }
 
     public BigInteger getKlassIDByProcessSeminarID(BigInteger seminarID) {
         return seminarMapper.getKlassIDByProcessSeminarID(seminarID);
     }
+
+    public String getReportDDLBySeminarAndKlassID(BigInteger seminarID, BigInteger klassID) {
+        return seminarMapper.getReportDDLBySeminarAndKlassID(seminarID,klassID);
+    }
+
 }

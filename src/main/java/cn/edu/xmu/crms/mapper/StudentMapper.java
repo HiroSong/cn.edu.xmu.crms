@@ -133,7 +133,6 @@ public interface StudentMapper {
     List<BigInteger> listStudentID(List<Student> studentList);
 
     List<Student> listMembersByTeamID(BigInteger teamID);
-    List<Student> listMembersByTeamAndCourseID(BigInteger teamID,BigInteger courseID);
 
     List<Student> listMembersByTeamAndCourseID(BigInteger teamID,BigInteger courseID);
 

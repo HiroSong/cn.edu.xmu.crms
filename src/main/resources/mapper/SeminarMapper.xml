@@ -156,10 +156,6 @@
         AND klass_seminar.seminar_id = seminar.id
     </select>
 
-    <!--根据班级ID和讨论课ID修改reportDDL-->
-    <update id="updateSeminarReportDDLBySeminarID" parameterType="HashMap">
-        UPDATE klass_seminar SET report_ddl = #{reportDDL} WHERE seminar_id = #{seminarID}
-    </update>
 
     <select id="getKlassIDByProcessSeminarID" parameterType="BigInteger" resultType="BigInteger">
         SELECT klass_id FROM klass_seminar WHERE status = 1 AND seminar_id = #{seminarID}
