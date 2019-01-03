@@ -83,7 +83,7 @@ public class SeminarService {
         BigInteger klassID = seminarDao.getKlassIDByProcessSeminarID(seminar.getID());
         Map<String,Object> map = this.getSeminarInfo(seminar);
         map.put("klassID",klassID);
-        return this.getSeminarInfo(seminar);
+        return map;
     }
 
 
