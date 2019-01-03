@@ -114,4 +114,6 @@ public interface RoundMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getLastInsertID();
+
+    void updateSignUpNumber(Map<String,Object> map);
 }

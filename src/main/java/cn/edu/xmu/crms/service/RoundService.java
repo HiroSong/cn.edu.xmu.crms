@@ -90,10 +90,11 @@ public class RoundService {
 
 
     @PutMapping("/round/{roundID}")
-    public void modifyCalculateRuleByRoundID(@PathVariable("roundID") BigInteger roundID,
+    public void modifyRoundInfo(@PathVariable("roundID") BigInteger roundID,
                                              @RequestBody Round round) {
         round.setID(roundID);
         roundDao.updateRuleByRound(round);
+        roundDao.updateRoundSignUpNumber(round);
     }
 
 

@@ -69,6 +69,7 @@ public class SeminarService {
         map.put("round",seminar.getRound().getRoundSerial());
         map.put("beVisible",seminar.getBeVisible());
         map.put("courseID",seminar.getCourse().getID());
+        map.put("roundID",seminar.getRound().getID());
         return map;
     }
 

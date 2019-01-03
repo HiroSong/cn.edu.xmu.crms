@@ -93,4 +93,10 @@
     <select id="getLastInsertID" resultType="BigInteger">
         SELECT LAST_INSERT_ID();
     </select>
+
+    <!--修改每个轮次每个班级的报名次数-->
+    <update id="updateSignUpNumber" parameterType="HashMap">
+        UPDATE klass_round SET enroll_number = #{signUpNumber} WHERE klass_id = #{klassID} AND round_id = #{roundID}
+    </update>
+
 </mapper>
