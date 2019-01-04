@@ -16,6 +16,7 @@
     </resultMap>
 
     <resultMap id="roundScoreMap" type="RoundScore">
+        <id property="id" column="team_id"/>
         <result property="totalScore" column="total_score"/>
         <result property="presentationScore" column="presentation_score"/>
         <result property="reportScore" column="report_score"/>
@@ -114,5 +115,4 @@
     <select id="getRoundIDBySeminarID" parameterType="BigInteger" resultType="BigInteger">
         SELECT round_id FROM seminar WHERE id = #{seminarID}
     </select>
-
 </mapper>

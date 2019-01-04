@@ -52,6 +52,8 @@ public class SeminarDao{
         Double reportWeight = new Double(scoreWeight.get("reportPercentage").toString()) / 100.0;
         Double totalScore = presentationScore * presentationWeight + questionScore * questionWeight +
                 reportScore * reportWeight;
+        String score = String.format("%.1f", totalScore);
+        totalScore = new Double(score);
         return totalScore;
     }
 
