@@ -358,6 +358,8 @@ public class SeminarService {
         }catch (Exception e)
         {
             e.printStackTrace();
+            map.put("result","Fail to broadcastQuestion.");
+            return map;
         } ;
 
         map.put("result","success");
@@ -374,7 +376,8 @@ public class SeminarService {
     public void switchAttendance(@PathVariable("seminarID")BigInteger seminarID,
                                  @PathVariable("classID")BigInteger classID)
     {
-        seminarRoom.resetQueue();
+        BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
+        seminarRoom.resetQueue(klassSeminarID);
     }
     /**
      * @Author LaiShaopeng
@@ -394,5 +397,4 @@ public class SeminarService {
         Double questionScore= Double.parseDouble(score);
         seminarRoom.updateQuestionScore(klassSeminarID,order,questionScore);
     }
-
 }

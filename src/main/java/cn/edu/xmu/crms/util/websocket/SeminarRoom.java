@@ -146,7 +146,7 @@ public class SeminarRoom {
         return map;
     }
 
-    public void resetQueue()
+    public void resetQueue(BigInteger klassSeminarID)
     {
         count=0;
         questionQueueList.get(klassSeminarID).clear();

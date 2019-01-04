@@ -50,6 +50,7 @@ public class AttendanceService {
             Attendance attendance = attendances.get(i);
             Map<String, Object> map = new HashMap<>();
             map.put("id", attendance.getID());
+            map.put("teamID",attendance.getTeamID());
             map.put("teamOrder", attendance.getTeamOrder());
             map.put("teamNumber", attendance.getTeam().getTeamNumber());
             attendanceInfoList.add(map);
