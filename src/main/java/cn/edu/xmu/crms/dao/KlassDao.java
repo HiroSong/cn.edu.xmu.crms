@@ -49,7 +49,7 @@ public class KlassDao {
 
     public BigInteger insertKlass(Klass klass) {
         klassMapper.insertKlass(klass);
-        return klassMapper.getLastInsertID();
+        return klass.getID();
     }
 
 }

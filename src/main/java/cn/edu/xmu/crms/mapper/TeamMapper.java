@@ -214,4 +214,7 @@ public interface TeamMapper {
      */
     String getTeamNameByTeamID(BigInteger teamID);
 
+    void insertKlassTeam(BigInteger klassID,BigInteger teamID);
+
+    void deleteKlassTeam(BigInteger klassID);
 }

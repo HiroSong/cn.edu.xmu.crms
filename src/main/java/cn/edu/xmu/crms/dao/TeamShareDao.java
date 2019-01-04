@@ -3,12 +3,13 @@ package cn.edu.xmu.crms.dao;
 
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.ShareTeamApplication;
+import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Teacher;
-import cn.edu.xmu.crms.mapper.CourseMapper;
-import cn.edu.xmu.crms.mapper.TeacherMapper;
-import cn.edu.xmu.crms.mapper.TeamShareMapper;
+import cn.edu.xmu.crms.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,12 @@ public class TeamShareDao {
     CourseDao courseDao;
     @Autowired
     TeacherMapper teacherMapper;
+    @Autowired
+    KlassMapper klassMapper;
+    @Autowired
+    StudentMapper studentMapper;
+    @Autowired
+    TeamMapper teamMapper;
 
     public ShareTeamApplication getTeamShareApplicationByID(BigInteger id) {
         Map<String, Object> map = teamShareMapper.getApplicationByID(id);
@@ -55,7 +62,12 @@ public class TeamShareDao {
 
     public Integer deleteTeamShareByTeamShareID(BigInteger teamShareID) {
         Map<String,Object> application = teamShareMapper.getApplicationByID(teamShareID);
-        courseMapper.deleteTeamMainCourseID(new BigInteger(application.get("subCourseID").toString()));
+        BigInteger subCourseID = new BigInteger(application.get("subCourseID").toString());
+        courseMapper.deleteTeamMainCourseID(subCourseID);
+        List<BigInteger> subKlassesID = klassMapper.listKlassIDByCourseID(subCourseID);
+        for(int i = 0; i < subKlassesID.size(); i++) {
+            teamMapper.deleteKlassTeam(subKlassesID.get(i));
+        }
         return teamShareMapper.deleteTeamShareByTeamShareID(teamShareID);
     }
 
@@ -92,6 +104,34 @@ public class TeamShareDao {
             BigInteger mainCourseID = new BigInteger(oldApplication.get("mainCourseID").toString());
             BigInteger subCourseID = new BigInteger(oldApplication.get("subCourseID").toString());
             courseMapper.updateTeamMainCourseID(mainCourseID,subCourseID);
+            List<BigInteger> mainTeamsID = teamMapper.listTeamsIDByCourseID(mainCourseID);
+            List<BigInteger> subKlassesID = klassMapper.listKlassIDByCourseID(subCourseID);
+            for(int i = 0; i < mainTeamsID.size(); i++) {
+                int[] mm = new int[10];
+                for(int n = 0; n < 10; n++) {
+                    mm[n] = 0;
+                }
+                List<Student> members = studentMapper.listMembersByTeamAndCourseID(mainTeamsID.get(i),subCourseID);
+                for(int j = 0; j < members.size(); j++) {
+                    Student student = members.get(j);
+                    BigInteger klassID = studentMapper.getIDByStudentAndCourseID(student.getID(),subCourseID);
+                    for(int m = 0; m < subKlassesID.size(); m++) {
+                        if(subKlassesID.get(m).equals(klassID)) {
+                            mm[m]++;break;
+                        }
+                    }
+                }
+                int max = 0;BigInteger klassID = new BigInteger("0");
+                for(int j = 0; j < subKlassesID.size(); j++) {
+                    if(mm[j] > max) {
+                        max = mm[j];
+                        klassID = subKlassesID.get(j);
+                    }
+                }
+                if(max != 0) {
+                    teamMapper.insertKlassTeam(klassID,mainTeamsID.get(i));
+                }
+            }
         }
     }
 }

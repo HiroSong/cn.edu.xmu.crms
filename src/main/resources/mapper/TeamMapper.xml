@@ -171,4 +171,13 @@
     <select id="getTeamNameByTeamID"  resultType="String" parameterType="BigInteger">
         SELECT team_name FROM team WHERE id=#{teamID}
     </select>
+    <!--向klass_team表插入信息-->
+    <insert id="insertKlassTeam" parameterType="BigInteger">
+        INSERT INTO klass_team(klass_id, team_id) VALUE (#{param1},#{param2})
+    </insert>
+
+    <!--删除klass_team表中的信息-->
+    <delete id="deleteKlassTeam" parameterType="BigInteger">
+        DELETE FROM klass_team WHERE klass_id = #{klassID}
+    </delete>
 </mapper>

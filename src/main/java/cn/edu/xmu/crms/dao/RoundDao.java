@@ -51,10 +51,20 @@ public class RoundDao {
     }
 
     public RoundScore getRoundScoreByRoundAndTeamID(BigInteger roundID, BigInteger teamID) {
+        RoundScore roundScore = roundMapper.getRoundScoreByRoundAndTeamID(roundID,teamID);
         return roundMapper.getRoundScoreByRoundAndTeamID(roundID,teamID);
     }
 
     public void updateRuleByRound(Round round) {
         roundMapper.updateRuleByRound(round);
+    }
+
+    public void updateRoundSignUpNumber(Round round) {
+        List<Map<String,Object>> signUpList = round.getSignUpNumber();
+        for(int i = 0; i < signUpList.size(); i++) {
+            Map<String,Object> map = signUpList.get(i);
+            map.put("roundID",round.getID());
+            roundMapper.updateSignUpNumber(map);
+        }
     }
 }
