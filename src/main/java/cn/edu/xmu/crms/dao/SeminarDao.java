@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -188,7 +187,6 @@ public class SeminarDao{
             map.put("questionScore",questionScore);
         }
         map.put("totalScore",this.getTotalScore(map, courseMapper.getCourseIDByKlassID(klassID)));
-        this.updateRoundScore(seminarID,teamID,map);
         return map;
     }
 
@@ -205,6 +203,7 @@ public class SeminarDao{
         scoreMap.put("totalScore",totalScore);
         scoreMap.put("klassSeminarID",klassSeminarID);
         scoreMap.put("teamID",teamID);
+        this.updateRoundScore(seminarID,teamID,scoreMap);
         seminarMapper.updateSeminarScoreByKlassSeminarAndTeamID(scoreMap);
         scoreMap.remove("klassSeminarID");
         scoreMap.remove("teamID");
@@ -262,7 +261,6 @@ public class SeminarDao{
                 seminarMapper.insertSeminarScore(map);
             }
         }
-
         return seminar.getID();
     }
 
