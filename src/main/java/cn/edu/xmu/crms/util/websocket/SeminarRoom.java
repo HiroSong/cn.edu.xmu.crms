@@ -1,7 +1,6 @@
 package cn.edu.xmu.crms.util.websocket;
 
 
-import cn.edu.xmu.crms.dao.SeminarDao;
 import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Team;
 import cn.edu.xmu.crms.mapper.QuestionMapper;
@@ -14,7 +13,6 @@ import cn.edu.xmu.crms.entity.Question;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -42,7 +40,9 @@ public class SeminarRoom {
     private static Map<BigInteger,Queue<Question>> questionQueueList=new HashMap<>(0);
     private static Map<BigInteger,List<Question>> questionSelectedQueueList=new HashMap<>(0);
 
-    public SeminarRoom(){}
+    public SeminarRoom(){
+        count=0;
+    }
 
     public SeminarRoom(BigInteger klassSeminarID){
         Queue<Question> questionQueue=new LinkedList<>();
@@ -103,6 +103,7 @@ public class SeminarRoom {
             questionInfo.put("studentName",student.getName());
             questionInfo.put("order",question.order);
             questionQueue.add(questionInfo);
+            System.out.println(question.order);
         }
         map.put("questionQueue",questionQueue);
 

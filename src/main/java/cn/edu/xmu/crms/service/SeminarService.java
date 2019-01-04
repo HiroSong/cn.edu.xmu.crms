@@ -213,6 +213,7 @@ public class SeminarService {
             seminarRoom=new SeminarRoom(klassSeminarID);
         }
     }
+
     //教师进入讨论课
     @GetMapping("/seminar/{seminarID}/class/{classID}/enter")
     public void enterSeminar(@PathVariable("seminarID") BigInteger seminarID,
