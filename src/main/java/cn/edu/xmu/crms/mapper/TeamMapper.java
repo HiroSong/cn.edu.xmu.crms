@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName TeamMapper
@@ -217,4 +218,14 @@ public interface TeamMapper {
     void insertKlassTeam(BigInteger klassID,BigInteger teamID);
 
     void deleteKlassTeam(BigInteger klassID);
+
+    /**
+     * 更新attendance的状态
+     *
+     * @param attendance
+     * @return 更新条数
+     * @author Laishaopeng
+     * @date 2019/1/4 14:45
+     */
+    Integer updateAttendanceStatus(Attendance attendance);
 }

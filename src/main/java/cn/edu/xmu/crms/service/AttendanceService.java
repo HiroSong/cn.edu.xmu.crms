@@ -53,6 +53,7 @@ public class AttendanceService {
             map.put("teamID",attendance.getTeamID());
             map.put("teamOrder", attendance.getTeamOrder());
             map.put("teamNumber", attendance.getTeam().getTeamNumber());
+            map.put("bePresent",attendance.getBePresent());
             attendanceInfoList.add(map);
         }
         return attendanceInfoList;

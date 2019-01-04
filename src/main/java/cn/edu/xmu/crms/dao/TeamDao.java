@@ -121,6 +121,7 @@ public class TeamDao {
         attendance.setKlassSeminarID(klass_seminarID);
         attendance.setTeam(team);
         attendance.setTeamOrder(teamOrder);
+        attendance.setBePresent(0);
         return attendance;
     }
 
@@ -145,5 +146,12 @@ public class TeamDao {
 
     public  String getTeamNameByTeamID(BigInteger teamID){
         return teamMapper.getTeamNameByTeamID(teamID);
+    }
+
+    public void updateAttendanceStatus(BigInteger attendanceID,Integer status){
+        Attendance attendance=new Attendance();
+        attendance.setBePresent(status);
+        attendance.setID(attendanceID);
+        teamMapper.updateAttendanceStatus(attendance);
     }
 }

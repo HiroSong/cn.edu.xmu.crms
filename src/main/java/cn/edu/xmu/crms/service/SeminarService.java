@@ -374,8 +374,13 @@ public class SeminarService {
      */
     @PutMapping("/seminar/{seminarID}/class/{classID}/process/attendance")
     public void switchAttendance(@PathVariable("seminarID")BigInteger seminarID,
-                                 @PathVariable("classID")BigInteger classID)
+                                 @PathVariable("classID")BigInteger classID,
+                                 @RequestBody Map<String,Object> oldAndNewAttendanceID)
     {
+        BigInteger oldAttendanceID=new BigInteger(oldAndNewAttendanceID.get("oldAttendanceID").toString());
+        BigInteger newAttendanceID=new BigInteger(oldAndNewAttendanceID.get("newAttendanceID").toString());
+        teamDao.updateAttendanceStatus(newAttendanceID,1);
+        teamDao.updateAttendanceStatus(oldAttendanceID,2);
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
         seminarRoom.resetQueue(klassSeminarID);
     }

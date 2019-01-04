@@ -180,4 +180,9 @@
     <delete id="deleteKlassTeam" parameterType="BigInteger">
         DELETE FROM klass_team WHERE klass_id = #{klassID}
     </delete>
+
+    <!--更新attendance状态-->
+    <update id="updateAttendanceStatus" parameterType="Attendance">
+        UPDATE attendance SET is_present = #{bePresent} WHERE id = #{id}
+    </update>
 </mapper>
