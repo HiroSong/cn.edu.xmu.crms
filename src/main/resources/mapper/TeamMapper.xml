@@ -183,7 +183,7 @@
 
     <!--根据klassID获得teamID-->
     <select id="listTeamsIDByKlassID" resultType="BigInteger" parameterType="BigInteger">
-        SELECT id FROM team WHERE klass_id = #{klassID}
+        SELECT team_id FROM klass_team WHERE klass_id = #{klassID}
     </select>
     
     <!--更新attendance状态-->
