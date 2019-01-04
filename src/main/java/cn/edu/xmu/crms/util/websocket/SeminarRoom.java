@@ -13,6 +13,7 @@ import cn.edu.xmu.crms.entity.Question;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
@@ -22,7 +23,7 @@ import java.util.*;
  * @Author LaiShaopeng
  * @Date 2018/12/27 2:06
  **/
-@RestController
+@Controller
 public class SeminarRoom {
     @Autowired
     TeamDao teamDao;
@@ -155,12 +156,6 @@ public class SeminarRoom {
         count=0;
         questionQueueList.get(klassSeminarID).clear();
         questionSelectedQueueList.get(klassSeminarID).clear();;
-    }
-
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public String reply(String message){
-        return "connected.";
     }
 }
 
