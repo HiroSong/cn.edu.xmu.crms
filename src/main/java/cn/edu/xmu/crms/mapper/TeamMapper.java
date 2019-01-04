@@ -207,4 +207,6 @@ public interface TeamMapper {
     void insertKlassTeam(BigInteger klassID,BigInteger teamID);
 
     void deleteKlassTeam(BigInteger klassID);
+
+    List<BigInteger> listTeamsIDByKlassID(BigInteger klassID);
 }

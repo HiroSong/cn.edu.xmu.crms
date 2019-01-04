@@ -5,7 +5,6 @@ import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import cn.edu.xmu.crms.util.websocket.SeminarRoom;
-import com.alibaba.druid.sql.dialect.mysql.ast.MysqlForeignKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;

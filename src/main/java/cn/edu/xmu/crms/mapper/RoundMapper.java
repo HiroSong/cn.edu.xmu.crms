@@ -116,4 +116,8 @@ public interface RoundMapper {
     BigInteger getLastInsertID();
 
     void updateSignUpNumber(Map<String,Object> map);
+
+    void insertRoundScore(Map<String,Object> map);
+
+    BigInteger getRoundIDBySeminarID(BigInteger seminarID);
 }

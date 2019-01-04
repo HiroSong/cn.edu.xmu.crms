@@ -176,4 +176,9 @@
     <delete id="deleteKlassTeam" parameterType="BigInteger">
         DELETE FROM klass_team WHERE klass_id = #{klassID}
     </delete>
+
+    <!--根据klassID获得teamID-->
+    <select id="listTeamsIDByKlassID" resultType="BigInteger" parameterType="BigInteger">
+        SELECT id FROM team WHERE klass_id = #{klassID}
+    </select>
 </mapper>

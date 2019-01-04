@@ -45,30 +45,9 @@ public class SeminarDao{
 
     private Double getTotalScore(Map<String,Object> scoreMap, BigInteger courseID) {
         Map<String, Object> scoreWeight = courseMapper.getScoreWeightByCourseID(courseID);
-        Double presentationScore ;
-        Object preScore = scoreMap.get("presentationScore");
-        if(preScore != null) {
-            presentationScore = new Double(scoreMap.get("presentationScore").toString());
-        }
-        else {
-            presentationScore = 0.0;
-        }
-        Double questionScore;
-        Object quesScore = scoreMap.get("questionScore");
-        if(quesScore != null) {
-            questionScore = new Double(scoreMap.get("questionScore").toString());
-        }
-        else {
-            questionScore = 0.0;
-        }
-        Double reportScore;
-        Object repScore = scoreMap.get("reportScore");
-        if(repScore != null) {
-            reportScore = new Double(scoreMap.get("reportScore").toString());
-        }
-        else {
-            reportScore = 0.0;
-        }
+        Double presentationScore = new Double(scoreMap.get("presentationScore").toString());
+        Double questionScore = new Double(scoreMap.get("questionScore").toString());
+        Double reportScore = new Double(scoreMap.get("reportScore").toString());
         Double presentationWeight = new Double(scoreWeight.get("presentationPercentage").toString()) / 100.0;
         Double questionWeight = new Double(scoreWeight.get("questionPercentage").toString()) / 100.0;
         Double reportWeight = new Double(scoreWeight.get("reportPercentage").toString()) / 100.0;
@@ -77,6 +56,66 @@ public class SeminarDao{
         return totalScore;
     }
 
+    private void updateRoundScore(BigInteger seminarID, BigInteger teamID,
+                                  Map<String, Object> scoreMap) {
+        BigInteger roundID = roundMapper.getRoundIDBySeminarID(seminarID);
+        BigInteger klassID = klassMapper.getKlassIDBySeminarAndTeamID(seminarID,teamID);
+        Round round = roundMapper.getRoundByRoundID(roundID);
+        List<BigInteger> seminarsID = seminarMapper.listSeminarsIDByRoundID(roundID);
+        Double presentationScore = new Double(scoreMap.get("presentationScore").toString());
+        Double questionScore = new Double(scoreMap.get("questionScore").toString());
+        Double reportScore = new Double(scoreMap.get("reportScore").toString());
+        for(int i = 0; i < seminarsID.size(); i++) {
+            BigInteger klassSeminarID = seminarMapper.getKlassSeminarIDByKlassAndSeminarID(klassID,seminarID);
+            Double pScore = seminarMapper.getPreScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
+            Double rScore = seminarMapper.getReportScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
+            Double qScore = seminarMapper.getQuestionScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
+            if(round.getPresentationScoreMethod() == 0) {
+                if(pScore > presentationScore) {
+                    presentationScore = pScore;
+                }
+            } else {
+                if(!seminarID.equals(seminarsID.get(i))) {
+                    presentationScore += pScore;
+                }
+            }
+            if(round.getPresentationScoreMethod() == 0) {
+                if(rScore > reportScore) {
+                    reportScore = rScore;
+                }
+            } else {
+                if(!seminarID.equals(seminarsID.get(i))) {
+                    reportScore += rScore;
+                }
+            }
+            if(round.getPresentationScoreMethod() == 0) {
+                if(qScore > questionScore) {
+                    questionScore = qScore;
+                }
+            } else {
+                if(!seminarID.equals(seminarsID.get(i))) {
+                    questionScore += qScore;
+                }
+            }
+        }
+        if(round.getPresentationScoreMethod() == 1) {
+            presentationScore /= seminarsID.size();
+        }
+        if(round.getReportScoreMethod() == 1) {
+            reportScore /= seminarsID.size();
+        }
+        if(round.getQuestionScoreMethod() == 1) {
+            questionScore /= seminarsID.size();
+        }
+        RoundScore roundScore = new RoundScore();
+        roundScore.getTeam().setID(teamID);
+        roundScore.getRound().setID(roundID);
+        roundScore.setPresentationScore(presentationScore);
+        roundScore.setReportScore(reportScore);
+        roundScore.setQuestionScore(questionScore);
+        roundScore.setTotalScore(this.getTotalScore(scoreMap,courseMapper.getCourseIDByKlassID(klassID)));
+        roundMapper.updateRoundScoreByRoundScore(roundScore);
+    }
 
     public List<Course> listMainCoursesByCourseID(BigInteger courseID) {
         List<BigInteger> mainCoursesIDList = seminarMapper.listMainCoursesIDByCourseID(courseID);
@@ -148,7 +187,8 @@ public class SeminarDao{
         } else {
             map.put("questionScore",questionScore);
         }
-        map.put("totalScore",this.getTotalScore(map, team.getCourse().getID()));
+        map.put("totalScore",this.getTotalScore(map, courseMapper.getCourseIDByKlassID(klassID)));
+        this.updateRoundScore(seminarID,teamID,map);
         return map;
     }
 
@@ -175,7 +215,7 @@ public class SeminarDao{
     //创建一个新的seminar
     public BigInteger insertSeminar(Seminar seminar) {
         BigInteger roundID;
-        if(seminar.getRoundOrder() != null) {//新round
+        if(seminar.getRoundOrder() != null) {
             Round round = new Round();
             round.setCourse(seminar.getCourse());
             round.setRoundSerial(seminar.getRoundOrder());
@@ -195,6 +235,14 @@ public class SeminarDao{
                 map2.put("klassID",klassID);
                 map2.put("seminarID",seminarID);
                 seminarMapper.insertKlassSeminar(map2);
+                BigInteger klassSeminarID = seminarMapper.getKlassSeminarIDByKlassAndSeminarID(klassID,seminarID);
+                List<BigInteger> teamsID = teamMapper.listTeamsIDByKlassID(klassID);
+                Map<String,Object> map = new HashMap<>(2);
+                map.put("klassSeminarID",klassSeminarID);
+                map.put("teamsID",teamsID);
+                seminarMapper.insertSeminarScore(map);
+                map.put("roundID",roundID);
+                roundMapper.insertRoundScore(map);
             }
         }
         else {
@@ -206,8 +254,15 @@ public class SeminarDao{
                 map2.put("klassID",klassID);
                 map2.put("seminarID",seminarID);
                 seminarMapper.insertKlassSeminar(map2);
+                BigInteger klassSeminarID = seminarMapper.getKlassSeminarIDByKlassAndSeminarID(klassID,seminarID);
+                List<BigInteger> teamsID = teamMapper.listTeamsIDByKlassID(klassID);
+                Map<String,Object> map = new HashMap<>(2);
+                map.put("klassSeminarID",klassSeminarID);
+                map.put("teamsID",teamsID);
+                seminarMapper.insertSeminarScore(map);
             }
         }
+
         return seminar.getID();
     }
 
