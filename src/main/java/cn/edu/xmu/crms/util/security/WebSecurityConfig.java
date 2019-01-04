@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/druid/**").permitAll()
                 .antMatchers("/user/**").permitAll()
-                .antMatchers("/api/user/**").permitAll()
+                .antMatchers("/gs-guide-websocket/**").permitAll()
                 .anyRequest().authenticated()
                 .and().headers().cacheControl();
         httpSecurity.csrf().disable();

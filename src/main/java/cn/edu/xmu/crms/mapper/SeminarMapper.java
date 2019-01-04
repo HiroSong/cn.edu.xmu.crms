@@ -2,6 +2,7 @@ package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.RoundScore;
 import cn.edu.xmu.crms.entity.Seminar;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIGlobalBinding;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -229,4 +230,6 @@ public interface SeminarMapper {
 
 
     BigInteger getKlassIDByProcessSeminarID(BigInteger seminarID);
+
+    void insertSeminarScore(Map<String,Object> map);
 }

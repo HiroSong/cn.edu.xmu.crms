@@ -160,4 +160,13 @@
     <select id="getKlassIDByProcessSeminarID" parameterType="BigInteger" resultType="BigInteger">
         SELECT klass_id FROM klass_seminar WHERE status = 1 AND seminar_id = #{seminarID}
     </select>
+
+    <!--初始化seminarScore-->
+    <insert id="insertSeminarScore" parameterType="HashMap">
+        INSERT INTO seminar_score(klass_seminar_id,team_id,total_score,presentation_score,question_score,report_score)
+        VALUE
+        <foreach collection ="teamsID" item="teamID" index= "index" separator=",">
+            (#{klassSeminarID}, #{teamID}, 0.0, 0.0, 0.0, 0.0)
+        </foreach>
+    </insert>
 </mapper>

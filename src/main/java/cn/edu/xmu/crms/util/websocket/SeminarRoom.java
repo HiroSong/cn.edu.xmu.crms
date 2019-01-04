@@ -42,6 +42,8 @@ public class SeminarRoom {
     private static Map<BigInteger,Queue<Question>> questionQueueList=new HashMap<>(0);
     private static Map<BigInteger,List<Question>> questionSelectedQueueList=new HashMap<>(0);
 
+    public SeminarRoom(){}
+
     public SeminarRoom(BigInteger klassSeminarID){
         Queue<Question> questionQueue=new LinkedList<>();
         List<Question> questionSelectedQueue=new ArrayList<>();

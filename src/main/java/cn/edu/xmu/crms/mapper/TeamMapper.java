@@ -228,4 +228,6 @@ public interface TeamMapper {
      * @date 2019/1/4 14:45
      */
     Integer updateAttendanceStatus(Attendance attendance);
+
+    List<BigInteger> listTeamsIDByKlassID(BigInteger klassID);
 }
