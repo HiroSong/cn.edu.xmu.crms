@@ -52,6 +52,8 @@ public class SeminarDao{
         Double reportWeight = new Double(scoreWeight.get("reportPercentage").toString()) / 100.0;
         Double totalScore = presentationScore * presentationWeight + questionScore * questionWeight +
                 reportScore * reportWeight;
+        String score = String.format("%.1f", totalScore);
+        totalScore = new Double(score);
         return totalScore;
     }
 
@@ -69,6 +71,15 @@ public class SeminarDao{
             Double pScore = seminarMapper.getPreScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
             Double rScore = seminarMapper.getReportScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
             Double qScore = seminarMapper.getQuestionScoreByKlassSeminarAndTeamID(klassSeminarID,teamID);
+            if(pScore == null) {
+                pScore = 0.0;
+            }
+            if(rScore == null) {
+                rScore = 0.0;
+            }
+            if(qScore == null) {
+                qScore = 0.0;
+            }
             if(round.getPresentationScoreMethod() == 0) {
                 if(pScore > presentationScore) {
                     presentationScore = pScore;
