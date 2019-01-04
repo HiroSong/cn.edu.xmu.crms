@@ -167,6 +167,6 @@
         VALUE
         <foreach collection ="teamsID" item="teamID" index= "index" separator=",">
             (#{klassSeminarID}, #{teamID}, 0.0, 0.0, 0.0, 0.0)
-        </foreach >
+        </foreach>
     </insert>
 </mapper>
