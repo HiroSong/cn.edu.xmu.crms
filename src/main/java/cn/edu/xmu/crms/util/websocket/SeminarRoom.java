@@ -99,7 +99,7 @@ public class SeminarRoom {
      * @return map 装有提问队列和已被抽取的提问的队列的提问信息。
      * @throws Exception
      */
-    @SendTo("topic/greetings/all/{seminarID}")
+    @SendTo("/topic/greetings/all/{seminarID}")
     public Map<String,Object> greeting()throws Exception{
         Map<String,Object> map=new HashMap<>(0);
         List<Map<String,Object>> questionQueue=new ArrayList<>();
@@ -136,7 +136,7 @@ public class SeminarRoom {
      * @return map 抽取到的提问的发起该提问的学生的组号和姓名。
      * @throws Exception
      */
-    @SendTo("topic/greetings/student/{seminarID}")
+    @SendTo("/topic/greetings/student/{seminarID}")
     public Map<String,Object> broadcastQuestion(Question question)throws Exception{
         Map<String,Object> map=new HashMap<>(0);
         cn.edu.xmu.crms.entity.Student student=studentDao.getStudentByStudentID(question.getStudentID());

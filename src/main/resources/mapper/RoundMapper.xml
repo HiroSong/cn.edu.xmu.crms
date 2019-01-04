@@ -23,6 +23,8 @@
         <association property="team" javaType="Team">
             <id property="id" column="team_id"/>
             <result property="teamName" column="team_name"/>
+            <result property="teamSerial" column="team_serial"/>
+            <result property="klassSerial" column="klass_serial"/>
         </association>
         <association property="round" javaType="Round">
             <id property="id" column="round_id"/>
