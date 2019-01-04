@@ -107,8 +107,10 @@ public class SeminarDao{
             questionScore /= seminarsID.size();
         }
         RoundScore roundScore = new RoundScore();
+        Team team = new Team();
+        roundScore.setTeam(team);
         roundScore.getTeam().setID(teamID);
-        roundScore.getRound().setID(roundID);
+        roundScore.setRound(round);
         roundScore.setPresentationScore(presentationScore);
         roundScore.setReportScore(reportScore);
         roundScore.setQuestionScore(questionScore);
