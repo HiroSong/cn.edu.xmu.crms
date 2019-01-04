@@ -48,7 +48,7 @@ public class TeamService {
     TeamStrategyDao teamStrategyDao;
 
 
-    public void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
+    /*public void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
         teamMapper.deleteStudentFromTeamByTeamAndStudentID(teamID,studentID);
         Student student=studentDao.getStudentByStudentID(studentID);
         Team team=teamDao.getTeamByTeamID(teamID);
@@ -56,7 +56,8 @@ public class TeamService {
         Email email=new Email();
         email.sendSimpleMail(student.getEmail(),text);
     }
-    
+    */
+
     private Map<String, Object> getTeamInfo(Team team) {
         if(team==null){
             return null;
@@ -150,6 +151,13 @@ public class TeamService {
         teamDao.deleteStudentFromTeam(teamID,student.getID());
         Team team = new Team();
         team.setID(teamID);
+        String emailCount=studentMapper.getEmailByStudentID(student.getID());
+        if(emailCount!=null){
+            String teamName=teamDao.getTeamNameByTeamID(teamID);
+            String emailContent=student.getName()+"同学，您已离开"+teamName+"小组.";
+            Email email=new Email();
+            email.sendSimpleMail(student.getEmail(),emailContent);
+        }
         if(teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID))) {
             team.setStatus(1);
             teamDao.updateTeamStatusByID(team);

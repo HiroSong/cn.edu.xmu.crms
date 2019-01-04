@@ -4,6 +4,7 @@ package cn.edu.xmu.crms.util.websocket;
 import cn.edu.xmu.crms.dao.SeminarDao;
 import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Team;
+import cn.edu.xmu.crms.mapper.QuestionMapper;
 import cn.edu.xmu.crms.mapper.SeminarMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import cn.edu.xmu.crms.dao.TeamDao;
@@ -25,6 +26,8 @@ public class SeminarRoom {
     TeamDao teamDao;
     @Autowired
     StudentDao studentDao;
+    @Autowired
+    QuestionMapper questionMapper;
 
     private BigInteger klassSeminarID;
     private Integer count;
@@ -49,14 +52,26 @@ public class SeminarRoom {
         Question question=questionQueueList.get(klassSeminarID).poll();
         question.setBeSelected(1);
         questionSelectedQueueList.get(klassSeminarID).add(question);
+        try{broadcastQuestion(question);}
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return question;
     }
 
-    public boolean updateQuestionScore(Question question,Double score){
+    //给某个问题打分
+    public boolean updateQuestionScore(BigInteger klassSeminarID,Integer order,Double score){
         for(int i=0;i<questionSelectedQueueList.get(klassSeminarID).size();i++)
         {
-            if(questionSelectedQueueList.get(klassSeminarID).get(i).equals(question)){
+            if(questionSelectedQueueList.get(klassSeminarID).get(i).order.equals(order)){
                 questionSelectedQueueList.get(klassSeminarID).get(i).setScore(score);
+                questionMapper.insertQuestionByQuestion(questionSelectedQueueList.get(klassSeminarID).get(i));
+                try{greeting();}
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 return true;
             }
         }
@@ -67,7 +82,7 @@ public class SeminarRoom {
     {
         count=count+1;
         question.order=count;
-        questionQueueList.get(klassSeminarID).offer(question);
+        questionQueueList.get(question.getKlssSeminarID()).offer(question);
 
         try{
             greeting();
@@ -84,7 +99,7 @@ public class SeminarRoom {
      * @return map 装有提问队列和已被抽取的提问的队列的提问信息。
      * @throws Exception
      */
-    @SendTo("topic/greetings/all/{seminarID}")
+    @SendTo("/topic/greetings/all/{seminarID}")
     public Map<String,Object> greeting()throws Exception{
         Map<String,Object> map=new HashMap<>(0);
         List<Map<String,Object>> questionQueue=new ArrayList<>();
@@ -121,7 +136,7 @@ public class SeminarRoom {
      * @return map 抽取到的提问的发起该提问的学生的组号和姓名。
      * @throws Exception
      */
-    @SendTo("topic/greetings/all/{seminarID}")
+    @SendTo("/topic/greetings/student/{seminarID}")
     public Map<String,Object> broadcastQuestion(Question question)throws Exception{
         Map<String,Object> map=new HashMap<>(0);
         cn.edu.xmu.crms.entity.Student student=studentDao.getStudentByStudentID(question.getStudentID());
@@ -131,7 +146,7 @@ public class SeminarRoom {
         return map;
     }
 
-    public void resetQueue()
+    public void resetQueue(BigInteger klassSeminarID)
     {
         count=0;
         questionQueueList.get(klassSeminarID).clear();

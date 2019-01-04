@@ -4,8 +4,8 @@
 
     <!--向question表插入question对象-->
     <insert id="insertQuestionByQuestion" parameterType="Question" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO question(klass_seminar_id,attendance_id,team_id,student_id,is_selected)
-        VALUE (#{klssSeminarID},#{attendance.id},#{team.id},#{student.id},#{beSelected})
+        INSERT INTO question(klass_seminar_id,attendance_id,team_id,student_id,is_selected,score)
+        VALUE (#{klssSeminarID},#{attendance.id},#{team.id},#{student.id},#{beSelected},#{score})
     </insert>
 
     <!--根据提问对象修改相应提问信息-->
@@ -13,4 +13,12 @@
         UPDATE question SET is_selected = #{beSelected},score=#{score}
         WHERE id = #{id}
     </update>
+
+    <!--向question表插入question对象-->
+    <insert id="insertQuestionByQuestionList" parameterType="java.util.Map">
+            INSERT INTO question(klass_seminar_id,attendance_id,team_id,student_id,is_selected,score)VALUES
+                <foreach collection="questionList" item="question" separator=",">
+                  (#{question.klassSeminarID},#{question.attendanceID},#{question.teamID},#{question.studentID},#{question.beSelected},#{question.score})
+                </foreach>
+    </insert>
 </mapper>

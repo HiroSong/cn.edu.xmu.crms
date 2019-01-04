@@ -167,6 +167,10 @@
         SELECT klass_team.team_id FROM klass_team,team_student WHERE team_student.student_id = #{param1} AND klass_team.klass_id = #{param2} AND klass_team.team_id=team_student.team_id
     </select>
 
+    <!--根据teamID获取组名-->
+    <select id="getTeamNameByTeamID"  resultType="String" parameterType="BigInteger">
+        SELECT team_name FROM team WHERE id=#{teamID}
+    </select>
     <!--向klass_team表插入信息-->
     <insert id="insertKlassTeam" parameterType="BigInteger">
         INSERT INTO klass_team(klass_id, team_id) VALUE (#{param1},#{param2})
@@ -181,4 +185,9 @@
     <select id="listTeamsIDByKlassID" resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM team WHERE klass_id = #{klassID}
     </select>
+    
+    <!--更新attendance状态-->
+    <update id="updateAttendanceStatus" parameterType="Attendance">
+        UPDATE attendance SET is_present = #{bePresent} WHERE id = #{id}
+    </update>
 </mapper>

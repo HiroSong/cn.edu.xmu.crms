@@ -151,4 +151,34 @@ public interface StudentMapper {
     BigInteger getIDByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
 
     String getPasswordByID(BigInteger id);
+
+    /**
+     * 通过学生ID获得学生邮箱
+     *
+     * @param studentID
+     * @return String
+     * @author Laishaopeng
+     * @date 2019/1/3 20:13
+     */
+    public String getEmailByStudentID(BigInteger studentID);
+
+    /**
+     * 通过小组ID获得所有成员的邮箱
+     *
+     * @param teamID
+     * @return String
+     * @author Laishaopeng
+     * @date 2019/1/3 20:30
+     */
+    public List<String> listMemberEmailsByTeamID(BigInteger teamID);
+    /**
+     * 通过课程ID获得所有成员的邮箱
+     *
+     * @param courseID
+     * @return String
+     * @author Laishaopeng
+     * @date 2019/1/3 20:52
+     */
+    public List<String> listStudentEmailsByCourseID(BigInteger courseID);
+
 }

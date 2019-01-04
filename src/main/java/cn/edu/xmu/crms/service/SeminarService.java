@@ -3,9 +3,11 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
+import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import cn.edu.xmu.crms.util.websocket.SeminarRoom;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +49,8 @@ public class SeminarService {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
     SeminarRoom seminarRoom;
+    @Autowired
+    StudentMapper studentMapper;
 
 
     public void updateSeminarStatus(BigInteger klassID, BigInteger seminarID) {
@@ -101,6 +105,7 @@ public class SeminarService {
         return  seminarInfoList;
     }
 
+    //发布新的讨论课
     @PostMapping("/course/{courseID}/seminar")
     public Map<String, Object> createSeminar(@PathVariable("courseID") BigInteger courseID,
                                              @RequestBody Seminar seminar) {
@@ -227,7 +232,16 @@ public class SeminarService {
     public Map<String, Object> modifyTeamSeminarScore(@PathVariable("seminarID") BigInteger seminarID,
                                                       @PathVariable("teamID") BigInteger teamID,
                                                       @RequestBody Map<String, Object> map) {
-        return seminarDao.updateSeminarScoreBySeminarAndTeamID(seminarID,teamID,map);
+        Map<String,Object> resultmap=seminarDao.updateSeminarScoreBySeminarAndTeamID(seminarID,teamID,map);
+        List<String> emailList=studentMapper.listMemberEmailsByTeamID(teamID);
+        for (String emailCount:emailList) {
+            if(emailCount!=null){
+                String emailContent="您的讨论课程成绩已更新。";
+                Email email=new Email();
+                email.sendSimpleMail(emailCount,emailContent);
+            }
+        }
+        return resultmap;
     }
 
 
@@ -328,8 +342,8 @@ public class SeminarService {
         seminarRoom.addQuestion(question);
     }
 
-    @PutMapping("/question/{questionID}")
-    public Map<String,Object> selectQuestion(@PathVariable("questionID")BigInteger questionID)
+    @PutMapping("/question")
+    public Map<String,Object> selectQuestion()
     {
         //不需要questionID
         Map<String,Object> map=new HashMap<>(0);
@@ -343,16 +357,48 @@ public class SeminarService {
         }catch (Exception e)
         {
             e.printStackTrace();
+            map.put("result","Fail to broadcastQuestion.");
+            return map;
         } ;
 
         map.put("result","success");
         return map;
     }
+
+    /**
+     * @Author LaiShaopeng
+     * @param seminarID
+     * @param classID
+     * 切换分组
+     */
     @PutMapping("/seminar/{seminarID}/class/{classID}/process/attendance")
     public void switchAttendance(@PathVariable("seminarID")BigInteger seminarID,
-                                 @PathVariable("classID")BigInteger classID)
+                                 @PathVariable("classID")BigInteger classID,
+                                 @RequestBody Map<String,Object> oldAndNewAttendanceID)
     {
-        seminarRoom.resetQueue();
+        BigInteger oldAttendanceID=new BigInteger(oldAndNewAttendanceID.get("oldAttendanceID").toString());
+        BigInteger newAttendanceID=new BigInteger(oldAndNewAttendanceID.get("newAttendanceID").toString());
+        teamDao.updateAttendanceStatus(newAttendanceID,1);
+        teamDao.updateAttendanceStatus(oldAttendanceID,2);
+        BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
+        seminarRoom.resetQueue(klassSeminarID);
     }
-
+    /**
+     * @Author LaiShaopeng
+     * @param seminarID
+     * @param classID
+     * @param order
+     * @param score
+     * 为某个提问打分
+     */
+    @PutMapping("/seminar/{seminarID}/class/{classID}/question/{order}/{score}")
+    public void updateQuestionScore(@PathVariable("seminarID") BigInteger seminarID,
+                                    @PathVariable("classID") BigInteger classID,
+                                    @PathVariable("order") Integer order,
+                                    @PathVariable("score") String score)
+    {
+        BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
+        Double questionScore= Double.parseDouble(score);
+        seminarRoom.updateQuestionScore(klassSeminarID,order,questionScore);
+    }
 }

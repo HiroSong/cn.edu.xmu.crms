@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName TeamMapper
@@ -204,9 +205,27 @@ public interface TeamMapper {
 
     void insertStudentToTeam(BigInteger teamID, BigInteger studentID);
 
+    /**
+     * 通过小组ID获得小组名
+     *
+     * @param teamID 学生ID
+     * @return String 队伍名
+     * @author LaiShaopeng
+     * @date 2018/1/3 19:25
+     */
+    String getTeamNameByTeamID(BigInteger teamID);
+
     void insertKlassTeam(BigInteger klassID,BigInteger teamID);
 
     void deleteKlassTeam(BigInteger klassID);
 
-    List<BigInteger> listTeamsIDByKlassID(BigInteger klassID);
+    /**
+     * 更新attendance的状态
+     *
+     * @param attendance
+     * @return 更新条数
+     * @author Laishaopeng
+     * @date 2019/1/4 14:45
+     */
+    Integer updateAttendanceStatus(Attendance attendance);
 }
