@@ -52,13 +52,6 @@ public class SeminarService {
     @Autowired
     StudentMapper studentMapper;
 
-
-    public void updateSeminarStatus(BigInteger klassID, BigInteger seminarID) {
-        seminarMapper.updateStartSeminarByKlassAndSeminarID(klassID,seminarID);
-        BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDByKlassAndSeminarID(klassID,seminarID);
-        seminarRoom=new SeminarRoom(klassSeminarID);
-    }
-
     //获取seminar信息
     private Map<String, Object> getSeminarInfo(Seminar seminar) {
         Map<String, Object> map = new HashMap<>(7);
@@ -215,6 +208,17 @@ public class SeminarService {
                                   @RequestBody Map<String,Integer> statusMap) {
         Integer status = statusMap.get("status");
         seminarDao.updateSeminarStatus(klassID,seminarID,status);
+        if(status==1){
+            BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
+            seminarRoom=new SeminarRoom(klassSeminarID);
+        }
+    }
+    //教师进入讨论课
+    @GetMapping("/seminar/{seminarID}/class/{classID}/enter")
+    public void enterSeminar(@PathVariable("seminarID") BigInteger seminarID,
+                                  @PathVariable("classID") BigInteger klassID) {
+            BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
+            seminarRoom=new SeminarRoom(klassSeminarID);
     }
 
 
