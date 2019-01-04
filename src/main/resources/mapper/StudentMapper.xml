@@ -109,4 +109,22 @@
     <select id="getPasswordByID" parameterType="BigInteger" resultType="String">
         SELECT password FROM student WHERE id = #{id}
     </select>
+
+    <!--根据学生ID查询邮箱-->
+    <select id="getEmailByStudentID" parameterType="BigInteger" resultType="String">
+        SELECT email FROM student WHERE id = #{id}
+    </select>
+
+    <!--获取一个小组所有成员的邮箱-->
+    <select id="listMemberEmailsByTeamID" resultType="String" parameterType="BigInteger">
+        SELECT email FROM student,
+        team_student WHERE student.id = team_student.student_id AND team_student.team_id = #{teamID}
+    </select>
+
+    <!--获取一个课程所有学生的邮箱-->
+    <select id="listStudentEmailsByCourseID" resultType="String" parameterType="BigInteger">
+        SELECT email FROM klass_student,student
+        WHERE student.id = klass_student.student_id AND klass_student.course_id = #{courseID}
+    </select>
+
 </mapper>

@@ -62,7 +62,6 @@ public class SeminarRoom {
 
     //给某个问题打分
     public boolean updateQuestionScore(BigInteger klassSeminarID,Integer order,Double score){
-        List<Map<String,Object>> questionList=new ArrayList<>(0);
         for(int i=0;i<questionSelectedQueueList.get(klassSeminarID).size();i++)
         {
             if(questionSelectedQueueList.get(klassSeminarID).get(i).order.equals(order)){

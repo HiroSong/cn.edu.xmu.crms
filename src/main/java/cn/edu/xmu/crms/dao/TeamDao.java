@@ -139,4 +139,7 @@ public class TeamDao {
         teamMapper.updateTeamStatusByID(team);
     }
 
+    public  String getTeamNameByTeamID(BigInteger teamID){
+        return teamMapper.getTeamNameByTeamID(teamID);
+    }
 }

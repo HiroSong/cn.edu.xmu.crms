@@ -3,6 +3,7 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
+import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import cn.edu.xmu.crms.util.websocket.SeminarRoom;
 import com.alibaba.druid.sql.dialect.mysql.ast.MysqlForeignKey;
@@ -49,6 +50,8 @@ public class SeminarService {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
     SeminarRoom seminarRoom;
+    @Autowired
+    StudentMapper studentMapper;
 
 
     public void updateSeminarStatus(BigInteger klassID, BigInteger seminarID) {
@@ -98,6 +101,7 @@ public class SeminarService {
         return  seminarInfoList;
     }
 
+    //发布新的讨论课
     @PostMapping("/course/{courseID}/seminar")
     public Map<String, Object> createSeminar(@PathVariable("courseID") BigInteger courseID,
                                              @RequestBody Seminar seminar) {
@@ -212,7 +216,16 @@ public class SeminarService {
     public Map<String, Object> modifyTeamSeminarScore(@PathVariable("seminarID") BigInteger seminarID,
                                                       @PathVariable("teamID") BigInteger teamID,
                                                       @RequestBody Map<String, Object> map) {
-        return seminarDao.updateSeminarScoreBySeminarAndTeamID(seminarID,teamID,map);
+        Map<String,Object> resultmap=seminarDao.updateSeminarScoreBySeminarAndTeamID(seminarID,teamID,map);
+        List<String> emailList=studentMapper.listMemberEmailsByTeamID(teamID);
+        for (String emailCount:emailList) {
+            if(emailCount!=null){
+                String emailContent="您的讨论课程成绩已更新。";
+                Email email=new Email();
+                email.sendSimpleMail(emailCount,emailContent);
+            }
+        }
+        return resultmap;
     }
 
 

@@ -204,4 +204,14 @@ public interface TeamMapper {
 
     void insertStudentToTeam(BigInteger teamID, BigInteger studentID);
 
+    /**
+     * 通过小组ID获得小组名
+     *
+     * @param teamID 学生ID
+     * @return String 队伍名
+     * @author LaiShaopeng
+     * @date 2018/1/3 19:25
+     */
+    String getTeamNameByTeamID(BigInteger teamID);
+
 }
