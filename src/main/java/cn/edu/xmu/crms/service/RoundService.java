@@ -59,7 +59,7 @@ public class RoundService {
         Map<String, Object> roundScoreMap = new HashMap<>(5);
         roundScoreMap.put("round",roundScore.getRound().getRoundSerial());
         roundScoreMap.put("teamID",roundScore.getTeam().getID());
-        roundScoreMap.put("teamName",roundScore.getTeam().getTeamName());
+        roundScoreMap.put("teamName",roundScore.getTeam().getKlassSerial()+"-"+roundScore.getTeam().getTeamSerial());
         roundScoreMap.put("preScore",roundScore.getPresentationScore());
         roundScoreMap.put("reportScore",roundScore.getReportScore());
         roundScoreMap.put("questionScore",roundScore.getQuestionScore());
