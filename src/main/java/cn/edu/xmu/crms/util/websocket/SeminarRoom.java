@@ -118,6 +118,7 @@ public class SeminarRoom {
             System.out.println(question.order);
         }
         map.put("questionQueue",questionQueue);
+        map.put("questionNumber",questionQueueList.get(klassSeminarID).size());
 
         for (Question question:questionSelectedQueueList.get(klassSeminarID)) {
             Map<String,Object>questionInfo=new HashMap<>(0);
