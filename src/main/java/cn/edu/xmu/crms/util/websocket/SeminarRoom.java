@@ -148,7 +148,7 @@ public class SeminarRoom {
      * @param seminarID
      * @param classID
      * @param question
-     * @return Map 两个问题队列
+     * @return Map 已提问队列和提问数量
      * @author Laishaopeng
      * @date 2019/1/4 20:41
      */
@@ -172,7 +172,7 @@ public class SeminarRoom {
      * 老师抽取提问
      * @param seminarID
      * @param classID
-     * @return Map 两个提问队列
+     * @return Map 已提问队列和提问数量和提问信息
      * @author Laishaopeng
      * @date 2019/1/4 20:51
      */
@@ -182,13 +182,14 @@ public class SeminarRoom {
                                              @DestinationVariable("classID") BigInteger classID)
     {
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
-        Map<String,Object> map=new HashMap<>(0);
+        Map<String,Object> map=greeting(klassSeminarID);
         Question question=getTopQuestion(klassSeminarID);
         if(question==null){
-            map.put("result","There is no question in queue.");
+            map.put("selectedQuestion",null);
             return map;
         }
-        return broadcastQuestion(question);
+        map.put("selectedQuestion",broadcastQuestion(question));
+        return map;
     }
 
     /**
@@ -219,6 +220,7 @@ public class SeminarRoom {
      * @param classID
      * @param order
      * @param score
+     * @return Map 已提问队列和提问数量
      * @author LaiShaopeng
      * @date 2019/1/4 20:52
      * 为某个提问打分
@@ -241,7 +243,7 @@ public class SeminarRoom {
      * 中途加入讨论课
      * @param seminarID
      * @param classID
-     * @return Map 两个队列
+     * @return Map 已提问队列和提问数量
      * @author Laishaopeng
      * @date 2019/1/5 15:00
      */
