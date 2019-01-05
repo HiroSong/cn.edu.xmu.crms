@@ -36,19 +36,18 @@ public class SeminarRoom {
     @Autowired
     TeamMapper teamMapper;
 
-    private Integer count;
+    private static Map<BigInteger,Integer> countList=new HashMap<>(0);
     private static Map<BigInteger,Queue<Question>> questionQueueList=new HashMap<>(0);
     private static Map<BigInteger,List<Question>> questionSelectedQueueList=new HashMap<>(0);
 
     public SeminarRoom(){
-        count=0;
     }
 
     public SeminarRoom(BigInteger klassSeminarID){
         Queue<Question> questionQueue=new LinkedList<>();
         List<Question> questionSelectedQueue=new ArrayList<>();
 
-        count=0;
+        countList.put(klassSeminarID,0);
         questionQueueList.put(klassSeminarID,questionQueue);
         questionSelectedQueueList.put(klassSeminarID,questionSelectedQueue);
     }
@@ -79,7 +78,9 @@ public class SeminarRoom {
 
     public boolean addQuestion(Question question)
     {
+        Integer count=countList.get(question.getKlssSeminarID());
         count=count+1;
+        countList.put(question.getKlssSeminarID(),count);
         question.order=count;
         questionQueueList.get(question.getKlssSeminarID()).offer(question);
         return true;
@@ -123,7 +124,7 @@ public class SeminarRoom {
 
     public void resetQueue(BigInteger klassSeminarID)
     {
-        count=0;
+        countList.put(klassSeminarID,0);
         questionQueueList.get(klassSeminarID).clear();
         questionSelectedQueueList.get(klassSeminarID).clear();;
     }
@@ -235,6 +236,36 @@ public class SeminarRoom {
         updateQuestionScore(klassSeminarID,order,questionScore);
 
         return greeting(klassSeminarID);
+    }
+
+    /**
+     * 中途加入讨论课
+     * @param seminarID
+     * @param classID
+     * @return Map 两个队列
+     * @author Laishaopeng
+     * @date 2019/1/5 15:00
+     */
+    @MessageMapping("/seminar/{seminarID}/class/{classID}/join")
+    @SendTo("/seminar/{seminarID}/class/{classID}/join")
+    public Map<String,Object> joinInSeminarRoom(@DestinationVariable("seminarID") BigInteger seminarID,
+                                                @DestinationVariable("classID") BigInteger classID){
+        BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
+        return greeting(klassSeminarID);
+    }
+
+    /**
+     * 测试连接
+     * @param seminarID
+     * @param classID
+     * @author Laishaopeng
+     * @date 2019/1/5 15:03
+     */
+    @MessageMapping("/seminar/{seminarID}/class/{classID}/test")
+    @SendTo("/seminar/{seminarID}/class/{classID}/test")
+    public void testConnection(@DestinationVariable("seminarID") BigInteger seminarID,
+                               @DestinationVariable("classID") BigInteger classID){
+        return ;
     }
 }
 
