@@ -76,8 +76,6 @@ public class UserDao {
 
     public Boolean updateUserPassword(BigInteger id, String role, Map<String,String> map) {
         String oldPassword = map.get("oldPassword");
-        System.out.println(map.get("oldPassword"));
-        System.out.println(map.get("password"));
         String student = "student";
         User user = new User();
         user.setID(id);
