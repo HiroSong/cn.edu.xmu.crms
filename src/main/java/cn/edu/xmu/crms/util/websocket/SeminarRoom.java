@@ -247,7 +247,7 @@ public class SeminarRoom {
      * @date 2019/1/5 15:00
      */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/join")
-    @SendTo("/seminar/{seminarID}/class/{classID}/join")
+    @SendTo("/topic/seminar/{seminarID}/class/{classID}/join")
     public Map<String,Object> joinInSeminarRoom(@DestinationVariable("seminarID") BigInteger seminarID,
                                                 @DestinationVariable("classID") BigInteger classID){
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
@@ -262,7 +262,7 @@ public class SeminarRoom {
      * @date 2019/1/5 15:03
      */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/test")
-    @SendTo("/seminar/{seminarID}/class/{classID}/test")
+    @SendTo("/topic/seminar/{seminarID}/class/{classID}/test")
     public void testConnection(@DestinationVariable("seminarID") BigInteger seminarID,
                                @DestinationVariable("classID") BigInteger classID){
         return ;
