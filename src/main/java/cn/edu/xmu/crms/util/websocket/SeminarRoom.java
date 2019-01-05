@@ -52,7 +52,7 @@ public class SeminarRoom {
         questionSelectedQueueList.put(klassSeminarID,questionSelectedQueue);
     }
 
-    public boolean checkIfExistRoom(BigInteger klassSeminarID) {
+    public static boolean checkIfExistRoom(BigInteger klassSeminarID) {
         if(questionQueueList.get(klassSeminarID)==null) {
             return false;
         }
@@ -103,15 +103,28 @@ public class SeminarRoom {
      */
     public Map<String,Object> greeting(BigInteger klassSeminarID){
         Map<String,Object> map=new HashMap<>(0);
+        List<Map<String,Object>> questionQueue=new ArrayList<>();
         List<Map<String,Object>> questionSelectedQueue=new ArrayList<>();
 
-        map.put("questionNumber",questionQueueList.get(klassSeminarID).size());
+        for (Question question:questionQueueList.get(klassSeminarID)) {
+            Map<String,Object>questionInfo=new HashMap<>(0);
+            Student student=studentDao.getStudentByStudentID(question.getStudentID());
+            Team team=teamDao.getTeamByTeamID(question.getTeamID());
+            questionInfo.put("teamNumber",team.getTeamNumber());
+            questionInfo.put("studentID",question.getStudentID());
+            questionInfo.put("studentName",student.getName());
+            questionInfo.put("order",question.order);
+            questionQueue.add(questionInfo);
+            System.out.println(question.order);
+        }
+        map.put("questionQueue",questionQueue);
 
         for (Question question:questionSelectedQueueList.get(klassSeminarID)) {
             Map<String,Object>questionInfo=new HashMap<>(0);
             Student student=studentDao.getStudentByStudentID(question.getStudentID());
             Team team=teamDao.getTeamByTeamID(question.getTeamID());
             questionInfo.put("teamNumber",team.getTeamNumber());
+            questionInfo.put("studentID",question.getStudentID());
             questionInfo.put("studentName",student.getName());
             questionInfo.put("order",question.order);
             questionSelectedQueue.add(questionInfo);
@@ -148,7 +161,7 @@ public class SeminarRoom {
      * @param seminarID
      * @param classID
      * @param question
-     * @return Map 已提问队列和提问数量
+     * @return Map 装有提问队列和已被抽取的提问的队列的提问信息。
      * @author Laishaopeng
      * @date 2019/1/4 20:41
      */
@@ -172,7 +185,7 @@ public class SeminarRoom {
      * 老师抽取提问
      * @param seminarID
      * @param classID
-     * @return Map 已提问队列和提问数量和提问信息
+     * @return Map 装有提问队列和已被抽取的提问的队列的提问信息和被抽取的提问的信息。
      * @author Laishaopeng
      * @date 2019/1/4 20:51
      */
@@ -220,7 +233,7 @@ public class SeminarRoom {
      * @param classID
      * @param order
      * @param score
-     * @return Map 已提问队列和提问数量
+     * @return Map 装有提问队列和已被抽取的提问的队列的提问信息。
      * @author LaiShaopeng
      * @date 2019/1/4 20:52
      * 为某个提问打分
@@ -243,7 +256,7 @@ public class SeminarRoom {
      * 中途加入讨论课
      * @param seminarID
      * @param classID
-     * @return Map 已提问队列和提问数量
+     * @return Map 装有提问队列和已被抽取的提问的队列的提问信息。
      * @author Laishaopeng
      * @date 2019/1/5 15:00
      */
