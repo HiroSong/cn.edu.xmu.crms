@@ -324,6 +324,7 @@ public class SeminarService {
         Attendance attendance=teamDao.getAttendanceByKlassSeminarIDAndTeamID(klass_seminarID,teamID);
         Map<String,Object> map=new HashMap<>();
         if(attendance==null){ return null; }
+        map.put("id",attendance.getID());
         map.put("teamName",attendance.getTeam().getTeamName());
         map.put("teamNumber",attendance.getTeam().getTeamNumber());
         map.put("teamOrder",attendance.getTeamOrder());
