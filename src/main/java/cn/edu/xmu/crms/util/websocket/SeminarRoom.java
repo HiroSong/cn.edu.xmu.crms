@@ -52,6 +52,15 @@ public class SeminarRoom {
         questionSelectedQueueList.put(klassSeminarID,questionSelectedQueue);
     }
 
+    public boolean checkIfExistRoom(BigInteger klassSeminarID) {
+        if(questionQueueList.get(klassSeminarID)==null) {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
     public Question getTopQuestion(BigInteger klassSeminarID)
     {
         if(questionQueueList.get(klassSeminarID).isEmpty()){
@@ -62,6 +71,7 @@ public class SeminarRoom {
         questionSelectedQueueList.get(klassSeminarID).add(question);
         return question;
     }
+
 
     //给某个问题打分
     public boolean updateQuestionScore(BigInteger klassSeminarID,Integer order,Double score){

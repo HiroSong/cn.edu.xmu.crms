@@ -219,7 +219,9 @@ public class SeminarService {
     public void enterSeminar(@PathVariable("seminarID") BigInteger seminarID,
                                   @PathVariable("classID") BigInteger klassID) {
             BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
-            seminarRoom=new SeminarRoom(klassSeminarID);
+            if(!seminarRoom.checkIfExistRoom(klassSeminarID)) {
+                seminarRoom=new SeminarRoom(klassSeminarID);
+            }
     }
 
 
