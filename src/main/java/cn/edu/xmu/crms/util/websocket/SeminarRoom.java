@@ -52,7 +52,7 @@ public class SeminarRoom {
         questionSelectedQueueList.put(klassSeminarID,questionSelectedQueue);
     }
 
-    public boolean checkIfExistRoom(BigInteger klassSeminarID) {
+    public static boolean checkIfExistRoom(BigInteger klassSeminarID) {
         if(questionQueueList.get(klassSeminarID)==null) {
             return false;
         }
