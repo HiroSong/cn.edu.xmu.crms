@@ -202,12 +202,12 @@ public class SeminarRoom {
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
         Question question=getTopQuestion(klassSeminarID);
         Map<String,Object> map=greeting(klassSeminarID);
+        map.put("type",type);
         if(question==null){
             map.put("selectedQuestion",null);
             return map;
         }
         map.put("selectedQuestion",broadcastQuestion(question));
-        map.put("type",type);
         return map;
     }
 
