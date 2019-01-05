@@ -153,7 +153,7 @@ public class SeminarRoom {
      * @date 2019/1/4 20:41
      */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/question")
-    @SendTo("/topic/greetings/all/{seminarID}")
+    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}/question")
     public Map<String,Object> raiseQuestion(@DestinationVariable ("seminarID") BigInteger seminarID,
                               @DestinationVariable("classID") BigInteger classID,
                               @RequestBody Question question){
@@ -177,7 +177,7 @@ public class SeminarRoom {
      * @date 2019/1/4 20:51
      */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/selectquestion")
-    @SendTo("/topic/greetings/all/{seminarID}")
+    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}/selectquestion")
     public Map<String,Object> selectQuestion(@DestinationVariable("seminarID") BigInteger seminarID,
                                              @DestinationVariable("classID") BigInteger classID)
     {
@@ -200,7 +200,7 @@ public class SeminarRoom {
      * @date 2019/1/4 20:51
      **/
     @MessageMapping("/seminar/{seminarID}/class/{classID}/process/attendance")
-    @SendTo("/topic/greetings/all/{seminarID}")
+    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}/attendance")
     public Map<String,Object> switchAttendance(@DestinationVariable("seminarID")BigInteger seminarID,
                                  @DestinationVariable("classID")BigInteger classID,
                                  @RequestBody Map<String,Object> oldAndNewAttendanceID)
@@ -224,7 +224,7 @@ public class SeminarRoom {
      * 为某个提问打分
      */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/question/{order}/{score}")
-    @SendTo("/topic/greetings/all/{seminarID}")
+    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}/score")
     public Map<String,Object> updateQuestionScore(@DestinationVariable("seminarID") BigInteger seminarID,
                                     @DestinationVariable("classID") BigInteger classID,
                                     @DestinationVariable("order") Integer order,
