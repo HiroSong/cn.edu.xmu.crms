@@ -167,11 +167,12 @@ public class SeminarRoom {
      * @date 2019/1/4 20:41
      */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/question")
-    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}/question")
+    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}")
     public Map<String,Object> raiseQuestion(@DestinationVariable ("seminarID") BigInteger seminarID,
                               @DestinationVariable("classID") BigInteger classID,
                               @RequestBody Question question){
         //question里需要有studentID和attendanceID。
+        String type="question";
         question.setBeSelected(0);
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
         question.setKlssSeminarID(klassSeminarID);
@@ -179,7 +180,9 @@ public class SeminarRoom {
         question.setTeamID(teamID);
 
         addQuestion(question);
-        return greeting(klassSeminarID);
+        Map<String,Object> map=greeting(klassSeminarID);
+        map.put("type",type);
+        return map;
     }
 
     /**
@@ -191,13 +194,15 @@ public class SeminarRoom {
      * @date 2019/1/4 20:51
      */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/selectquestion")
-    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}/selectquestion")
+    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}")
     public Map<String,Object> selectQuestion(@DestinationVariable("seminarID") BigInteger seminarID,
                                              @DestinationVariable("classID") BigInteger classID)
     {
+        String type="selectQuestion";
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
-        Map<String,Object> map=greeting(klassSeminarID);
         Question question=getTopQuestion(klassSeminarID);
+        Map<String,Object> map=greeting(klassSeminarID);
+        map.put("type",type);
         if(question==null){
             map.put("selectedQuestion",null);
             return map;
@@ -215,18 +220,21 @@ public class SeminarRoom {
      * @date 2019/1/4 20:51
      **/
     @MessageMapping("/seminar/{seminarID}/class/{classID}/process/attendance")
-    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}/attendance")
+    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}")
     public Map<String,Object> switchAttendance(@DestinationVariable("seminarID")BigInteger seminarID,
                                  @DestinationVariable("classID")BigInteger classID,
                                  @RequestBody Map<String,Object> oldAndNewAttendanceID)
     {
+        String type="attendance";
         BigInteger oldAttendanceID=new BigInteger(oldAndNewAttendanceID.get("oldAttendanceID").toString());
         BigInteger newAttendanceID=new BigInteger(oldAndNewAttendanceID.get("newAttendanceID").toString());
         teamDao.updateAttendanceStatus(newAttendanceID,1);
         teamDao.updateAttendanceStatus(oldAttendanceID,2);
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
         resetQueue(klassSeminarID);
-        return greeting(klassSeminarID);
+        Map<String,Object> map=greeting(klassSeminarID);
+        map.put("type",type);
+        return map;
     }
 
     /**
@@ -240,17 +248,20 @@ public class SeminarRoom {
      * 为某个提问打分
      */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/question/{order}/{score}")
-    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}/score")
+    @SendTo("/topic/greetings/all/{seminarID}/class/{classID}")
     public Map<String,Object> updateQuestionScore(@DestinationVariable("seminarID") BigInteger seminarID,
                                     @DestinationVariable("classID") BigInteger classID,
                                     @DestinationVariable("order") Integer order,
                                     @DestinationVariable("score") String score)
     {
+        String type="score";
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
         Double questionScore= Double.parseDouble(score);
         updateQuestionScore(klassSeminarID,order,questionScore);
 
-        return greeting(klassSeminarID);
+        Map<String,Object> map=greeting(klassSeminarID);
+        map.put("type",type);
+        return map;
     }
 
     /**
@@ -262,11 +273,14 @@ public class SeminarRoom {
      * @date 2019/1/5 15:00
      */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/join")
-    @SendTo("/topic/seminar/{seminarID}/class/{classID}/join")
+    @SendTo("/topic/seminar/{seminarID}/class/{classID}")
     public Map<String,Object> joinInSeminarRoom(@DestinationVariable("seminarID") BigInteger seminarID,
                                                 @DestinationVariable("classID") BigInteger classID){
+        String type="join";
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
-        return greeting(klassSeminarID);
+        Map<String,Object> map=greeting(klassSeminarID);
+        map.put("type",type);
+        return map;
     }
 
     /**
@@ -277,10 +291,13 @@ public class SeminarRoom {
      * @date 2019/1/5 15:03
      */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/test")
-    @SendTo("/topic/seminar/{seminarID}/class/{classID}/test")
-    public void testConnection(@DestinationVariable("seminarID") BigInteger seminarID,
+    @SendTo("/topic/seminar/{seminarID}/class/{classID}")
+    public Map<String,Object> testConnection(@DestinationVariable("seminarID") BigInteger seminarID,
                                @DestinationVariable("classID") BigInteger classID){
-        return ;
+        Map<String,Object> map=new HashMap<>();
+        String type="test";
+        map.put("type",type);
+        return map;
     }
 }
 
