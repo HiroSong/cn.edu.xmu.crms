@@ -302,5 +302,4 @@ public class SeminarDao{
     public String getReportDDLBySeminarAndKlassID(BigInteger seminarID, BigInteger klassID) {
         return seminarMapper.getReportDDLBySeminarAndKlassID(seminarID,klassID);
     }
-
 }

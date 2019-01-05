@@ -200,9 +200,14 @@ public class SeminarService {
         }
         Map<String,Object> map = this.getSeminarInfo(seminar);
         Integer status = seminarMapper.getStatusBySeminarAndKlassID(seminarID,klassID);
-        Timestamp ddl = Timestamp.valueOf(seminarMapper.getReportDDLBySeminarAndKlassID(seminarID,klassID));
         map.put("status",status);
-        map.put("reportDDL",ddl);
+        String reportDDL = seminarDao.getReportDDLBySeminarAndKlassID(seminarID,klassID);
+        if(reportDDL != null) {
+            Timestamp ddl = Timestamp.valueOf(reportDDL);
+            map.put("reportDDL",ddl);
+        } else {
+            map.put("reportDDL",null);
+        }
         return map;
     }
 
