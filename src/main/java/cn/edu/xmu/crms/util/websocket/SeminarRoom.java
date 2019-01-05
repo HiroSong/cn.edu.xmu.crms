@@ -152,6 +152,7 @@ public class SeminarRoom {
         Map<String,Object> map=new HashMap<>(0);
         cn.edu.xmu.crms.entity.Student student=studentDao.getStudentByStudentID(question.getStudentID());
         cn.edu.xmu.crms.entity.Team team=teamDao.getTeamByTeamID(question.getTeamID());
+        map.put("teamID",question.getTeamID());
         map.put("teamNumber",team.getTeamNumber());
         map.put("studentName",student.getName());
         return map;
