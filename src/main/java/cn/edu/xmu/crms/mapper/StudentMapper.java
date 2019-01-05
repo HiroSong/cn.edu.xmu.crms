@@ -1,8 +1,9 @@
 package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.Student;
+import cn.edu.xmu.crms.entity.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -13,10 +14,11 @@ import java.util.List;
  * @Author Hongqiwu
  **/
 @Mapper
-@Repository
+@Component
 public interface StudentMapper {
+
     /**
-     * 用于通过学生id获取学生对象
+     * 通过学生id获取学生对象
      *
      * @param studentID 学号
      * @return Student 学生对象
@@ -24,33 +26,28 @@ public interface StudentMapper {
      * @date 2018/12/01 14:32
      */
     Student getStudentByStudentID(BigInteger studentID);
-    /**
-     * 用于通过courseID和teamID获取学生ID列表
-     *
-     * @param courseID 课程号
-     * @param teamID 队伍ID
-     * @return 学生ID列表
-     * @author hongqiwu
-     * @date 2018/12/01 14:32
-     */
-    List<BigInteger> listStudentsIDByCourseAndTeamID(BigInteger courseID, BigInteger teamID);
+
+
     /**
      * 用于通过courseID获取未组队学生ID列表
      *
-     * @param courseID 课程号
+     * @param courseID 课程ID
      * @return 未组队学生ID列表
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
     List<BigInteger> listNoTeamStudentsIDByCourseID(BigInteger courseID);
+
+
     /**
-     * 用于获取所有学生的ID列表
+     * 获取所有学生对象
      *
-     * @return 所有学生ID列表
+     * @return 所有学生
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    List<BigInteger> listAllStudentsID();
+    List<Student> listAllStudents();
+
     /**
      * 用于修改学生信息
      *
@@ -58,7 +55,8 @@ public interface StudentMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void updateStudentInfoByStudent(Student student);
+    Integer updateStudentInfoByStudent(Student student);
+
     /**
      * 用于重置学生密码为123456
      *
@@ -66,7 +64,8 @@ public interface StudentMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void resetStudentPasswordByStudentID(BigInteger studentID);
+    Integer resetStudentPasswordByStudentID(BigInteger studentID);
+
     /**
      * 用于删除单个学生
      *
@@ -74,7 +73,8 @@ public interface StudentMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void deleteStudentByStudentID(BigInteger studentID);
+    Integer deleteStudentByStudentID(BigInteger studentID);
+
     /**
      * 用于激活某个学生账号
      *
@@ -82,7 +82,8 @@ public interface StudentMapper {
      * @author hongqiwu
      * @date 2018/12/01 14:32
      */
-    void updateStudentActiveByStudentID(Student student);
+    Integer updateStudentActiveByStudent(Student student);
+
     /**
      * 通过teamID获得leaderID
      *
@@ -92,4 +93,92 @@ public interface StudentMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger getLeaderIDByTeamID(BigInteger teamID);
+    /**
+     *  通过学号获得学生对象
+     *
+     * @param username 学号
+     * @return Student student
+     * @author SongLingbing
+     * @date 2018/12/23 21:53
+     */
+    Student getStudentByStudentAccount(String username);
+
+    /**
+     * 创建用户
+     *
+     * @param user 用户信息
+     * @return void
+     * @author SongLingbing
+     * @date 2018/12/24 10:58
+     */
+    void insertStudent(User user);
+
+    /**
+      * 插入学生信息
+      *
+      * @param studentList
+      * @author SongLingbing
+      * @date 2018/12/26 2:18
+      */
+    void insertStudentList(List<Student> studentList);
+
+    /**
+      * 根据学号查找对应学生id，并返回结果列表
+      *
+      * @param studentList 学生基本信息列表
+      * @return studentID
+      * @author SongLingbing
+      * @date 2018/12/26 3:11
+      */
+    List<BigInteger> listStudentID(List<Student> studentList);
+
+    List<Student> listMembersByTeamID(BigInteger teamID);
+
+    List<Student> listMembersByTeamAndCourseID(BigInteger teamID,BigInteger courseID);
+
+    /**
+     * 用于通过courseID获取未组队学生列表
+     *
+     * @param courseID 课程ID
+     * @return 未组队学生列表
+     * @author hongqiwu
+     * @date 2018/12/01 14:32
+     */
+    List<Student> listNoTeamStudentsByCourseID(BigInteger courseID);
+
+    void updateStudentPassword(User user);
+
+    BigInteger getIDByStudentAndCourseID(BigInteger studentID, BigInteger courseID);
+
+    String getPasswordByID(BigInteger id);
+
+    /**
+     * 通过学生ID获得学生邮箱
+     *
+     * @param studentID
+     * @return String
+     * @author Laishaopeng
+     * @date 2019/1/3 20:13
+     */
+    public String getEmailByStudentID(BigInteger studentID);
+
+    /**
+     * 通过小组ID获得所有成员的邮箱
+     *
+     * @param teamID
+     * @return String
+     * @author Laishaopeng
+     * @date 2019/1/3 20:30
+     */
+    public List<String> listMemberEmailsByTeamID(BigInteger teamID);
+    /**
+     * 通过课程ID获得所有成员的邮箱
+     *
+     * @param courseID
+     * @return String
+     * @author Laishaopeng
+     * @date 2019/1/3 20:52
+     */
+    public List<String> listStudentEmailsByCourseID(BigInteger courseID);
+
 }

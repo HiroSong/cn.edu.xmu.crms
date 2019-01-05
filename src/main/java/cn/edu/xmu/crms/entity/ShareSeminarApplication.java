@@ -14,6 +14,10 @@ public class ShareSeminarApplication {
     private BigInteger subCourseID;
     private BigInteger subCourseTeacherID;
     private Integer status;
+    private Course mainCourse;
+    private Course subCourse;
+    private Teacher mainCourseTeacher;
+    private Teacher subCourseTeacher;
 
     public BigInteger getID() {
         return id;
@@ -53,5 +57,37 @@ public class ShareSeminarApplication {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Course getMainCourse() {
+        return mainCourse;
+    }
+
+    public void setMainCourse(Course mainCourse) {
+        this.mainCourse = mainCourse;
+    }
+
+    public Course getSubCourse() {
+        return subCourse;
+    }
+
+    public void setSubCourse(Course subCourse) {
+        this.subCourse = subCourse;
+    }
+
+    public Teacher getMainCourseTeacher() {
+        return mainCourseTeacher;
+    }
+
+    public void setMainCourseTeacher(Teacher mainCourseTeacher) {
+        this.mainCourseTeacher = mainCourseTeacher;
+    }
+
+    public Teacher getSubCourseTeacher() {
+        return subCourseTeacher;
+    }
+
+    public void setSubCourseTeacher(Teacher subCourseTeacher) {
+        this.subCourseTeacher = subCourseTeacher;
     }
 }

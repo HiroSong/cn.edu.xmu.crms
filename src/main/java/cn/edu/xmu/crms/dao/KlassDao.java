@@ -4,10 +4,10 @@ import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.mapper.KlassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * @ClassName KlassDao
@@ -23,11 +23,7 @@ public class KlassDao {
     }
 
     public Klass getKlassByStudentAndCourseID(BigInteger studentID, BigInteger courseID) {
-        BigInteger klassID = klassMapper.getKlassIDByStudentAndCourseID(studentID, courseID);
-        if(klassID == null) {
-            return null;
-        }
-        return klassMapper.getKlassByKlassID(klassID);
+        return klassMapper.getKlassByStudentAndCourseID(studentID,courseID);
     }
 
     public List<Klass> listKlassByCourseID(BigInteger courseID) {
@@ -40,11 +36,20 @@ public class KlassDao {
         return klassList;
     }
 
-    public void deleteKlassInfoByKlassID(BigInteger klassID) {
+    public void deleteKlassByKlassID(BigInteger klassID) {
         klassMapper.deleteKlassByKlassID(klassID);
         klassMapper.deleteKlassRoundByKlassID(klassID);
         klassMapper.deleteKlassSeminarByKlassID(klassID);
         klassMapper.deleteKlassStudentByKlassID(klassID);
-        klassMapper.deleteKlassInTeamByKlassID(klassID);
     }
+
+    public List<Klass> listKlassBySeminarID(BigInteger seminarID) {
+        return klassMapper.listKlassesBySeminarID(seminarID);
+    }
+
+    public BigInteger insertKlass(Klass klass) {
+        klassMapper.insertKlass(klass);
+        return klass.getID();
+    }
+
 }

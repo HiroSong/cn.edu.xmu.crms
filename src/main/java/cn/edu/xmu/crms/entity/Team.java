@@ -9,16 +9,22 @@ import java.util.List;
  **/
 public class Team {
     private BigInteger id;
-    private BigInteger klassID;
-    private BigInteger courseID;
-    private BigInteger leaderID;
     private String teamName;
     private Integer teamSerial;
+    private Integer klassSerial;
     private Integer status;
     private Course course;
     private Klass klass;
     private Student leader;
     private List<Student> members;
+
+    public Integer getKlassSerial() {
+        return klassSerial;
+    }
+
+    public void setKlassSerial(Integer klassSerial) {
+        this.klassSerial = klassSerial;
+    }
 
     public Course getCourse() {
         return course;
@@ -60,30 +66,6 @@ public class Team {
         this.id = id;
     }
 
-    public BigInteger getKlassID() {
-        return klassID;
-    }
-
-    public void setKlassID(BigInteger klassID) {
-        this.klassID = klassID;
-    }
-
-    public BigInteger getCourseID() {
-        return courseID;
-    }
-
-    public void setCourseID(BigInteger courseID) {
-        this.courseID = courseID;
-    }
-
-    public BigInteger getLeaderID() {
-        return leaderID;
-    }
-
-    public void setLeaderID(BigInteger leaderID) {
-        this.leaderID = leaderID;
-    }
-
     public String getTeamName() {
         return teamName;
     }
@@ -106,5 +88,9 @@ public class Team {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getTeamNumber(){return getKlassSerial().toString()+"-"+
+            teamSerial.toString();
     }
 }

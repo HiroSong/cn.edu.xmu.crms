@@ -2,10 +2,11 @@ package cn.edu.xmu.crms.mapper;
 
 import cn.edu.xmu.crms.entity.Course;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Hongqiwu
@@ -13,28 +14,31 @@ import java.util.List;
  * @date 2018/11/30 19:45
  */
 @Mapper
-@Repository
+@Component
 public interface CourseMapper {
+
     /**
-     * 通过studentID获取courseID列表
+     * 通过studentID获取course对象列表
      *
      * @param studentID 学生ID
-     * @return List<BigInteger>  课程ID列表
+     * @return 课程对象列表
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    List<BigInteger> listCourseIDByStudentID(BigInteger studentID);
+    List<Course> listCoursesByStudentID(BigInteger studentID);
+
     /**
-     * 通过teacherID获取courseID列表
+     * 通过teacherID获取course对象列表
      *
      * @param teacherID 教师ID
-     * @return List<BigInteger>  课程ID列表
+     * @return 课程对象列表
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    List<BigInteger> listCourseIDByTeacherID(BigInteger teacherID);
+    List<Course> listCoursesByTeacherID(BigInteger teacherID);
+
     /**
-     * 通过klassID获取Klass对象
+     * 通过CourseID获取Course对象
      *
      * @param courseID 课程ID
      * @return Course 课程对象
@@ -96,7 +100,7 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    BigInteger insertCourseByCourse(Course course);
+    void insertCourse(Course course);
     /**
      * 通过courseID删除course表信息
      *
@@ -120,7 +124,7 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void deleteCourseInKlassByCourseID(BigInteger courseID);
+    void deleteKlassByCourseID(BigInteger courseID);
     /**
      * 通过courseID删除其他有关course的表信息
      *
@@ -128,7 +132,7 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void deleteCourseInKlassStudentByCourseID(BigInteger courseID);
+    void deleteKlassStudentByCourseID(BigInteger courseID);
     /**
      * 通过courseID删除其他有关course的表信息
      *
@@ -136,7 +140,7 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void deleteCourseInRoundByCourseID(BigInteger courseID);
+    void deleteRoundByCourseID(BigInteger courseID);
     /**
      * 通过courseID删除其他有关course的表信息
      *
@@ -144,7 +148,8 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void deleteCourseInSeminarByCourseID(BigInteger courseID);
+    void deleteSeminarByCourseID(BigInteger courseID);
+
     /**
      * 通过courseID删除其他有关course的表信息
      *
@@ -152,23 +157,7 @@ public interface CourseMapper {
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
-    void deleteCourseInTeamByCourseID(BigInteger courseID);
-    /**
-     * 通过courseID删除其他有关course的表信息
-     *
-     * @param courseID 课程ID
-     * @author Hongqiwu
-     * @date 2018/11/30 19:45
-     */
-    void deleteCourseInTeamStrategyByCourseID(BigInteger courseID);
-    /**
-     * 通过courseID删除其他有关course的表信息
-     *
-     * @param courseID 课程ID
-     * @author Hongqiwu
-     * @date 2018/11/30 19:45
-     */
-    void deleteCourseMemberLimitStrategyByCourseID(BigInteger courseID);
+    void deleteTeamStrategyByCourseID(BigInteger courseID);
     /**
      * 通过teamID获得courseID
      *
@@ -178,5 +167,44 @@ public interface CourseMapper {
      * @date 2018/11/30 19:45
      */
     BigInteger getCourseIDByTeamID(BigInteger teamID);
+    /**
+     * 获取某课程成绩权重
+     *
+     * @param courseID 课程
+     * @return Map 成绩权重
+     * @author Hongqiwu
+     * @date 2018/11/30 19:45
+     */
+    Map<String, Object> getScoreWeightByCourseID(BigInteger courseID);
+
+    /**
+      * 根据班级id获取课程id
+      *
+      * @param id 班级id
+      * @return courseID
+      * @author SongLingbing
+      * @date 2018/12/26 2:54
+      */
+    BigInteger getCourseIDByKlassID(BigInteger id);
+     
+    /**
+     * 获得上一次插入语句的ID
+     *
+     * @return BigInteger 上一条插入语句的ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
+    BigInteger getLastInsertID();
+
+    String getCourseNameByCourseID(BigInteger courseID);
+
+    void updateTeamMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
+
+    void updateSeminarMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
+
+    List<Course> listAllCourse();
+
+    Integer deleteTeamMainCourseID(BigInteger courseID);
+
 }
 

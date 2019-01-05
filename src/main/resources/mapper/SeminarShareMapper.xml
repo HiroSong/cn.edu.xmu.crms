@@ -3,18 +3,39 @@
 <mapper namespace="cn.edu.xmu.crms.mapper.SeminarShareMapper" >
 
     <!--根据seminarShareID删除共享讨论课表中的信息-->
-    <delete id="deleteSeminarShareBySeminarShareID"  parameterType="BigInteger">
-        DELETE FROM share_seminar_application WHERE  id = #{seminarShareID}
+    <delete id="deleteSeminarShareBySeminarShareID" parameterType="BigInteger">
+        DELETE FROM share_seminar_application WHERE id = #{seminarShareID}
     </delete>
 
     <!--seminarShare插入share_seminar_application表-->
-    <insert id="insertSeminarShareBySeminarShare" parameterType="ShareSeminarApplication">
+    <insert id="insertSeminarShare" parameterType="ShareSeminarApplication">
         insert into share_seminar_application(main_course_id,sub_course_id,sub_course_teacher_id,status) VALUE
-        (#{mainCourseID},#{subCourseID},#{subCourseTeacherID},#{status})
+        (#{mainCourse.id},#{subCourse.id},#{subCourseTeacher.id},null)
     </insert>
 
     <!--根据teamShareID查询teamShare对象-->
     <select id="getTeamShareIDByMainAndSubCourseID" resultType="BigInteger" parameterType="BigInteger">
         SELECT id FROM share_seminar_application WHERE main_course_id = #{param1} AND sub_course_id = #{param2}
+    </select>
+
+    <!--获取所有申请的ID-->
+    <select id="listApplicationID" resultType="BigInteger">
+        SELECT id FROM share_seminar_application WHERE status is null
+    </select>
+
+    <!--根据申请ID获取申请对象-->
+    <select id="getApplicationByID" parameterType="BigInteger" resultType="HashMap">
+        SELECT id id,main_course_id mainCourseID,sub_course_id subCourseID,sub_course_teacher_id subCourseTeacherID,
+        status status FROM share_seminar_application WHERE id = #{id}
+    </select>
+
+    <!--更新申请status根据ID-->
+    <update id="updateStatusBySeminarShareID" parameterType="ShareSeminarApplication">
+        UPDATE share_seminar_application SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <!--返回上一条插入语句的ID-->
+    <select id="getLastInsertID" resultType="BigInteger">
+        SELECT LAST_INSERT_ID();
     </select>
 </mapper>

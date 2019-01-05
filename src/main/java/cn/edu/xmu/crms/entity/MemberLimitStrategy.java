@@ -4,14 +4,12 @@ import java.math.BigInteger;
 
 /**
  * @ClassName MemberLimitStrategy
- * @Description 组队成员限制策略
+ * @Description TODO
  * @Author Hongqiwu
- * @Date 2018/12/17 15:53
+ * @Date 2018/12/29 1:57
  **/
 public class MemberLimitStrategy {
     private BigInteger id;
-    private Integer minMember;
-    private Integer maxMember;
 
     public BigInteger getID() {
         return id;
@@ -36,4 +34,7 @@ public class MemberLimitStrategy {
     public void setMaxMember(Integer maxMember) {
         this.maxMember = maxMember;
     }
+
+    private Integer minMember;
+    private Integer maxMember;
 }
