@@ -93,20 +93,9 @@ public class SeminarRoom {
      */
     public Map<String,Object> greeting(BigInteger klassSeminarID){
         Map<String,Object> map=new HashMap<>(0);
-        List<Map<String,Object>> questionQueue=new ArrayList<>();
         List<Map<String,Object>> questionSelectedQueue=new ArrayList<>();
 
-        for (Question question:questionQueueList.get(klassSeminarID)) {
-            Map<String,Object>questionInfo=new HashMap<>(0);
-            Student student=studentDao.getStudentByStudentID(question.getStudentID());
-            Team team=teamDao.getTeamByTeamID(question.getTeamID());
-            questionInfo.put("teamNumber",team.getTeamNumber());
-            questionInfo.put("studentName",student.getName());
-            questionInfo.put("order",question.order);
-            questionQueue.add(questionInfo);
-            System.out.println(question.order);
-        }
-        map.put("questionQueue",questionQueue);
+        map.put("questionNumber",questionQueueList.get(klassSeminarID).size());
 
         for (Question question:questionSelectedQueueList.get(klassSeminarID)) {
             Map<String,Object>questionInfo=new HashMap<>(0);
