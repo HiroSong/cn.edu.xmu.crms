@@ -128,6 +128,7 @@ public class SeminarRoom {
             questionInfo.put("studentID",question.getStudentID());
             questionInfo.put("studentName",student.getName());
             questionInfo.put("order",question.order);
+            questionInfo.put("score",question.getScore());
             questionSelectedQueue.add(questionInfo);
         }
         map.put("questionSelectedQueue",questionSelectedQueue);
@@ -174,6 +175,7 @@ public class SeminarRoom {
         //question里需要有studentID和attendanceID。
         String type="question";
         question.setBeSelected(0);
+        question.setScore(0.0);
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
         question.setKlssSeminarID(klassSeminarID);
         BigInteger teamID=teamMapper.getTeamIDByStudentAndKlassID(question.getStudentID(),classID);
@@ -300,6 +302,14 @@ public class SeminarRoom {
         return map;
     }
 
+    /**
+     * 结束讨论课给所有学生发通知
+     * @param seminarID
+     * @param classID
+     * @return Map
+     * @author Laishaopeng
+     * @date 2019/1/5 18:00
+     */
     @MessageMapping("/seminar/{seminarID}/class/{classID}/finish")
     @SendTo("/topic/seminar/{seminarID}/class/{classID}")
     public Map<String,Object> finishSeminar(@DestinationVariable("seminarID")BigInteger seminarID,
