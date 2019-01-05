@@ -196,8 +196,8 @@ public class SeminarRoom {
                                              @DestinationVariable("classID") BigInteger classID)
     {
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
-        Map<String,Object> map=greeting(klassSeminarID);
         Question question=getTopQuestion(klassSeminarID);
+        Map<String,Object> map=greeting(klassSeminarID);
         if(question==null){
             map.put("selectedQuestion",null);
             return map;
