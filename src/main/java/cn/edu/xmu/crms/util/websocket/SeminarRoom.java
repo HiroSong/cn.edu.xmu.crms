@@ -1,9 +1,9 @@
 package cn.edu.xmu.crms.util.websocket;
 
 
+import cn.edu.xmu.crms.dao.QuestionDao;
 import cn.edu.xmu.crms.entity.Student;
 import cn.edu.xmu.crms.entity.Team;
-import cn.edu.xmu.crms.mapper.QuestionMapper;
 import cn.edu.xmu.crms.mapper.SeminarMapper;
 import cn.edu.xmu.crms.mapper.TeamMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class SeminarRoom {
     @Autowired
     StudentDao studentDao;
     @Autowired
-    QuestionMapper questionMapper;
+    QuestionDao questionDao;
     @Autowired
     SeminarMapper seminarMapper;
     @Autowired
@@ -79,7 +79,7 @@ public class SeminarRoom {
         {
             if(questionSelectedQueueList.get(klassSeminarID).get(i).order.equals(order)){
                 questionSelectedQueueList.get(klassSeminarID).get(i).setScore(score);
-                questionMapper.insertQuestionByQuestion(questionSelectedQueueList.get(klassSeminarID).get(i));
+                questionDao.insertQuestionByQuestion(questionSelectedQueueList.get(klassSeminarID).get(i));
                 return true;
             }
         }
@@ -88,11 +88,11 @@ public class SeminarRoom {
 
     public boolean addQuestion(Question question)
     {
-        Integer count=countList.get(question.getKlssSeminarID());
+        Integer count=countList.get(question.getKlassSeminarID());
         count=count+1;
-        countList.put(question.getKlssSeminarID(),count);
+        countList.put(question.getKlassSeminarID(),count);
         question.order=count;
-        questionQueueList.get(question.getKlssSeminarID()).offer(question);
+        questionQueueList.get(question.getKlassSeminarID()).offer(question);
         return true;
     }
 
@@ -110,12 +110,12 @@ public class SeminarRoom {
             Map<String,Object>questionInfo=new HashMap<>(0);
             Student student=studentDao.getStudentByStudentID(question.getStudentID());
             Team team=teamDao.getTeamByTeamID(question.getTeamID());
+            questionInfo.put("teamID",question.getTeamID());
             questionInfo.put("teamNumber",team.getTeamNumber());
             questionInfo.put("studentID",question.getStudentID());
             questionInfo.put("studentName",student.getName());
             questionInfo.put("order",question.order);
             questionQueue.add(questionInfo);
-            System.out.println(question.order);
         }
         map.put("questionQueue",questionQueue);
         map.put("questionNumber",questionQueueList.get(klassSeminarID).size());
@@ -124,6 +124,7 @@ public class SeminarRoom {
             Map<String,Object>questionInfo=new HashMap<>(0);
             Student student=studentDao.getStudentByStudentID(question.getStudentID());
             Team team=teamDao.getTeamByTeamID(question.getTeamID());
+            questionInfo.put("teamID",question.getTeamID());
             questionInfo.put("teamNumber",team.getTeamNumber());
             questionInfo.put("studentID",question.getStudentID());
             questionInfo.put("studentName",student.getName());
@@ -178,7 +179,7 @@ public class SeminarRoom {
         question.setBeSelected(0);
         question.setScore(0.0);
         BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
-        question.setKlssSeminarID(klassSeminarID);
+        question.setKlassSeminarID(klassSeminarID);
         BigInteger teamID=teamMapper.getTeamIDByStudentAndKlassID(question.getStudentID(),classID);
         question.setTeamID(teamID);
 
