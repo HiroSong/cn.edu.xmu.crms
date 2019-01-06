@@ -127,10 +127,10 @@ public class TeamValidDao {
                 }
                 if(count < courseMemberLimits.get(i).getMinMember() ||
                         count > courseMemberLimits.get(i).getMaxMember()) {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
     }
 
