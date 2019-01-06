@@ -61,6 +61,9 @@ public class Email {
     }
     public void sendPassWordMail(String sendTo,String passWord)
     {
+        if(sendTo == null) {
+            return;
+        }
         try{
             Message message = new MimeMessage(session);
 

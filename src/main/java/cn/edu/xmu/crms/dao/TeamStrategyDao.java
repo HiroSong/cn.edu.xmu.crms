@@ -67,16 +67,22 @@ public class TeamStrategyDao {
             }
         }
         conflictID = conflictID.add(new BigInteger("1"));
-        int strategySerial = 2;
+        int strategySerial = 2; int flag = 0;
+        BigInteger conflictFlagID = course.getConflictCourseStrategies().get(0).getID();
         for(int i = 0; i < course.getConflictCourseStrategies().size(); i++) {
-            teamStrategy.setStrategySerial(strategySerial++);
-            BigInteger strategyID = BigInteger.valueOf(i+1);
-            teamStrategy.setStrategyID(conflictID);
-            teamStrategyMapper.insertTeamStrategy(teamStrategy);
+            if(!conflictFlagID.equals(course.getConflictCourseStrategies().get(i).getID())) {
+                conflictFlagID = course.getConflictCourseStrategies().get(i).getID();
+                conflictID = conflictID.add(new BigInteger("1"));
+                flag = 0;
+            }else {
+                flag = 1;
+            }
+            if(flag == 0 || i == 0) {
+                teamStrategy.setStrategySerial(strategySerial++);
+                teamStrategy.setStrategyID(conflictID);
+                teamStrategyMapper.insertTeamStrategy(teamStrategy);
+            }
             teamStrategyMapper.insertConflict(conflictID, course.getConflictCourseStrategies().get(i).getCourseID());
-            i++;
-            teamStrategyMapper.insertConflict(conflictID, course.getConflictCourseStrategies().get(i).getCourseID());
-            conflictID = conflictID.add(new BigInteger("1"));
         }
     }
 }
