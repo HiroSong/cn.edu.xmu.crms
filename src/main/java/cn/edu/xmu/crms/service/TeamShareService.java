@@ -36,12 +36,6 @@ public class TeamShareService {
     @Autowired
     TeacherDao teacherDao;
     @Autowired
-    CourseMapper courseMapper;
-    @Autowired
-    TeacherMapper teacherMapper;
-    @Autowired
-    TeamShareMapper teamShareMapper;
-    @Autowired
     JwtTokenUtil jwtTokenUtil;
 
     private Map<String,Object> getApplicationInfo(ShareTeamApplication application, BigInteger teacherID) {
@@ -85,7 +79,7 @@ public class TeamShareService {
             receiveMap.put("receiveCourseID",courseID);
             receiveMap.put("receiveCourseName",course.getCourseName());
             receiveMap.put("teacherName",course.getTeacher().getName());
-            BigInteger shareID = courseMapper.getTeamShareIDByMainAndSubCourseID(mainCourse.getID(), courseID);
+            BigInteger shareID = courseDao.getTeamShareIDByMainAndSubCourseID(mainCourse.getID(), courseID);
             mainCourseMap.put("id",shareID);
             mainCourseMap.put("masterCourse",masterMap);
             mainCourseMap.put("receiveCourse",receiveMap);
@@ -103,7 +97,7 @@ public class TeamShareService {
             receiveMap.put("receiveCourseID",subCourse.getID());
             receiveMap.put("receiveCourseName",subCourse.getCourseName());
             receiveMap.put("teacherName",subCourse.getTeacher().getName());
-            BigInteger shareID = courseMapper.getTeamShareIDByMainAndSubCourseID(courseID, subCourse.getID());
+            BigInteger shareID = courseDao.getTeamShareIDByMainAndSubCourseID(courseID, subCourse.getID());
             subCourseMap.put("id",shareID);
             subCourseMap.put("masterCourse",masterMap);
             subCourseMap.put("receiveCourse",receiveMap);

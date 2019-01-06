@@ -29,34 +29,16 @@ public class TeamService {
     @Autowired
     StudentDao studentDao;
     @Autowired
-    TeamMapper teamMapper;
-    @Autowired
-    TeacherMapper teacherMapper;
-    @Autowired
     CourseDao courseDao;
-    @Autowired
-    StudentMapper studentMapper;
     @Autowired
     KlassDao klassDao;
     @Autowired
     TeamValidDao teamValidDao;
     @Autowired
-    TeamValidMapper teamValidMapper;
-    @Autowired
     JwtTokenUtil jwtTokenUtil;
     @Autowired
     TeamStrategyDao teamStrategyDao;
 
-
-    /*public void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
-        teamMapper.deleteStudentFromTeamByTeamAndStudentID(teamID,studentID);
-        Student student=studentDao.getStudentByStudentID(studentID);
-        Team team=teamDao.getTeamByTeamID(teamID);
-        String text=student.getName()+"同学，你已离开"+team.getTeamName()+"小组。";
-        Email email=new Email();
-        email.sendSimpleMail(student.getEmail(),text);
-    }
-    */
 
     private Map<String, Object> getTeamInfo(Team team) {
         if(team==null){
@@ -111,14 +93,6 @@ public class TeamService {
         return this.getTeamInfo(team);
     }
 
-    //@GetMapping("/team/{teamID}")
-    //public Map<String, Object> getTeamInfoByTeamID(@PathVariable("teamID") BigInteger teamID) {
-    //    Team team = teamDao.getTeamByTeamID(teamID);
-    //    Map<String, Object> teamInfo = this.getTeamInfo(team);
-    //    return teamInfo;
-    //}
-
-
     @DeleteMapping("/team/{teamID}")//组长解散小组
     public void deleteTeamByTeamID(@PathVariable("teamID") BigInteger teamID) {
         teamDao.deleteTeamByTeamID(teamID);
@@ -138,7 +112,7 @@ public class TeamService {
         }
         else {
             team.setStatus(0);
-            teamMapper.updateTeamStatusByID(team);
+            teamDao.updateTeamStatusByID(team);
             return false;
         }
     }
@@ -151,7 +125,7 @@ public class TeamService {
         teamDao.deleteStudentFromTeam(teamID,student.getID());
         Team team = new Team();
         team.setID(teamID);
-        String emailCount=studentMapper.getEmailByStudentID(student.getID());
+        String emailCount = studentDao.getEmailByStudentID(student.getID());
         if(emailCount!=null){
             String teamName=teamDao.getTeamNameByTeamID(teamID);
             String emailContent=student.getName()+"同学，您已离开"+teamName+"小组.";
@@ -165,7 +139,7 @@ public class TeamService {
         }
         else {
             team.setStatus(0);
-            teamMapper.updateTeamStatusByID(team);
+            teamDao.updateTeamStatusByID(team);
             return false;
         }
     }
@@ -205,7 +179,7 @@ public class TeamService {
         Student leader = studentDao.getStudentByStudentID(team.getLeader().getID());
         Klass klass = klassDao.getKlassByKlassID(team.getKlass().getID());
         for(int i = 0; i < team.getMembers().size(); i++) {
-            Student student = studentMapper.getStudentByStudentID(team.getMembers().get(i).getID());
+            Student student = studentDao.getStudentByStudentID(team.getMembers().get(i).getID());
             team.getMembers().set(i,student);
         }
         team.setCourse(course);

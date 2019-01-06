@@ -8,6 +8,7 @@ import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.mapper.KlassMapper;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
 import cn.edu.xmu.crms.mapper.TeamStrategyMapper;
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIGlobalBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -107,5 +108,9 @@ public class CourseDao {
 
     public List<Course> listAllCourse() {
         return courseMapper.listAllCourse();
+    }
+
+    public BigInteger getTeamShareIDByMainAndSubCourseID(BigInteger mainCourseID, BigInteger subCourseID) {
+        return courseMapper.getTeamShareIDByMainAndSubCourseID(mainCourseID,subCourseID);
     }
 }

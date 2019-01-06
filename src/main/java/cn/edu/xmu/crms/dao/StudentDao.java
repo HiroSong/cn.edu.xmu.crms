@@ -99,4 +99,12 @@ public class StudentDao {
         klassMapper.insertStudentKlass(map);
         return "插入成功";
     }
+
+    public List<String> listMemberEmailsByTeamID(BigInteger teamID) {
+        return studentMapper.listMemberEmailsByTeamID(teamID);
+    }
+
+    public String getEmailByStudentID(BigInteger studentID) {
+        return studentMapper.getEmailByStudentID(studentID);
+    }
 }

@@ -29,8 +29,6 @@ public class KlassService {
     @Autowired
     KlassDao klassDao;
     @Autowired
-    KlassMapper klassMapper;
-    @Autowired
     StudentDao studentDao;
 
     @GetMapping("/course/{courseID}/class")

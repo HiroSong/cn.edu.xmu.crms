@@ -29,8 +29,6 @@ public class RoundService {
     @Autowired
     RoundDao roundDao;
     @Autowired
-    RoundMapper roundMapper;
-    @Autowired
     TeamDao teamDao;
 
     private Map<String, Object> getRoundInfo(Round round) {

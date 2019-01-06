@@ -52,4 +52,7 @@ public class KlassDao {
         return klass.getID();
     }
 
+    public BigInteger getKlassIDBySeminarAndTeamID(BigInteger seminarID, BigInteger teamID) {
+        return  klassMapper.getKlassIDBySeminarAndTeamID(seminarID,teamID);
+    }
 }

@@ -30,8 +30,6 @@ import java.util.Map;
 @Service
 public class AttendanceService {
     @Autowired
-    SeminarMapper seminarMapper;
-    @Autowired
     SeminarDao seminarDao;
     @Autowired
     TeamDao teamDao;
@@ -43,7 +41,7 @@ public class AttendanceService {
     @GetMapping("/seminar/{seminarID}/class/{classID}/attendance")
     public List<Map<String, Object>> listAttendanceInfoBySeminarIDAndClassID(@PathVariable("seminarID") BigInteger seminarID,
                                                                              @PathVariable("classID") BigInteger classID) {
-        BigInteger klass_seminarID = seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID, classID);
+        BigInteger klass_seminarID = seminarDao.getKlassSeminarIDBySeminarIDAndClassID(seminarID, classID);
         List<Map<String, Object>> attendanceInfoList = new ArrayList<>();
         List<Attendance> attendances = teamDao.listAttendancesByKlassSeminarID(klass_seminarID);
         for (int i = 0; i < attendances.size(); i++) {

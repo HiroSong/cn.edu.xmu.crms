@@ -2,16 +2,13 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
-import cn.edu.xmu.crms.mapper.*;
 import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import cn.edu.xmu.crms.util.websocket.SeminarRoom;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
@@ -29,28 +26,19 @@ public class SeminarService {
     @Autowired
     TeacherDao teacherDao;
     @Autowired
-    SeminarMapper seminarMapper;
-    @Autowired
     SeminarDao seminarDao;
     @Autowired
-    RoundMapper roundMapper;
-    @Autowired
     KlassDao klassDao;
-    @Autowired
-    KlassMapper klassMapper;
-    @Autowired
-    TeamMapper teamMapper;
-    @Autowired
-    CourseMapper courseMapper;
     @Autowired
     TeamDao teamDao;
     @Autowired
     QuestionDao questionDao;
     @Autowired
-    JwtTokenUtil jwtTokenUtil;
-    SeminarRoom seminarRoom;
+    StudentDao studentDao;
     @Autowired
-    StudentMapper studentMapper;
+    JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    SeminarRoom seminarRoom;
 
     //获取seminar信息
     private Map<String, Object> getSeminarInfo(Seminar seminar) {
@@ -178,7 +166,7 @@ public class SeminarService {
         map.put("seminarID",seminarID);
         map.put("klassID",klassID);
         map.put("reportDDL",reportDDL.get("reportDDL"));
-        seminarMapper.updateSeminarReportDDLByKlassAndSeminarID(map);
+        seminarDao.updateSeminarReportDDLByKlassAndSeminarID(map);
     }
 
 
@@ -192,7 +180,7 @@ public class SeminarService {
             return null;
         }
         Map<String,Object> map = this.getSeminarInfo(seminar);
-        Integer status = seminarMapper.getStatusBySeminarAndKlassID(seminarID,klassID);
+        Integer status = seminarDao.getStatusBySeminarAndKlassID(seminarID,klassID);
         map.put("status",status);
         String reportDDL = seminarDao.getReportDDLBySeminarAndKlassID(seminarID,klassID);
         if(reportDDL != null) {
@@ -215,7 +203,7 @@ public class SeminarService {
         Integer status = statusMap.get("status");
         seminarDao.updateSeminarStatus(klassID,seminarID,status);
         if(status==1){
-            BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
+            BigInteger klassSeminarID = seminarDao.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
             seminarRoom=new SeminarRoom(klassSeminarID);
         }
     }
@@ -224,7 +212,7 @@ public class SeminarService {
     @GetMapping("/seminar/{seminarID}/class/{classID}/enter")
     public void enterSeminar(@PathVariable("seminarID") BigInteger seminarID,
                                   @PathVariable("classID") BigInteger klassID) {
-            BigInteger klassSeminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
+            BigInteger klassSeminarID = seminarDao.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
             if(!SeminarRoom.checkIfExistRoom(klassSeminarID)) {
                 seminarRoom=new SeminarRoom(klassSeminarID);
             }
@@ -246,7 +234,7 @@ public class SeminarService {
                                                       @PathVariable("teamID") BigInteger teamID,
                                                       @RequestBody Map<String, Object> map) {
         Map<String,Object> resultmap=seminarDao.updateSeminarScoreBySeminarAndTeamID(seminarID,teamID,map);
-        List<String> emailList=studentMapper.listMemberEmailsByTeamID(teamID);
+        List<String> emailList = studentDao.listMemberEmailsByTeamID(teamID);
         for (String emailCount:emailList) {
             if(emailCount!=null){
                 String emailContent="您的讨论课程成绩已更新。";
@@ -301,10 +289,10 @@ public class SeminarService {
                                                   @RequestBody Map<String,Object> teamIDAndOrder) {
         BigInteger teamID=new BigInteger(teamIDAndOrder.get("teamID").toString());
         Integer teamOrder=Integer.parseInt(teamIDAndOrder.get("teamOrder").toString());
-        BigInteger klass_seminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
-        Attendance attendance=teamDao.createAnAttendance(klass_seminarID,teamID,teamOrder);
-        teamMapper.insertAttendance(attendance);
-        BigInteger attendanceID=teamMapper.getLastInsertID();
+        BigInteger klass_seminarID = seminarDao.getKlassSeminarIDBySeminarIDAndClassID(seminarID,classID);
+        Attendance attendance = teamDao.createAnAttendance(klass_seminarID,teamID,teamOrder);
+        teamDao.insertAttendance(attendance);
+        BigInteger attendanceID=teamDao.getLastInsertID();
         Map<String,Object> map=new HashMap<>();
         map.put("id",attendanceID);
         map.put("teamNumber",attendance.getTeam().getTeamNumber());
@@ -325,8 +313,8 @@ public class SeminarService {
     @GetMapping("/seminar/{seminarID}/team/{teamID}/attendance")
     public Map<String,Object> checkIfAttendanceBySeminarIDAndTeamID(@PathVariable("seminarID") BigInteger seminarID,
                                                                     @PathVariable("teamID") BigInteger teamID){
-        BigInteger klassID=klassMapper.getKlassIDBySeminarAndTeamID(seminarID,teamID);
-        BigInteger klass_seminarID=seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
+        BigInteger klassID=klassDao.getKlassIDBySeminarAndTeamID(seminarID,teamID);
+        BigInteger klass_seminarID = seminarDao.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
         Attendance attendance=teamDao.getAttendanceByKlassSeminarIDAndTeamID(klass_seminarID,teamID);
         Map<String,Object> map=new HashMap<>();
         if(attendance==null){ return null; }

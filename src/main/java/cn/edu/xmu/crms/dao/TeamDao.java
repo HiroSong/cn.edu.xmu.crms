@@ -154,4 +154,12 @@ public class TeamDao {
         attendance.setID(attendanceID);
         teamMapper.updateAttendanceStatus(attendance);
     }
+
+    public void insertAttendance(Attendance attendance) {
+        teamMapper.insertAttendance(attendance);
+    }
+
+    public BigInteger getLastInsertID() {
+        return teamMapper.getLastInsertID();
+    }
 }

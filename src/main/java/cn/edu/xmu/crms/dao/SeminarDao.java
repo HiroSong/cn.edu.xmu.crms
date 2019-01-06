@@ -302,4 +302,16 @@ public class SeminarDao{
     public String getReportDDLBySeminarAndKlassID(BigInteger seminarID, BigInteger klassID) {
         return seminarMapper.getReportDDLBySeminarAndKlassID(seminarID,klassID);
     }
+
+    public Integer getStatusBySeminarAndKlassID(BigInteger seminarID, BigInteger klassID) {
+        return seminarMapper.getStatusBySeminarAndKlassID(seminarID, klassID);
+    }
+
+    public BigInteger getKlassSeminarIDBySeminarIDAndClassID(BigInteger seminarID, BigInteger klassID) {
+        return seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID,klassID);
+    }
+
+    public BigInteger getSeminarShareIDByMainAndSubCourseID(BigInteger mainCourseID, BigInteger subCourseID) {
+        return seminarMapper.getSeminarShareIDByMainAndSubCourseID(mainCourseID,subCourseID);
+    }
 }
