@@ -73,7 +73,6 @@ public class SeminarRoom {
     }
 
 
-    //给某个问题打分
     public boolean updateQuestionScore(BigInteger klassSeminarID,Integer order,Double score){
         for(int i=0;i<questionSelectedQueueList.get(klassSeminarID).size();i++)
         {
@@ -298,7 +297,7 @@ public class SeminarRoom {
     @SendTo("/topic/seminar/{seminarID}/class/{classID}")
     public Map<String,Object> testConnection(@DestinationVariable("seminarID") BigInteger seminarID,
                                @DestinationVariable("classID") BigInteger classID){
-        Map<String,Object> map=new HashMap<>();
+        Map<String,Object> map=new HashMap<>(0);
         String type="test";
         map.put("type",type);
         return map;
@@ -316,7 +315,7 @@ public class SeminarRoom {
     @SendTo("/topic/seminar/{seminarID}/class/{classID}")
     public Map<String,Object> finishSeminar(@DestinationVariable("seminarID")BigInteger seminarID,
                                             @DestinationVariable("classID")BigInteger classID){
-        Map<String,Object> map=new HashMap<>();
+        Map<String,Object> map=new HashMap<>(0);
         String type="finish";
         map.put("type",type);
         return map;
