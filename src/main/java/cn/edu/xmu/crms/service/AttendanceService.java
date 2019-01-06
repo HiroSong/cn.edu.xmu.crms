@@ -41,8 +41,8 @@ public class AttendanceService {
     FileUtil fileUtil;
 
     @GetMapping("/seminar/{seminarID}/class/{classID}/attendance")
-    public List<Map<String,Object>> listAttendanceInfoBySeminarIDAndClassID(@PathVariable("seminarID") BigInteger seminarID,
-                                                                            @PathVariable("classID") BigInteger classID) {
+    public List<Map<String, Object>> listAttendanceInfoBySeminarIDAndClassID(@PathVariable("seminarID") BigInteger seminarID,
+                                                                             @PathVariable("classID") BigInteger classID) {
         BigInteger klass_seminarID = seminarMapper.getKlassSeminarIDBySeminarIDAndClassID(seminarID, classID);
         List<Map<String, Object>> attendanceInfoList = new ArrayList<>();
         List<Attendance> attendances = teamDao.listAttendancesByKlassSeminarID(klass_seminarID);
@@ -50,10 +50,10 @@ public class AttendanceService {
             Attendance attendance = attendances.get(i);
             Map<String, Object> map = new HashMap<>();
             map.put("id", attendance.getID());
-            map.put("teamID",attendance.getTeamID());
+            map.put("teamID", attendance.getTeamID());
             map.put("teamOrder", attendance.getTeamOrder());
             map.put("teamNumber", attendance.getTeam().getTeamNumber());
-            map.put("bePresent",attendance.getBePresent());
+            map.put("bePresent", attendance.getBePresent());
             attendanceInfoList.add(map);
         }
         return attendanceInfoList;
@@ -61,7 +61,7 @@ public class AttendanceService {
 
     @PostMapping("/attendance/{attendanceID}/report")
     public Map<String, Object> updateReport(@PathVariable("attendanceID") BigInteger attendanceID, @RequestParam("file") MultipartFile file) {
-        Map<String, Object> map = attendanceDao.updateFile(attendanceID,"report", file);
+        Map<String, Object> map = attendanceDao.updateFile(attendanceID, "report", file);
         return map;
     }
 
@@ -72,7 +72,7 @@ public class AttendanceService {
 
     @PostMapping("/attendance/{attendanceID}/ppt")
     public Map<String, Object> updatePPT(@PathVariable("attendanceID") BigInteger attendanceID, @RequestParam("file") MultipartFile file) {
-        return attendanceDao.updateFile(attendanceID,"ppt", file);
+        return attendanceDao.updateFile(attendanceID, "ppt", file);
     }
 
     @GetMapping("/attendance/{attendanceID}/ppt")
@@ -80,13 +80,13 @@ public class AttendanceService {
         return attendanceDao.getFile("ppt", attendanceID);
     }
 
-    @RequestMapping("/attendance/report/{reportName}")
-    public void downloadReport(HttpServletResponse response, @PathVariable("reportName")String reportName){
-        fileUtil.downloadFile(response, "//report//" ,reportName);
+    @RequestMapping("/download/attendance/{attendanceID}/report/{reportName}")
+    public void downloadReport(HttpServletResponse response, @PathVariable("attendanceID") BigInteger attendanceID, @PathVariable("reportName") String reportName) {
+        fileUtil.downloadFile(response, "//report//" + attendanceID + "-", reportName);
     }
 
-    @RequestMapping("/attendance/ppt/{pptName}")
-    public void downloadPPT(HttpServletResponse response, @PathVariable("pptName")String pptName){
-        fileUtil.downloadFile(response, "//ppt//" ,pptName);
+    @RequestMapping("/download/attendance/{attendanceID}/ppt/{pptName}")
+    public void downloadPPT(HttpServletResponse response, @PathVariable("attendanceID") BigInteger attendanceID, @PathVariable("pptName") String pptName) {
+        fileUtil.downloadFile(response, "//ppt//" + attendanceID + "-", pptName);
     }
 }
