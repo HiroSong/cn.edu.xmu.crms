@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface AdminMapper {
     /**
-      *
+      * 获取管理员对象以校验身份
       *
       * @param username 管理员账号
       * @return 管理员对象
