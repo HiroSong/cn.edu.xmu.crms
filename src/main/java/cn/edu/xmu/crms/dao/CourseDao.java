@@ -37,7 +37,7 @@ public class CourseDao {
         course.setMinMember(courseMapper.getCourseMinMemberByCourseID(courseID));
         course.setAndOr(teamStrategyMapper.getOptionalCourseInfo(courseID));
         String teamAndStrategy = "TeamAndStrategy";
-        if(course.getAndOr().equals(teamAndStrategy)) {
+        if(teamAndStrategy.equals(course.getAndOr())) {
             course.setCourseMemberLimitStrategies(teamStrategyMapper.listAndCourseMemberLimitInfo(courseID));
         } else {
             course.setCourseMemberLimitStrategies(teamStrategyMapper.listOrCourseMemberLimitInfo(courseID));
