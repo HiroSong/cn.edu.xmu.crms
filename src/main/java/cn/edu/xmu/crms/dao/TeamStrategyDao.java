@@ -36,7 +36,7 @@ public class TeamStrategyDao {
         BigInteger id = memberLimitStrategy.getID();
         teamStrategyMapper.insertTeamAndMember(id);
         String teamOrStrategy = "TeamOrStrategy";
-        if(course.getAndOr().equals(teamOrStrategy)) {
+        if(teamOrStrategy.equals(course.getAndOr())) {
             for(int i = 0; i < course.getCourseMemberLimitStrategies().size(); i++) {
                 CourseMemberLimitStrategy c = course.getCourseMemberLimitStrategies().get(i);
                 teamStrategyMapper.insertCourseLimit(c);
