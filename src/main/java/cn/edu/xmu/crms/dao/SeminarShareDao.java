@@ -1,6 +1,5 @@
 package cn.edu.xmu.crms.dao;
 
-
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.ShareSeminarApplication;
 import cn.edu.xmu.crms.entity.Teacher;
@@ -9,7 +8,6 @@ import cn.edu.xmu.crms.mapper.SeminarShareMapper;
 import cn.edu.xmu.crms.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +57,6 @@ public class SeminarShareDao {
         return seminarShareMapper.deleteSeminarShareBySeminarShareID(seminarShareID);
     }
 
-    //创建一个新的讨论课共享
     public BigInteger insertSeminarShare(BigInteger mainCourseID,BigInteger subCourseID) {
         ShareSeminarApplication application = new ShareSeminarApplication();
         application.setMainCourse(new Course());
@@ -83,7 +80,6 @@ public class SeminarShareDao {
         return allApplications;
     }
 
-    //更新共享讨论课申请的状态
     public void updateStatusBySeminarShareID(ShareSeminarApplication application) {
         seminarShareMapper.updateStatusBySeminarShareID(application);
         if(application.getStatus() == 1) {

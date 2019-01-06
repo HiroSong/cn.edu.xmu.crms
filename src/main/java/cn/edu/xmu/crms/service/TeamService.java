@@ -2,13 +2,11 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
-import cn.edu.xmu.crms.mapper.*;
 import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -85,7 +83,7 @@ public class TeamService {
         return teamsInfoList;
     }
 
-    @GetMapping("/course/{courseID}/myTeam")//查看我的队伍信息
+    @GetMapping("/course/{courseID}/myTeam")
     public Map<String, Object> getTeamInfoByCourseAndStudentID(@PathVariable("courseID") BigInteger courseID,
                                                                HttpServletRequest request) {
         BigInteger studentID = jwtTokenUtil.getIDFromRequest(request);
@@ -93,12 +91,12 @@ public class TeamService {
         return this.getTeamInfo(team);
     }
 
-    @DeleteMapping("/team/{teamID}")//组长解散小组
+    @DeleteMapping("/team/{teamID}")
     public void deleteTeamByTeamID(@PathVariable("teamID") BigInteger teamID) {
         teamDao.deleteTeamByTeamID(teamID);
     }
 
-    //组员或者组长添加新的成员
+
     @PutMapping("/team/{teamID}/member/new")
     public Boolean addTeamMember(@PathVariable("teamID") BigInteger teamID,
                                  @RequestBody Student student) {
@@ -118,7 +116,7 @@ public class TeamService {
     }
 
 
-    //移除成员或踢出队伍
+
     @PutMapping("/team/{teamID}/member/old")
     public Boolean removeTeamMember(@PathVariable("teamID") BigInteger teamID,
                                     @RequestBody Student student) {
@@ -144,7 +142,7 @@ public class TeamService {
         }
     }
 
-    //组长发出有效组队申请  如果返回id=0则还有未审核的申请 需等待
+
     @PostMapping("/team/{teamID}/teamvalidrequest")
     public Map<String, Object> createTeamValidRequest(@PathVariable("teamID") BigInteger teamID,
                                                       @RequestBody TeamValidApplication teamValidApplication) {
@@ -162,7 +160,7 @@ public class TeamService {
     }
 
 
-    //教师更新队伍是否合法
+
     @PutMapping("/request/teamvalid/{teamValidID}")
     public void updateValidApplication(@PathVariable("teamValidID") BigInteger teamValidID,
                                        @RequestBody Map<String,Integer> statusMap) {
@@ -171,7 +169,7 @@ public class TeamService {
     }
 
 
-    //创建队伍 三个不合法条件（还缺一个条件，选某门课程最少最多人数）
+
     @PostMapping("/course/{courseID}/team")
     public Map<String, Object> createNewTeam(@PathVariable("courseID") BigInteger courseID,
                                              @RequestBody Team team) {

@@ -2,7 +2,6 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.SeminarDao;
 import cn.edu.xmu.crms.dao.TeamDao;
-import cn.edu.xmu.crms.mapper.SeminarMapper;
 import cn.edu.xmu.crms.dao.AttendanceDao;
 import cn.edu.xmu.crms.entity.Attendance;
 import cn.edu.xmu.crms.util.common.FileUtil;
@@ -10,17 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author SongLingbing

@@ -4,7 +4,6 @@ import cn.edu.xmu.crms.entity.Question;
 import cn.edu.xmu.crms.mapper.QuestionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.math.BigInteger;
 
 /**

@@ -5,7 +5,6 @@ import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -224,7 +223,6 @@ public class SeminarDao{
         return scoreMap;
     }
 
-    //创建一个新的seminar
     public BigInteger insertSeminar(Seminar seminar) {
         BigInteger roundID;
         if(seminar.getRoundOrder() != null) {
