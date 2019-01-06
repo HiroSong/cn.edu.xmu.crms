@@ -131,12 +131,12 @@ public interface TeamMapper {
     /**
      * 获得参与展示小组的ID列表//废弃预警
      *
-     * @param klass_seminarID 具体班级下的讨论课的ID
+     * @param klassSeminarID 具体班级下的讨论课的ID
      * @return BigInteger 参与展示小组的ID列表
      * @author LaiShaopeng
      * @date 2018/12/24 15:22
      */
-    List<BigInteger> listAttendancesIDByKlassSeminarID(BigInteger klass_seminarID);
+    List<BigInteger> listAttendancesIDByKlassSeminarID(BigInteger klassSeminarID);
 
     /**
      * 根据参与展示小组的ID获得参与展示小组的对象
@@ -151,12 +151,12 @@ public interface TeamMapper {
     /**
      * 获得参与展示小组的列表
      *
-     * @param klass_seminarID 具体班级下的讨论课的ID
+     * @param klassSeminarID 具体班级下的讨论课的ID
      * @return AttendanceList 参与展示小组的列表
      * @author LaiShaopeng
      * @date 2018/12/25 20:48
      */
-    List<Attendance> listAttendancesByKlassSeminarID(BigInteger klass_seminarID);
+    List<Attendance> listAttendancesByKlassSeminarID(BigInteger klassSeminarID);
 
     /**
      * 新建参与展示的小组
@@ -170,6 +170,7 @@ public interface TeamMapper {
     /**
      * 删除参与展示的小组
      *
+     * @return 删除的条数
      * @param attendanceID 参与展示的小组的ID
      * @author LaiShaopeng
      * @date 2018/12/24 20:07
@@ -198,11 +199,31 @@ public interface TeamMapper {
      */
     BigInteger getTeamIDByStudentAndKlassID(BigInteger studentID, BigInteger klassID);
 
-
+    /**
+     * 获得队伍列表
+     *
+     * @param courseID 课程ID
+     * @return List 队伍列表
+     * @author Hongqiwu
+     * @date 2018/12/27 1:59
+     */
     List<Team> listTeamsByCourseID(BigInteger courseID);
-
+    /**
+     * 更新队伍合法性
+     *
+     * @param team 队伍对象
+     * @author Hongqiwu
+     * @date 2018/12/27 1:59
+     */
     void updateTeamStatusByID(Team team);
-
+    /**
+     * 添加成员
+     *
+     * @param teamID 队伍ID
+     * @param studentID 学生ID
+     * @author Hongqiwu
+     * @date 2018/12/27 1:59
+     */
     void insertStudentToTeam(BigInteger teamID, BigInteger studentID);
 
     /**
@@ -214,20 +235,39 @@ public interface TeamMapper {
      * @date 2018/1/3 19:25
      */
     String getTeamNameByTeamID(BigInteger teamID);
-
+    /**
+     * 更新班级队伍信息
+     *
+     * @param klassID 班级ID
+     * @param teamID 队伍ID
+     * @author Hongqiwu
+     * @date 2018/12/27 1:59
+     */
     void insertKlassTeam(BigInteger klassID,BigInteger teamID);
-
+    /**
+     * 删除班级队伍信息
+     *
+     * @param klassID 班级ID
+     * @author Hongqiwu
+     * @date 2018/12/27 1:59
+     */
     void deleteKlassTeam(BigInteger klassID);
-
     /**
      * 更新attendance的状态
      *
-     * @param attendance
+     * @param attendance 展示小组
      * @return 更新条数
      * @author Laishaopeng
      * @date 2019/1/4 14:45
      */
     Integer updateAttendanceStatus(Attendance attendance);
-
+    /**
+     * 获得队伍列表
+     *
+     * @param klassID 班级ID
+     * @return List 队伍ID列表
+     * @author Hongqiwu
+     * @date 2018/12/27 1:59
+     */
     List<BigInteger> listTeamsIDByKlassID(BigInteger klassID);
 }

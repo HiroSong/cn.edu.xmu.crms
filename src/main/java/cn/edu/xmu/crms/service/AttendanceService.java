@@ -41,12 +41,12 @@ public class AttendanceService {
     @GetMapping("/seminar/{seminarID}/class/{classID}/attendance")
     public List<Map<String, Object>> listAttendanceInfoBySeminarIDAndClassID(@PathVariable("seminarID") BigInteger seminarID,
                                                                              @PathVariable("classID") BigInteger classID) {
-        BigInteger klass_seminarID = seminarDao.getKlassSeminarIDBySeminarIDAndClassID(seminarID, classID);
+        BigInteger klassSeminarID = seminarDao.getKlassSeminarIDBySeminarIDAndClassID(seminarID, classID);
         List<Map<String, Object>> attendanceInfoList = new ArrayList<>();
-        List<Attendance> attendances = teamDao.listAttendancesByKlassSeminarID(klass_seminarID);
+        List<Attendance> attendances = teamDao.listAttendancesByKlassSeminarID(klassSeminarID);
         for (int i = 0; i < attendances.size(); i++) {
             Attendance attendance = attendances.get(i);
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>(0);
             map.put("id", attendance.getID());
             map.put("teamID", attendance.getTeamID());
             map.put("teamOrder", attendance.getTeamOrder());

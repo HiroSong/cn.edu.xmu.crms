@@ -96,7 +96,6 @@ public interface CourseMapper {
      * 向course表插入course对象
      *
      * @param course 课程对象
-     * @return BigInteger 课程ID
      * @author Hongqiwu
      * @date 2018/11/30 19:45
      */
@@ -195,15 +194,49 @@ public interface CourseMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getLastInsertID();
-
+    /**
+     * 获得课程名字
+     *
+     * @return String 课程名字
+     * @param courseID 课程ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     String getCourseNameByCourseID(BigInteger courseID);
-
+    /**
+     * 更新共享组队主课程
+     *
+     * @param mainCourseID 主课程ID
+     * @param subCourseID 从课程ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     void updateTeamMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
-
+    /**
+     * 更新共享讨论课主课程
+     *
+     * @param mainCourseID 主课程ID
+     * @param subCourseID 从课程ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     void updateSeminarMainCourseID(BigInteger mainCourseID, BigInteger subCourseID);
-
+    /**
+     * 获取全部课程
+     *
+     * @return List<Course>全部课程
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     List<Course> listAllCourse();
-
+    /**
+     * 删除共享组队主课程
+     *
+     * @return 删除条数
+     * @param courseID 课程ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     Integer deleteTeamMainCourseID(BigInteger courseID);
 
 }

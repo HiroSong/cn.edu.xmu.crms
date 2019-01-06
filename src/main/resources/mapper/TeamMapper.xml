@@ -71,7 +71,7 @@
 
     <!--获得参与展示小组的ID列表-->
     <select id="listAttendancesIDByKlassSeminarID" parameterType="BigInteger" resultType="BigInteger">
-        SELECT id FROM attendance WHERE klass_seminar_id = #{klass_seminarID}
+        SELECT id FROM attendance WHERE klass_seminar_id = #{klassSeminarID}
     </select>
 
     <!--通过klassSeminarID和teamID获得参与展示的ID-->
@@ -86,7 +86,7 @@
 
     <!--获得参与展示小组的列表-->
     <select id="listAttendancesByKlassSeminarID" parameterType="BigInteger" resultMap="attendanceResultMap">
-    SELECT attendance.*,team.* FROM attendance,team,klass WHERE attendance.klass_seminar_id=#{klass_seminarID} AND team.id=attendance.team_id AND team.klass_id=klass.id
+    SELECT attendance.*,team.* FROM attendance,team,klass WHERE attendance.klass_seminar_id=#{klassSeminarID} AND team.id=attendance.team_id AND team.klass_id=klass.id
 </select>
     <resultMap id="attendanceResultMap" type="Attendance">
         <id property="id" column="id"/>
@@ -117,11 +117,6 @@
     <delete id="deleteAttendance" parameterType="BigInteger">
         DELETE FROM attendance WHERE id=#{attendanceID}
     </delete>
-
-    <!--通过klass_seminarID和teamID获得参与展示的ID-->
-    <select id="getAttendanceIDByKlass_SeminarIDAndTeamID" parameterType="BigInteger" resultType="BigInteger">
-        SELECT id FROM attendance WHERE klass_seminar_id = #{param1} AND team_id=#{param2}
-    </select>
 
 
     <!--根据course查找teamList-->

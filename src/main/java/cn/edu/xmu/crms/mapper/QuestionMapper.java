@@ -24,7 +24,7 @@ public interface QuestionMapper {
      * @author LaiShaopeng
      * @date 2018/12/27 3:17
      */
-    public Integer insertQuestionByQuestion(Question question);
+    Integer insertQuestionByQuestion(Question question);
     /**
      * 向question表更新question值
      *
@@ -32,7 +32,7 @@ public interface QuestionMapper {
      * @author LaiShaopeng
      * @date 2018/12/27 3:20
      */
-    public void updateQuestionByQuestion(Question question);
+    void updateQuestionByQuestion(Question question);
 
     /**
      * 向question表插入question对象列表
@@ -42,5 +42,5 @@ public interface QuestionMapper {
      * @author LaiShaopeng
      * @date 2018/12/27 3:17
      */
-    public void insertQuestionByQuestionList(Map<String,Object> questionList);
+    void insertQuestionByQuestionList(Map<String,Object> questionList);
 }

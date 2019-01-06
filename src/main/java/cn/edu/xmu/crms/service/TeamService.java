@@ -188,7 +188,6 @@ public class TeamService {
         team.setStatus(1);
         Team newTeam = teamDao.insertTeam(team);
         if(teamStrategyDao.listStrategyInfoByCourseID(team.getCourse().getID()).size() != 0) {
-            System.out.println(0);
             if(!teamValidDao.checkTeam(team)) {
                 team.setStatus(0);
                 teamDao.updateTeamStatusByID(team);

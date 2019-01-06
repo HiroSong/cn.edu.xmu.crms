@@ -38,6 +38,7 @@ public interface TeacherMapper {
     /**
      * 创建教师用户
      *
+     * @return 插入条数
      * @param user 用户
      * @author hongqiwu
      * @date 2018/12/01 15:09
@@ -55,6 +56,7 @@ public interface TeacherMapper {
 
     /**
      * 修改教师信息
+     * @return 更新条数
      * @param teacher 教师对象
      * @author hongqiwu
      * @date 2018/12/01 15:09
@@ -64,6 +66,7 @@ public interface TeacherMapper {
     /**
      * 用于重置教师密码为123456
      *
+     * @return 更新条数
      * @param  teacherID 学生ID
      * @author hongqiwu
      * @date 2018/12/01 14:32
@@ -73,6 +76,7 @@ public interface TeacherMapper {
     /**
      * 用于删除单个教师
      *
+     * @return 删除条数
      * @param  teacherID 学生ID
      * @author hongqiwu
      * @date 2018/12/01 14:32
@@ -82,6 +86,7 @@ public interface TeacherMapper {
     /**
      * 用于激活某个教师账号
      *
+     * @return 更新条数
      * @param  teacher 教师账号
      * @author hongqiwu
      * @date 2018/12/01 14:32
@@ -116,7 +121,22 @@ public interface TeacherMapper {
      */
     List<String> listAllEmails();
 
+    /**
+     * 更新教师密码
+     *
+     * @param user 用户对象
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     void updateTeacherPassword(User user);
 
+    /**
+     * 获得密码
+     *
+     * @return String 密码
+     * @param id 教师ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     String getPasswordByID(BigInteger id);
 }

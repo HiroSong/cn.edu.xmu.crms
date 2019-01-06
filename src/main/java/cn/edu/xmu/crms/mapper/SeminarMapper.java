@@ -178,9 +178,25 @@ public interface SeminarMapper {
      * @date 2018/11/30 19:45
      */
     Double getPreScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
-
+    /**
+     * 获得报告分数
+     *
+     * @return Double 报告分数
+     * @param klassSeminarID 班级讨论课ID
+     * @param teamID 队伍ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     Double getReportScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
-
+    /**
+     * 获得提问分数
+     *
+     * @return Double 提问分数
+     * @param klassSeminarID 班级讨论课ID
+     * @param teamID 队伍ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     Double getQuestionScoreByKlassSeminarAndTeamID(BigInteger klassSeminarID, BigInteger teamID);
     /**
      * 修改某次讨论课某队伍成绩
@@ -201,7 +217,13 @@ public interface SeminarMapper {
      * @date 2018/12/24 15:06:00
      */
     BigInteger getKlassSeminarIDBySeminarIDAndClassID(BigInteger seminarID, BigInteger klassID);
-
+    /**
+     * 插入klassSeminar信息
+     *
+     * @param map klass和seminar信息
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     void insertKlassSeminar(Map<String,Object> map);
 
     /**
@@ -224,11 +246,29 @@ public interface SeminarMapper {
      */
     void updateEndSeminarByKlassAndSeminarID(BigInteger klassID, BigInteger seminarID);
 
-
+    /**
+     * 获得正在进行的讨论课
+     *
+     * @return Seminar 正在进行的讨论课
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     Seminar getSeminarInProcess();
-
-
+    /**
+     * 获得班级ID
+     *
+     * @return BigInteger 班级ID
+     * @param seminarID 讨论课ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     BigInteger getKlassIDByProcessSeminarID(BigInteger seminarID);
-
+    /**
+     * 初始化讨论课分数
+     *
+     * @param map 讨论课分数信息
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     void insertSeminarScore(Map<String,Object> map);
 }
