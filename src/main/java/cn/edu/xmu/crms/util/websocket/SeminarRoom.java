@@ -115,7 +115,6 @@ public class SeminarRoom {
             questionInfo.put("studentName",student.getName());
             questionInfo.put("order",question.order);
             questionQueue.add(questionInfo);
-            System.out.println(question.order);
         }
         map.put("questionQueue",questionQueue);
         map.put("questionNumber",questionQueueList.get(klassSeminarID).size());
