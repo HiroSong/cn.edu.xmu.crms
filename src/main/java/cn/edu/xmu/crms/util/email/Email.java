@@ -34,6 +34,9 @@ public class Email {
 
     public void sendSimpleMail(String sendTo,String contentText) {
 
+        if(sendTo == null) {
+            return;
+        }
         try{
 
             Message message = new MimeMessage(session);

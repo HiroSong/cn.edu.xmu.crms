@@ -140,19 +140,19 @@ public class Course {
         this.seminarMainCourseID = seminarMainCourseID;
     }
 
-    public Integer getMinMember() {
+    public Integer getMinMemberNumber() {
         return minMemberNumber;
     }
 
-    public void setMinMember(Integer minMemberNumber) {
+    public void setMinMemberNumber(Integer minMemberNumber) {
         this.minMemberNumber = minMemberNumber;
     }
 
-    public Integer getMaxMember() {
+    public Integer getMaxMemberNumber() {
         return maxMemberNumber;
     }
 
-    public void setMaxMember(Integer maxMemberNumber) {
+    public void setMaxMemberNumber(Integer maxMemberNumber) {
         this.maxMemberNumber = maxMemberNumber;
     }
 

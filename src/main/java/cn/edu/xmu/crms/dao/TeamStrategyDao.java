@@ -30,8 +30,8 @@ public class TeamStrategyDao {
         BigInteger courseID = course.getID();
         TeamStrategy teamStrategy = new TeamStrategy();
         MemberLimitStrategy memberLimitStrategy = new MemberLimitStrategy();
-        memberLimitStrategy.setMaxMember(course.getMaxMember());
-        memberLimitStrategy.setMinMember(course.getMinMember());
+        memberLimitStrategy.setMaxMember(course.getMaxMemberNumber());
+        memberLimitStrategy.setMinMember(course.getMinMemberNumber());
         teamStrategyMapper.insertMemberLimit(memberLimitStrategy);
         BigInteger id = memberLimitStrategy.getID();
         teamStrategyMapper.insertTeamAndMember(id);
@@ -67,10 +67,11 @@ public class TeamStrategyDao {
             }
         }
         conflictID = conflictID.add(new BigInteger("1"));
+        int strategySerial = 2;
         for(int i = 0; i < course.getConflictCourseStrategies().size(); i++) {
-            teamStrategy.setStrategySerial(i+2);
+            teamStrategy.setStrategySerial(strategySerial++);
             BigInteger strategyID = BigInteger.valueOf(i+1);
-            teamStrategy.setStrategyID(strategyID);
+            teamStrategy.setStrategyID(conflictID);
             teamStrategyMapper.insertTeamStrategy(teamStrategy);
             teamStrategyMapper.insertConflict(conflictID, course.getConflictCourseStrategies().get(i).getCourseID());
             i++;
