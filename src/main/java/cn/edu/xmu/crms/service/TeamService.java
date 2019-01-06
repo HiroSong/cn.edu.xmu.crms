@@ -128,7 +128,7 @@ public class TeamService {
             String teamName=teamDao.getTeamNameByTeamID(teamID);
             String emailContent=student.getName()+"同学，您已离开"+teamName+"小组.";
             Email email=new Email();
-            email.sendSimpleMail(student.getEmail(),emailContent);
+            email.sendSimpleMail(emailCount,emailContent);
         }
         if(teamValidDao.checkTeam(teamDao.getTeamByTeamID(teamID))) {
             team.setStatus(1);

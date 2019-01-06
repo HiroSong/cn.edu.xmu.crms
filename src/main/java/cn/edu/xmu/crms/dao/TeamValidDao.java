@@ -125,12 +125,12 @@ public class TeamValidDao {
                         count++;
                     }
                 }
-                if(count < courseMemberLimits.get(i).getMinMember() ||
-                        count > courseMemberLimits.get(i).getMaxMember()) {
-                    return false;
+                if(count >= courseMemberLimits.get(i).getMinMember() &&
+                        count <= courseMemberLimits.get(i).getMaxMember()) {
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
     }
 

@@ -40,7 +40,6 @@ public class UserService {
         if(userInDatabase == null) {
             map.put("result","user"+userName+" not found.");
         } else{
-            System.out.print("\n"+userInDatabase.getName()+userInDatabase.getEmail()+'\n');
             Email email=new Email();
             email.sendPassWordMail(userInDatabase.getEmail(),userInDatabase.getPassword());
             map.put("result","password has been sent to Mail.");
