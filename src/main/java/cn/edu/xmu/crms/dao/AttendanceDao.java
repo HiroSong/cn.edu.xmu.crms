@@ -22,12 +22,12 @@ public class AttendanceDao {
     @Autowired
     FileUtil fileUtil;
 
-    static final String REPORT_FILE="report";
-    static final String PPT_FILE="ppt";
+    static final String REPORT_FILE = "report";
+    static final String PPT_FILE = "ppt";
 
-    public Map<String, Object> updateFile(BigInteger attendanceID, String fileType, MultipartFile file){
+    public Map<String, Object> updateFile(BigInteger attendanceID, String fileType, MultipartFile file) {
         Map<String, Object> fileInfo = new HashMap<>(3);
-        String url = fileUtil.uploadFile("//report//", file);
+        String url = fileUtil.uploadFile("//" + fileType + "//" + attendanceID + "-", file);
         if (url == null) {
             fileInfo.put("message", "fail to upload");
             return fileInfo;
@@ -37,33 +37,35 @@ public class AttendanceDao {
         fileInfo.put("url", url);
         Attendance attendance = new Attendance();
         attendance.setID(new BigInteger(fileInfo.get("id").toString()));
-        attendance.setReportName(fileInfo.get("name").toString());
-        attendance.setReportUrl(fileInfo.get("url").toString());
-        if(fileType==REPORT_FILE) {
+        if (fileType.equals(REPORT_FILE)) {
+            attendance.setReportName(fileInfo.get("name").toString());
+            attendance.setReportUrl(fileInfo.get("url").toString());
             attendanceMapper.updateReport(attendance);
-        }else if(fileType==PPT_FILE){
+        } else if (fileType.equals(PPT_FILE)) {
+            attendance.setPPTName(fileInfo.get("name").toString());
+            attendance.setPPTUrl(fileInfo.get("url").toString());
             attendanceMapper.updatePPT(attendance);
         }
         return fileInfo;
     }
 
 
-    public Map<String, Object>  getFile(String fileType, BigInteger id){
+    public Map<String, Object> getFile(String fileType, BigInteger id) {
         Map<String, Object> map = new HashMap<>(2);
-        Attendance attendance=null;
-        if(fileType==REPORT_FILE) {
+        Attendance attendance = null;
+        if (fileType == REPORT_FILE) {
             attendance = attendanceMapper.getReport(id);
-        }else if(fileType==PPT_FILE) {
+        } else if (fileType == PPT_FILE) {
             attendance = attendanceMapper.getPPT(id);
         }
-        if(attendance==null){
+        if (attendance == null) {
             map.put("message", "no file found");
             return map;
         }
-        if(fileType==REPORT_FILE) {
+        if (fileType == REPORT_FILE) {
             map.put("name", attendance.getReportName());
             map.put("url", attendance.getReportUrl());
-        }else if(fileType==PPT_FILE) {
+        } else if (fileType == PPT_FILE) {
             map.put("name", attendance.getPPTName());
             map.put("url", attendance.getPPTUrl());
         }
