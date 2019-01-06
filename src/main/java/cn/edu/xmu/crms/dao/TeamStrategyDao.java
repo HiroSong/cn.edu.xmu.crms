@@ -7,7 +7,6 @@ import cn.edu.xmu.crms.entity.TeamStrategy;
 import cn.edu.xmu.crms.mapper.TeamStrategyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.math.BigInteger;
 import java.util.List;
 
@@ -36,8 +35,8 @@ public class TeamStrategyDao {
         teamStrategyMapper.insertMemberLimit(memberLimitStrategy);
         BigInteger id = memberLimitStrategy.getID();
         teamStrategyMapper.insertTeamAndMember(id);
-
-        if(course.getAndOr().equals("TeamOrStrategy")) {
+        String teamOrStrategy = "TeamOrStrategy";
+        if(course.getAndOr().equals(teamOrStrategy)) {
             for(int i = 0; i < course.getCourseMemberLimitStrategies().size(); i++) {
                 CourseMemberLimitStrategy c = course.getCourseMemberLimitStrategies().get(i);
                 teamStrategyMapper.insertCourseLimit(c);
@@ -60,11 +59,11 @@ public class TeamStrategyDao {
         teamStrategy.setStrategyID(id);
         teamStrategyMapper.insertTeamStrategy(teamStrategy);
         teamStrategy.setStrategyName("ConflictCourseStrategy");
-        List<BigInteger> AllID = teamStrategyMapper.listIDFromConflict();
-        BigInteger conflictID = AllID.get(0);
-        for(int i = 1; i < AllID.size(); i++) {
-            if(AllID.get(i).compareTo(conflictID) > 0) {
-                conflictID = AllID.get(i);
+        List<BigInteger> allID = teamStrategyMapper.listIDFromConflict();
+        BigInteger conflictID = allID.get(0);
+        for(int i = 1; i < allID.size(); i++) {
+            if(allID.get(i).compareTo(conflictID) > 0) {
+                conflictID = allID.get(i);
             }
         }
         conflictID = conflictID.add(new BigInteger("1"));

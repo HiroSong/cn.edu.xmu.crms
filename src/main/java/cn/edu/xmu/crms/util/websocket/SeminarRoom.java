@@ -72,7 +72,6 @@ public class SeminarRoom {
         return question;
     }
 
-
     public boolean updateQuestionScore(BigInteger klassSeminarID,Integer order,Double score){
         for(int i=0;i<questionSelectedQueueList.get(klassSeminarID).size();i++)
         {

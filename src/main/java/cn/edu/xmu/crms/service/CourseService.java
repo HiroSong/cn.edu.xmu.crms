@@ -2,18 +2,14 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.CourseDao;
 import cn.edu.xmu.crms.dao.KlassDao;
-import cn.edu.xmu.crms.dao.TeacherDao;
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.Klass;
 import cn.edu.xmu.crms.entity.Teacher;
-import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;

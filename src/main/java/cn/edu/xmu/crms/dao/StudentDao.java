@@ -6,13 +6,10 @@ import cn.edu.xmu.crms.mapper.KlassMapper;
 import cn.edu.xmu.crms.mapper.StudentMapper;
 import cn.edu.xmu.crms.util.common.FileUtil;
 import cn.edu.xmu.crms.util.excel.ExcelUtil;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -98,5 +95,13 @@ public class StudentDao {
         map.put("studentIDList", studentIDList);
         klassMapper.insertStudentKlass(map);
         return "插入成功";
+    }
+
+    public List<String> listMemberEmailsByTeamID(BigInteger teamID) {
+        return studentMapper.listMemberEmailsByTeamID(teamID);
+    }
+
+    public String getEmailByStudentID(BigInteger studentID) {
+        return studentMapper.getEmailByStudentID(studentID);
     }
 }

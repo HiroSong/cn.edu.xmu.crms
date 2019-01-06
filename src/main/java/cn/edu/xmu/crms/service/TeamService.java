@@ -2,13 +2,11 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.*;
 import cn.edu.xmu.crms.entity.*;
-import cn.edu.xmu.crms.mapper.*;
 import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -29,34 +27,16 @@ public class TeamService {
     @Autowired
     StudentDao studentDao;
     @Autowired
-    TeamMapper teamMapper;
-    @Autowired
-    TeacherMapper teacherMapper;
-    @Autowired
     CourseDao courseDao;
-    @Autowired
-    StudentMapper studentMapper;
     @Autowired
     KlassDao klassDao;
     @Autowired
     TeamValidDao teamValidDao;
     @Autowired
-    TeamValidMapper teamValidMapper;
-    @Autowired
     JwtTokenUtil jwtTokenUtil;
     @Autowired
     TeamStrategyDao teamStrategyDao;
 
-
-    /*public void deleteStudentFromTeamByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
-        teamMapper.deleteStudentFromTeamByTeamAndStudentID(teamID,studentID);
-        Student student=studentDao.getStudentByStudentID(studentID);
-        Team team=teamDao.getTeamByTeamID(teamID);
-        String text=student.getName()+"同学，你已离开"+team.getTeamName()+"小组。";
-        Email email=new Email();
-        email.sendSimpleMail(student.getEmail(),text);
-    }
-    */
 
     private Map<String, Object> getTeamInfo(Team team) {
         if(team==null){
@@ -103,7 +83,7 @@ public class TeamService {
         return teamsInfoList;
     }
 
-    @GetMapping("/course/{courseID}/myTeam")//查看我的队伍信息
+    @GetMapping("/course/{courseID}/myTeam")
     public Map<String, Object> getTeamInfoByCourseAndStudentID(@PathVariable("courseID") BigInteger courseID,
                                                                HttpServletRequest request) {
         BigInteger studentID = jwtTokenUtil.getIDFromRequest(request);
@@ -111,20 +91,12 @@ public class TeamService {
         return this.getTeamInfo(team);
     }
 
-    //@GetMapping("/team/{teamID}")
-    //public Map<String, Object> getTeamInfoByTeamID(@PathVariable("teamID") BigInteger teamID) {
-    //    Team team = teamDao.getTeamByTeamID(teamID);
-    //    Map<String, Object> teamInfo = this.getTeamInfo(team);
-    //    return teamInfo;
-    //}
-
-
-    @DeleteMapping("/team/{teamID}")//组长解散小组
+    @DeleteMapping("/team/{teamID}")
     public void deleteTeamByTeamID(@PathVariable("teamID") BigInteger teamID) {
         teamDao.deleteTeamByTeamID(teamID);
     }
 
-    //组员或者组长添加新的成员
+
     @PutMapping("/team/{teamID}/member/new")
     public Boolean addTeamMember(@PathVariable("teamID") BigInteger teamID,
                                  @RequestBody Student student) {
@@ -138,20 +110,20 @@ public class TeamService {
         }
         else {
             team.setStatus(0);
-            teamMapper.updateTeamStatusByID(team);
+            teamDao.updateTeamStatusByID(team);
             return false;
         }
     }
 
 
-    //移除成员或踢出队伍
+
     @PutMapping("/team/{teamID}/member/old")
     public Boolean removeTeamMember(@PathVariable("teamID") BigInteger teamID,
                                     @RequestBody Student student) {
         teamDao.deleteStudentFromTeam(teamID,student.getID());
         Team team = new Team();
         team.setID(teamID);
-        String emailCount=studentMapper.getEmailByStudentID(student.getID());
+        String emailCount = studentDao.getEmailByStudentID(student.getID());
         if(emailCount!=null){
             String teamName=teamDao.getTeamNameByTeamID(teamID);
             String emailContent=student.getName()+"同学，您已离开"+teamName+"小组.";
@@ -165,12 +137,12 @@ public class TeamService {
         }
         else {
             team.setStatus(0);
-            teamMapper.updateTeamStatusByID(team);
+            teamDao.updateTeamStatusByID(team);
             return false;
         }
     }
 
-    //组长发出有效组队申请  如果返回id=0则还有未审核的申请 需等待
+
     @PostMapping("/team/{teamID}/teamvalidrequest")
     public Map<String, Object> createTeamValidRequest(@PathVariable("teamID") BigInteger teamID,
                                                       @RequestBody TeamValidApplication teamValidApplication) {
@@ -188,7 +160,7 @@ public class TeamService {
     }
 
 
-    //教师更新队伍是否合法
+
     @PutMapping("/request/teamvalid/{teamValidID}")
     public void updateValidApplication(@PathVariable("teamValidID") BigInteger teamValidID,
                                        @RequestBody Map<String,Integer> statusMap) {
@@ -197,7 +169,7 @@ public class TeamService {
     }
 
 
-    //创建队伍 三个不合法条件（还缺一个条件，选某门课程最少最多人数）
+
     @PostMapping("/course/{courseID}/team")
     public Map<String, Object> createNewTeam(@PathVariable("courseID") BigInteger courseID,
                                              @RequestBody Team team) {
@@ -205,7 +177,7 @@ public class TeamService {
         Student leader = studentDao.getStudentByStudentID(team.getLeader().getID());
         Klass klass = klassDao.getKlassByKlassID(team.getKlass().getID());
         for(int i = 0; i < team.getMembers().size(); i++) {
-            Student student = studentMapper.getStudentByStudentID(team.getMembers().get(i).getID());
+            Student student = studentDao.getStudentByStudentID(team.getMembers().get(i).getID());
             team.getMembers().set(i,student);
         }
         team.setCourse(course);
@@ -214,7 +186,6 @@ public class TeamService {
         team.setStatus(1);
         Team newTeam = teamDao.insertTeam(team);
         if(teamStrategyDao.listStrategyInfoByCourseID(team.getCourse().getID()).size() != 0) {
-            System.out.println(0);
             if(!teamValidDao.checkTeam(team)) {
                 team.setStatus(0);
                 teamDao.updateTeamStatusByID(team);
