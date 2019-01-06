@@ -22,8 +22,6 @@ public class CourseDao {
     @Autowired
     KlassMapper klassMapper;
     @Autowired
-    TeacherDao teacherDao;
-    @Autowired
     TeamStrategyMapper teamStrategyMapper;
     @Autowired
     TeamStrategyDao teamStrategyDao;
@@ -33,8 +31,8 @@ public class CourseDao {
         if(course == null) {
             return null;
         }
-        course.setMaxMember(courseMapper.getCourseMaxMemberByCourseID(courseID));
-        course.setMinMember(courseMapper.getCourseMinMemberByCourseID(courseID));
+        course.setMaxMemberNumber(courseMapper.getCourseMaxMemberByCourseID(courseID));
+        course.setMinMemberNumber(courseMapper.getCourseMinMemberByCourseID(courseID));
         course.setAndOr(teamStrategyMapper.getOptionalCourseInfo(courseID));
         String teamAndStrategy = "TeamAndStrategy";
         if(teamAndStrategy.equals(course.getAndOr())) {

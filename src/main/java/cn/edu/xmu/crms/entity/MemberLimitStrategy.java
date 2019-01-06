@@ -10,6 +10,8 @@ import java.math.BigInteger;
  **/
 public class MemberLimitStrategy {
     private BigInteger id;
+    private Integer minMember;
+    private Integer maxMember;
 
     public BigInteger getID() {
         return id;
@@ -35,6 +37,4 @@ public class MemberLimitStrategy {
         this.maxMember = maxMember;
     }
 
-    private Integer minMember;
-    private Integer maxMember;
 }
