@@ -80,7 +80,7 @@ public class TeamValidDao {
         List<ConflictCourseStrategy> conflictCourses = teamStrategyMapper.listConflictCourse(courseID);
         int flag = 0;BigInteger id = conflictCourses.get(0).getID();
         for(int i = 0; i < conflictCourses.size(); i++) {
-            if(id != conflictCourses.get(i).getID()) {
+            if(!id.equals(conflictCourses.get(i).getID())) {
                 id = conflictCourses.get(i).getID();
                 flag = 0;
             }
@@ -96,7 +96,8 @@ public class TeamValidDao {
             }
         }
         //选修课程人数
-        if(teamStrategyMapper.getOptionalCourseInfo(courseID) == "TeamAndStrategy") {
+        String teamAndStrategy = "TeamAndStrategy";
+        if(teamStrategyMapper.getOptionalCourseInfo(courseID).equals(teamAndStrategy)) {
             List<CourseMemberLimitStrategy> courseMemberLimits =
                     teamStrategyMapper.listAndCourseMemberLimitInfo(courseID);
             for(int i = 0; i < courseMemberLimits.size();i++) {
