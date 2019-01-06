@@ -6,7 +6,6 @@ import cn.edu.xmu.crms.entity.MemberLimitStrategy;
 import cn.edu.xmu.crms.entity.TeamStrategy;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
-
 import java.math.BigInteger;
 import java.util.List;
 

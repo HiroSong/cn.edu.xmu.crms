@@ -1,6 +1,5 @@
 package cn.edu.xmu.crms.mapper;
 
-
 import cn.edu.xmu.crms.entity.TeamValidApplication;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
