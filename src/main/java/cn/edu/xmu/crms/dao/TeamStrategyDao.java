@@ -7,7 +7,6 @@ import cn.edu.xmu.crms.entity.TeamStrategy;
 import cn.edu.xmu.crms.mapper.TeamStrategyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.math.BigInteger;
 import java.util.List;
 
@@ -31,13 +30,13 @@ public class TeamStrategyDao {
         BigInteger courseID = course.getID();
         TeamStrategy teamStrategy = new TeamStrategy();
         MemberLimitStrategy memberLimitStrategy = new MemberLimitStrategy();
-        memberLimitStrategy.setMaxMember(course.getMaxMember());
-        memberLimitStrategy.setMinMember(course.getMinMember());
+        memberLimitStrategy.setMaxMember(course.getMaxMemberNumber());
+        memberLimitStrategy.setMinMember(course.getMinMemberNumber());
         teamStrategyMapper.insertMemberLimit(memberLimitStrategy);
         BigInteger id = memberLimitStrategy.getID();
         teamStrategyMapper.insertTeamAndMember(id);
-
-        if(course.getAndOr().equals("TeamOrStrategy")) {
+        String teamOrStrategy = "TeamOrStrategy";
+        if(teamOrStrategy.equals(course.getAndOr())) {
             for(int i = 0; i < course.getCourseMemberLimitStrategies().size(); i++) {
                 CourseMemberLimitStrategy c = course.getCourseMemberLimitStrategies().get(i);
                 teamStrategyMapper.insertCourseLimit(c);
@@ -60,23 +59,30 @@ public class TeamStrategyDao {
         teamStrategy.setStrategyID(id);
         teamStrategyMapper.insertTeamStrategy(teamStrategy);
         teamStrategy.setStrategyName("ConflictCourseStrategy");
-        List<BigInteger> AllID = teamStrategyMapper.listIDFromConflict();
-        BigInteger conflictID = AllID.get(0);
-        for(int i = 1; i < AllID.size(); i++) {
-            if(AllID.get(i).compareTo(conflictID) > 0) {
-                conflictID = AllID.get(i);
+        List<BigInteger> allID = teamStrategyMapper.listIDFromConflict();
+        BigInteger conflictID = allID.get(0);
+        for(int i = 1; i < allID.size(); i++) {
+            if(allID.get(i).compareTo(conflictID) > 0) {
+                conflictID = allID.get(i);
             }
         }
         conflictID = conflictID.add(new BigInteger("1"));
+        int strategySerial = 2; int flag = 0;
+        BigInteger conflictFlagID = course.getConflictCourseStrategies().get(0).getID();
         for(int i = 0; i < course.getConflictCourseStrategies().size(); i++) {
-            teamStrategy.setStrategySerial(i+2);
-            BigInteger strategyID = BigInteger.valueOf(i+1);
-            teamStrategy.setStrategyID(strategyID);
-            teamStrategyMapper.insertTeamStrategy(teamStrategy);
+            if(!conflictFlagID.equals(course.getConflictCourseStrategies().get(i).getID())) {
+                conflictFlagID = course.getConflictCourseStrategies().get(i).getID();
+                conflictID = conflictID.add(new BigInteger("1"));
+                flag = 0;
+            }else {
+                flag = 1;
+            }
+            if(flag == 0 || i == 0) {
+                teamStrategy.setStrategySerial(strategySerial++);
+                teamStrategy.setStrategyID(conflictID);
+                teamStrategyMapper.insertTeamStrategy(teamStrategy);
+            }
             teamStrategyMapper.insertConflict(conflictID, course.getConflictCourseStrategies().get(i).getCourseID());
-            i++;
-            teamStrategyMapper.insertConflict(conflictID, course.getConflictCourseStrategies().get(i).getCourseID());
-            conflictID = conflictID.add(new BigInteger("1"));
         }
     }
 }

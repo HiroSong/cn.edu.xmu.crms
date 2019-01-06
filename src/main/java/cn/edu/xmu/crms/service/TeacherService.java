@@ -5,7 +5,6 @@ import cn.edu.xmu.crms.entity.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +50,7 @@ public class TeacherService {
         return teacherInfoList;
     }
 
-    //修改教师信息(邮箱)
+
     @PutMapping("/teacher/{teacherID}/information")
     public Teacher modifyTeacherInfo(@PathVariable("teacherID") BigInteger teacherID,
                                      @RequestBody Teacher teacher) {
@@ -62,7 +61,7 @@ public class TeacherService {
         return null;
     }
 
-    //重置教师密码
+
     @PutMapping("/teacher/{teacherID}/password")
     public Boolean resetTeacherPassword(@PathVariable("teacherID") BigInteger teacherID) {
         if(teacherDao.resetTeacherPasswordByTeacherID(teacherID) == 1) {
@@ -71,7 +70,7 @@ public class TeacherService {
         return false;
     }
 
-    //删除教师
+
     @DeleteMapping("/teacher/{teacherID}")
     public Boolean deleteTeacher(@PathVariable("teacherID") BigInteger teacherID) {
         if(teacherDao.deleteTeacherByTeacherID(teacherID) == 1) {
@@ -80,7 +79,7 @@ public class TeacherService {
         return false;
     }
 
-    //激活教师账号
+
     @PutMapping("/teacher/active")
     public Boolean activeTeacher(@RequestBody Teacher teacher) {
         if(teacherDao.updateTeacherActiveByTeacher(teacher) == 1) {

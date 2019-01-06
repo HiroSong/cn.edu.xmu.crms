@@ -1,12 +1,8 @@
 package cn.edu.xmu.crms.dao;
 
 import cn.edu.xmu.crms.entity.Course;
-import cn.edu.xmu.crms.entity.Teacher;
-import cn.edu.xmu.crms.entity.Team;
-import cn.edu.xmu.crms.entity.TeamStrategy;
 import cn.edu.xmu.crms.mapper.CourseMapper;
 import cn.edu.xmu.crms.mapper.KlassMapper;
-import cn.edu.xmu.crms.mapper.TeacherMapper;
 import cn.edu.xmu.crms.mapper.TeamStrategyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,8 +22,6 @@ public class CourseDao {
     @Autowired
     KlassMapper klassMapper;
     @Autowired
-    TeacherDao teacherDao;
-    @Autowired
     TeamStrategyMapper teamStrategyMapper;
     @Autowired
     TeamStrategyDao teamStrategyDao;
@@ -37,10 +31,11 @@ public class CourseDao {
         if(course == null) {
             return null;
         }
-        course.setMaxMember(courseMapper.getCourseMaxMemberByCourseID(courseID));
-        course.setMinMember(courseMapper.getCourseMinMemberByCourseID(courseID));
+        course.setMaxMemberNumber(courseMapper.getCourseMaxMemberByCourseID(courseID));
+        course.setMinMemberNumber(courseMapper.getCourseMinMemberByCourseID(courseID));
         course.setAndOr(teamStrategyMapper.getOptionalCourseInfo(courseID));
-        if(course.getAndOr() == "TeamAndStrategy") {
+        String teamAndStrategy = "TeamAndStrategy";
+        if(teamAndStrategy.equals(course.getAndOr())) {
             course.setCourseMemberLimitStrategies(teamStrategyMapper.listAndCourseMemberLimitInfo(courseID));
         } else {
             course.setCourseMemberLimitStrategies(teamStrategyMapper.listOrCourseMemberLimitInfo(courseID));
@@ -107,5 +102,9 @@ public class CourseDao {
 
     public List<Course> listAllCourse() {
         return courseMapper.listAllCourse();
+    }
+
+    public BigInteger getTeamShareIDByMainAndSubCourseID(BigInteger mainCourseID, BigInteger subCourseID) {
+        return courseMapper.getTeamShareIDByMainAndSubCourseID(mainCourseID,subCourseID);
     }
 }

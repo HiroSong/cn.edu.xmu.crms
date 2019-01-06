@@ -102,8 +102,21 @@ public interface RoundMapper {
      */
     Map<String, Object> getSignUpNumberByRoundAndKlassID(BigInteger roundID, BigInteger klassID);
 
+    /**
+     * 插入round
+     *
+     * @param round 轮次对象
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     void insertRound(Round round);
-
+    /**
+     * 更新klassRound信息
+     *
+     * @param map 信息
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     void insertKlassRound(Map<String,Object> map);
 
     /**
@@ -114,10 +127,28 @@ public interface RoundMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getLastInsertID();
-
+    /**
+     * 更新每轮报名个数
+     *
+     * @param map 信息
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     void updateSignUpNumber(Map<String,Object> map);
-
+    /**
+     * 初始化轮次成绩
+     * @param map 主课程ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     void insertRoundScore(Map<String,Object> map);
-
+    /**
+     * 获得轮次ID
+     *
+     * @return BigInteger 轮次ID
+     * @param seminarID 讨论课ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     BigInteger getRoundIDBySeminarID(BigInteger seminarID);
 }

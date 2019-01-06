@@ -4,14 +4,11 @@ import cn.edu.xmu.crms.dao.KlassDao;
 import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.Klass;
-import cn.edu.xmu.crms.mapper.KlassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-
 import java.lang.String;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -28,8 +25,6 @@ import java.util.Map;
 public class KlassService {
     @Autowired
     KlassDao klassDao;
-    @Autowired
-    KlassMapper klassMapper;
     @Autowired
     StudentDao studentDao;
 

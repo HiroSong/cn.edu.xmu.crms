@@ -3,7 +3,6 @@ package cn.edu.xmu.crms.mapper;
 import cn.edu.xmu.crms.entity.Klass;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
-
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -126,9 +125,25 @@ public interface KlassMapper {
      * @date 2018/12/18 19:35
      */
     BigInteger getLastInsertID();
-
+    /**
+     * 获取班级ID
+     *
+     * @return BigInteger KlassID
+     * @param courseID 课程ID
+     * @param studentID 学生ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     BigInteger getKlassIDByCourseAndStudentID(BigInteger courseID,BigInteger studentID);
 
+    /**
+     * 插入klassTeam
+     *
+     * @param klassID 班级ID
+     * @param teamID 队伍ID
+     * @author Hongqiwu
+     * @date 2018/12/18 19:35
+     */
     void insertKlassTeam(BigInteger klassID,BigInteger teamID);
 
 }

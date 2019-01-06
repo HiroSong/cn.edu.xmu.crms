@@ -2,12 +2,9 @@ package cn.edu.xmu.crms.service;
 
 import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.entity.Student;
-import cn.edu.xmu.crms.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +30,7 @@ public class StudentService {
     }
 
 
-    @GetMapping("/student")//查询所有学生
+    @GetMapping("/student")
     public List<Map<String, Object>> listAllStudentsInfo() {
         List<Map<String, Object>> studentsInfoList = new ArrayList<>();
         List<Student> students = studentDao.listAllStudents();
@@ -49,7 +46,7 @@ public class StudentService {
         return studentsInfoList;
     }
 
-    @PutMapping("/student/{studentID}/information")//修改学生信息（邮箱）
+    @PutMapping("/student/{studentID}/information")
     public Student modifyStudentInfo(@PathVariable("studentID") BigInteger studentID,
                                      @RequestBody Student student) {
         student.setID(studentID);
@@ -59,7 +56,7 @@ public class StudentService {
         return null;
     }
 
-    @PutMapping("/student/{studentID}/password")//管理员重置学生密码
+    @PutMapping("/student/{studentID}/password")
     public Boolean resetStudentPassword(@PathVariable("studentID") BigInteger studentID) {
         if (studentDao.resetStudentPassword(studentID) == 1) {
             return true;
@@ -67,7 +64,7 @@ public class StudentService {
         return false;
     }
 
-    @DeleteMapping("/student/{studentID}")//管理员删除学生
+    @DeleteMapping("/student/{studentID}")
     public Boolean deleteStudent(@PathVariable("studentID") BigInteger studentID) {
         if(studentDao.deleteStudentByStudentID(studentID) == 1) {
             return true;
@@ -75,7 +72,7 @@ public class StudentService {
         return false;
     }
 
-    @PutMapping("/student/active")//激活一个学生账号
+    @PutMapping("/student/active")
     public Boolean activateStudent(@RequestBody Student student) {
         if(studentDao.updateStudentActiveByStudent(student) == 1) {
             return true;
@@ -83,7 +80,7 @@ public class StudentService {
         return false;
     }
 
-    @GetMapping("/course/{courseID}/noTeam")//获得一个课程下每没有组队的学生列表
+    @GetMapping("/course/{courseID}/noTeam")
     public List<Map<String, Object>> listNoTeamStudentsInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> noTeamStudentsMap = new ArrayList<>();
         List<Student> noTeamStudents = studentDao.listNoTeamStudentsByCourseID(courseID);

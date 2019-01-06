@@ -16,6 +16,8 @@ import java.util.*;
 @Component
 public class ExcelUtil {
 
+    private static final String XLS_TYPE = "xls";
+    private static final String XLSX_TYPE = "xlsx";
     /**
      * 默认的开始读取的行位置为第一行（索引值为0）
      */
@@ -138,7 +140,7 @@ public class ExcelUtil {
     /**
      * 还原设定（其实是重新new一个新的对象并返回）
      */
-    public ExcelUtil RestoreSettings() {
+    public ExcelUtil restoreSettings() {
         ExcelUtil instance = new ExcelUtil(this.excelPath);
         return instance;
     }
@@ -162,7 +164,7 @@ public class ExcelUtil {
      */
     public List<Row> readExcel(String xlsPath) throws IOException {
 
-        if (xlsPath.equals("")) {
+        if ("".equals(xlsPath)) {
             throw new IOException("文件路径不能为空！");
         } else {
             File file = new File(xlsPath);
@@ -174,10 +176,9 @@ public class ExcelUtil {
         String ext = xlsPath.substring(xlsPath.lastIndexOf(".") + 1);
 
         try {
-
-            if ("xls".equals(ext)) {
+            if (XLS_TYPE.equals(ext)) {
                 return readExcelXls(xlsPath);
-            } else if ("xlsx".equals(ext)) {
+            } else if (XLSX_TYPE.equals(ext)) {
                 return readExcelXlsx(xlsPath);
             } else {
                 out("您要操作的文件没有扩展名，正在尝试以xls方式读取...");
@@ -220,16 +221,16 @@ public class ExcelUtil {
      */
     public void writeExcel(List<Row> rowList, String xlsPath) throws IOException {
 
-        if (xlsPath.equals("")) {
+        if ("".equals(xlsPath)) {
             throw new IOException("文件路径不能为空！");
         }
 
         String ext = xlsPath.substring(xlsPath.lastIndexOf(".") + 1);
 
         try {
-            if ("xls".equals(ext)) {
+            if (XLS_TYPE.equals(ext)) {
                 writeExcelXls(rowList, xlsPath);
-            } else if ("xlsx".equals(ext)) {
+            } else if (XLSX_TYPE.equals(ext)) {
                 writeExcelXlsx(rowList, xlsPath);
             } else {
                 out("您要操作的文件没有扩展名，正在尝试以xls方式写入...");
@@ -272,11 +273,11 @@ public class ExcelUtil {
      * @Title: writeExcelXls
      */
     public void writeExcelXls(List<Row> rowList, String srcXlsPath, String distXlsPath) throws IOException {
-        if (distXlsPath == null || distXlsPath.equals("")) {
+        if (distXlsPath == null || "".equals(distXlsPath)) {
             out("文件路径不能为空");
             throw new IOException("文件路径不能为空");
         }
-        if (srcXlsPath == null || srcXlsPath.equals("")) {
+        if (srcXlsPath == null || "".equals(srcXlsPath)) {
             out("文件路径不能为空");
             throw new IOException("文件路径不能为空");
         }
@@ -331,7 +332,7 @@ public class ExcelUtil {
      */
     public void writeExcelXlsx(List<Row> rowList, String srcXlsPath, String distXlsPath) throws IOException {
 
-        if (distXlsPath == null || distXlsPath.equals("") || srcXlsPath == null || srcXlsPath.equals("")) {
+        if (distXlsPath == null || "".equals(distXlsPath) || srcXlsPath == null || "".equals(srcXlsPath)) {
             out("文件路径不能为空");
             throw new IOException("文件路径不能为空");
         }
@@ -444,27 +445,7 @@ public class ExcelUtil {
     public String getCellValue(Cell cell) {
         Object result = "";
         if (cell != null) {
-            switch (cell.getCellTypeEnum()) {
-                case STRING:
-                    result = cell.getStringCellValue();
-                    break;
-                case NUMERIC:
-                    result = cell.getNumericCellValue();
-                    break;
-                case BOOLEAN:
-                    result = cell.getBooleanCellValue();
-                    break;
-                case FORMULA:
-                    result = cell.getCellFormula();
-                    break;
-                case ERROR:
-                    result = cell.getErrorCellValue();
-                    break;
-                case BLANK:
-                    break;
-                default:
-                    break;
-            }
+            result = cell.getStringCellValue();
         }
         return result.toString().replace((char)160, ' ').trim();
     }
@@ -482,7 +463,7 @@ public class ExcelUtil {
 
         Sheet sheet = null;
         if (onlyReadOneSheet) {
-            sheet = selectedSheetName.equals("") ? wb.getSheetAt(selectedSheetIdx) : wb.getSheet(selectedSheetName);
+            sheet = "".equals(selectedSheetName) ? wb.getSheetAt(selectedSheetIdx) : wb.getSheet(selectedSheetName);
         } else {
             sheetCount = wb.getNumberOfSheets();
         }

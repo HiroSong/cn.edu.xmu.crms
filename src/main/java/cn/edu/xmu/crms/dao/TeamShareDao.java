@@ -8,8 +8,6 @@ import cn.edu.xmu.crms.entity.Teacher;
 import cn.edu.xmu.crms.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +69,7 @@ public class TeamShareDao {
         return teamShareMapper.deleteTeamShareByTeamShareID(teamShareID);
     }
 
-    //创建一个新的组队共享
+
     public BigInteger insertTeamShare(BigInteger mainCourseID,BigInteger subCourseID) {
         ShareTeamApplication application = new ShareTeamApplication();
         application.setMainCourse(new Course());
@@ -96,7 +94,7 @@ public class TeamShareDao {
         return applications;
     }
 
-    //更新共享组队申请的状态
+
     public void updateStatusByTeamShareID(ShareTeamApplication application) {
         teamShareMapper.updateStatusByTeamShareID(application);
         if(application.getStatus() == 1) {
@@ -108,7 +106,7 @@ public class TeamShareDao {
             List<BigInteger> subKlassesID = klassMapper.listKlassIDByCourseID(subCourseID);
             for(int i = 0; i < mainTeamsID.size(); i++) {
                 int[] mm = new int[10];
-                for(int n = 0; n < 10; n++) {
+                for(int n = 0; n < mm.length; n++) {
                     mm[n] = 0;
                 }
                 List<Student> members = studentMapper.listMembersByTeamAndCourseID(mainTeamsID.get(i),subCourseID);

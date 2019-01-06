@@ -10,7 +10,7 @@ import java.math.BigInteger;
  **/
 public class Question {
     private BigInteger id;
-    private BigInteger klssSeminarID;
+    private BigInteger klassSeminarID;
     private Attendance attendance;
     private Student student;
     private Team team;
@@ -36,12 +36,12 @@ public class Question {
         this.team.setID(teamID);
     }
 
-    public BigInteger getKlssSeminarID() {
-        return klssSeminarID;
+    public BigInteger getKlassSeminarID() {
+        return klassSeminarID;
     }
 
-    public void setKlssSeminarID(BigInteger klssSeminarID) {
-        this.klssSeminarID = klssSeminarID;
+    public void setKlassSeminarID(BigInteger klassSeminarID) {
+        this.klassSeminarID = klassSeminarID;
     }
 
     public BigInteger getAttendanceID() {

@@ -36,8 +36,8 @@ public class UserService {
     @GetMapping("/user/{userName}/password")
     public Map<String,Object> retrievePassWord(@PathVariable("userName") String userName){
         User userInDatabase = userDao.getUserByUsername(userName);
-        Map<String,Object> map=new HashMap<>();
-        if(userInDatabase==null) {
+        Map<String,Object> map=new HashMap<>(0);
+        if(userInDatabase == null) {
             map.put("result","user"+userName+" not found.");
         } else{
             System.out.print("\n"+userInDatabase.getName()+userInDatabase.getEmail()+'\n');
@@ -95,7 +95,7 @@ public class UserService {
         return userDao.getUserByInfo(id,role);
     }
 
-    @PutMapping("/user/password")//修改密码
+    @PutMapping("/user/password")
     public Boolean modifyPassword(@RequestBody Map<String,String> map, HttpServletRequest request) {
         BigInteger id = jwtTokenUtil.getIDFromRequest(request);
         String role = jwtTokenUtil.getRolesFromRequest(request);

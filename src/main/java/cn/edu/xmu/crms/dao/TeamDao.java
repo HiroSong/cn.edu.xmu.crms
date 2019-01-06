@@ -7,11 +7,9 @@ import cn.edu.xmu.crms.mapper.StudentMapper;
 import cn.edu.xmu.crms.mapper.TeamMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 /**
  * @author Hongqiwu
@@ -67,7 +65,7 @@ public class TeamDao {
         return this.getTeamByTeamAndCourseID(teamID,courseID);
     }
 
-    //根据courseID 返回队伍列表信息
+
     public List<Team> listTeamsByCourseID(BigInteger courseID) {
         Course course = courseMapper.getCourseByCourseID(courseID);
         List<Team> teams = teamMapper.listTeamsByCourseID(courseID);
@@ -77,12 +75,12 @@ public class TeamDao {
         return teams;
     }
 
-    //增加学生和队伍关联
+
     public void insertStudentByTeamAndStudentID(BigInteger teamID, BigInteger studentID) {
         teamMapper.insertStudentToTeam(teamID,studentID);
     }
 
-    //取消学生和队伍关联
+
     public void deleteStudentFromTeam(BigInteger teamID, BigInteger studentID) {
         teamMapper.deleteStudentFromTeamByTeamAndStudentID(teamID,studentID);
     }
@@ -107,18 +105,18 @@ public class TeamDao {
      * @author LaiShaopeng
      * @date 2018/12/24 15:07
      */
-    public List<Attendance> listAttendancesByKlassSeminarID(BigInteger klass_seminarID){
-        return teamMapper.listAttendancesByKlassSeminarID(klass_seminarID);
+    public List<Attendance> listAttendancesByKlassSeminarID(BigInteger klassSeminarID){
+        return teamMapper.listAttendancesByKlassSeminarID(klassSeminarID);
     }
     /**
      * @author LaiShaopeng
      * @date 2018/12/24 18:10
      */
-    public Attendance createAnAttendance(BigInteger klass_seminarID,BigInteger teamID,Integer teamOrder)
+    public Attendance createAnAttendance(BigInteger klassSeminarID,BigInteger teamID,Integer teamOrder)
     {
         Attendance attendance=new Attendance();
         Team team = teamMapper.getTeamByTeamID(teamID);
-        attendance.setKlassSeminarID(klass_seminarID);
+        attendance.setKlassSeminarID(klassSeminarID);
         attendance.setTeam(team);
         attendance.setTeamOrder(teamOrder);
         attendance.setBePresent(0);
@@ -131,9 +129,9 @@ public class TeamDao {
         return teamMapper.deleteAttendance(attendanceID);
     }
 
-    public Attendance getAttendanceByKlassSeminarIDAndTeamID(BigInteger klass_seminarID,BigInteger teamID){
-        System.out.print(klass_seminarID);
-        BigInteger attendanceID=teamMapper.getAttendanceIDByKlassSeminarIDAndTeamID(klass_seminarID,teamID);
+    public Attendance getAttendanceByKlassSeminarIDAndTeamID(BigInteger klassSeminarID,BigInteger teamID){
+        System.out.print(klassSeminarID);
+        BigInteger attendanceID=teamMapper.getAttendanceIDByKlassSeminarIDAndTeamID(klassSeminarID,teamID);
         if(attendanceID==null) {
             return null;
         }
@@ -153,5 +151,13 @@ public class TeamDao {
         attendance.setBePresent(status);
         attendance.setID(attendanceID);
         teamMapper.updateAttendanceStatus(attendance);
+    }
+
+    public void insertAttendance(Attendance attendance) {
+        teamMapper.insertAttendance(attendance);
+    }
+
+    public BigInteger getLastInsertID() {
+        return teamMapper.getLastInsertID();
     }
 }

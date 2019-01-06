@@ -69,17 +69,17 @@
 
     <insert id="insertTeamAndMember" parameterType="BigInteger">
         INSERT into team_and_strategy(id,strategy_name,strategy_id)
-        VALUE (#{id},'MemberLimitStrategy',1)
+        VALUE (#{id},'MemberLimitStrategy',#{id})
     </insert>
 
     <insert id="insertTeamAndOr" parameterType="BigInteger">
         INSERT into team_and_strategy(id,strategy_name,strategy_id)
-        VALUE (#{id},'TeamOrStrategy',1)
+        VALUE (#{id},'TeamOrStrategy',#{id})
     </insert>
 
     <insert id="insertTeamAndAnd" parameterType="BigInteger">
         INSERT into team_and_strategy(id,strategy_name,strategy_id)
-        VALUE (#{id},'TeamAndStrategy',1)
+        VALUE (#{id},'TeamAndStrategy',#{id})
     </insert>
 
     <!--建立组队策略-->

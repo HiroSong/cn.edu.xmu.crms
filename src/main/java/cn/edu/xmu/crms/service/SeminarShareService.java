@@ -6,14 +6,10 @@ import cn.edu.xmu.crms.dao.SeminarShareDao;
 import cn.edu.xmu.crms.dao.TeacherDao;
 import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.ShareSeminarApplication;
-import cn.edu.xmu.crms.mapper.SeminarMapper;
-import cn.edu.xmu.crms.mapper.SeminarShareMapper;
-import cn.edu.xmu.crms.mapper.TeacherMapper;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -37,12 +33,6 @@ public class SeminarShareService {
     CourseDao courseDao;
     @Autowired
     TeacherDao teacherDao;
-    @Autowired
-    SeminarMapper seminarMapper;
-    @Autowired
-    TeacherMapper teacherMapper;
-    @Autowired
-    SeminarShareMapper seminarShareMapper;
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
@@ -87,7 +77,7 @@ public class SeminarShareService {
             receiveMap.put("receiveCourseID",courseID);
             receiveMap.put("receiveCourseName",course.getCourseName());
             receiveMap.put("teacherName",course.getTeacher().getName());
-            BigInteger shareID = seminarMapper.getSeminarShareIDByMainAndSubCourseID(mainCourse.getID(), courseID);
+            BigInteger shareID = seminarDao.getSeminarShareIDByMainAndSubCourseID(mainCourse.getID(), courseID);
             mainCourseMap.put("id",shareID);
             mainCourseMap.put("masterCourse",masterMap);
             mainCourseMap.put("receiveCourse",receiveMap);
@@ -105,7 +95,7 @@ public class SeminarShareService {
             receiveMap.put("receiveCourseID",subCourse.getID());
             receiveMap.put("receiveCourseName",subCourse.getCourseName());
             receiveMap.put("teacherName",subCourse.getTeacher().getName());
-            BigInteger shareID = seminarMapper.getSeminarShareIDByMainAndSubCourseID(courseID, subCourse.getID());
+            BigInteger shareID = seminarDao.getSeminarShareIDByMainAndSubCourseID(courseID, subCourse.getID());
             subCourseMap.put("id",shareID);
             subCourseMap.put("masterCourse",masterMap);
             subCourseMap.put("receiveCourse",receiveMap);
