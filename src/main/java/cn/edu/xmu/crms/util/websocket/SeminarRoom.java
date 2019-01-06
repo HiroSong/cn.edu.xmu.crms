@@ -108,7 +108,6 @@ public class SeminarRoom {
             Map<String,Object>questionInfo=new HashMap<>(0);
             Student student=studentDao.getStudentByStudentID(question.getStudentID());
             Team team=teamDao.getTeamByTeamID(question.getTeamID());
-            questionInfo.put("teamID",question.getTeamID());
             questionInfo.put("teamNumber",team.getTeamNumber());
             questionInfo.put("studentID",question.getStudentID());
             questionInfo.put("studentName",student.getName());
