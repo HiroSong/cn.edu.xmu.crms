@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * @date 2018/12/24 8:55
  */
 @Service
-public class JwtUserDetailsService implements UserDetailsService {
+public class JwtUserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserDao userDao;
 
