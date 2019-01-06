@@ -72,8 +72,7 @@ public class SeminarRoom {
         return question;
     }
 
-
-    //给某个问题打分
+    
     public boolean updateQuestionScore(BigInteger klassSeminarID,Integer order,Double score){
         for(int i=0;i<questionSelectedQueueList.get(klassSeminarID).size();i++)
         {
