@@ -7,6 +7,7 @@ import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.ShareTeamApplication;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
@@ -48,12 +49,13 @@ public class TeamShareService {
         return map;
     }
 
+    @PreAuthorize("hasAuthority('teacher')")
     @DeleteMapping("/course/teamshare/{teamShareID}")
     public Integer deleteTeamShareByTeamShareID(@PathVariable("teamShareID") BigInteger teamShareID) {
        return teamShareDao.deleteTeamShareByTeamShareID(teamShareID);
     }
 
-
+    @PreAuthorize("hasAuthority('teacher')")
     @GetMapping("/course/{courseID}/teamshare")
     public List<Map<String, Object>> listAllTeamShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> courseMapList = new ArrayList<>();
@@ -102,7 +104,7 @@ public class TeamShareService {
         return courseMapList;
     }
 
-
+    @PreAuthorize("hasAuthority('teacher')")
     @PostMapping("/request/teamshare")
     public Map<String,BigInteger> createTeamShareRequest(@RequestBody Map<String,BigInteger> courseID) {
         BigInteger mainCourseID = courseID.get("mainCourseID");
@@ -111,8 +113,7 @@ public class TeamShareService {
         return courseID;
     }
 
-
-
+    @PreAuthorize("hasAuthority('teacher')")
     @GetMapping("/request/teamshare")
     public List<Map<String, Object>> listAllTeamShareRequest(HttpServletRequest request) {
         BigInteger id = jwtTokenUtil.getIDFromRequest(request);
@@ -124,8 +125,7 @@ public class TeamShareService {
         return teamShareRequest;
     }
 
-
-
+    @PreAuthorize("hasAuthority('teacher')")
     @PutMapping("/request/teamshare/{teamShareID}")
     public Map<String, Object> updateTeamShareStatusByID(@PathVariable("teamShareID") BigInteger teamShareID,
                                                          @RequestBody Map<String,Integer> statusMap) {

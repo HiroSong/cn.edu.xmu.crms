@@ -5,6 +5,7 @@ import cn.edu.xmu.crms.entity.*;
 import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +72,7 @@ public class TeamService {
         return teamInfoMap;
     }
 
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/course/{courseID}/team")
     public List<Map<String, Object>> listTeamsInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> teamsInfoList = new ArrayList<>();
@@ -83,6 +85,7 @@ public class TeamService {
         return teamsInfoList;
     }
 
+    @PreAuthorize("hasAuthority('student')")
     @GetMapping("/course/{courseID}/myTeam")
     public Map<String, Object> getTeamInfoByCourseAndStudentID(@PathVariable("courseID") BigInteger courseID,
                                                                HttpServletRequest request) {
@@ -91,12 +94,13 @@ public class TeamService {
         return this.getTeamInfo(team);
     }
 
+    @PreAuthorize("hasAuthority('student')")
     @DeleteMapping("/team/{teamID}")
     public void deleteTeamByTeamID(@PathVariable("teamID") BigInteger teamID) {
         teamDao.deleteTeamByTeamID(teamID);
     }
 
-
+    @PreAuthorize("hasAuthority('student')")
     @PutMapping("/team/{teamID}/member/new")
     public Boolean addTeamMember(@PathVariable("teamID") BigInteger teamID,
                                  @RequestBody Student student) {
@@ -115,8 +119,7 @@ public class TeamService {
         }
     }
 
-
-
+    @PreAuthorize("hasAuthority('student')")
     @PutMapping("/team/{teamID}/member/old")
     public Boolean removeTeamMember(@PathVariable("teamID") BigInteger teamID,
                                     @RequestBody Student student) {
@@ -142,7 +145,7 @@ public class TeamService {
         }
     }
 
-
+    @PreAuthorize("hasAuthority('student')")
     @PostMapping("/team/{teamID}/teamvalidrequest")
     public Map<String, Object> createTeamValidRequest(@PathVariable("teamID") BigInteger teamID,
                                                       @RequestBody TeamValidApplication teamValidApplication) {
@@ -159,8 +162,7 @@ public class TeamService {
         return map;
     }
 
-
-
+    @PreAuthorize("hasAuthority('teacher')")
     @PutMapping("/request/teamvalid/{teamValidID}")
     public void updateValidApplication(@PathVariable("teamValidID") BigInteger teamValidID,
                                        @RequestBody Map<String,Integer> statusMap) {
@@ -168,8 +170,7 @@ public class TeamService {
         teamValidDao.updateValidApplicationByID(teamValidID,status);
     }
 
-
-
+    @PreAuthorize("hasAuthority('student')")
     @PostMapping("/course/{courseID}/team")
     public Map<String, Object> createNewTeam(@PathVariable("courseID") BigInteger courseID,
                                              @RequestBody Team team) {
@@ -196,6 +197,7 @@ public class TeamService {
         return map;
     }
 
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/request/teamvalid")
     public List<Map<String,Object>> listAllTeamValidApplication() {
         List<Map<String,Object>> applicationMapList = new ArrayList<>();

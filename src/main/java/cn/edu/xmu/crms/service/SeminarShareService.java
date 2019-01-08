@@ -8,6 +8,7 @@ import cn.edu.xmu.crms.entity.Course;
 import cn.edu.xmu.crms.entity.ShareSeminarApplication;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
@@ -51,12 +52,13 @@ public class SeminarShareService {
         return map;
     }
 
+    @PreAuthorize("hasAuthority('teacher')")
     @DeleteMapping("/course/seminarshare/{seminarShareID}")
     public Integer deleteSeminarShareBySeminarShareID(@PathVariable("seminarShareID") BigInteger seminarShareID) {
         return seminarShareDao.deleteSeminarShareBySeminarShareID(seminarShareID);
     }
 
-
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/course/{courseID}/seminarshare")
     public List<Map<String, Object>> listAllSeminarShareByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> courseMapList = new ArrayList<>();
@@ -105,8 +107,7 @@ public class SeminarShareService {
         return courseMapList;
     }
 
-
-
+    @PreAuthorize("hasAuthority('teacher')")
     @PostMapping("/request/seminarshare")
     public Map<String,BigInteger> createSeminarShareRequest(@RequestBody Map<String,BigInteger> courseID) {
 
@@ -116,8 +117,7 @@ public class SeminarShareService {
         return courseID;
     }
 
-
-
+    @PreAuthorize("hasAuthority('teacher')")
     @GetMapping("/request/seminarshare")
     public List<Map<String, Object>> listAllSeminarShareRequest(HttpServletRequest request) {
         BigInteger id = jwtTokenUtil.getIDFromRequest(request);
@@ -129,8 +129,7 @@ public class SeminarShareService {
         return seminarShareRequest;
     }
 
-
-
+    @PreAuthorize("hasAuthority('teacher')")
     @PutMapping("/request/seminarshare/{seminarShareID}")
     public Map<String, Object> updateSeminarShareStatusByID(@PathVariable("seminarShareID") BigInteger seminarShareID,
                                                             @RequestBody Map<String,Integer> statusMap) {

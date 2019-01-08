@@ -5,6 +5,7 @@ import cn.edu.xmu.crms.dao.TeamDao;
 import cn.edu.xmu.crms.entity.Round;
 import cn.edu.xmu.crms.entity.RoundScore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
@@ -61,6 +62,7 @@ public class RoundService {
         return roundScoreMap;
     }
 
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/course/{courseID}/round")
     public List<Map<String, Object>> listRoundsInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> roundInfoList = new ArrayList<>();
@@ -74,15 +76,14 @@ public class RoundService {
         return roundInfoList;
     }
 
-
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/round/{roundID}")
     public Map<String, Object> getRoundInfoByRoundID(@PathVariable("roundID") BigInteger roundID) {
         Round round = roundDao.getRoundByRoundID(roundID);
         return this.getRoundInfo(round);
     }
 
-
-
+    @PreAuthorize("hasAuthority('teacher')")
     @PutMapping("/round/{roundID}")
     public void modifyRoundInfo(@PathVariable("roundID") BigInteger roundID,
                                              @RequestBody Round round) {
@@ -91,8 +92,7 @@ public class RoundService {
         roundDao.updateRoundSignUpNumber(round);
     }
 
-
-
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/round/{roundID}/roundscore")
     public List<Map<String, Object>> listTeamRoundScoreInfoByRoundID(@PathVariable("roundID") BigInteger roundID) {
         List<Map<String, Object>> teamScoreList = new ArrayList<>();
@@ -103,8 +103,7 @@ public class RoundService {
         return teamScoreList;
     }
 
-
-
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/round/{roundID}/team/{teamID}/roundscore")
     public Map<String, Object> getRoundScoreInfoByRoundAndTeamID(@PathVariable("roundID") BigInteger roundID,
                                                                  @PathVariable("teamID") BigInteger teamID) {

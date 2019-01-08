@@ -3,6 +3,7 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.TeacherDao;
 import cn.edu.xmu.crms.entity.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
@@ -24,16 +25,19 @@ public class TeacherService {
     @Autowired
     TeacherDao teacherDao;
 
+    @PreAuthorize("hasAnyAuthority('admin')")
     @PostMapping("/teacher")
     public Boolean createTeacher(@RequestBody Teacher teacher) {
         return teacherDao.insertTeacher(teacher);
     }
 
+    @PreAuthorize("hasAnyAuthority('admin', 'student', 'teacher')")
     @GetMapping("/teacher/{teacherID}")
     public Teacher getTeacherInfo(@PathVariable("teacherID") BigInteger teacherID) {
         return teacherDao.getTeacherByTeacherID(teacherID);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/teacher")
     public List<Map<String, Object>> listAllTeachersInfo() {
         List<Teacher> teachers = teacherDao.listAllTeachers();
@@ -50,7 +54,7 @@ public class TeacherService {
         return teacherInfoList;
     }
 
-
+    @PreAuthorize("hasAnyAuthority('admin', 'teacher')")
     @PutMapping("/teacher/{teacherID}/information")
     public Teacher modifyTeacherInfo(@PathVariable("teacherID") BigInteger teacherID,
                                      @RequestBody Teacher teacher) {
@@ -61,7 +65,7 @@ public class TeacherService {
         return null;
     }
 
-
+    @PreAuthorize("hasAnyAuthority('admin', 'teacher')")
     @PutMapping("/teacher/{teacherID}/password")
     public Boolean resetTeacherPassword(@PathVariable("teacherID") BigInteger teacherID) {
         if(teacherDao.resetTeacherPasswordByTeacherID(teacherID) == 1) {
@@ -70,7 +74,7 @@ public class TeacherService {
         return false;
     }
 
-
+    @PreAuthorize("hasAuthority('admin')")
     @DeleteMapping("/teacher/{teacherID}")
     public Boolean deleteTeacher(@PathVariable("teacherID") BigInteger teacherID) {
         if(teacherDao.deleteTeacherByTeacherID(teacherID) == 1) {
@@ -79,7 +83,7 @@ public class TeacherService {
         return false;
     }
 
-
+    @PreAuthorize("hasAuthority('teacher')")
     @PutMapping("/teacher/active")
     public Boolean activeTeacher(@RequestBody Teacher teacher) {
         if(teacherDao.updateTeacherActiveByTeacher(teacher) == 1) {

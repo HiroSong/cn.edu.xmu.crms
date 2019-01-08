@@ -22,7 +22,6 @@ import java.util.Map;
  * @author SongLingbing
  * @date 2018/12/24 9:02
  */
-@CrossOrigin
 @RestController
 @Service
 public class UserService {

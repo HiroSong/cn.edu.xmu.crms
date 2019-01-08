@@ -3,6 +3,7 @@ package cn.edu.xmu.crms.service;
 import cn.edu.xmu.crms.dao.StudentDao;
 import cn.edu.xmu.crms.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
@@ -24,12 +25,13 @@ public class StudentService {
     @Autowired
     StudentDao studentDao;
 
+    @PreAuthorize("hasAnyAuthority('admin', 'student', 'teacher')")
     @GetMapping("/student/{studentID}")
     public Student getStudentInfo(@PathVariable("studentID") BigInteger studentID) {
         return studentDao.getStudentByStudentID(studentID);
     }
 
-
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/student")
     public List<Map<String, Object>> listAllStudentsInfo() {
         List<Map<String, Object>> studentsInfoList = new ArrayList<>();
@@ -46,6 +48,7 @@ public class StudentService {
         return studentsInfoList;
     }
 
+    @PreAuthorize("hasAnyAuthority('student', 'admin')")
     @PutMapping("/student/{studentID}/information")
     public Student modifyStudentInfo(@PathVariable("studentID") BigInteger studentID,
                                      @RequestBody Student student) {
@@ -56,6 +59,7 @@ public class StudentService {
         return null;
     }
 
+    @PreAuthorize("hasAnyAuthority('student', 'admin')")
     @PutMapping("/student/{studentID}/password")
     public Boolean resetStudentPassword(@PathVariable("studentID") BigInteger studentID) {
         if (studentDao.resetStudentPassword(studentID) == 1) {
@@ -64,6 +68,7 @@ public class StudentService {
         return false;
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @DeleteMapping("/student/{studentID}")
     public Boolean deleteStudent(@PathVariable("studentID") BigInteger studentID) {
         if(studentDao.deleteStudentByStudentID(studentID) == 1) {
@@ -72,6 +77,7 @@ public class StudentService {
         return false;
     }
 
+    @PreAuthorize("hasAuthority('student')")
     @PutMapping("/student/active")
     public Boolean activateStudent(@RequestBody Student student) {
         if(studentDao.updateStudentActiveByStudent(student) == 1) {
@@ -80,6 +86,7 @@ public class StudentService {
         return false;
     }
 
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/course/{courseID}/noTeam")
     public List<Map<String, Object>> listNoTeamStudentsInfoByCourseID(@PathVariable("courseID") BigInteger courseID) {
         List<Map<String, Object>> noTeamStudentsMap = new ArrayList<>();

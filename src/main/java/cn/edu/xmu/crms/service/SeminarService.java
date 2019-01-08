@@ -6,6 +6,7 @@ import cn.edu.xmu.crms.util.email.Email;
 import cn.edu.xmu.crms.util.security.JwtTokenUtil;
 import cn.edu.xmu.crms.util.websocket.SeminarRoom;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
@@ -56,7 +57,7 @@ public class SeminarService {
         return map;
     }
 
-
+    @PreAuthorize("hasAuthority('teacher')")
     @GetMapping("/seminar/process")
     public Map<String, Object> getSeminarInProcess() {
         Seminar seminar = seminarDao.getSeminarInProcess();
@@ -69,7 +70,7 @@ public class SeminarService {
         return map;
     }
 
-
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/round/{roundID}/seminar")
     public List<Map<String, Object>> listSeminarsInfoByRoundID(@PathVariable("roundID") BigInteger roundID) {
         List<Map<String, Object>> seminarInfoList = new ArrayList<>();
@@ -85,7 +86,7 @@ public class SeminarService {
         return  seminarInfoList;
     }
 
-
+    @PreAuthorize("hasAuthority('teacher')")
     @PostMapping("/course/{courseID}/seminar")
     public Map<String, Object> createSeminar(@PathVariable("courseID") BigInteger courseID,
                                              @RequestBody Seminar seminar) {
@@ -99,6 +100,7 @@ public class SeminarService {
         return map;
     }
 
+    @PreAuthorize("hasAuthority('teacher')")
     @GetMapping("/seminar/{seminarID}/class")
     public List<Map<String, Object>> listKlassInfoBySeminarID(@PathVariable("seminarID") BigInteger seminarID) {
         List<Klass> klasses = klassDao.listKlassBySeminarID(seminarID);
@@ -114,6 +116,7 @@ public class SeminarService {
         return klassInfoList;
     }
 
+    @PreAuthorize("hasAuthority('teacher')")
     @PutMapping("/seminar/{seminarID}")
     public void modifySeminarInfo(@PathVariable("seminarID") BigInteger seminarID,
                                   @RequestBody Seminar seminar) {
@@ -123,13 +126,13 @@ public class SeminarService {
         seminarDao.updateSeminarBySeminarID(seminar);
     }
 
-
+    @PreAuthorize("hasAuthority('teacher')")
     @DeleteMapping("/seminar/{seminarID}")
     public void deleteSeminar(@PathVariable("seminarID") BigInteger seminarID) {
         seminarDao.deleteSeminarBySeminarID(seminarID);
     }
 
-
+    @PreAuthorize("hasAnyAuthority('student', 'teacher')")
     @GetMapping("/seminar/{seminarID}")
     public Map<String, Object> getSeminarInfoBySeminarID(@PathVariable("seminarID") BigInteger seminarID) {
         Map<String,Object> map = new HashMap<>(0);
