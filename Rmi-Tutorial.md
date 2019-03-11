@@ -380,7 +380,7 @@ public class Client {
 直接双击执行`run_client.bat`或在打包文件夹下执行`java -jar rmi.jar 服务器地址`即可启动客户端。<br>
 >两个环境下操作及效果相同，此处仅放置一个动图作为效果图
 
-![测试结果](./img/4-1-4-1.gif)
+<iframe width=900 height=500 src="./img/4-1-4-1.gif"></iframe>
 
 ## 4.2. Dubbo结合RMI协议实现
 ### 4.2.1. 编码
@@ -649,7 +649,7 @@ public class Consumer {
 直接双击执行`run_consumer.bat`或在打包文件夹下执行`java -jar rmi-dubbo.jar 服务器地址`即可启动客户端。<br>
 >两个环境下操作过程相同，此处仅放置一个动图作为效果图
 
-![测试结果](./img/4-2-4-1.gif)
+<iframe width=900 height=500 src="./img/4-2-4-1.gif"></iframe>
 
 # 5. 总结
 ## 5.1. 遇到的问题
